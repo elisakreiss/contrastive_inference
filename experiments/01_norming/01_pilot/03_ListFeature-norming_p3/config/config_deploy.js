@@ -13,7 +13,8 @@ var config_deploy = {
     //'debug', 'localServer', 'MTurk', 
     // 'MTurkSandbox', 'Prolific', 'directLink'
     // "deployMethod": "debug",
-    "deployMethod": "directLink",
+    // "deployMethod": "directLink",
+    "deployMethod": "MTurk",
 
     // who to contact in case of trouble
     "contact_email": "ekreiss@stanford.edu",
