@@ -1,0 +1,1 @@
+var main_trials = ["acorn","apple","banana","basketball","broccoli","coconut","genie","grape","lettuce","lobster","mushroom","paper recycling bin","pumpkin","smurf","strawberry","taxi","walnut","zucchini"];
