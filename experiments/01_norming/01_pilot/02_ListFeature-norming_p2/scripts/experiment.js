@@ -5,7 +5,7 @@ exp.customize = function() {
     this.global_data.startTime = Date.now();
     // specify view order
     this.views_seq = [
-        recaptcha,
+        botcaptcha,
         intro,
         example,
         main,
