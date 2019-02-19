@@ -33,6 +33,17 @@
 
         <!-- views -->
         <script src="views/views.js"></script>
+
+        <script src="//uniqueturker.myleott.com/lib.js" type="text/javascript"></script>
+        <script type="text/javascript">
+          $(document).ready(function(){
+            var ut_id = "36d44304421c57e5a471b2c13bc4cd9b";
+            if (UTWorkerLimitReached(ut_id)) {
+                $(".slide").hide();
+                $("body").html("You have already completed the maximum number of HITs allowed by this requester. Please click 'Return HIT' to avoid any impact on your approval rating.");
+            }
+          });
+        </script>
     </head>
 
     <body>
@@ -46,6 +57,44 @@
         </main>
 
         <!-- Mustache templates below. Each template is a view with a separate HTML structure. -->
+        <script id="botcaptcha-view" type="text/html">
+            <div class='view'>
+
+                {{# title }}
+                <h1>{{ title }}</h1>
+                {{/ title }}
+                <br>
+                {{{# text }}}
+                <section class="text-container">
+                    <p class="text">{{{ text }}}</p>
+                </section>
+                {{{/ text }}}
+                <br>
+                {{{# question }}}
+                <section class="text-container">
+                    <p class="text" id="quest-response">
+                        {{{ question }}}
+                        <textarea rows="1" cols="15" id="listener-response"></textarea>
+                    </p>
+                </section>
+                {{{/ question }}}
+                <br>
+                {{# button }}
+                <button id="next">{{ button }}</button>
+                {{/ button }}
+                {{^ button }}
+                <button id="next">Next</button>
+                {{/ button }}
+                <section class="answer-container">
+                    <p class="text" id="error_incorrect" style="color: #7CB637">This is incorrect.</p>
+                    <p class="text" id="error_2more" style="color: #7CB637">You have 2 more trials.</p>
+                    <p class="text" id="error_1more" style="color: #7CB637">You have 1 more trial.</p>
+                    <p class="text" id="error" style="color: #7CB637">Error: You failed to enter the correct response.</p>
+                </section>
+
+            </div>
+        </script>
+
         <!-- Introduction view -->
         <script id="intro-view" type="text/html">
             <div class='view'>
@@ -61,6 +110,12 @@
                 </section>
                 {{/ text }}
                 <br>
+                {{# button }}
+                <button id="next" class="nodisplay">{{ button }}</button>
+                {{/ button }}
+                {{^ button }}
+                <button id="next">Next</button>
+                {{/ button }}
                 <br>
                 {{# legal_info }}
                 <section class="text-container">
@@ -73,12 +128,6 @@
                     <label for="prolific-id">Please, enter your Prolific ID</label>
                     <input type="text" id="prolific-id" />
                 </p>
-                {{# button }}
-                <button id="next" class="nodisplay">{{ button }}</button>
-                {{/ button }}
-                {{^ button }}
-                <button id="next">Next</button>
-                {{/ button }}
             </div>
         </script>
 
@@ -94,11 +143,18 @@
                 <img src={{ picture }} alt="a picture" height="180">
             </div>
             <br>
-            <p class="answer-container">
-                It's a/an  
-                <textarea rows="1" cols="40" id="refexp-response" placeholder=" ... (Please insert your answer here.)"></textarea>.
+            <p id="slider_box" class="answer-container blend-out">
+                {{# slider_left }}
+                <span class="slider_left">{{slider_left}}</span>
+                {{/ slider_left }}
+
+                <input type="range" id="slider" class="slider-response" min="0" max="100" value="50"/>
+
+                {{# slider_right }}
+                <span class="slider_left">{{slider_right}}</span>
+                {{/ slider_right }}
+                <br>
             </p>
-            <br>
 
             {{# button }}
             <button id="next">{{ button }}</button>
@@ -106,6 +162,8 @@
             {{^ button }}
             <button id="next">Next</button>
             {{/ button }}
+
+            <p id="error" class="help-text" style="visibility: hidden;">You haven't given an answer yet. To answer the question, please adjust the slider accordingly.</p>
         </div>
         </script>
 
@@ -122,6 +180,15 @@
             {{/ text }}
             <form>
             <p>
+                <label for="HitCorrect">Did you read the instructions and do you think you did the HIT correctly?</label>
+                <select id="HitCorrect" name="HitCorrect">
+                    <option></option>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                    <option value="404">I was confused</option>
+                </select>
+            </p>
+            <p>
                 <label for="age">Age:</label>
                 <input type="number" name="age" min="18" max="110" id="age" />
             </p>
@@ -129,26 +196,37 @@
                 <label for="gender">Gender:</label>
                 <select id="gender" name="gender">
                     <option></option>
-                    <option value="male">male</option>
-                    <option value="female">female</option>
-                    <option value="other">other</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
                 </select>
             </p>
             <p>
                 <label for="education">Level of Education:</label>
                 <select id="education" name="education">
                     <option></option>
+                    <option value="some_high_school">Some High School</option>
                     <option value="graduated_high_school">Graduated High School</option>
+                    <option value="some_college">Some College</option>
                     <option value="graduated_college">Graduated College</option>
-                    <option value="higher_degree">Higher Degree</option>
+                    <option value="higher_degree">Hold a Higher Degree</option>
                 </select>
             </p>
             <p>
                 <label for="languages" name="languages">Native Languages: <br /><span>(i.e. the language(s) spoken at home when you were a child)</</span></label>
                 <input type="text" id="languages"/>
             </p>
+            <p>
+                <label for="enjoyment">Enjoyment:</label>
+                <select id="enjoyment" name="enjoyment">
+                    <option></option>
+                    <option value="0">Worse than the Average Hit</option>
+                    <option value="1">Average Hit</option>
+                    <option value="2">Better than the Average Hit</option>
+                </select>
+            </p>
             <p class="comment-sect">
-                <label for="comments">Further comments</label>
+                <label for="comments">Further Comments:</label>
                 <textarea name="comments" id="comments"
                 rows="6" cols="40"></textarea>
             </p>

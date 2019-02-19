@@ -1,4 +1,5 @@
 ## Stimuli to test
+### Color-diagnostic
 
 #### White
 - garlic
@@ -14,6 +15,7 @@
 - flamingo
 - piggy bank
 - cotton candy
+- pig
 
 #### Yellow
 - banana
@@ -33,3 +35,31 @@
 - zucchini
 - cactus
 - pickle
+
+### Non-color-diagnostic
+be careful with basic vs super level nouns; 
+items are inspired by object stroop corpus
+
+- balloon
+- bell pepper
+- bicycle
+- billiardball
+- book
+- butterfly
+- candle 
+- chair
+- cup
+- feather
+- flower
+- horse
+- house
+- jacket
+- lamp
+- rock
+- scissors
+- soap
+- sponge
+- sportscar
+- table
+- tack 
+- toothbrush (23)

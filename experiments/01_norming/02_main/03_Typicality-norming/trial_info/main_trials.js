@@ -1,1 +1,13 @@
-var main_trials = ["acorn_yellow","apple_yellow","banana_yellow","basketball_yellow","broccoli_yellow","coconut_yellow","genie_yellow","grape_yellow","lettuce_yellow","lobster_yellow","taxi_yellow"];
+var main_trials = [
+	// "dime"
+	// color diagnostic 
+	"flamingo",
+	"banana",
+	"garlic",
+	"lobster",
+	// non-color diagnostic
+	"sports car",
+	"towel",
+	"cup",
+	"bell pepper"
+];

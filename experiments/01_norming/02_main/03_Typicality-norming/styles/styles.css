@@ -24,7 +24,7 @@ main {
 
 hr { 
     box-sizing: border-box;
-    max-width: 560px;
+    max-width: 660px;
     margin: 0 auto;
     border-color: #7CB637;
 }
@@ -69,7 +69,7 @@ p {
     line-height: 27px;
     font-family: "Lato", "Noto Sans", sans-serif;
     margin: 0 auto;
-    max-width: 550px;
+    max-width: 650px;
 }
 
 button,
@@ -152,7 +152,7 @@ button:focus,
 }
 
 .question {
-    font-size: 23px;
+    font-size: 20px;
     padding: 30px 0;
     text-align: center;
 }
@@ -166,7 +166,7 @@ button:focus,
 .answer-container {
     text-align: center;
     color: grey;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 /* buttons response */
@@ -256,21 +256,29 @@ input[type=range]::-moz-range-thumb {
 }
 
 input[type="range"]:focus::-webkit-slider-thumb {
-    background: orange;
+    background: #7CB637;
 }
 
 input[type="range"]:focus::-moz-range-thumb {
-    background: orange;
+    background: #7CB637;
 }
 
 textarea {
-    font-size: 15px;
+    font-size: 20px;
 }
 
 .help-text {
     font-style: italic;
     text-align: center;
     color: #555;
+}
+
+.story_text {
+    color: #555;
+    border-style: solid;
+    border-width: 2px; 
+    border-color: #555;
+    padding: 10px;
 }
 
 /* does not display the element */
