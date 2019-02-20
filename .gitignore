@@ -24,8 +24,7 @@
 *dump.rdb
 *.gv
 *raw_confidential*
+*raw*
 *submiterator*
-*workerIDcheck.R
 *data
-*cogsci_IN.pdf
 *object_stroop_corpus/
