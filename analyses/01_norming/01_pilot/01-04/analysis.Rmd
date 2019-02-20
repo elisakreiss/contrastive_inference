@@ -1,6 +1,7 @@
 ---
 title: "CI: pilot feature norming analysis"
-output: html_document
+# output: html_document
+output: rmarkdown::github_document
 ---
 
 ```{r setup, include=FALSE}
