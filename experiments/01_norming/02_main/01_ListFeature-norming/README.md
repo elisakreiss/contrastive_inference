@@ -1,4 +1,4 @@
-# Norming study for Color Diagnosticity
+# List feature norming study
 
-- Task: "Name the color that first comes to mind when you hear **banana**!"
-- Idea: If an object is associated with mainly one color, it is highly color-diagnostic. If an object is associated with several colors, it is less color-diagnostic.
+- Task: "List **3 perceptual features** of an *X*," X being, e.g., *banana*.
+- This is one out of two norming studies which will determine the color diagnosticity of the items used. Color must be mentioned as the first feature.

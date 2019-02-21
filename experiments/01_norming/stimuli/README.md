@@ -2,14 +2,16 @@
 ### Color-diagnostic
 
 #### White
-- garlic
+- (garlic)
 - snowman
 - swan
+- toilet paper
 
 #### Orange
 - basketball
 - pumpkin
 - carrot
+- traffic cone
 
 #### Pink/Purple
 - flamingo

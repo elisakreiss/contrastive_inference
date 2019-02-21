@@ -139,15 +139,19 @@ var main = {
         // fill variables in view-template
         var viewTemplate = $("#main-view").html();
 
-        //
-        // TODO: remember to add exceptions for the few mass nouns
-        //
+        // define article
+        var mass_nouns = ["garlic","broccoli","cotton candy","corn","scissors","soap","toilet paper"];
+        var vowels = ["a","e","i","o","u"];
         var article;
-        if (exp.trial_info.main_trials[CT][0] == ("a"||"e"||"i"||"o"||"u")){
-            article = "an";
-        } else {
-            article = "a";
+        // none for mass nouns
+        if (mass_nouns.includes(exp.trial_info.main_trials[CT])){
+            article = "";
+        } else if (vowels.includes(exp.trial_info.main_trials[CT][0])) {
+            article = " an";
         }
+        else {
+            article = " a";
+        };
 
         $("#main").html(
             Mustache.render(viewTemplate, {
