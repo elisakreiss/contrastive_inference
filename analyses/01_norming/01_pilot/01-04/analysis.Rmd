@@ -129,26 +129,29 @@ df_cat = df %>%
 df_plot = df_cat %>% 
   select(-obj_unknown) %>% 
   gather(feature_pos,color,f1_cat,f2_cat,f3_cat) %>% 
-  group_by(feature_pos,question,pilot,cd) %>% 
-  summarize(colorRatio = mean(color)) %>% 
-  ungroup() %>% 
+  # group_by(feature_pos,question,pilot,cd) %>% 
+  # summarize(colorRatio = mean(color)) %>% 
+  # ungroup() %>% 
   filter(feature_pos=="f1_cat")
 
 # ggplot(df_plot,aes(x=reorder(question,cd), y=colorRatio, fill=pilot)) +
   # facet_wrap(vars(feature_pos),
   #            ncol=1) +
-ggplot(df_plot,aes(x=reorder(question,cd), y=colorRatio, fill=cd)) +
+ggplot(df_plot,aes(x=reorder(question,cd), y=as.integer(color), fill=cd)) +
   facet_wrap(vars(pilot),
              ncol=1) +
-  geom_bar(width = .7, 
-           position = "dodge", 
-           stat = "identity") +
+  stat_summary(fun.y = "mean",
+               geom = "bar") +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey") +
+  # geom_bar(width = .7, 
+  #          position = "dodge", 
+  #          stat = "identity") +
   theme(axis.text.x = element_text(angle = 30, hjust=1)) +
   # theme(legend.position = "none") +
   scale_fill_manual(values=c("#E6AB02", "#7CB637"))
 ```
-
-
 
 
 
