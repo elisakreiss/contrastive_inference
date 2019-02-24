@@ -31,6 +31,7 @@ var main_trials = [
 	"fire extinguisher",
 	// mass noun
 	"broccoli",
+	// mass noun
 	"lettuce",
 	"zucchini",
 	"cactus",
@@ -39,7 +40,7 @@ var main_trials = [
 	"balloon",
 	"bell pepper",
 	"bicycle",
-	"billiardball",
+	"billiard ball",
 	"book",
 	"butterfly",
 	"candle",
