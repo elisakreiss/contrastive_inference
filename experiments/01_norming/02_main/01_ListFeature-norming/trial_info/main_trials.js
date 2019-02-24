@@ -1,12 +1,16 @@
 var main_trials = [
 	// "dime"
+	// 0: unknown objects (control)
+	"florbs",
+	"briggle",
+	"ebbler",
+	"wobs",
 	// 1: color diagnostic 
-	// mass noun; probably not diagnostic
-	// "garlic",
 	"snowman",
 	"swan",
 	// mass noun
 	"toilet paper",
+	"egg",
 	"basketball",
 	"pumpkin",
 	"carrot",

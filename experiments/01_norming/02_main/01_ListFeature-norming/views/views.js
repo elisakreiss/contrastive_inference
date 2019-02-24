@@ -17,7 +17,7 @@ var botcaptcha = {
                 name: this.name,
                 title: this.title,
                 text: story,
-                question: "Who does " + speaker + " talk to?",
+                question: "Who is " + speaker + " talking to?",
                 button: this.buttonText
             })
         );
@@ -139,7 +139,7 @@ var example = {
     title: "Example",
     // text
     text:
-        "You will see different objects. For each object, please name 3 perceptual features that come to mind when you imagine it. A perceptual feature is something that you can perceive with one of your senses, like feel, see, taste, hear or smell. <br>Here is an example response for <strong>dime</strong>.",
+        "You will see names of objects. For each object, please name 3 perceptual features that come to mind when you imagine it. A perceptual feature is something that you can perceive with one of your senses, like feel, see, taste, hear or smell. <br>Here is an example response for <strong>dime</strong>.",
     // proceeding button text
     buttonText: "Got it!",
     // render function renders the view
@@ -235,7 +235,7 @@ var main = {
         // record trial starting time
         var startingTime = Date.now();
     },
-    trials: 46
+    trials: 52
 };
 
 var postTest = {
