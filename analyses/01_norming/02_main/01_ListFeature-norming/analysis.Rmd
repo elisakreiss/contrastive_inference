@@ -1,0 +1,238 @@
+---
+title: "CI: feature norming analysis"
+# output: html_document
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r data import, include=FALSE}
+library(cowplot)
+library(tidyverse)
+library(here)
+
+df_import = read_csv(here("data","01_norming","02_main","01_ListFeature-norming","data.csv")) %>% 
+  # exclude test
+  # weird filter property that it will exclude NAs
+  filter(is.na(comments) | comments != "TEST")
+```
+
+```{r botresponse, include=FALSE}
+ggplot(df_import,aes(x=str_to_lower(botresponse))) +
+  geom_histogram(stat="count")
+```
+
+
+```{r create main data frame, echo=FALSE}
+
+df_clean = df_import %>% 
+  # exclude multiple submissions
+  arrange(startTime) %>% 
+  distinct(anon_worker_id,trial_number, .keep_all = TRUE) %>% 
+  # exclude participants who didn't answer the bot task (probably bots which hacked javascript code), if necessary
+  # filter(botresponse=="") %>% 
+  # exclude participants who didn't pass control objects (nonce words)
+  mutate(control = ifelse((question == "wobs" | question == "ebbler" | question == "briggle" | question == "florbs"),T,F)) %>%  
+  mutate(correct_controls = ifelse(control & obj_unknown,T,F)) %>% 
+  group_by(anon_worker_id) %>% 
+  mutate(pass_controls = ifelse(sum(correct_controls)<2,F,T)) %>% 
+  filter(pass_controls) %>% 
+  ungroup()
+
+# number of participants before exclusion (24)
+length(unique(df_import$anon_worker_id))
+# number of participants after exclusion (24)
+length(unique(df_clean$anon_worker_id))
+
+
+df = df_clean %>%
+  filter(!control) %>% 
+  select(feature1,feature2,feature3,obj_unknown,question,anon_worker_id) %>% 
+  mutate_at(vars(feature1,feature2,feature3),funs(str_to_lower(.)))
+```
+
+
+## About the participants
+
+```{r subj, echo=FALSE, fig.height=10, fig.width=7, message=FALSE, warning=FALSE}
+# other info
+engl_spellings = c("english", "englis", "eng")
+
+df_subj = df_clean %>% 
+  select(age,gender,education,languages,enjoyment,timeSpent,HitCorrect,comments,anon_worker_id) %>% 
+  distinct() %>% 
+  mutate_at(vars(languages), funs(str_to_lower(.))) %>% 
+  mutate_at(vars(languages), funs(ifelse(. %in% engl_spellings, "english", .))) %>% 
+  mutate(lang=ifelse(languages == "english","english","other")) %>% 
+  mutate_at(vars(age), funs(as.integer(.))) %>% 
+  mutate_at(vars(enjoyment), 
+            funs(ifelse(.==1,"average",
+                        ifelse(.==2,"awesome","other")))) %>% 
+  mutate_at(vars(HitCorrect),
+            funs(ifelse(HitCorrect==0,"no",
+                        ifelse(HitCorrect==404,"confused","yes")))) %>% 
+  mutate(edu = ifelse(str_detect(education,"high_school"),"High School",
+                      ifelse(str_detect(education,"college"),"College","Higher"))) %>% 
+  mutate_at(vars(edu), funs(fct_relevel(.,"High School", "College", "Higher")))
+
+
+mean_age = round(mean(df_subj$age),digits = 1)
+p_age = ggplot(df_subj,aes(x=age)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  geom_vline(xintercept= mean_age) +
+  scale_x_continuous(breaks=c(25,50,75,mean_age))
+
+p_gen = ggplot(df_subj,aes(x=gender)) +
+  geom_bar(width = .5,
+           fill = "orange")
+
+p_edu = ggplot(df_subj,aes(x=edu)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  xlab("education")
+  # theme(axis.text.x = element_text(angle = 25, hjust = 1))
+
+p_lang = ggplot(df_subj,aes(x=lang)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  xlab("language")
+  # theme(axis.text.x = element_text(angle=45,hjust=1))
+
+p_enj = ggplot(df_subj,aes(x=enjoyment)) +
+  geom_bar(width = .5,
+           fill = "orange")
+
+mean_time = round(mean(df_subj$timeSpent), digits = 1)
+mean_time_nooutliers = round(
+  mean(
+    df_subj[df_subj$timeSpent <= (mean_time + sd(mean_time)),]$timeSpent
+  ), digits = 1)
+p_time = ggplot(df_subj,aes(x=timeSpent)) +
+  geom_histogram(fill = "orange") +
+  geom_vline(xintercept=mean_time_nooutliers) +
+  geom_vline(xintercept=mean_time,linetype="dashed") +
+  scale_x_continuous(breaks=c(mean_time_nooutliers,mean_time,floor(0),floor(5),floor(10))) +
+  xlab("time spent")
+
+p_HitCorrect = ggplot(df_subj,aes(x=HitCorrect)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  xlab("did you do the hit correctly")
+
+plot_grid(p_age,p_gen,p_edu,p_lang,p_enj,p_time,p_HitCorrect, labels = "AUTO", ncol = 2, align = 'v')
+
+# unique(df_subj$comments)
+
+```
+
+## Objects which were rated unknown
+
+```{r obj_unknown, echo=FALSE}
+ggplot(df[df$obj_unknown==TRUE,],aes(x=question)) +
+  geom_bar(width = 0.5,
+           fill = "orange") +
+  theme(axis.text.x = element_text(angle=45,hjust=1))
+```
+
+## Plot proportion of color mention for first feature
+
+```{r df color features, include=FALSE}
+
+# misspellings
+yellow = c("hellow")
+
+color_list = c("color", "colorful", "brown", "green", "orange", "pink", "red", "white", "yellow")
+
+white = c("snowman", "swan", "toilet paper", "egg")
+orange = c("basketball", "pumpkin", "carrot", "traffic cone")
+pink = c("flamingo", "piggy bank", "cotton candy", "pig")
+yellow = c("banana", "taxi", "corn", "rubber duck")
+red = c("tomato", "lobster", "strawberry", "fire extinguisher")
+green = c("broccoli", "lettuce", "zucchini", "cactus", "pickle")
+
+cd_list = c("snowman",
+	"swan",
+	"toilet paper",
+	"egg",
+	"basketball",
+	"pumpkin",
+	"carrot",
+	"traffic cone",
+	"flamingo",
+	"piggy bank",
+	"cotton candy",
+	"pig",
+	"banana",
+	"taxi",
+	"corn",
+	"rubber duck",
+	"tomato",
+	"lobster",
+	"strawberry",
+	"fire extinguisher",
+	"broccoli",
+	"lettuce",
+	"zucchini",
+	"cactus",
+	"pickle")
+
+df_cat = df %>%
+  filter(obj_unknown==FALSE) %>% 
+  # mutate(f1_cat = ifelse(sum(str_detect(feature1,color_list)) >= 1, T, F)) %>% 
+  mutate(color = case_when(question %in% white ~ "white",
+                           question %in% orange ~ "orange",
+                           question %in% pink ~ "pink",
+                           question %in% yellow ~ "yellow",
+                           question %in% red ~ "red",
+                           question %in% green ~ "green", 
+                           TRUE ~ "non-cd")) %>% 
+  mutate(f1_cat = ifelse(feature1 %in% color_list, T, F)) %>% 
+  mutate(f2_cat = ifelse(feature2 %in% color_list, T, F)) %>% 
+  mutate(f3_cat = ifelse(feature3 %in% color_list, T, F)) %>% 
+  mutate(cd = ifelse(question %in% cd_list, T, F))
+
+```
+
+
+```{r plot first feature, echo=FALSE}
+df_plot = df_cat %>% 
+  select(-obj_unknown) %>% 
+  gather(feature_pos,color_mention,f1_cat,f2_cat,f3_cat) %>% 
+  # group_by(feature_pos,question,pilot,cd) %>% 
+  # summarize(colorRatio = mean(color)) %>% 
+  # ungroup() %>% 
+  filter(feature_pos=="f1_cat")
+
+ggplot(df_plot[df_plot$cd==T,],aes(x=reorder(question,cd), y=as.integer(color_mention), fill=cd)) +
+  facet_wrap(vars(color), scale="free") +
+  stat_summary(fun.y = "mean",
+               geom = "bar") +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey") +
+  # geom_bar(width = .7, 
+  #          position = "dodge", 
+  #          stat = "identity") +
+  theme(axis.text.x = element_text(angle = 30, hjust=1)) +
+  # theme(legend.position = "none") +
+  scale_fill_manual(values=c("#E6AB02", "#7CB637"))
+
+ggplot(df_plot,aes(x=reorder(question,cd), y=as.integer(color_mention), fill=cd)) +
+  stat_summary(fun.y = "mean",
+               geom = "bar") +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey") +
+  # geom_bar(width = .7, 
+  #          position = "dodge", 
+  #          stat = "identity") +
+  theme(axis.text.x = element_text(angle = 30, hjust=1)) +
+  # theme(legend.position = "none") +
+  scale_fill_manual(values=c("#E6AB02", "#7CB637"))
+```
+
+
+
