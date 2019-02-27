@@ -201,9 +201,6 @@ df_cat = df %>%
 df_plot = df_cat %>% 
   select(-obj_unknown) %>% 
   gather(feature_pos,color_mention,f1_cat,f2_cat,f3_cat) %>% 
-  # group_by(feature_pos,question,pilot,cd) %>% 
-  # summarize(colorRatio = mean(color)) %>% 
-  # ungroup() %>% 
   filter(feature_pos=="f1_cat")
 
 ggplot(df_plot[df_plot$cd==T,],aes(x=reorder(question,cd), y=as.integer(color_mention), fill=cd)) +
@@ -213,11 +210,7 @@ ggplot(df_plot[df_plot$cd==T,],aes(x=reorder(question,cd), y=as.integer(color_me
   stat_summary(fun.data = "mean_cl_boot",
                geom = "linerange",
                color = "darkgrey") +
-  # geom_bar(width = .7, 
-  #          position = "dodge", 
-  #          stat = "identity") +
   theme(axis.text.x = element_text(angle = 30, hjust=1)) +
-  # theme(legend.position = "none") +
   scale_fill_manual(values=c("#E6AB02", "#7CB637"))
 
 ggplot(df_plot,aes(x=reorder(question,cd), y=as.integer(color_mention), fill=cd)) +
