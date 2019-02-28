@@ -1,9 +1,10 @@
 library(tidyverse)
 library(here)
 
-df = read_csv(here("data","01_norming","02_main","01_ListFeature-norming","raw.csv"))
+df_1 = read_csv(here("data","01_norming","02_main","01_ListFeature-norming","raw1.csv"))
+df_2 = read_csv(here("data","01_norming","02_main","01_ListFeature-norming","raw2.csv"))
 
-# df = bind_rows(df_1,df_2,df_3,df_4)
+df = bind_rows(df_1,df_2)
 
 anonymous_df = df %>%
   group_by(worker_id) %>% 

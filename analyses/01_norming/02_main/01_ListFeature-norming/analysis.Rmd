@@ -25,7 +25,7 @@ ggplot(df_import,aes(x=str_to_lower(botresponse))) +
 ```
 
 
-```{r create main data frame, echo=FALSE}
+```{r create main data frame, message=FALSE, include=FALSE}
 
 df_clean = df_import %>% 
   # exclude multiple submissions
@@ -41,9 +41,9 @@ df_clean = df_import %>%
   filter(pass_controls) %>% 
   ungroup()
 
-# number of participants before exclusion (24)
+# number of participants before exclusion (40)
 length(unique(df_import$anon_worker_id))
-# number of participants after exclusion (24)
+# number of participants after exclusion (40)
 length(unique(df_clean$anon_worker_id))
 
 
@@ -141,10 +141,9 @@ ggplot(df[df$obj_unknown==TRUE,],aes(x=question)) +
 
 ```{r df color features, include=FALSE}
 
-# misspellings
-yellow = c("hellow")
+# color_list = c("bright", "brightly", "clear", "color", "colored", "colorful", "colour", "multicolored", "black", "blue", "brown", "green", "orange", "pink", "red", "white", "yellow")
 
-color_list = c("color", "colorful", "brown", "green", "orange", "pink", "red", "white", "yellow")
+color_list = c("black", "blackish", "blue", "brown", "green", "orange", "pink", "pink\\n", "red", "white", "yellow")
 
 white = c("snowman", "swan", "toilet paper", "egg")
 orange = c("basketball", "pumpkin", "carrot", "traffic cone")
@@ -188,44 +187,162 @@ df_cat = df %>%
                            question %in% yellow ~ "yellow",
                            question %in% red ~ "red",
                            question %in% green ~ "green", 
-                           TRUE ~ "non-cd")) %>% 
-  mutate(f1_cat = ifelse(feature1 %in% color_list, T, F)) %>% 
-  mutate(f2_cat = ifelse(feature2 %in% color_list, T, F)) %>% 
-  mutate(f3_cat = ifelse(feature3 %in% color_list, T, F)) %>% 
+                           TRUE ~ "no-cd")) %>% 
+  gather(feature_pos,feature_utt,feature1,feature2,feature3) %>% 
+  mutate(color_mention = ifelse(feature_utt %in% color_list, T, F)) %>% 
   mutate(cd = ifelse(question %in% cd_list, T, F))
+
+df_plot = df_cat %>% 
+  select(-obj_unknown)
 
 ```
 
 
-```{r plot first feature, echo=FALSE}
-df_plot = df_cat %>% 
-  select(-obj_unknown) %>% 
-  gather(feature_pos,color_mention,f1_cat,f2_cat,f3_cat) %>% 
-  filter(feature_pos=="f1_cat")
+```{r plot first feature cdonly, echo=FALSE, fig.height=6, fig.width=8}
+df_plot_f1 = df_plot %>% 
+  # gather(feature_pos,color_mention,f1_cat,f2_cat,f3_cat) %>% 
+  mutate_at(vars(color_mention),funs(as.integer(.))) %>% 
+  filter(feature_pos=="feature1")
 
-ggplot(df_plot[df_plot$cd==T,],aes(x=reorder(question,cd), y=as.integer(color_mention), fill=cd)) +
+ggplot(df_plot_f1[df_plot_f1$cd==T,],aes(x=reorder(reorder(question,color_mention),cd), y=color_mention, fill=cd)) +
   facet_wrap(vars(color), scale="free") +
   stat_summary(fun.y = "mean",
                geom = "bar") +
   stat_summary(fun.data = "mean_cl_boot",
                geom = "linerange",
                color = "darkgrey") +
+  geom_hline(yintercept = 0.5,
+             linetype = "dashed",
+             color = "grey") +
+  theme(legend.position="none") +
   theme(axis.text.x = element_text(angle = 30, hjust=1)) +
   scale_fill_manual(values=c("#E6AB02", "#7CB637"))
+```
 
-ggplot(df_plot,aes(x=reorder(question,cd), y=as.integer(color_mention), fill=cd)) +
+```{r plot first feature all, echo=FALSE, fig.height=7, fig.width=12}
+
+ggplot(df_plot_f1,aes(x=reorder(reorder(question,color_mention),cd), y=color_mention, fill=cd)) +
   stat_summary(fun.y = "mean",
                geom = "bar") +
   stat_summary(fun.data = "mean_cl_boot",
                geom = "linerange",
                color = "darkgrey") +
-  # geom_bar(width = .7, 
-  #          position = "dodge", 
-  #          stat = "identity") +
+  geom_hline(yintercept = 0.5,
+             linetype = "dashed",
+             color = "grey") +
   theme(axis.text.x = element_text(angle = 30, hjust=1)) +
-  # theme(legend.position = "none") +
+  theme(legend.position="top") +
   scale_fill_manual(values=c("#E6AB02", "#7CB637"))
 ```
+
+
+```{r plot all features, echo=FALSE}
+# df_plot_f2 = df_plot %>%
+#   # select(feature_pos,color_mention,cd) %>% 
+#   group_by(question,anon_worker_id) %>% 
+#   mutate(i = row_number()) %>% 
+#   ungroup() %>% 
+#   spread(feature_pos,color_mention) %>% 
+#   mutate(color_score = feature1*10 + feature2*5 + feature3*1)
+  # gather(feature_pos,color_mention,feature1,feature2,feature3) %>%
+  # mutate_at(vars(color_mention),funs(as.integer(.)))
+#   
+# 
+# ggplot(df_plot_f2[df_plot_f2$cd==T,],aes(x=reorder(question,cd), y=color_score, fill=cd)) +
+#   facet_wrap(vars(color), scale="free") +
+#   stat_summary(fun.y = "mean",
+#                geom = "bar") +
+#   stat_summary(fun.data = "mean_cl_boot",
+#                geom = "linerange",
+#                color = "darkgrey") +
+#   theme(axis.text.x = element_text(angle = 30, hjust=1)) +
+#   scale_fill_manual(values=c("#E6AB02", "#7CB637"))
+# 
+# ggplot(df_plot_f2,aes(x=reorder(question,cd), y=color_score, fill=cd)) +
+#   stat_summary(fun.y = "mean",
+#                geom = "bar") +
+#   stat_summary(fun.data = "mean_cl_boot",
+#                geom = "linerange",
+#                color = "darkgrey") +
+#   theme(axis.text.x = element_text(angle = 30, hjust=1)) +
+#   scale_fill_manual(values=c("#E6AB02", "#7CB637"))
+```
+
+## Color utterances for each item (split by cd and non-cd)
+
+```{r cd, echo=FALSE, fig.height=10, fig.width=10}
+# CD, color
+df_cd_coloronly = df_plot %>% 
+  filter(cd) %>% 
+  filter(color_mention)
+
+ggplot(df_cd_coloronly, aes(x=feature_utt)) +
+  geom_bar(stat = "count",
+           fill = "#7CB637",
+           width = 0.5) +
+  ggtitle("Presumably color diagnostic") +
+  facet_wrap(vars(question), scale="free") +
+  theme(plot.title = element_text(size=40)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# no CD, color
+df_nocd_coloronly = df_plot %>% 
+  filter(!cd) %>% 
+  filter(color_mention)
+
+ggplot(df_nocd_coloronly, aes(x=feature_utt)) +
+  geom_bar(stat="count",
+           fill = "#E6AB02",
+           width = 0.5) +
+  ggtitle("Presumably non color diagnostic") +
+  facet_wrap(vars(question), scale="free") +
+  theme(plot.title = element_text(size=40)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+## Find typos
+
+```{r find typos, message=FALSE, include=FALSE}
+
+freq_feature_list = df_plot %>% 
+  filter(!color_mention) %>% 
+  arrange(feature_utt) %>% 
+  group_by(feature_utt) %>% 
+  summarize(n=n()) %>% 
+  filter(n>=2) 
+
+# did I miss any color utterances?
+freq_feature_list$feature_utt
+
+# CD, no color
+df_cd_nocol_infreq = df_plot %>% 
+  filter(cd) %>% 
+  filter(!color_mention & !(feature_utt %in% freq_feature_list$feature_utt))
+
+table(arrange(df_cd_nocol_infreq,feature_utt)$feature_utt)
+
+# ggplot(df_cd_nocol_infreq, aes(x=feature_utt)) +
+#   geom_bar(stat="count") +
+#   facet_wrap(vars(question), scale="free") +
+#   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# no CD, no color
+df_nocd_nocol_infreq = df_plot %>% 
+  filter(!cd) %>% 
+  filter(!color_mention & !(feature_utt %in% freq_feature_list$feature_utt))
+
+table(arrange(df_nocd_nocol_infreq,feature_utt)$feature_utt)
+
+# ggplot(df_nocd_nocol_infreq, aes(x=feature_utt)) +
+#   geom_bar(stat="count") +
+#   facet_wrap(vars(question), scale="free") +
+#   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+
+
 
 
 
