@@ -39,11 +39,14 @@ df_clean = df_import %>%
   group_by(anon_worker_id) %>% 
   mutate(pass_controls = ifelse(sum(correct_controls)<2,F,T)) %>% 
   filter(pass_controls) %>% 
+  # exclude participants who rated more than 8 as "object unknown"
+  # excludes 2 workers
+  filter(!sum(obj_unknown)>8) %>% 
   ungroup()
 
 # number of participants before exclusion (40)
 length(unique(df_import$anon_worker_id))
-# number of participants after exclusion (40)
+# number of participants after exclusion (38)
 length(unique(df_clean$anon_worker_id))
 
 
@@ -130,14 +133,15 @@ plot_grid(p_age,p_gen,p_edu,p_lang,p_enj,p_time,p_HitCorrect, labels = "AUTO", n
 
 ## Objects which were rated unknown
 
-```{r obj_unknown, echo=FALSE}
+```{r obj_unknown, echo=FALSE, fig.height=3, fig.width=4.5}
 ggplot(df[df$obj_unknown==TRUE,],aes(x=question)) +
   geom_bar(width = 0.5,
            fill = "orange") +
-  theme(axis.text.x = element_text(angle=45,hjust=1))
+  theme(axis.text.x = element_text(angle=45,hjust=1)) +
+  xlab("object") +
+  ylab("clicked object unknown\n(total number)")
 ```
 
-## Plot proportion of color mention for first feature
 
 ```{r df color features, include=FALSE}
 
@@ -197,6 +201,9 @@ df_plot = df_cat %>%
 
 ```
 
+## Plot proportion of color mention (only cd)
+
+#### Only first feature
 
 ```{r plot first feature cdonly, echo=FALSE, fig.height=6, fig.width=8}
 df_plot_f1 = df_plot %>% 
@@ -205,6 +212,30 @@ df_plot_f1 = df_plot %>%
   filter(feature_pos=="feature1")
 
 ggplot(df_plot_f1[df_plot_f1$cd==T,],aes(x=reorder(reorder(question,color_mention),cd), y=color_mention, fill=cd)) +
+  facet_wrap(vars(color), scale="free_x") +
+  stat_summary(fun.y = "mean",
+               geom = "bar") +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey") +
+  geom_hline(yintercept = 0.5,
+             linetype = "dashed",
+             color = "grey") +
+  theme(legend.position="none") +
+  theme(axis.text.x = element_text(angle = 30, hjust=1)) +
+  scale_fill_manual(values=c("#7CB637")) +
+  xlab("objects facetted by intended typical color") +
+  ylab("proportion of color mention in first feature")
+```
+
+#### All features
+
+```{r plot all features cdonly, echo=FALSE, fig.height=6, fig.width=8}
+df_plot_allf = df_plot %>% 
+  mutate_at(vars(color_mention),funs(as.integer(.)))
+  # filter(feature_pos=="feature1")
+
+ggplot(df_plot_allf[df_plot_allf$cd==T,],aes(x=reorder(reorder(question,color_mention),cd), y=color_mention, fill=cd)) +
   facet_wrap(vars(color), scale="free") +
   stat_summary(fun.y = "mean",
                geom = "bar") +
@@ -216,8 +247,14 @@ ggplot(df_plot_f1[df_plot_f1$cd==T,],aes(x=reorder(reorder(question,color_mentio
              color = "grey") +
   theme(legend.position="none") +
   theme(axis.text.x = element_text(angle = 30, hjust=1)) +
-  scale_fill_manual(values=c("#E6AB02", "#7CB637"))
+  scale_fill_manual(values=c("#7CB637")) +
+  xlab("objects facetted by intended typical color") +
+  ylab("proportion of color mention across features")
 ```
+
+## Plot proportion of color mention (cd & non cd)
+
+#### Only first feature
 
 ```{r plot first feature all, echo=FALSE, fig.height=7, fig.width=12}
 
@@ -232,45 +269,72 @@ ggplot(df_plot_f1,aes(x=reorder(reorder(question,color_mention),cd), y=color_men
              color = "grey") +
   theme(axis.text.x = element_text(angle = 30, hjust=1)) +
   theme(legend.position="top") +
-  scale_fill_manual(values=c("#E6AB02", "#7CB637"))
+  scale_fill_manual(values=c("#E6AB02", "#7CB637")) +
+  xlab("objects") +
+  ylab("proportion of color mention in first feature")
 ```
 
+#### All features
 
-```{r plot all features, echo=FALSE}
-# df_plot_f2 = df_plot %>%
-#   # select(feature_pos,color_mention,cd) %>% 
-#   group_by(question,anon_worker_id) %>% 
-#   mutate(i = row_number()) %>% 
-#   ungroup() %>% 
-#   spread(feature_pos,color_mention) %>% 
-#   mutate(color_score = feature1*10 + feature2*5 + feature3*1)
-  # gather(feature_pos,color_mention,feature1,feature2,feature3) %>%
-  # mutate_at(vars(color_mention),funs(as.integer(.)))
-#   
-# 
-# ggplot(df_plot_f2[df_plot_f2$cd==T,],aes(x=reorder(question,cd), y=color_score, fill=cd)) +
-#   facet_wrap(vars(color), scale="free") +
-#   stat_summary(fun.y = "mean",
-#                geom = "bar") +
-#   stat_summary(fun.data = "mean_cl_boot",
-#                geom = "linerange",
-#                color = "darkgrey") +
-#   theme(axis.text.x = element_text(angle = 30, hjust=1)) +
-#   scale_fill_manual(values=c("#E6AB02", "#7CB637"))
-# 
-# ggplot(df_plot_f2,aes(x=reorder(question,cd), y=color_score, fill=cd)) +
-#   stat_summary(fun.y = "mean",
-#                geom = "bar") +
-#   stat_summary(fun.data = "mean_cl_boot",
-#                geom = "linerange",
-#                color = "darkgrey") +
-#   theme(axis.text.x = element_text(angle = 30, hjust=1)) +
-#   scale_fill_manual(values=c("#E6AB02", "#7CB637"))
+```{r plot all features all, echo=FALSE, fig.height=7, fig.width=12}
+
+ggplot(df_plot_allf,aes(x=reorder(reorder(question,color_mention),cd), y=color_mention, fill=cd)) +
+  stat_summary(fun.y = "mean",
+               geom = "bar") +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey") +
+  geom_hline(yintercept = 0.5,
+             linetype = "dashed",
+             color = "grey") +
+  theme(axis.text.x = element_text(angle = 30, hjust=1)) +
+  theme(legend.position="top") +
+  scale_fill_manual(values=c("#E6AB02", "#7CB637")) +
+  xlab("objects") +
+  ylab("proportion of color mention in all features")
 ```
 
 ## Color utterances for each item (split by cd and non-cd)
 
-```{r cd, echo=FALSE, fig.height=10, fig.width=10}
+#### Only first feature
+
+```{r first feature colors, echo=FALSE, fig.height=10, fig.width=10}
+# CD, color
+df_cd_coloronly = df_plot_f1 %>% 
+  filter(cd) %>% 
+  filter(as.logical(color_mention))
+
+ggplot(df_cd_coloronly, aes(x=feature_utt)) +
+  geom_bar(stat = "count",
+           fill = "#7CB637",
+           width = 0.5) +
+  ggtitle("Presumably color diagnostic") +
+  facet_wrap(vars(question), scale="free_x") +
+  theme(plot.title = element_text(size=15)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  xlab("colors mentioned in first feature for each object") +
+  ylab("total number of color being mentioned in first feature")
+
+# no CD, color
+df_nocd_coloronly = df_plot_f1 %>% 
+  filter(!cd) %>% 
+  filter(as.logical(color_mention))
+
+ggplot(df_nocd_coloronly, aes(x=feature_utt)) +
+  geom_bar(stat="count",
+           fill = "#E6AB02",
+           width = 0.5) +
+  ggtitle("Presumably non color diagnostic") +
+  facet_wrap(vars(question), scale="free_x") +
+  theme(plot.title = element_text(size=15)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  xlab("colors mentioned in first feature for each object") +
+  ylab("total number of color being mentioned in first feature")
+```
+
+#### All features
+
+```{r all features colors, echo=FALSE, fig.height=10, fig.width=10}
 # CD, color
 df_cd_coloronly = df_plot %>% 
   filter(cd) %>% 
@@ -282,8 +346,10 @@ ggplot(df_cd_coloronly, aes(x=feature_utt)) +
            width = 0.5) +
   ggtitle("Presumably color diagnostic") +
   facet_wrap(vars(question), scale="free") +
-  theme(plot.title = element_text(size=40)) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(plot.title = element_text(size=15)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  xlab("colors mentioned in all features for each object") +
+  ylab("total number of color being mentioned in all features")
 
 # no CD, color
 df_nocd_coloronly = df_plot %>% 
@@ -296,8 +362,10 @@ ggplot(df_nocd_coloronly, aes(x=feature_utt)) +
            width = 0.5) +
   ggtitle("Presumably non color diagnostic") +
   facet_wrap(vars(question), scale="free") +
-  theme(plot.title = element_text(size=40)) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(plot.title = element_text(size=15)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  xlab("colors mentioned in first feature for each object") +
+  ylab("total number of color being mentioned in first feature")
 ```
 
 
@@ -339,6 +407,10 @@ table(arrange(df_nocd_nocol_infreq,feature_utt)$feature_utt)
 #   facet_wrap(vars(question), scale="free") +
 #   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+
+
+
+
 
 
 
