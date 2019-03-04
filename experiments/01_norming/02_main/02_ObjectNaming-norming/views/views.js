@@ -179,7 +179,7 @@ var main = {
         // record trial starting time
         var startingTime = Date.now();
     },
-    trials: 2
+    trials: 49
 };
 
 var postTest = {
