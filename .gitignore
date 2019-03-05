@@ -24,7 +24,7 @@
 *dump.rdb
 *.gv
 *raw_confidential*
-*raw*
+*raw/*
 *submiterator*
 *data
 *object_stroop_corpus/
