@@ -17,7 +17,7 @@ var botcaptcha = {
                 name: this.name,
                 title: this.title,
                 text: story,
-                question: "Who does " + speaker + " talk to?",
+                question: "Who is " + speaker + " talking to?",
                 button: this.buttonText
             })
         );
@@ -95,6 +95,15 @@ var intro = {
             })
         );
 
+        // function preloadImage(urls){
+        //     for (url_pos in urls){
+        //         (new Image()).src = urls[url_pos];
+        //     };
+        //     console.log("pictures are loaded");
+        // }
+
+        // preloadImage(["images/black_feather.png", "images/blue_sponge.png", "images/green_billiardball.png", "images/green_broccoli.png", "images/green_cactus.png", "images/green_lettuce_iceberg.png", "images/green_lettuce.png", "images/green_pickle.png", "images/green_scissors.png", "images/green_toothbrush.png", "images/green_zucchini.png", "images/light_chair.png", "images/orange_balloon.png", "images/orange_basketball.png", "images/orange_butterfly.png", "images/orange_carrot.png", "images/orange_cup.png", "images/orange_pumpkin.png", "images/orange_tack.png", "images/orange_trafficcone.png", "images/pink_cottoncandy.png", "images/pink_flamingo.png", "images/pink_pig.png", "images/pink_piggybank.png", "images/red_bellpepper.png", "images/red_book.png", "images/red_candle.png", "images/red_fireextinguisher.png", "images/red_flower.png", "images/red_lobster.png", "images/red_rock.png", "images/red_soap.png", "images/red_sportscar.png", "images/red_strawberry.png", "images/red_table.png", "images/red_tomato.png", "images/white_egg.png", "images/white_snowman.png", "images/white_swan.png", "images/white_toiletpaper.png", "images/whitebrown_horse.png", "images/yellow_banana.png", "images/yellow_bicycle.png", "images/yellow_corn.png", "images/yellow_house.png", "images/yellow_jacket.png", "images/yellow_lamp.png", "images/yellow_rubberduck.png", "images/yellow_taxi.png"]);
+
         var prolificId = $("#prolific-id");
         var IDform = $("#prolific-id-form");
         var next = $("#next");
@@ -155,6 +164,8 @@ var main = {
         $('#refexp-response').keypress(function(event) {
             if (event.keyCode == 13) {
                 event.preventDefault();
+                // simulate button click to proceed
+                $("#next").click();
             }
         });
 
