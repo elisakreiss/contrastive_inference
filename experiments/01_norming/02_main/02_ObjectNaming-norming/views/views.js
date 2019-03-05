@@ -76,7 +76,7 @@ var intro = {
     title: "ALPS lab Stanford",
     // introduction text
     text:
-        "Thank you for participating in our study. In this study, 49 objects will be shown to you and you will be asked to refer to them. It will take approximately <strong>7</strong> minutes.<br>Please only participate once in this series of HITs.",
+        "Thank you for participating in our study. In this study, 50 objects will be shown to you and you will be asked to refer to them. It will take approximately <strong>7</strong> minutes.<br>Please only participate once in this series of HITs.",
     legal_info:
         "<strong>LEGAL INFORMATION</strong>:<br><br>We invite you to participate in a research study on language production and comprehension.<br>Your experimenter will ask you to do a linguistic task such as reading sentences or words, naming pictures or describing scenes, making up sentences of your own, or participating in a simple language game.<br><br>You will be paid for your participation at the posted rate.<br><br>There are no risks or benefits of any kind involved in this study.<br><br>If you have read this form and have decided to participate in this experiment, please understand your participation is voluntary and you have the right to withdraw your consent or discontinue participation at any time without penalty or loss of benefits to which you are otherwise entitled. You have the right to refuse to do particular tasks. Your individual privacy will be maintained in all published and written data resulting from the study.<br>You may print this form for your records.<br><br>CONTACT INFORMATION:<br>If you have any questions, concerns or complaints about this research study, its procedures, risks and benefits, you should contact the Protocol Director Meghan Sumner at <br>(650)-725-9336<br><br>If you are not satisfied with how this study is being conducted, or if you have any concerns, complaints, or general questions about the research or your rights as a participant, please contact the Stanford Institutional Review Board (IRB) to speak to someone independent of the research team at (650)-723-2480 or toll free at 1-866-680-2906. You can also write to the Stanford IRB, Stanford University, 3000 El Camino Real, Five Palo Alto Square, 4th Floor, Palo Alto, CA 94306 USA.<br><br>If you agree to participate, please proceed to the study tasks.",
     // introduction's slide proceeding button text
@@ -94,15 +94,6 @@ var intro = {
                 button: this.buttonText
             })
         );
-
-        // function preloadImage(urls){
-        //     for (url_pos in urls){
-        //         (new Image()).src = urls[url_pos];
-        //     };
-        //     console.log("pictures are loaded");
-        // }
-
-        // preloadImage(["images/black_feather.png", "images/blue_sponge.png", "images/green_billiardball.png", "images/green_broccoli.png", "images/green_cactus.png", "images/green_lettuce_iceberg.png", "images/green_lettuce.png", "images/green_pickle.png", "images/green_scissors.png", "images/green_toothbrush.png", "images/green_zucchini.png", "images/light_chair.png", "images/orange_balloon.png", "images/orange_basketball.png", "images/orange_butterfly.png", "images/orange_carrot.png", "images/orange_cup.png", "images/orange_pumpkin.png", "images/orange_tack.png", "images/orange_trafficcone.png", "images/pink_cottoncandy.png", "images/pink_flamingo.png", "images/pink_pig.png", "images/pink_piggybank.png", "images/red_bellpepper.png", "images/red_book.png", "images/red_candle.png", "images/red_fireextinguisher.png", "images/red_flower.png", "images/red_lobster.png", "images/red_rock.png", "images/red_soap.png", "images/red_sportscar.png", "images/red_strawberry.png", "images/red_table.png", "images/red_tomato.png", "images/white_egg.png", "images/white_snowman.png", "images/white_swan.png", "images/white_toiletpaper.png", "images/whitebrown_horse.png", "images/yellow_banana.png", "images/yellow_bicycle.png", "images/yellow_corn.png", "images/yellow_house.png", "images/yellow_jacket.png", "images/yellow_lamp.png", "images/yellow_rubberduck.png", "images/yellow_taxi.png"]);
 
         var prolificId = $("#prolific-id");
         var IDform = $("#prolific-id-form");
@@ -190,7 +181,7 @@ var main = {
         // record trial starting time
         var startingTime = Date.now();
     },
-    trials: 49
+    trials: 50
 };
 
 var postTest = {

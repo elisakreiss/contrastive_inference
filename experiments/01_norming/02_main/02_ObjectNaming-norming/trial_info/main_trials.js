@@ -40,6 +40,7 @@ var main_trials = [
 	"red_bellpepper",
 	"red_book",
 	"red_candle",
+	"red_car",
 	"red_flower",
 	"red_soap",
 	"red_sportscar",
