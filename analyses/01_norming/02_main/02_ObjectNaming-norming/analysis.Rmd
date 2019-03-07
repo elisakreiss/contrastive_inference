@@ -1,0 +1,275 @@
+---
+title: "CI: object naming analysis"
+# output: html_document
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r data import, include=FALSE}
+library(cowplot)
+library(plyr)
+library(tidyverse)
+library(here)
+
+df_import = read_csv(here("data","01_norming","02_main","02_ObjectNaming-norming","data.csv")) %>% 
+  # exclude test
+  # weird filter property that it will exclude NAs
+  filter(is.na(comments) | comments != "TEST")
+```
+
+```{r HitCorrect check, eval=FALSE, fig.height=1.5, fig.width=4, include=FALSE}
+# check responses to post questionnaire, which participants I need to exclude (e.g., HitCorrect and NativeLanguage)
+df_hitcorrect = df_import %>% 
+  mutate_at(vars(HitCorrect),
+            funs(ifelse(HitCorrect==0,"no",
+                        ifelse(HitCorrect==404,"confused","yes"))))
+
+ggplot(df_hitcorrect,aes(x=HitCorrect)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  xlab("did you do the hit correctly")
+```
+
+
+```{r create main data frame, message=FALSE, include=FALSE}
+
+df_clean = df_import %>% 
+  # exclude multiple submissions
+  arrange(startTime) %>% 
+  distinct(anon_worker_id,trial_number, .keep_all = TRUE) %>% 
+  # exclude participants who didn't do the hit correctly or were confused (self reportedly)
+  filter(HitCorrect==1)
+
+# number of participants before exclusion (20)
+length(unique(df_import$anon_worker_id))
+# number of participants after exclusion (18)
+length(unique(df_clean$anon_worker_id))
+
+
+df = df_clean %>%
+  select(item,refexp,trial_number,anon_worker_id) %>% 
+  mutate_at(vars(refexp),funs(str_to_lower(.)))
+```
+
+
+### About the participants (after exclusion)
+
+```{r subj, echo=FALSE, fig.height=6, fig.width=8, message=FALSE, warning=FALSE}
+# other info
+engl_spellings = c("english", "englis", "eng")
+
+df_subj = df_clean %>% 
+  select(age,gender,education,languages,enjoyment,timeSpent,HitCorrect,comments,anon_worker_id) %>% 
+  distinct() %>% 
+  mutate_at(vars(languages), funs(str_to_lower(.))) %>% 
+  mutate_at(vars(languages), funs(ifelse(. %in% engl_spellings, "english", .))) %>% 
+  mutate(lang=ifelse(languages == "english","english","other")) %>% 
+  mutate_at(vars(age), funs(as.integer(.))) %>% 
+  mutate_at(vars(enjoyment), 
+            funs(ifelse(.==1,"average",
+                        ifelse(.==2,"awesome","other")))) %>% 
+  mutate(edu = ifelse(str_detect(education,"high_school"),"High School",
+                      ifelse(str_detect(education,"college"),"College","Higher"))) %>% 
+  mutate_at(vars(edu), funs(fct_relevel(.,"High School", "College", "Higher")))
+
+
+mean_age = round(mean(df_subj$age),digits = 1)
+p_age = ggplot(df_subj,aes(x=age)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  geom_vline(xintercept= mean_age) +
+  scale_x_continuous(breaks=c(25,50,75,mean_age))
+
+p_gen = ggplot(df_subj,aes(x=gender)) +
+  geom_bar(width = .5,
+           fill = "orange")
+
+p_edu = ggplot(df_subj,aes(x=edu)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  xlab("education")
+  # theme(axis.text.x = element_text(angle = 25, hjust = 1))
+
+p_lang = ggplot(df_subj,aes(x=lang)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  xlab("language")
+  # theme(axis.text.x = element_text(angle=45,hjust=1))
+
+p_enj = ggplot(df_subj,aes(x=enjoyment)) +
+  geom_bar(width = .5,
+           fill = "orange")
+
+mean_time = round(mean(df_subj$timeSpent), digits = 1)
+mean_time_nooutliers = round(
+  mean(
+    df_subj[df_subj$timeSpent <= (mean_time + sd(df_subj$timeSpent)),]$timeSpent
+  ), digits = 1)
+p_time = ggplot(df_subj,aes(x=timeSpent)) +
+  geom_histogram(fill = "orange") +
+  geom_vline(xintercept=mean_time_nooutliers) +
+  geom_vline(xintercept=mean_time,linetype="dashed") +
+  scale_x_continuous(breaks=c(mean_time_nooutliers,mean_time,floor(0),floor(10),floor(25),floor(20))) +
+  xlab("time spent")
+
+plot_grid(p_age,p_gen,p_edu,p_lang,p_enj,p_time, labels = "AUTO", ncol = 2, align = 'v')
+
+# unique(df_subj$comments)
+
+```
+
+## Object descriptions
+
+```{r by item, include=FALSE}
+
+cd_list = c("green_broccoli",
+	"green_cactus",
+	"green_lettuce_iceberg",
+	"green_lettuce",
+	"green_pickle",
+	"green_zucchini",
+	"orange_basketball",
+	"orange_carrot",
+	"orange_pumpkin",
+	"orange_trafficcone",
+	"pink_cottoncandy",
+	"pink_flamingo",
+	"pink_pig",
+	"pink_piggybank",
+	"red_fireextinguisher",
+	"red_lobster",
+	"red_strawberry",
+	"red_tomato",
+	"white_egg",
+	"white_snowman",
+	"white_swan",
+	"white_toiletpaper",
+	"yellow_banana",
+	"yellow_corn",
+	"yellow_rubberduck",
+	"yellow_taxi")
+
+df_levels = df %>% 
+  # spaces aren't really relevant for us, so get rid of them
+  mutate_at(vars(refexp),funs(str_replace_all(.," ",""))) %>% 
+  # identify presumably color diagnostic object
+  mutate(cd = ifelse(item %in% cd_list, T, F)) %>% 
+  # correct misspellings
+  mutate(refexp_corrected = case_when(
+    refexp == "carott"  ~ "carrot",
+    refexp == "butterly" ~ "butterfly",
+    (refexp == "ballon" | refexp == "baloon") ~ "balloon",
+    refexp == "bikr" ~ "bike",
+    refexp == "houes" ~ "house",
+    (refexp == "brocoli" | refexp == "brocolli") ~ "broccoli",
+    (refexp == "cukecumber" | refexp == "cucuumber") ~ "cucumber",
+    (refexp == "zuccini" | refexp == "zuchinni") ~ "zucchini",
+    (refexp == "fireextenishier" | refexp == "fireextigusher") ~ "fireextinguisher",
+    refexp == "tax" ~ "taxi",
+    refexp == "billardball" ~ "billiardball",
+    TRUE ~ refexp
+  )) %>% 
+  group_by(item) %>% 
+  # compute number of different labels used per item
+  mutate(levels = sum(length(unique(refexp_corrected)))) %>% 
+  ungroup() %>% 
+  group_by(item,refexp_corrected) %>% 
+  # determine how often one specific label was used
+  mutate(max = n()) %>% 
+  ungroup()
+
+df_level1 = df_levels %>% 
+  filter(levels==1)
+
+df_level2 = df_levels %>% 
+  filter(levels==2)
+
+df_level3 = df_levels %>% 
+  filter(levels==3)
+
+df_levelgreater3 = df_levels %>% 
+  filter(levels>3)
+
+plot_dfsubset = function(df_subset, label_angle, label_hjust){
+  ggplot(df_subset, aes(x=reorder(refexp_corrected,-max), fill=cd)) +
+    facet_wrap(vars(reorder(item,-cd)), 
+               scale="free_x") +
+    geom_bar(stat = "count",
+             width = .5) +
+    theme(axis.text.x = element_text(angle = label_angle, hjust = label_hjust)) +
+    scale_fill_manual(values=c("#E6AB02", "#7CB637")) +
+    theme(legend.position = "top") +
+    xlab("Empirical labels") +
+    ylab("Number of uses")
+}
+```
+
+#### 1 label
+Participants uniformly used the same label for these items. They used the label that we expected.
+
+```{r plot level 1, echo=FALSE, fig.height=6, fig.width=8}
+plot_dfsubset(df_level1,0,0.5)
+```
+
+#### 2 labels
+All of them look still good. There are some troubles with swan (vs. goose) and bicycle (vs. bike). But at least the bicycle case should not have a strong effect.
+
+```{r plot level 2, echo=FALSE, fig.height=8, fig.width=8}
+plot_dfsubset(df_level2,30,1)
+```
+
+#### 3 labels
+Problematic: zucchini, sportscar (most frequent label: car)<br>
+Okay: pig, taxi, pickle?, jacket?<br>
+Taxi is probably fine because "taxi" and "taxicab" still start the same way.
+Sportscar and jacket?
+```{r plot level 3, echo=FALSE, fig.height=5.5, fig.width=8}
+plot_dfsubset(df_level3,30,1)
+```
+
+#### More than 3 labels
+Lettuce analysis see below.<br>
+Problematic: traffic cone, billiard ball (note that "poolball" is far more frequent), tack, bell pepper <br>
+Okay: cup (but the label is "mug")
+
+```{r plot level greater3, echo=FALSE, fig.height=7, fig.width=8}
+plot_dfsubset(df_levelgreater3,30,1)
+```
+
+#### Lettuce item
+Proportion of cases where the label was not simply "lettuce", split by whether it came before the second lettuce or after. For both lettuces, the proportion of modification increases when participants see it after they saw the other one. The first lettuce occurrence is more relevant. Here, iceberg was always referred to as "lettuce", but romaine sometimes wasn't. The iceberg lettuce seems to be a clearer prototypical item. 
+
+```{r lettuce plot, echo=FALSE, fig.height=3, fig.width=5}
+df_lettuce = df %>% 
+  filter(str_detect(item, "lettuce")) %>% 
+  mutate(modified = ifelse(refexp == "lettuce", F, T)) %>% 
+  group_by(anon_worker_id) %>% 
+  mutate(trial = ifelse(trial_number == min(trial_number), 1, 2)) %>% 
+  ungroup() %>% 
+  group_by(trial,item) %>% 
+  summarize(modProp = sum(modified)/n()) %>% 
+  ungroup() %>% 
+  mutate(item = mapvalues(item, from=c("green_lettuce","green_lettuce_iceberg"), to=c("romaine","iceberg")))
+
+ggplot(df_lettuce, aes(x=item,y=modProp)) +
+  geom_bar(stat = "identity",
+           width = .5,
+           fill = "orange",
+           position = "dodge") +
+  facet_wrap(vars(trial))
+
+df[df$item=="green_lettuce_iceberg" & df$refexp != "lettuce", c("refexp","trial_number","item","anon_worker_id")]
+df[df$item=="green_lettuce" & df$refexp != "lettuce", c("refexp","trial_number","item","anon_worker_id")]
+```
+
+
+
+
+
+
+
+
+
