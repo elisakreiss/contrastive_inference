@@ -1,13 +1,51 @@
 var main_trials = [
-	// "dime"
+	//
 	// color diagnostic 
-	"flamingo",
-	"banana",
-	"garlic",
-	"lobster",
+	// typical
+	"green_broccoli",
+	"green_lettuce",
+	"orange_carrot",
+	"orange_pumpkin",
+	"red_strawberry",
+	"red_tomato",
+	"white_egg",
+	"white_snowman",
+	"white_swan",
+	"yellow_banana",
+	"yellow_corn",
+	// atypical
+	"green_carrot",
+	"green_corn",
+	"green_swan",
+	"orange_banana",
+	"orange_lettuce",
+	"red_broccoli",
+	"red_pumpkin",
+	"white_carrot",
+	"white_pumpkin",
+	"white_tomato",
+	"yellow_egg",
+	"yellow_snowman",
+	"yellow_strawberry",
+	//
 	// non-color diagnostic
-	"sports car",
-	"towel",
-	"cup",
-	"bell pepper"
+	"black_feather",
+	"blue_sponge",
+	"green_scissors",
+	"green_toothbrush",
+	"light_chair",
+	"orange_balloon",
+	"orange_butterfly",
+	"orange_mug",
+	"red_book",
+	"red_candle",
+	"red_car",
+	"red_flower",
+	"red_soap",
+	"red_rock",
+	"red_table",
+	"whitebrown_horse",
+	"yellow_bicycle",
+	"yellow_jacket",
+	"yellow_lamp"
 ];

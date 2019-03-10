@@ -17,7 +17,7 @@ var botcaptcha = {
                 name: this.name,
                 title: this.title,
                 text: story,
-                question: "Who does " + speaker + " talk to?",
+                question: "Who is " + speaker + " talking to?",
                 button: this.buttonText
             })
         );
@@ -43,6 +43,7 @@ var botcaptcha = {
 
             // response correct
             if (listener.toLowerCase() == response.toLowerCase()) {
+                exp.global_data.botresponse = $("#listener-response").val();
                 exp.findNextView();
 
             // response false
@@ -139,20 +140,28 @@ var main = {
         // fill variables in view-template
         var viewTemplate = $("#main-view").html();
 
+        // stim name format adj_noun becomes ["adj", "noun"]
+        var split_stim = exp.trial_info.main_trials[CT].split("_");
+        var noun = split_stim[1];
+
+        // define article
+        var mass_nouns = ["broccoli","corn","lettuce","scissors","soap"];
+        var vowels = ["a","e","i","o","u"];
         var article;
-        if (exp.trial_info.main_trials[CT][0] == ("a"||"e"||"i"||"o"||"u")){
-            article = " an";
-        } else if (exp.trial_info.main_trials[CT] == "garlic") {
+        // none for mass nouns
+        if (mass_nouns.includes(noun)){
             article = "";
+        } else if (vowels.includes(noun[0])) {
+            article = " an";
         }
         else {
             article = " a";
-        }
+        };
 
         $("#main").html(
             Mustache.render(viewTemplate, {
-                question: "How typical is this object for" + article + " <strong>" + exp.trial_info.main_trials[CT] + "</strong>!",
-                picture: "images/yellow_banana.png",
+                question: "How typical is this object for" + article + " <strong>" + noun + "</strong>!",
+                picture: "images/" + exp.trial_info.main_trials[CT] + ".png",
                 slider_left: "very atypical",
                 slider_right: "very typical"
             })
@@ -187,7 +196,7 @@ var main = {
         // record trial starting time
         var startingTime = Date.now();
     },
-    trials: 8
+    trials: 43
 };
 
 var postTest = {

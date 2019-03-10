@@ -7,11 +7,7 @@ exp.customize = function() {
     this.views_seq = [
         botcaptcha,
         intro,
-        // example,
         main,
-        /*loop([practice,
-        beginMainExp,
-        main], 2),*/
         postTest,
         thanks
     ];
@@ -19,7 +15,8 @@ exp.customize = function() {
     // prepare information about trials (procedure)
     // randomize main trial order, but keep practice trial order fixed
     this.trial_info.main_trials = _.shuffle(main_trials);
-    // this.trial_info.practice_trials = practice_trials;
+    console.log("Number of stimuli");
+    console.log(main_trials.length);
 
     // adds progress bars to the views listed
     // view's name is the same as object's name

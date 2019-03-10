@@ -109,7 +109,12 @@
                     <p class="text">{{{ text }}}</p>
                 </section>
                 {{/ text }}
-                <br>
+                {{# button }}
+                <button id="next" class="nodisplay">{{ button }}</button>
+                {{/ button }}
+                {{^ button }}
+                <button id="next">Next</button>
+                {{/ button }}
                 <br>
                 {{# legal_info }}
                 <section class="text-container">
@@ -122,12 +127,6 @@
                     <label for="prolific-id">Please, enter your Prolific ID</label>
                     <input type="text" id="prolific-id" />
                 </p>
-                {{# button }}
-                <button id="next" class="nodisplay">{{ button }}</button>
-                {{/ button }}
-                {{^ button }}
-                <button id="next">Next</button>
-                {{/ button }}
             </div>
         </script>
 
@@ -144,8 +143,8 @@
             </div>
             <br>
             <p class="answer-container">
-                It's a/an  
-                <textarea rows="1" cols="40" id="refexp-response"></textarea>.
+                <!-- It's a/an   -->
+                <textarea rows="1" cols="40" id="refexp-response"></textarea>
             </p>
             <br>
 
@@ -155,6 +154,9 @@
             {{^ button }}
             <button id="next">Next</button>
             {{/ button }}
+            <section class="answer-container">
+                <p class="text" id="error" style="color: #7CB637">You haven't entered anything into the text field. Please write how you would call the object in the picture.</p>
+            </section>
         </div>
         </script>
 
