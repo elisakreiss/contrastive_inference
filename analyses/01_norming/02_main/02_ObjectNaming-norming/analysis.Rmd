@@ -104,15 +104,16 @@ p_enj = ggplot(df_subj,aes(x=enjoyment)) +
            fill = "orange")
 
 mean_time = round(mean(df_subj$timeSpent), digits = 1)
-mean_time_nooutliers = round(
-  mean(
-    df_subj[df_subj$timeSpent <= (mean_time + sd(df_subj$timeSpent)),]$timeSpent
-  ), digits = 1)
+# mean_time_nooutliers = round(
+#   mean(
+#     df_subj[df_subj$timeSpent <= (mean_time + sd(df_subj$timeSpent)),]$timeSpent
+#   ), digits = 1)
+median_time = round(median(df_subj$timeSpent), digits = 1)
 p_time = ggplot(df_subj,aes(x=timeSpent)) +
   geom_histogram(fill = "orange") +
-  geom_vline(xintercept=mean_time_nooutliers) +
-  geom_vline(xintercept=mean_time,linetype="dashed") +
-  scale_x_continuous(breaks=c(mean_time_nooutliers,mean_time,floor(0),floor(10),floor(25),floor(20))) +
+  geom_vline(xintercept=mean_time) +
+  geom_vline(xintercept=median_time,linetype="dashed") +
+  scale_x_continuous(breaks=c(median_time,mean_time,floor(0),floor(10),floor(25),floor(20))) +
   xlab("time spent")
 
 plot_grid(p_age,p_gen,p_edu,p_lang,p_enj,p_time, labels = "AUTO", ncol = 2, align = 'v')
