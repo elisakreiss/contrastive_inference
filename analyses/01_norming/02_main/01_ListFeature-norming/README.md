@@ -1,8 +1,7 @@
 CI: feature norming analysis
 ================
 
-About the participants
-----------------------
+### About the participants (after exclusion)
 
 ![](analysis_files/figure-markdown_github/subj-1.png)
 

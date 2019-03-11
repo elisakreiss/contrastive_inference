@@ -24,6 +24,24 @@ ggplot(df_import,aes(x=str_to_lower(botresponse))) +
   geom_histogram(stat="count")
 ```
 
+```{r responses to postquestionnaire, eval=FALSE, fig.height=1.5, fig.width=4, include=FALSE}
+# check responses to post questionnaire, which participants I need to exclude (e.g., HitCorrect and NativeLanguage)
+df_hitcorrect = df_import %>% 
+  mutate_at(vars(HitCorrect),
+            funs(ifelse(HitCorrect==0,"no",
+                        ifelse(HitCorrect==404,"confused","yes"))))
+
+ggplot(df_hitcorrect,aes(x=HitCorrect)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  xlab("did you do the hit correctly")
+
+# languages
+unique(df_import$languages)
+
+# comments
+unique(df_import$comments)
+```
 
 ```{r create main data frame, message=FALSE, include=FALSE}
 
@@ -57,11 +75,11 @@ df = df_clean %>%
 ```
 
 
-## About the participants
+### About the participants (after exclusion)
 
-```{r subj, echo=FALSE, fig.height=10, fig.width=7, message=FALSE, warning=FALSE}
+```{r subj, echo=FALSE, fig.height=6, fig.width=8, message=FALSE, warning=FALSE}
 # other info
-engl_spellings = c("english", "englis", "eng")
+engl_spellings = c("english", "englis", "eng", "engilsh")
 
 df_subj = df_clean %>% 
   select(age,gender,education,languages,enjoyment,timeSpent,HitCorrect,comments,anon_worker_id) %>% 
@@ -73,9 +91,6 @@ df_subj = df_clean %>%
   mutate_at(vars(enjoyment), 
             funs(ifelse(.==1,"average",
                         ifelse(.==2,"awesome","other")))) %>% 
-  mutate_at(vars(HitCorrect),
-            funs(ifelse(HitCorrect==0,"no",
-                        ifelse(HitCorrect==404,"confused","yes")))) %>% 
   mutate(edu = ifelse(str_detect(education,"high_school"),"High School",
                       ifelse(str_detect(education,"college"),"College","Higher"))) %>% 
   mutate_at(vars(edu), funs(fct_relevel(.,"High School", "College", "Higher")))
@@ -109,25 +124,15 @@ p_enj = ggplot(df_subj,aes(x=enjoyment)) +
            fill = "orange")
 
 mean_time = round(mean(df_subj$timeSpent), digits = 1)
-mean_time_nooutliers = round(
-  mean(
-    df_subj[df_subj$timeSpent <= (mean_time + sd(mean_time)),]$timeSpent
-  ), digits = 1)
+median_time = round(median(df_subj$timeSpent), digits = 1)
 p_time = ggplot(df_subj,aes(x=timeSpent)) +
   geom_histogram(fill = "orange") +
-  geom_vline(xintercept=mean_time_nooutliers) +
-  geom_vline(xintercept=mean_time,linetype="dashed") +
-  scale_x_continuous(breaks=c(mean_time_nooutliers,mean_time,floor(0),floor(5),floor(10))) +
+  geom_vline(xintercept=mean_time) +
+  geom_vline(xintercept=median_time,linetype="dashed") +
+  scale_x_continuous(breaks=c(median_time,mean_time,floor(0),floor(10),floor(25),floor(20))) +
   xlab("time spent")
 
-p_HitCorrect = ggplot(df_subj,aes(x=HitCorrect)) +
-  geom_bar(width = .5,
-           fill = "orange") +
-  xlab("did you do the hit correctly")
-
-plot_grid(p_age,p_gen,p_edu,p_lang,p_enj,p_time,p_HitCorrect, labels = "AUTO", ncol = 2, align = 'v')
-
-# unique(df_subj$comments)
+plot_grid(p_age,p_gen,p_edu,p_lang,p_enj,p_time, labels = "AUTO", ncol = 2, align = 'v')
 
 ```
 

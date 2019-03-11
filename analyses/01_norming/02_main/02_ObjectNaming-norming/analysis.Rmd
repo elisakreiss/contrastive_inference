@@ -20,7 +20,7 @@ df_import = read_csv(here("data","01_norming","02_main","02_ObjectNaming-norming
   filter(is.na(comments) | comments != "TEST")
 ```
 
-```{r HitCorrect check, eval=FALSE, fig.height=1.5, fig.width=4, include=FALSE}
+```{r responses to postquestionnaire, eval=FALSE, fig.height=1.5, fig.width=4, include=FALSE}
 # check responses to post questionnaire, which participants I need to exclude (e.g., HitCorrect and NativeLanguage)
 df_hitcorrect = df_import %>% 
   mutate_at(vars(HitCorrect),
@@ -31,6 +31,12 @@ ggplot(df_hitcorrect,aes(x=HitCorrect)) +
   geom_bar(width = .5,
            fill = "orange") +
   xlab("did you do the hit correctly")
+
+# languages
+unique(df_import$languages)
+
+# comments
+unique(df_import$comments)
 ```
 
 
@@ -59,7 +65,7 @@ df = df_clean %>%
 
 ```{r subj, echo=FALSE, fig.height=6, fig.width=8, message=FALSE, warning=FALSE}
 # other info
-engl_spellings = c("english", "englis", "eng")
+engl_spellings = c("english", "englis", "eng", "engilsh")
 
 df_subj = df_clean %>% 
   select(age,gender,education,languages,enjoyment,timeSpent,HitCorrect,comments,anon_worker_id) %>% 
@@ -104,10 +110,6 @@ p_enj = ggplot(df_subj,aes(x=enjoyment)) +
            fill = "orange")
 
 mean_time = round(mean(df_subj$timeSpent), digits = 1)
-# mean_time_nooutliers = round(
-#   mean(
-#     df_subj[df_subj$timeSpent <= (mean_time + sd(df_subj$timeSpent)),]$timeSpent
-#   ), digits = 1)
 median_time = round(median(df_subj$timeSpent), digits = 1)
 p_time = ggplot(df_subj,aes(x=timeSpent)) +
   geom_histogram(fill = "orange") +
@@ -117,8 +119,6 @@ p_time = ggplot(df_subj,aes(x=timeSpent)) +
   xlab("time spent")
 
 plot_grid(p_age,p_gen,p_edu,p_lang,p_enj,p_time, labels = "AUTO", ncol = 2, align = 'v')
-
-# unique(df_subj$comments)
 
 ```
 
