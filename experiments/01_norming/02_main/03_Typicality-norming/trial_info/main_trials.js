@@ -38,6 +38,7 @@ var main_trials = [
 	"orange_balloon",
 	"orange_butterfly",
 	"orange_mug",
+	"red_bellpepper",
 	"red_book",
 	"red_candle",
 	"red_car",
