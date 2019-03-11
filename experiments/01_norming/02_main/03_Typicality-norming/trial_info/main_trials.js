@@ -21,6 +21,7 @@ var main_trials = [
 	"orange_lettuce",
 	"red_broccoli",
 	"red_pumpkin",
+	"red_corn",
 	"white_carrot",
 	"white_pumpkin",
 	"white_tomato",
