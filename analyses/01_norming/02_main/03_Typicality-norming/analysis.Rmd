@@ -1,0 +1,205 @@
+---
+title: "CI: object naming analysis"
+# output: html_document
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r data import, include=FALSE}
+library(cowplot)
+# library(plyr)
+library(tidyverse)
+library(here)
+
+df_import = read_csv(here("data","01_norming","02_main","03_Typicality-norming","data.csv")) %>%
+  # exclude test
+  # weird filter property that it will exclude NAs
+  filter(is.na(comments) | comments != "TEST")
+```
+
+```{r botresponse, include=FALSE}
+ggplot(df_import,aes(x=str_to_lower(botresponse))) +
+  geom_histogram(stat="count")
+```
+
+```{r responses to postquestionnaire, eval=FALSE, fig.height=1.5, fig.width=4, include=FALSE}
+# check responses to post questionnaire, which participants I need to exclude (e.g., HitCorrect and NativeLanguage)
+df_hitcorrect = df_import %>% 
+  mutate_at(vars(HitCorrect),
+            funs(ifelse(HitCorrect==0,"no",
+                        ifelse(HitCorrect==404,"confused","yes"))))
+
+ggplot(df_hitcorrect,aes(x=HitCorrect)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  xlab("did you do the hit correctly")
+
+# languages
+unique(df_import$languages)
+
+# comments
+unique(df_import$comments)
+```
+
+
+```{r create main data frame, message=FALSE, include=FALSE}
+
+df_clean = df_import %>% 
+  # exclude multiple submissions
+  arrange(startTime) %>% 
+  distinct(anon_worker_id,trial_number, .keep_all = TRUE) %>% 
+  # exclude participants who didn't do the hit correctly or were confused (self reportedly)
+  filter(HitCorrect==1)
+  # exclude participants who are more than 2 std away from median responses
+  # group_by(anon_worker_id) %>%
+  # filter()
+
+# number of participants before exclusion (20)
+length(unique(df_import$anon_worker_id))
+# number of participants after exclusion (18)
+length(unique(df_clean$anon_worker_id))
+
+
+df = df_clean %>%
+  select(question,slider_val,trial_number,anon_worker_id)
+```
+
+
+### About the participants (after exclusion)
+
+```{r subj, echo=FALSE, fig.height=6, fig.width=8, message=FALSE, warning=FALSE}
+# other info
+engl_spellings = c("english", "englis", "eng", "engilsh")
+
+df_subj = df_clean %>% 
+  select(age,gender,education,languages,enjoyment,timeSpent,HitCorrect,comments,anon_worker_id) %>% 
+  distinct() %>% 
+  mutate_at(vars(languages), funs(str_to_lower(.))) %>% 
+  mutate_at(vars(languages), funs(ifelse(. %in% engl_spellings, "english", .))) %>% 
+  mutate(lang=ifelse(languages == "english","english","other")) %>% 
+  mutate_at(vars(age), funs(as.integer(.))) %>% 
+  mutate_at(vars(enjoyment), 
+            funs(ifelse(.==1,"average",
+                        ifelse(.==2,"awesome","other")))) %>% 
+  mutate(edu = ifelse(str_detect(education,"high_school"),"High School",
+                      ifelse(str_detect(education,"college"),"College","Higher"))) %>% 
+  mutate_at(vars(edu), funs(fct_relevel(.,"High School", "College", "Higher")))
+
+
+mean_age = round(mean(df_subj$age),digits = 1)
+p_age = ggplot(df_subj,aes(x=age)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  geom_vline(xintercept= mean_age) +
+  scale_x_continuous(breaks=c(25,50,75,mean_age))
+
+p_gen = ggplot(df_subj,aes(x=gender)) +
+  geom_bar(width = .5,
+           fill = "orange")
+
+p_edu = ggplot(df_subj,aes(x=edu)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  xlab("education")
+  # theme(axis.text.x = element_text(angle = 25, hjust = 1))
+
+p_lang = ggplot(df_subj,aes(x=lang)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  xlab("language")
+  # theme(axis.text.x = element_text(angle=45,hjust=1))
+
+p_enj = ggplot(df_subj,aes(x=enjoyment)) +
+  geom_bar(width = .5,
+           fill = "orange")
+
+mean_time = round(mean(df_subj$timeSpent), digits = 1)
+median_time = round(median(df_subj$timeSpent), digits = 1)
+p_time = ggplot(df_subj,aes(x=timeSpent)) +
+  geom_histogram(fill = "orange") +
+  geom_vline(xintercept=mean_time) +
+  geom_vline(xintercept=median_time,linetype="dashed") +
+  scale_x_continuous(breaks=c(median_time,mean_time,floor(0),floor(10),floor(25),floor(20))) +
+  xlab("time spent")
+
+plot_grid(p_age,p_gen,p_edu,p_lang,p_enj,p_time, labels = "AUTO", ncol = 2, align = 'v')
+
+```
+
+## Object descriptions
+
+```{r by item, include=FALSE}
+
+cd_list = c("broccoli",
+	"lettuce",
+	"carrot",
+	"pumpkin",
+	"strawberry",
+	"tomato",
+	"egg",
+	"snowman",
+	"swan",
+	"banana",
+	"corn")
+
+df_plot = df %>% 
+  # separate color and type
+  separate(question, c("color", "item"), sep = "_", remove = FALSE) %>% 
+  # identify presumably color diagnostic object
+  mutate(cd = ifelse(item %in% cd_list, T, F))
+
+```
+
+```{r typicality ratings cd, echo=FALSE, fig.height=6, fig.width=8, message=FALSE, warning=FALSE}
+
+df_cd = df_plot %>% 
+  filter(cd == T) %>% 
+  group_by(item, color) %>% 
+  mutate(mean_y = mean(slider_val)) %>% 
+  ungroup()
+
+ggplot(df_cd, aes(x=reorder(question, -slider_val), y=slider_val)) +
+  facet_wrap(vars(item), scale = "free_x") +
+  geom_point(alpha = 0.2) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "black",
+               size = 1) + 
+  # means
+  stat_summary(fun.y = "mean",
+               geom = "point",
+               shape = 21,
+               fill = "#7CB637",
+               color = "black",
+               size = 4) +
+  xlab("Color") +
+  ylab("Typicality slider rating")
+```
+
+```{r typicality ratings noncd, echo=FALSE, fig.height=4, fig.width=6, message=FALSE, warning=FALSE}
+
+df_noncd = df_plot %>% 
+  filter(cd == F)
+
+ggplot(df_noncd, aes(x=reorder(item,slider_val), y=slider_val)) +
+  # facet_wrap(vars(item), scale = "free_x") +
+  geom_point(alpha = 0.2) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "black",
+               size = 1) + 
+  # means
+  stat_summary(fun.y = "mean",
+               geom = "point",
+               shape = 21,
+               fill = "#E6AB02",
+               color = "black",
+               size = 4) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
