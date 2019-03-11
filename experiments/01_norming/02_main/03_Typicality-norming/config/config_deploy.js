@@ -12,10 +12,10 @@ var config_deploy = {
     // set deployment method; use one of:
     //'debug', 'localServer', 'MTurk', 
     // 'MTurkSandbox', 'Prolific', 'directLink'
-    "deployMethod": "debug",
+    // "deployMethod": "debug",
     // "deployMethod": "directLink",
     // "deployMethod": "MTurk",
-    // "deployMethod": "MTurkSandbox",
+    "deployMethod": "MTurkSandbox",
 
     // who to contact in case of trouble
     "contact_email": "ekreiss@stanford.edu",
