@@ -153,7 +153,7 @@ var main = {
 
         $("#main").html(
             Mustache.render(viewTemplate, {
-                question: "What is this?",
+                question: "How would you most naturally describe this object?",
                 picture: "images/" + exp.trial_info.main_trials[CT] + ".png",
                 refexp_1: refexp_options[0],
                 refexp_2: refexp_options[1]
