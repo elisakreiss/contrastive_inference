@@ -135,7 +135,9 @@ plot_grid(p_age,p_gen,p_edu,p_lang,p_enj,p_time, labels = "AUTO", ncol = 2, alig
 #### Color diagnostic objects
 From the three items that were normed in two atypical colors (**carrot**, **corn**, **pumpkin**), we see the biggest difference between the red and white pumpkin. Therefore, we should choose the white pumpkin and (following from that) the green carrot and red corn.<br>
 There does not seem to be a big difference between the yellow **egg** and **snowman**, but the white egg is rated even more typical and its size fits better to the other stimuli. Therefore, we should choose the egg over the snowman (given that both are also nameable).<br>
-Even though the orange **banana** is predominantly rated below 50, it is still not as atypical as other objects.
+Even though the orange **banana** is predominantly rated below 50, it is still not as atypical as other objects.<br>
+<br>
+Means are plotted in green, medians in red.
 
 ```{r by item, include=FALSE}
 
@@ -176,6 +178,13 @@ ggplot(df_cd, aes(x=reorder(col_item, -slider_val), y=slider_val)) +
                geom = "linerange",
                color = "black",
                size = 1) + 
+  # median
+  stat_summary(fun.y = "median",
+               geom = "point",
+               shape = 21,
+               fill = "red",
+               color = "black",
+               size = 4) +
   # means
   stat_summary(fun.y = "mean",
                geom = "point",
@@ -189,6 +198,7 @@ ggplot(df_cd, aes(x=reorder(col_item, -slider_val), y=slider_val)) +
 ```
 
 #### Non-color diagnostic objects
+Means are plotted in orange, medians in red.
 
 ```{r typicality ratings noncd, echo=FALSE, fig.height=5, fig.width=7, message=FALSE, warning=FALSE}
 
@@ -203,6 +213,13 @@ ggplot(df_noncd, aes(x=reorder(item,slider_val), y=slider_val)) +
                geom = "linerange",
                color = "black",
                size = 1) + 
+  # median
+  stat_summary(fun.y = "median",
+               geom = "point",
+               shape = 21,
+               fill = "red",
+               color = "black",
+               size = 4) +
   # means
   stat_summary(fun.y = "mean",
                geom = "point",
