@@ -235,7 +235,37 @@ ggplot(df_plot_f1[df_plot_f1$cd==T,],aes(x=reorder(reorder(question,color_mentio
 
 #### All features
 
-```{r plot all features cdonly, echo=FALSE, fig.height=6, fig.width=8}
+```{r plot all features cdonly new, echo=FALSE, fig.height=6, fig.width=8}
+# df_plot_allf = df_plot %>% 
+#   mutate_at(vars(color_mention),funs(as.integer(.))) %>% 
+#   filter(cd==T)
+# 
+# get_mean_score = function(data, indices) {
+#   return(mean(data[indices,]$color_mention))
+# }
+# 
+# bootstrap_results = boot(df_plot_allf, get_mean_score, R=5000)
+# bootstrap_CIs = boot.ci(bootstrap_results)
+# bootstrap_CIs
+# 
+# ggplot(df_plot_allf,aes(x=reorder(reorder(question,color_mention),cd), y=color_mention, fill=cd)) +
+#   facet_wrap(vars(color), scale="free") +
+#   stat_summary(fun.y = "mean",
+#                geom = "bar") +
+#   stat_summary(fun.data = "mean_cl_boot",
+#                geom = "linerange",
+#                color = "darkgrey") +
+#   geom_hline(yintercept = 0.333,
+#              linetype = "dashed",
+#              color = "grey") +
+#   theme(legend.position="none") +
+#   theme(axis.text.x = element_text(angle = 30, hjust=1)) +
+#   scale_fill_manual(values=c("#7CB637")) +
+#   xlab("objects facetted by intended typical color") +
+#   ylab("proportion of color mention across features")
+```
+
+```{r plot all features cdonly old, echo=FALSE, fig.height=6, fig.width=8}
 df_plot_allf = df_plot %>% 
   mutate_at(vars(color_mention),funs(as.integer(.)))
   # filter(feature_pos=="feature1")
@@ -247,7 +277,7 @@ ggplot(df_plot_allf[df_plot_allf$cd==T,],aes(x=reorder(reorder(question,color_me
   stat_summary(fun.data = "mean_cl_boot",
                geom = "linerange",
                color = "darkgrey") +
-  geom_hline(yintercept = 0.5,
+  geom_hline(yintercept = 0.333,
              linetype = "dashed",
              color = "grey") +
   theme(legend.position="none") +

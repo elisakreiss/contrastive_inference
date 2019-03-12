@@ -64,7 +64,8 @@ length(unique(df_clean$anon_worker_id))
 
 
 df = df_clean %>%
-  select(question,slider_val,trial_number,anon_worker_id)
+  select(question,slider_val,trial_number,anon_worker_id) %>% 
+  rename(col_item = question)
 ```
 
 
@@ -131,6 +132,11 @@ plot_grid(p_age,p_gen,p_edu,p_lang,p_enj,p_time, labels = "AUTO", ncol = 2, alig
 
 ## Object descriptions
 
+#### Color diagnostic objects
+From the three items that were normed in two atypical colors (**carrot**, **corn**, **pumpkin**), we see the biggest difference between the red and white pumpkin. Therefore, we should choose the white pumpkin and (following from that) the green carrot and red corn.<br>
+There does not seem to be a big difference between the yellow **egg** and **snowman**, but the white egg is rated even more typical and its size fits better to the other stimuli. Therefore, we should choose the egg over the snowman (given that both are also nameable).<br>
+Even though the orange **banana** is predominantly rated below 50, it is still not as atypical as other objects.
+
 ```{r by item, include=FALSE}
 
 cd_list = c("broccoli",
@@ -147,21 +153,22 @@ cd_list = c("broccoli",
 
 df_plot = df %>% 
   # separate color and type
-  separate(question, c("color", "item"), sep = "_", remove = FALSE) %>% 
+  separate(col_item, c("color", "item"), sep = "_", remove = FALSE) %>% 
   # identify presumably color diagnostic object
   mutate(cd = ifelse(item %in% cd_list, T, F))
 
 ```
 
-```{r typicality ratings cd, echo=FALSE, fig.height=6, fig.width=8, message=FALSE, warning=FALSE}
+```{r typicality ratings cd, echo=FALSE, fig.height=9, fig.width=9, message=FALSE, warning=FALSE}
 
 df_cd = df_plot %>% 
-  filter(cd == T) %>% 
-  group_by(item, color) %>% 
-  mutate(mean_y = mean(slider_val)) %>% 
-  ungroup()
+  filter(cd == T)
 
-ggplot(df_cd, aes(x=reorder(question, -slider_val), y=slider_val)) +
+select_color <- function(string) {
+  str_replace_all(string,"_(.)*","")
+}
+
+ggplot(df_cd, aes(x=reorder(col_item, -slider_val), y=slider_val)) +
   facet_wrap(vars(item), scale = "free_x") +
   geom_point(alpha = 0.2) +
   # error bars 
@@ -177,10 +184,13 @@ ggplot(df_cd, aes(x=reorder(question, -slider_val), y=slider_val)) +
                color = "black",
                size = 4) +
   xlab("Color") +
-  ylab("Typicality slider rating")
+  ylab("Typicality slider rating") +
+  scale_x_discrete(labels = select_color)
 ```
 
-```{r typicality ratings noncd, echo=FALSE, fig.height=4, fig.width=6, message=FALSE, warning=FALSE}
+#### Non-color diagnostic objects
+
+```{r typicality ratings noncd, echo=FALSE, fig.height=5, fig.width=7, message=FALSE, warning=FALSE}
 
 df_noncd = df_plot %>% 
   filter(cd == F)
@@ -200,6 +210,8 @@ ggplot(df_noncd, aes(x=reorder(item,slider_val), y=slider_val)) +
                fill = "#E6AB02",
                color = "black",
                size = 4) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  xlab("Objects") +
+  ylab("Typicality slider rating")
 ```
 
