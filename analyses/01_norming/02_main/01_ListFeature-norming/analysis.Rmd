@@ -136,7 +136,7 @@ plot_grid(p_age,p_gen,p_edu,p_lang,p_enj,p_time, labels = "AUTO", ncol = 2, alig
 
 ```
 
-## Objects which were rated unknown
+### Objects which were rated unknown
 
 ```{r obj_unknown, echo=FALSE, fig.height=3, fig.width=4.5}
 ggplot(df[df$obj_unknown==TRUE,],aes(x=question)) +
@@ -236,33 +236,42 @@ ggplot(df_plot_f1[df_plot_f1$cd==T,],aes(x=reorder(reorder(question,color_mentio
 #### All features
 
 ```{r plot all features cdonly new, echo=FALSE, fig.height=6, fig.width=8}
-# df_plot_allf = df_plot %>% 
-#   mutate_at(vars(color_mention),funs(as.integer(.))) %>% 
-#   filter(cd==T)
-# 
-# get_mean_score = function(data, indices) {
-#   return(mean(data[indices,]$color_mention))
-# }
-# 
-# bootstrap_results = boot(df_plot_allf, get_mean_score, R=5000)
-# bootstrap_CIs = boot.ci(bootstrap_results)
-# bootstrap_CIs
-# 
-# ggplot(df_plot_allf,aes(x=reorder(reorder(question,color_mention),cd), y=color_mention, fill=cd)) +
-#   facet_wrap(vars(color), scale="free") +
-#   stat_summary(fun.y = "mean",
-#                geom = "bar") +
-#   stat_summary(fun.data = "mean_cl_boot",
-#                geom = "linerange",
-#                color = "darkgrey") +
-#   geom_hline(yintercept = 0.333,
-#              linetype = "dashed",
-#              color = "grey") +
-#   theme(legend.position="none") +
-#   theme(axis.text.x = element_text(angle = 30, hjust=1)) +
-#   scale_fill_manual(values=c("#7CB637")) +
-#   xlab("objects facetted by intended typical color") +
-#   ylab("proportion of color mention across features")
+
+# library(bootstrap)
+# theta <- function(x,xdata,na.rm=T) {mean(xdata[x],na.rm=na.rm)}
+# ci.low <- function(x,na.rm=T) {
+#   mean(x,na.rm=na.rm) - quantile(bootstrap(1:length(x),1000,theta,x,na.rm=na.rm)$thetastar,.025,na.rm=na.rm)}
+# ci.high <- function(x,na.rm=T) {
+#   quantile(bootstrap(1:length(x),1000,theta,x,na.rm=na.rm)$thetastar,.975,na.rm=na.rm) - mean(x,na.rm=na.rm)}
+
+df_plot_allf = df_plot %>%
+  mutate_at(vars(color_mention),funs(as.integer(.))) %>%
+  filter(cd==T)
+  # group_by(question, add=TRUE) %>% 
+  # mutate(mean_colprop = mean(color_mention),
+  #        ci_min = mean_colprop - ci.low(color_mention),
+  #        ci_max = mean_colprop + ci.high(color_mention)) %>% 
+  # ungroup()
+
+ggplot(df_plot_allf,aes(x=reorder(reorder(question,color_mention),cd), y=color_mention, fill=cd)) +
+  facet_wrap(vars(color), scale="free") +
+  stat_summary(fun.y = "mean",
+               geom = "bar") +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey") +
+  # is here identical to mean_cl_boot
+  # geom_errorbar(aes(ymin=ci_min, ymax=ci_max),
+  #               color = "darkgrey",
+  #               width = 0.5) +
+  geom_hline(yintercept = 0.333,
+             linetype = "dashed",
+             color = "grey") +
+  theme(legend.position="none") +
+  theme(axis.text.x = element_text(angle = 30, hjust=1)) +
+  scale_fill_manual(values=c("#7CB637")) +
+  xlab("objects facetted by intended typical color") +
+  ylab("proportion of color mention across features")
 ```
 
 ```{r plot all features cdonly old, echo=FALSE, fig.height=6, fig.width=8}

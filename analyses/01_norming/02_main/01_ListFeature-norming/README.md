@@ -5,8 +5,7 @@ CI: feature norming analysis
 
 ![](analysis_files/figure-markdown_github/subj-1.png)
 
-Objects which were rated unknown
---------------------------------
+### Objects which were rated unknown
 
 ![](analysis_files/figure-markdown_github/obj_unknown-1.png)
 
@@ -19,7 +18,9 @@ Plot proportion of color mention (only cd)
 
 #### All features
 
-![](analysis_files/figure-markdown_github/plot%20all%20features%20cdonly-1.png)
+![](analysis_files/figure-markdown_github/plot%20all%20features%20cdonly%20new-1.png)
+
+![](analysis_files/figure-markdown_github/plot%20all%20features%20cdonly%20old-1.png)
 
 Plot proportion of color mention (cd & non cd)
 ----------------------------------------------
