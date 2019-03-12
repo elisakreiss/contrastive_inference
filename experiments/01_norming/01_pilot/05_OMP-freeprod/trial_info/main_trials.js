@@ -7,10 +7,10 @@ var main_trials = [
 	"white_swan",
 	"yellow_banana",
 	// atypical
-	"orange_lettuce",
-	"red_corn",
-	"white_pumpkin",
-	"yellow_egg",
+	"red_broccoli",
+	"white_carrot",
+	"green_swan",
+	"orange_banana",
 	//
 	// non-color diagnostic
 	"black_feather",
