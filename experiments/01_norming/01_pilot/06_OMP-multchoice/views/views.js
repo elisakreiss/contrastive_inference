@@ -145,6 +145,8 @@ var main = {
         var adj = split_stim[0];
         var noun = split_stim[1];
 
+        noun = (noun == "bellpepper" ? "bell pepper" : noun);
+
         // TODO: make sure to fix multiple word stimuli like "bell pepper"
         var refexp_options = _.shuffle([adj + " " + noun, noun])
         console.log(refexp_options);
@@ -195,7 +197,7 @@ var main = {
                     refexp2_checked: $("#refexp-2").prop("checked"),
                     refexp3: "other",
                     refexp3_checked: $("#refexp-3").prop("checked"),
-                    refexp-other: $("#refexp-other").val()
+                    refexp_other: $("#refexp-other").val()
                 };
                 exp.trial_data.push(trial_data);
                 exp.findNextView();
