@@ -317,6 +317,16 @@ ggplot(df_noncd,aes(x=ref_cat,
 
 ```
 
+### In-participant variability
+
+```{r}
+df_part = df_plot %>% 
+  filter(ref_used)
+
+ggplot(df_part,aes(x=trial_number,y=ref_cat)) +
+  facet_wrap(vars(anon_worker_id)) +
+  geom_point()
+```
 
 
 
