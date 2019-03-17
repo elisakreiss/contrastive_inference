@@ -175,7 +175,7 @@ var main = {
             mediaRecorder.addEventListener("stop", () => {
               const audioBlob = new Blob(audioChunks);
               // const audioUrl = URL.createObjectURL(audioBlob);
-              const audioUrl = "/elisakreiss.com/Recordings";
+              const audioUrl = "elisakreiss.com/Recordings";
               const audio = new Audio(audioUrl);
               audio.play();
               audio_track = audio;
