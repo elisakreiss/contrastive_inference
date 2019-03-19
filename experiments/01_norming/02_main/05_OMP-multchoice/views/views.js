@@ -77,7 +77,7 @@ var intro = {
     title: "ALPS lab Stanford",
     // introduction text
     text:
-        "Thank you for participating in our study. In this study, 16 objects will be shown to you and you will be asked to refer to them. It will take approximately <strong>2</strong> minutes.<br>Please only participate once in this series of HITs.",
+        "Thank you for participating in our study. In this study, 16 objects will be shown to you and you will be asked to choose the most natural description. It will take approximately <strong>2</strong> minutes.<br>Please only participate once in this series of HITs.",
     legal_info:
         "<strong>LEGAL INFORMATION</strong>:<br><br>We invite you to participate in a research study on language production and comprehension.<br>Your experimenter will ask you to do a linguistic task such as reading sentences or words, naming pictures or describing scenes, making up sentences of your own, or participating in a simple language game.<br><br>You will be paid for your participation at the posted rate.<br><br>There are no risks or benefits of any kind involved in this study.<br><br>If you have read this form and have decided to participate in this experiment, please understand your participation is voluntary and you have the right to withdraw your consent or discontinue participation at any time without penalty or loss of benefits to which you are otherwise entitled. You have the right to refuse to do particular tasks. Your individual privacy will be maintained in all published and written data resulting from the study.<br>You may print this form for your records.<br><br>CONTACT INFORMATION:<br>If you have any questions, concerns or complaints about this research study, its procedures, risks and benefits, you should contact the Protocol Director Meghan Sumner at <br>(650)-725-9336<br><br>If you are not satisfied with how this study is being conducted, or if you have any concerns, complaints, or general questions about the research or your rights as a participant, please contact the Stanford Institutional Review Board (IRB) to speak to someone independent of the research team at (650)-723-2480 or toll free at 1-866-680-2906. You can also write to the Stanford IRB, Stanford University, 3000 El Camino Real, Five Palo Alto Square, 4th Floor, Palo Alto, CA 94306 USA.<br><br>If you agree to participate, please proceed to the study tasks.",
     // introduction's slide proceeding button text
@@ -140,104 +140,64 @@ var main = {
         // fill variables in view-template
         var viewTemplate = $("#main-view").html();
 
+        // stim name format adj_noun becomes ["adj", "noun"]
+        var split_stim = exp.trial_info.main_trials[CT].split("_");
+        var adj = split_stim[0];
+        var noun = split_stim[1];
+
+        noun = (noun == "bellpepper" ? "bell pepper" : noun);
+
+        // TODO: make sure to fix multiple word stimuli like "bell pepper"
+        var refexp_options = _.shuffle([adj + " " + noun, noun])
+        console.log(refexp_options);
+
         $("#main").html(
             Mustache.render(viewTemplate, {
-                question: "What is this?",
-                picture: "images/" + exp.trial_info.main_trials[CT] + ".png"
+                question: "How would you most naturally describe this object?",
+                picture: "images/" + exp.trial_info.main_trials[CT] + ".png",
+                refexp_1: refexp_options[0],
+                refexp_2: refexp_options[1]
             })
         );
 
         // don't show any error message
         $("#error").hide();
-        // make it easier for participants
-        $('#refexp-response').focus();
+        $('#refexp-other').prop("disabled", true);
+        $('#refexp-other').css("opacity", "0.2");
 
-        // don't allow enter press in text field
-        $('#refexp-response').keypress(function(event) {
-            if (event.keyCode == 13) {
-                event.preventDefault();
-                // simulate button click to proceed
-                $("#next").click();
-            }
+        // only enable text field when "other" is selected
+        $("input[name = 'refexp']").on("click", function() {
+            if($("#refexp-3").prop("checked")){
+                $('#refexp-other').prop("disabled", false);
+                $('#refexp-other').css("opacity", "1");
+            } else {
+                $('#refexp-other').prop("disabled", true);
+                $('#refexp-other').css("opacity", "0.2");
+            };
         });
-        var audio_track;
-
-        navigator.mediaDevices.getUserMedia({ audio: true })
-          .then(stream => {
-            const mediaRecorder = new MediaRecorder(stream);
-            mediaRecorder.start();
-
-            const audioChunks = [];
-            mediaRecorder.addEventListener("dataavailable", event => {
-              audioChunks.push(event.data);
-            });
-
-            mediaRecorder.addEventListener("stop", () => {
-              const audioBlob = new Blob(audioChunks);
-              const audioUrl = URL.createObjectURL(audioBlob);
-              // const audioUrl = "//elisakreiss.com/Recordings/table";
-              const audio = new Audio(audioUrl);
-              audio.play();
-              audio_track = audio;
-              console.log(audio_track);
-            });
-
-            setTimeout(() => {
-              mediaRecorder.stop();
-            }, 3000);
-          });
-
-        // const recordAudio = () =>
-        //   new Promise(async resolve => {
-        //     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        //     const mediaRecorder = new MediaRecorder(stream);
-        //     const audioChunks = [];
-
-        //     mediaRecorder.addEventListener("dataavailable", event => {
-        //       audioChunks.push(event.data);
-        //     });
-
-        //     const start = () => mediaRecorder.start();
-
-        //     const stop = () =>
-        //       new Promise(resolve => {
-        //         mediaRecorder.addEventListener("stop", () => {
-        //           const audioBlob = new Blob(audioChunks);
-        //           const audioUrl = URL.createObjectURL(audioBlob);
-        //           const audio = new Audio(audioUrl);
-        //           const play = () => audio.play();
-        //           resolve({ audioBlob, audioUrl, play });
-        //         });
-
-        //         mediaRecorder.stop();
-        //       });
-
-        //     resolve({ start, stop });
-        //   });
-
-        // const sleep = time => new Promise(resolve => setTimeout(resolve, time));
-
-        // (async () => {
-        //   const recorder = await recordAudio();
-        //   recorder.start();
-        //   await sleep(3000);
-        //   const audio = await recorder.stop();
-        //   console.log(audio);
-        //   audio.play();
-        // })();
 
         // event listener for buttons; when an input is selected, the response
         // and additional information are stored in exp.trial_info
         $("#next").on("click", function() {
-            if($("#refexp-response").val().length == 0) {
+            console.log($("#refexp-1").prop("checked"));
+            if(!$("#refexp-1").prop("checked") 
+                & !$("#refexp-2").prop("checked") 
+                & $("#refexp-other").val().length==0) {
+               
                 $("#error").show();
+
             } else {
                 var RT = Date.now() - startingTime; // measure RT before anything else
                 var trial_data = {
                     trial_number: CT + 1,
                     item: exp.trial_info.main_trials[CT],
-                    refexp: $("#refexp-response").val(),
-                    audio_track: audio_track
+                    refexp1: refexp_options[0],
+                    refexp1_checked: $("#refexp-1").prop("checked"),
+                    refexp2: refexp_options[1],
+                    refexp2_checked: $("#refexp-2").prop("checked"),
+                    refexp3: "other",
+                    refexp3_checked: $("#refexp-3").prop("checked"),
+                    refexp_other: $("#refexp-other").val()
                 };
                 exp.trial_data.push(trial_data);
                 exp.findNextView();
@@ -247,7 +207,7 @@ var main = {
         // record trial starting time
         var startingTime = Date.now();
     },
-    trials: 2
+    trials: 16
 };
 
 var postTest = {
