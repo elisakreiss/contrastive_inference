@@ -77,7 +77,7 @@ var intro = {
     title: "ALPS lab Stanford",
     // introduction text
     text:
-        "Thank you for participating in our study. In this study, 16 objects will be shown to you and you will be asked to choose the most natural description. It will take approximately <strong>2</strong> minutes.<br>Please only participate once in this series of HITs.",
+        "Thank you for participating in our study. In this study, 31 objects will be shown to you and you will be asked to choose the most natural description. It will take approximately <strong>4</strong> minutes.<br>Please only participate once in this series of HITs.",
     legal_info:
         "<strong>LEGAL INFORMATION</strong>:<br><br>We invite you to participate in a research study on language production and comprehension.<br>Your experimenter will ask you to do a linguistic task such as reading sentences or words, naming pictures or describing scenes, making up sentences of your own, or participating in a simple language game.<br><br>You will be paid for your participation at the posted rate.<br><br>There are no risks or benefits of any kind involved in this study.<br><br>If you have read this form and have decided to participate in this experiment, please understand your participation is voluntary and you have the right to withdraw your consent or discontinue participation at any time without penalty or loss of benefits to which you are otherwise entitled. You have the right to refuse to do particular tasks. Your individual privacy will be maintained in all published and written data resulting from the study.<br>You may print this form for your records.<br><br>CONTACT INFORMATION:<br>If you have any questions, concerns or complaints about this research study, its procedures, risks and benefits, you should contact the Protocol Director Meghan Sumner at <br>(650)-725-9336<br><br>If you are not satisfied with how this study is being conducted, or if you have any concerns, complaints, or general questions about the research or your rights as a participant, please contact the Stanford Institutional Review Board (IRB) to speak to someone independent of the research team at (650)-723-2480 or toll free at 1-866-680-2906. You can also write to the Stanford IRB, Stanford University, 3000 El Camino Real, Five Palo Alto Square, 4th Floor, Palo Alto, CA 94306 USA.<br><br>If you agree to participate, please proceed to the study tasks.",
     // introduction's slide proceeding button text
@@ -140,12 +140,18 @@ var main = {
         // fill variables in view-template
         var viewTemplate = $("#main-view").html();
 
-        // stim name format adj_noun becomes ["adj", "noun"]
-        var split_stim = exp.trial_info.main_trials[CT].split("_");
+        var noun = exp.trial_info.main_trials[CT]["type"];
+
+        // choose color at random
+        var color = _.shuffle(exp.trial_info.main_trials[CT]["color"])[0];
+        var split_stim = color.split("_");
         var adj = split_stim[0];
-        var noun = split_stim[1];
+        var typicality = split_stim[1];
+
+        var img_name = adj + "_" + noun;
 
         noun = (noun == "bellpepper" ? "bell pepper" : noun);
+        adj = (adj == "whitebrown" ? "white-brown" : adj);
 
         // TODO: make sure to fix multiple word stimuli like "bell pepper"
         var refexp_options = _.shuffle([adj + " " + noun, noun])
@@ -154,7 +160,7 @@ var main = {
         $("#main").html(
             Mustache.render(viewTemplate, {
                 question: "How would you most naturally describe this object?",
-                picture: "images/" + exp.trial_info.main_trials[CT] + ".png",
+                picture: "images/" + img_name + ".png",
                 refexp_1: refexp_options[0],
                 refexp_2: refexp_options[1]
             })
@@ -190,7 +196,9 @@ var main = {
                 var RT = Date.now() - startingTime; // measure RT before anything else
                 var trial_data = {
                     trial_number: CT + 1,
-                    item: exp.trial_info.main_trials[CT],
+                    type: noun,
+                    color: adj,
+                    typicality_cat: typicality,
                     refexp1: refexp_options[0],
                     refexp1_checked: $("#refexp-1").prop("checked"),
                     refexp2: refexp_options[1],
@@ -207,7 +215,7 @@ var main = {
         // record trial starting time
         var startingTime = Date.now();
     },
-    trials: 16
+    trials: 31
 };
 
 var postTest = {

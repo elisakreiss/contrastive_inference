@@ -8,11 +8,11 @@ var main_trials = [
 	},
 	{
 		type: "carrot",
-		color: ["orange_typ","green_atyp","white_atyp"]
+		color: ["orange_typ","green_atyp"]
 	},
 	{
 		type: "corn",
-		color: ["yellow_typ","green_atyp","red_atyp"]
+		color: ["yellow_typ","red_atyp"]
 	},
 	{
 		type: "lettuce",
@@ -28,7 +28,7 @@ var main_trials = [
 	},
 	{
 		type: "pumpkin",
-		color: ["orange_typ","red_atyp","white_atyp"]
+		color: ["orange_typ","white_atyp"]
 	},
 	{
 		type: "strawberry",
