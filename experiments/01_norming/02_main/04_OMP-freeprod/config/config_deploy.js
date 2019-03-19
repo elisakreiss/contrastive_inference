@@ -14,8 +14,8 @@ var config_deploy = {
     // 'MTurkSandbox', 'Prolific', 'directLink'
     // "deployMethod": "debug",
     // "deployMethod": "directLink",
-    // "deployMethod": "MTurk",
-    "deployMethod": "MTurkSandbox",
+    "deployMethod": "MTurk",
+    // "deployMethod": "MTurkSandbox",
 
     // who to contact in case of trouble
     "contact_email": "ekreiss@stanford.edu",
