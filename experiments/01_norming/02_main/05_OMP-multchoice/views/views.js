@@ -153,8 +153,22 @@ var main = {
         noun = (noun == "bellpepper" ? "bell pepper" : noun);
         adj = (adj == "whitebrown" ? "white-brown" : adj);
 
-        // TODO: make sure to fix multiple word stimuli like "bell pepper"
-        var refexp_options = _.shuffle([adj + " " + noun, noun])
+        // create fourth random control option
+        var random = noun;
+        while(random == noun || random == adj + " " + noun){
+            let item = _.shuffle(exp.trial_info.main_trials)[0];
+            let noun = item["type"];
+            let color = item["color"][0];
+            let split_stim = color.split("_");
+            let adj = split_stim[0];
+
+            noun = (noun == "bellpepper" ? "bell pepper" : noun);
+            adj = (adj == "whitebrown" ? "white-brown" : adj);
+
+            random = _.shuffle([adj + " " + noun, noun])[0];
+        }
+
+        var refexp_options = _.shuffle([adj + " " + noun, noun, random])
         console.log(refexp_options);
 
         $("#main").html(
@@ -162,7 +176,8 @@ var main = {
                 question: "How would you most naturally describe this object?",
                 picture: "images/" + img_name + ".png",
                 refexp_1: refexp_options[0],
-                refexp_2: refexp_options[1]
+                refexp_2: refexp_options[1],
+                refexp_3: refexp_options[2]
             })
         );
 
@@ -173,7 +188,7 @@ var main = {
 
         // only enable text field when "other" is selected
         $("input[name = 'refexp']").on("click", function() {
-            if($("#refexp-3").prop("checked")){
+            if($("#refexp-4").prop("checked")){
                 $('#refexp-other').prop("disabled", false);
                 $('#refexp-other').css("opacity", "1");
             } else {
@@ -188,6 +203,7 @@ var main = {
             console.log($("#refexp-1").prop("checked"));
             if(!$("#refexp-1").prop("checked") 
                 & !$("#refexp-2").prop("checked") 
+                & !$("#refexp-3").prop("checked")
                 & $("#refexp-other").val().length==0) {
                
                 $("#error").show();
@@ -203,8 +219,10 @@ var main = {
                     refexp1_checked: $("#refexp-1").prop("checked"),
                     refexp2: refexp_options[1],
                     refexp2_checked: $("#refexp-2").prop("checked"),
-                    refexp3: "other",
+                    refexp3: refexp_options[2],
                     refexp3_checked: $("#refexp-3").prop("checked"),
+                    refexp4: "other",
+                    refexp4_checked: $("#refexp-4").prop("checked"),
                     refexp_other: $("#refexp-other").val()
                 };
                 exp.trial_data.push(trial_data);

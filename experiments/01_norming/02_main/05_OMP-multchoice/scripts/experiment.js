@@ -18,13 +18,13 @@ exp.customize = function() {
     // this.trial_info.practice_trials = practice_trials;
 
     // preload images
-    function preloadImage(pic_stims){
-        for (pos in pic_stims){
-            (new Image()).src = "images/" + pic_stims[pos] + ".png";
-        };
-        console.log("pictures are loaded");
-    };
-    preloadImage(main_trials);
+    // function preloadImage(pic_stims){
+    //     for (pos in pic_stims){
+    //         (new Image()).src = "images/" + pic_stims[pos] + ".png";
+    //     };
+    //     console.log("pictures are loaded");
+    // };
+    // preloadImage(main_trials);
 
     // adds progress bars to the views listed
     // view's name is the same as object's name
