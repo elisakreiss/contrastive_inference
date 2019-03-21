@@ -1,0 +1,313 @@
+---
+title: "CI: object naming analysis"
+# output: html_document
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r data import, include=FALSE}
+library(cowplot)
+library(plyr)
+library(tidyverse)
+library(here)
+
+df_import = read_csv(here("data","01_norming","02_main","04_OMP-freeprod","data.csv")) %>%
+  # exclude test
+  # weird filter property that it will exclude NAs
+  filter(is.na(comments) | comments != "TEST")
+```
+
+```{r botresponse, include=FALSE}
+ggplot(df_import,aes(x=str_to_lower(botresponse))) +
+  geom_histogram(stat="count")
+```
+
+```{r responses to postquestionnaire, eval=FALSE, fig.height=1.5, fig.width=4, include=FALSE}
+# check responses to post questionnaire, which participants I need to exclude (e.g., HitCorrect and NativeLanguage)
+df_hitcorrect = df_import %>% 
+  mutate_at(vars(HitCorrect),
+            funs(ifelse(HitCorrect==0,"no",
+                        ifelse(HitCorrect==404,"confused","yes"))))
+
+ggplot(df_hitcorrect,aes(x=HitCorrect)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  xlab("did you do the hit correctly")
+
+# languages
+unique(df_import$languages)
+
+# comments
+unique(df_import$comments)
+
+```
+
+
+```{r create main data frame, message=FALSE, include=FALSE}
+
+df_clean = df_import %>% 
+  # exclude multiple submissions
+  arrange(startTime) %>% 
+  distinct(anon_worker_id,trial_number, .keep_all = TRUE) %>% 
+  # exclude participants who didn't do the hit correctly or were confused (self reportedly)
+  filter(HitCorrect==1) %>% 
+  # exclude participants who use "other" descriptions in more than 1/3 of the cases
+  # ids are taken from "weird_describers"
+  mutate_at(vars(anon_worker_id),funs(as.character(.))) %>% 
+  filter(!(anon_worker_id %in% c("318568805752505","222423843813830","697305385555762")))
+
+# number of participants before exclusion (50)
+length(unique(df_import$anon_worker_id))
+# number of participants after exclusion (44)
+length(unique(df_clean$anon_worker_id))
+
+
+df = df_clean %>%
+  select(color,type,typicality_cat,refexp,trial_number,anon_worker_id) %>% 
+  mutate(col_type = paste(color,type,sep = "_"))
+
+table(df[df$typicality_cat=="typ" | df$typicality_cat=="atyp",]$col_type)
+```
+
+
+### About the participants (after exclusion)
+
+```{r subj, echo=FALSE, fig.height=6, fig.width=8, message=FALSE, warning=FALSE}
+# other info
+engl_spellings = c("english", "englis", "eng", "engilsh", "englsh", "en", "emglish")
+
+df_subj = df_clean %>% 
+  select(age,gender,education,languages,enjoyment,timeSpent,HitCorrect,comments,anon_worker_id) %>% 
+  distinct() %>% 
+  mutate_at(vars(languages), funs(str_to_lower(.))) %>% 
+  mutate_at(vars(languages), funs(ifelse(. %in% engl_spellings, "english", .))) %>% 
+  mutate(lang=ifelse(languages == "english","english","other")) %>% 
+  mutate_at(vars(age), funs(as.integer(.))) %>% 
+  mutate_at(vars(enjoyment), 
+            funs(ifelse(.==1,"average",
+                        ifelse(.==2,"awesome","other")))) %>% 
+  mutate(edu = ifelse(str_detect(education,"high_school"),"High School",
+                      ifelse(str_detect(education,"college"),"College","Higher"))) %>% 
+  mutate_at(vars(edu), funs(fct_relevel(.,"High School", "College", "Higher")))
+
+
+mean_age = round(mean(df_subj$age),digits = 1)
+p_age = ggplot(df_subj,aes(x=age)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  geom_vline(xintercept= mean_age) +
+  scale_x_continuous(breaks=c(25,50,75,mean_age))
+
+p_gen = ggplot(df_subj,aes(x=gender)) +
+  geom_bar(width = .5,
+           fill = "orange")
+
+p_edu = ggplot(df_subj,aes(x=edu)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  xlab("education")
+  # theme(axis.text.x = element_text(angle = 25, hjust = 1))
+
+p_lang = ggplot(df_subj,aes(x=lang)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  xlab("language")
+  # theme(axis.text.x = element_text(angle=45,hjust=1))
+
+p_enj = ggplot(df_subj,aes(x=enjoyment)) +
+  geom_bar(width = .5,
+           fill = "orange")
+
+mean_time = round(mean(df_subj$timeSpent), digits = 1)
+median_time = round(median(df_subj$timeSpent), digits = 1)
+p_time = ggplot(df_subj,aes(x=timeSpent)) +
+  geom_histogram(fill = "orange") +
+  geom_vline(xintercept=mean_time) +
+  geom_vline(xintercept=median_time,linetype="dashed") +
+  scale_x_continuous(breaks=c(median_time,mean_time,floor(0),floor(10),floor(20),floor(30),floor(40))) +
+  xlab("time spent") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+plot_grid(p_age,p_gen,p_edu,p_lang,p_enj,p_time, labels = "AUTO", ncol = 2, align = 'v')
+
+```
+
+## Object descriptions
+
+
+```{r df prep, include=FALSE, message=FALSE}
+
+df_plot = df %>%
+  # repair compound nouns
+  mutate_at(vars(type), 
+            funs(ifelse(type=="bellpepper","pepper",type))) %>% 
+  # transform utterances to lower case
+  mutate_at(vars(refexp),
+            funs(str_to_lower(.))) %>%
+  # correct misspellings
+  mutate(refexp_corrected = case_when(
+    (refexp == "bananna" | refexp == "banna" | refexp == "bannana")  ~ "banana",
+    (refexp == "brocholi" | refexp == "brocholli" | refexp == "brocoli" | refexp == "broccolli")  ~ "broccoli",
+    refexp == "carrott"  ~ "carrot ",
+    (refexp == "cor" | refexp == "corn\\") ~ "corn",
+    (refexp == "snoman" | refexp == "snow man" | refexp == "snow") ~ "snowman",
+    (refexp == "yellow straberry") ~ "yellow strawberry",
+    (refexp == "tomaot" | refexp == "tomoto") ~ "tomato",
+    # non-cd
+    (refexp == "ballon" | refexp == "baloon" | refexp == "balon")  ~ "balloon",
+    (refexp == "bicycle" | refexp == "bi-cycle" | refexp == "bycicle")  ~ "bike",
+    (refexp == "butterly" | refexp == "butterflye")  ~ "butterfly",
+    (refexp == "feahter" | refexp == "feathers" | refexp == "further")  ~ "feather",
+    (refexp == "mugs")  ~ "mug",
+    (refexp == "red mug")  ~ "orange mug",
+    (refexp == "perpper" | refexp == "pepper\\" | refexp == "bell peper")  ~ "pepper",
+    (refexp == "red peppers")  ~ "red pepper",
+    (refexp == "siccors" | refexp == "scissor" | refexp == "sissors") ~ "scissors",
+    refexp == "spong"  ~ "sponge ",
+    (refexp == "tooth brush" | refexp == "toothbtush") ~ "toothbrush",
+    TRUE ~ refexp
+  )) %>% 
+  # repair compound nouns
+  mutate_at(vars(refexp_corrected), 
+            funs(str_replace_all(.,"bell pepper","pepper"))) %>% 
+  # make columns according to utterance types
+  mutate(
+         # uncomment this, then color_modifier not only contains the exact 
+         # color-type combination, but every refexp that contains the color
+         # utt_color_modified = str_detect(refexp_corrected,color),
+         utt_color_modified = refexp_corrected == paste(color,type,sep=" "),
+         utt_type_only = refexp_corrected == type,
+         utt_other = ifelse(!utt_color_modified & !utt_type_only, T, F)
+  ) %>% 
+  gather(ref_cat,ref_used,utt_color_modified,utt_type_only,utt_other) %>% 
+  # change order of factor levels in ref_cat
+  mutate_at(vars(ref_cat),
+            funs(fct_relevel(ref_cat,"utt_type_only","utt_color_modified","utt_other"))) %>% 
+  # rename factor levels in ref_cat
+  mutate_at(vars(ref_cat),
+            funs(mapvalues(ref_cat, 
+                           from=c("utt_type_only", "utt_color_modified", "utt_other"),
+                           to=c("type", "color+type", "other")))) %>% 
+  # change order of factor levels in typicality
+  mutate_at(vars(typicality_cat),
+            funs(fct_relevel(typicality_cat,"typ","atyp","noncd")))
+
+# is there a participant who has more than 1/3 of "other" utterances?
+# these are excluded in the beginning
+df_true = df_plot %>% 
+  filter(ref_used==TRUE,
+         ref_cat=="other") %>% 
+  group_by(anon_worker_id) %>% 
+  mutate(prop_other = n()/max(df_plot$trial_number)) %>% 
+  ungroup() %>% 
+  filter(prop_other >= (1/3)) %>% 
+  select(anon_worker_id,refexp,refexp_corrected,col_type)
+weird_describers = unique(df_true$anon_worker_id)
+
+```
+
+#### Color diagnostic objects
+"other" utterances: swan is often called a goose; two people identified the white carrot as parsnip
+
+```{r cd objects, echo=FALSE, warning=FALSE, message=FALSE}
+
+df_cd = df_plot %>% 
+  filter(typicality_cat!="noncd")
+
+# df_cd %>%
+#      filter(ref_used == TRUE,
+#             ref_cat == "other") %>%
+#      select(type, refexp_corrected) %>%
+#      arrange(type) %>% 
+#      unique() 
+#      # View()
+
+# all
+
+ggplot(df_cd,aes(x=ref_cat,
+                 y=as.integer(ref_used),
+                 fill=typicality_cat)) +
+  facet_wrap(vars(type)) +
+  # mean
+  stat_summary(fun.y = "mean",
+               geom = "bar",
+               position = position_dodge(width = 0.9)) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey",
+               position = position_dodge(width = 0.9)) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  scale_fill_manual(values=c("#b0d387", "#4a6d21")) +
+  ylab("Proportion of\nutterance category production") +
+  xlab("Utterance category")
+
+sum_file = df_cd %>%
+  filter(ref_used) %>% 
+  select(col_type, color, type, typicality_cat, ref_cat, anon_worker_id)
+write.csv(sum_file, here("data","01_norming","02_main","freeprod_data.csv"), row.names = FALSE)
+```
+
+
+#### Non-color diagnostic objects
+"other" utterances: mug is still often called a cup; jacket is often called "coat"
+
+```{r non-cd objects, echo=FALSE, message=FALSE, warning=FALSE}
+
+df_noncd = df_plot %>% 
+  filter(typicality_cat=="noncd")
+
+# df_noncd %>%
+#      filter(ref_used == TRUE,
+#             ref_cat == "other") %>%
+#      select(type, refexp_corrected) %>%
+#      arrange(type) %>% 
+#      unique() 
+#      # View()
+
+ggplot(df_noncd,aes(x=ref_cat,
+                 y=as.integer(ref_used))) +
+  facet_wrap(vars(type)) +
+  # mean
+  stat_summary(fun.y = "mean",
+               geom = "bar",
+               # position = position_dodge(width = 0.9),
+               fill = "#E6AB02",
+               width = .5) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey",
+               position = position_dodge(width = 0.9)) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  # scale_fill_manual(values=c("#b0d387", "#4a6d21"))
+
+```
+
+### In-participant variability
+
+```{r}
+df_part = df_plot %>% 
+  filter(ref_used)
+
+ggplot(df_part,aes(x=trial_number,y=ref_cat)) +
+  facet_wrap(vars(anon_worker_id)) +
+  geom_point()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -195,6 +195,14 @@ ggplot(df_cd, aes(x=reorder(col_item, -slider_val), y=slider_val)) +
   xlab("Color") +
   ylab("Typicality slider rating") +
   scale_x_discrete(labels = select_color)
+
+sum_file = df_cd %>%
+  rename(col_type = col_item,
+         type = item) %>% 
+  group_by(col_type, color, type) %>% 
+  summarize(typicality = median(slider_val)) %>% 
+  select(col_type, color, type, typicality)
+write.csv(sum_file, here("data","01_norming","02_main","typicality_data.csv"), row.names = FALSE)
 ```
 
 #### Non-color diagnostic objects
