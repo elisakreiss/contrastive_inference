@@ -1,42 +1,44 @@
 ## Stimuli to test
 ### Color-diagnostic
+Chosen (final) stimuli in bold.
 
 #### White
-- (garlic)
+- **egg**
+- **swan**
+- garlic
 - snowman
-- swan
 - toilet paper
 
 #### Orange
+- **carrot**
+- **pumpkin**
 - basketball
-- pumpkin
-- carrot
 - traffic cone
 
 #### Pink/Purple
-- flamingo
-- piggy bank
 - cotton candy
+- flamingo
 - pig
+- piggy bank
 
 #### Yellow
-- banana
-- taxi
-- corn
+- **banana**
+- **corn**
 - rubber duck
+- taxi
 
 #### Red
-- tomato
-- lobster
-- strawberry
+- **strawberry**
+- **tomato**
 - fire extinguisher
+- lobster
 
 #### Green
-- broccoli
-- lettuce
-- zucchini
+- **broccoli**
+- **lettuce**
 - cactus
 - pickle
+- zucchini
 
 ### Non-color-diagnostic
 be careful with basic vs super level nouns; 
@@ -64,4 +66,4 @@ items are inspired by object stroop corpus
 - sportscar
 - table
 - tack 
-- toothbrush (23)
+- toothbrush

@@ -1,11 +1,13 @@
 To do
 
 - [ ] Norming
-	- [x] Feature list norming pilots (to figure out phrasing)
-	- [ ] Feature list norming 
-	- [ ] List typical norming
-	- [ ] Typicality norming
-	- [ ] OMP norming pilots (to figure out forced choice vs free text)
-	- [ ] OMP norming
+	- [x] Feature list norming 
+	- [x] Object naming norming
+	- [x] Typicality norming
+	- [x] OMP norming multiple choice
+	- [x] OMP norming free production
+	- [ ] OMP norming speech
 - [ ] Production
 - [ ] Comprehension
+	- [ ] Incremental decision task
+	- [ ] Eyetracking
