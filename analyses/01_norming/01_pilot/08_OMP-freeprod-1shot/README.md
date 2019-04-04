@@ -6,7 +6,11 @@ Object descriptions
 
 #### Graph
 
-"other" utterances: green carrot received labels "correct" and "vegetable"; and the yellow banana was referred to with "one ripe banana"
+When we compare these results to the main free production (non-1shot) study, we can observe a qualitative if not even quantitative replication. For banana, 100% of the referring expressions were type-only utterances. Here, we see a similar pattern. For carrot, almost 100% of the referring expressions for the orange carrot were type-only. This is replicated here. This pilot also replicates the higher proportion of color-type utterances in the atypical carrot case. The effect seems to be slightly bigger, but not remarkably.<br>
+
+In conclusion, the pilot does not seem to provide essentially different results than the main production study.<br>
+
+("other" utterances: green carrot received labels "correct" and "vegetable"; and the yellow banana was referred to with "one ripe banana")
 
 ![](analysis_files/figure-markdown_github/cd%20objects-1.png)
 
