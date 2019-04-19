@@ -243,11 +243,13 @@ var main = {
               formData.append("audio-filename", fileName);
               formData.append("audio-blob", file);
 
-              $.post("https://stanford.edu/~ekreiss/cgi-bin/saveaudio.php",
-                formData,
-                 function(x) {
-                    console.log(x);
-                });
+              $.ajax({
+                url: "https://stanford.edu/~ekreiss/cgi-bin/saveaudio.php", 
+                data: formData, 
+                success: function(x) {console.log(x);}, 
+                processData:false, 
+                type:"POST", 
+                contentType: false});
 
 
             });
