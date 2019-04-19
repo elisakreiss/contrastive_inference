@@ -98,6 +98,15 @@ button:focus,
     background-color: #08415C;
 }
 
+#record {
+    border: line;
+    border-radius: 50%;
+    padding: 10px 10px;
+    max-width: 50%;
+    max-height: 15%;
+    background-color: red;
+}
+
 .progress-bar-container {
     float: right;
     margin: 0 10px 60px 10px;

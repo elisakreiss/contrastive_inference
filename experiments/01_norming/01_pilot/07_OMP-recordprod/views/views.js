@@ -1,3 +1,5 @@
+var theAudio;
+
 var botcaptcha = {
     name: "botcaptcha",
     title: "Are you a bot?",
@@ -160,11 +162,63 @@ var main = {
                 $("#next").click();
             }
         });
+
+        // record.onclick = e => {
+        //     console.log("I was clicked");
+        //     record.disabled = true;
+        //     record.style.backgroundColor = "blue";
+        //     stopRecord.disabled = false;
+        //     audioChunks = [];
+        //     rec.start();
+        // }
+
+        // stopRecord.onclick = e => {
+        //     console.log("I was clicked");
+        //     record.disabled = false;
+        //     stop.disabled = true;
+        //     record.style.backgroundColor = "red";
+        //     rec.stop();
+        // }
+
+        // function handlerFunction(stream) {
+        //     rec = new MediaRecorder(stream);
+        //     rec.ondataavailable = e => {
+        //         audioChunks.push(e.data);
+        //         if (rec.state == "inactive") {
+        //             let blob = new Blob(audioChunks,{type: 'audio/mpeg-3'});
+        //             recordedAudio.src = URL.createObjectURL(blob);
+        //             recordedAudio.controls = true;
+        //             recordedAudio.autoplay = true;
+        //             sendData(blob);
+        //         }
+        //     }
+        // }
+
+        // navigator.mediaDevices.getUserMedia({audio:true})
+        //     .then(stream => {handlerFunction(stream)})
+
+        // var ffmpeg = require('ffmpeg');
+        // try {
+        //     var process = new ffmpeg('path/to/blob/file');
+        //     process.then(function(audio){
+        //         audio.fnExtractSoundToMP3('path/to/new/file.mp3', function(error,file){
+        //             if (!error)
+        //                 console.log('Audio file: ' + file);
+        //         });
+        //     }, function(err){
+        //         console.log('Error: ' + err);
+        //     });
+        // }
+        // catch (e) {
+        //     console.log(e.code);
+        //     console.log(e.msg);
+        // }
         var audio_track;
 
         navigator.mediaDevices.getUserMedia({ audio: true })
           .then(stream => {
             const mediaRecorder = new MediaRecorder(stream);
+            mediaRecoder.mimeType = "audio/wav";
             mediaRecorder.start();
 
             const audioChunks = [];
@@ -175,56 +229,33 @@ var main = {
             mediaRecorder.addEventListener("stop", () => {
               const audioBlob = new Blob(audioChunks);
               const audioUrl = URL.createObjectURL(audioBlob);
-              // const audioUrl = "//elisakreiss.com/Recordings/table";
               const audio = new Audio(audioUrl);
               audio.play();
               audio_track = audio;
+              theAudio = audio;
               console.log(audio_track);
+
+              const fileName = "" + Date.now() + ".wav";
+
+              const file = new File(audioChunks, fileName);
+
+              const formData = new FormData();
+              formData.append("audio-filename", fileName);
+              formData.append("audio-blob", file);
+
+              $.post("https://stanford.edu/~ekreiss/cgi-bin/saveaudio.php",
+                data: formData,
+                success: function(x) {
+                    console.log(x);
+                });
+
+
             });
 
             setTimeout(() => {
               mediaRecorder.stop();
             }, 3000);
           });
-
-        // const recordAudio = () =>
-        //   new Promise(async resolve => {
-        //     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        //     const mediaRecorder = new MediaRecorder(stream);
-        //     const audioChunks = [];
-
-        //     mediaRecorder.addEventListener("dataavailable", event => {
-        //       audioChunks.push(event.data);
-        //     });
-
-        //     const start = () => mediaRecorder.start();
-
-        //     const stop = () =>
-        //       new Promise(resolve => {
-        //         mediaRecorder.addEventListener("stop", () => {
-        //           const audioBlob = new Blob(audioChunks);
-        //           const audioUrl = URL.createObjectURL(audioBlob);
-        //           const audio = new Audio(audioUrl);
-        //           const play = () => audio.play();
-        //           resolve({ audioBlob, audioUrl, play });
-        //         });
-
-        //         mediaRecorder.stop();
-        //       });
-
-        //     resolve({ start, stop });
-        //   });
-
-        // const sleep = time => new Promise(resolve => setTimeout(resolve, time));
-
-        // (async () => {
-        //   const recorder = await recordAudio();
-        //   recorder.start();
-        //   await sleep(3000);
-        //   const audio = await recorder.stop();
-        //   console.log(audio);
-        //   audio.play();
-        // })();
 
         // event listener for buttons; when an input is selected, the response
         // and additional information are stored in exp.trial_info
