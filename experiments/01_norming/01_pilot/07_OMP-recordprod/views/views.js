@@ -244,8 +244,8 @@ var main = {
               formData.append("audio-blob", file);
 
               $.post("https://stanford.edu/~ekreiss/cgi-bin/saveaudio.php",
-                data: formData,
-                success: function(x) {
+                formData,
+                 function(x) {
                     console.log(x);
                 });
 
