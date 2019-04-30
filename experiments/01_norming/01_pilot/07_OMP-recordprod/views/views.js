@@ -233,8 +233,10 @@ var main = {
               audio.play();
               audio_track = audio;
               theAudio = audio;
-              console.log(audio_track);
 
+              // you probably want participant id and trial number in there
+              // save that also to data base
+              // don't forget to try this with different browsers (probably only Chrome and Firefox will work)
               const fileName = "" + Date.now() + ".wav";
 
               const file = new File(audioChunks, fileName);
@@ -246,7 +248,12 @@ var main = {
               $.ajax({
                 url: "https://stanford.edu/~ekreiss/cgi-bin/saveaudio.php", 
                 data: formData, 
-                success: function(x) {console.log(x);}, 
+                success: function(x) {
+// move on code here
+
+                }, error: function(x) {
+                    alert("Sorry, an error occurred! Please contact the requester at ekreiss@stanford.edu to get compensated.");
+                }
                 processData:false, 
                 type:"POST", 
                 contentType: false});
