@@ -1,0 +1,198 @@
+// Frank and Goodman (2012) RSA model
+
+// set of states (here: objects of reference)
+// we represent objects as JavaScript objects to demarcate them from utterances
+// internally we treat objects as strings nonetheless
+var lexicon = {
+    "orange banana": {
+      "orange_banana": .97,
+      "yellow_banana": .01,
+      "red_apple": .01,
+      "yellow_corn": .01,
+      "yellow_egg": .01,
+      "orange_pumpkin": .01,
+      "orange_lettuce": .01
+    },
+    "yellow banana": {
+      "orange_banana": .01,
+      "yellow_banana": .97,
+      "red_apple": .01,
+      "yellow_corn": .01,
+      "yellow_egg": .01,
+      "orange_pumpkin": .01,
+      "orange_lettuce": .01
+    },
+    "orange pumpkin": {
+      "orange_banana": .01,
+      "yellow_banana": .01,
+      "red_apple": .01,
+      "yellow_corn": .01,
+      "yellow_egg": .01,
+      "orange_pumpkin": .97,
+      "orange_lettuce": .01
+    },
+    "orange lettuce": {
+      "orange_banana": .01,
+      "yellow_banana": .01,
+      "red_apple": .01,
+      "yellow_corn": .01,
+      "yellow_egg": .01,
+      "orange_pumpkin": .01,
+      "orange_lettuce": .97
+    },
+    "banana": {
+      "orange_banana": .75,
+      "yellow_banana": .9,
+      "red_apple": .01,
+      "yellow_corn": .01,
+      "yellow_egg": .01,
+      "orange_pumpkin": .01,
+      "orange_lettuce": .01
+    },
+    "yellow corn": {
+      "orange_banana": .01,
+      "yellow_banana": .01,
+      "red_apple": .01,
+      "yellow_corn": .97,
+      "yellow_egg": .01,
+      "orange_pumpkin": .01,
+      "orange_lettuce": .01
+    },
+    "yellow egg": {
+      "orange_banana": .01,
+      "yellow_banana": .01,
+      "red_apple": .01,
+      "yellow_corn": .01,
+      "yellow_egg": .97,
+      "orange_pumpkin": .01,
+      "orange_lettuce": .01
+    },
+    "corn": {
+      "orange_banana": .01,
+      "yellow_banana": .01,
+      "red_apple": .01,
+      "yellow_corn": .9,
+      "yellow_egg": .01,
+      "orange_pumpkin": .01,
+      "orange_lettuce": .01
+    },
+    "egg": {
+      "orange_banana": .01,
+      "yellow_banana": .01,
+      "red_apple": .01,
+      "yellow_corn": .01,
+      "yellow_egg": .6,
+      "orange_pumpkin": .01,
+      "orange_lettuce": .01
+    },
+    "red apple": {
+      "orange_banana": .01,
+      "yellow_banana": .01,
+      "red_apple": .97,
+      "yellow_corn": .01,
+      "yellow_egg": .01,
+      "orange_pumpkin": .01,
+      "orange_lettuce": .01
+    },
+    "apple": {
+      "orange_banana": .01,
+      "yellow_banana": .01,
+      "red_apple": .9,
+      "yellow_corn": .01,
+      "yellow_egg": .01,
+      "orange_pumpkin": .01,
+      "orange_lettuce": .01
+    },
+    "yellow": {
+      "orange_banana": .01,
+      "yellow_banana": .9,
+      "red_apple": .01,
+      "yellow_corn": .9,
+      "yellow_egg": .9,
+      "orange_pumpkin": .01,
+      "orange_lettuce": .01
+    },
+    "red": {
+      "orange_banana": .01,
+      "yellow_banana": .01,
+      "red_apple": .9,
+      "yellow_corn": .01,
+      "yellow_egg": .01,
+      "orange_pumpkin": .01,
+      "orange_lettuce": .01
+    },
+    "orange": {
+      "orange_banana": .9,
+      "yellow_banana": .01,
+      "red_apple": .01,
+      "yellow_corn": .01,
+      "yellow_egg": .01,
+      "orange_pumpkin": .9,
+      "orange_lettuce": .9
+    }
+  };
+
+// prior over world states
+// every object is drawn exactly once
+var objectPrior = function(context) {
+  var obj = uniformDraw(context)
+  return obj 
+}
+
+var nouns = ["banana","apple","egg","corn","pumpkin","lettuce"]
+
+// utterance cost function
+var cost = function(utterance) {
+  // _.includes(utterance," ") ? .3 : 0;
+  _.includes(nouns,utterance) ? 0 : .3;
+};
+
+// meaning function to interpret the utterances
+var meaning = function(utterance, obj){
+  // console.log("utterance: " + utterance);
+  // console.log("obj: " + obj);
+  // console.log(lexicon[utterance][obj]);
+  lexicon[utterance][obj];
+}
+
+// literal listener
+var literalListener = function(utterance,context){
+  Infer({model: function(){
+    var obj = objectPrior(context);
+    factor(meaning(utterance, obj))
+    return obj
+  }})
+}
+
+// set of utterances
+// var utterances = ["yellow banana", "orange banana", "banana", "yellow egg", "egg"]
+// var utterances = ["yellow banana", "orange banana", "banana", "yellow egg", "egg", "apple", "red apple", "yellow corn", "corn", "yellow", "orange", "red", "orange pumpkin", "orange lettuce", "lettuce"]
+var utterances = Object.keys(lexicon);
+// console.log("lexicon.keys")
+// console.log(Object.keys(lexicon))
+
+// set speaker optimality
+var alpha = 3
+
+// pragmatic speaker
+var speaker = function(obj,context){
+  Infer({model: function(){
+    var utterance = uniformDraw(utterances)
+    factor(alpha * (literalListener(utterance,context).score(obj)) - cost(utterance))
+    return utterance
+  }})
+}
+
+// pragmatic listener
+var pragmaticListener = function(utterance){
+  Infer({model: function(){
+    var obj = objectPrior()
+    observe(speaker(obj),utterance)
+    return obj
+  }})
+}
+
+// pragmaticListener("banana")
+// speaker("yellow_banana")
+// literalListener("orange")
+// objectPrior()

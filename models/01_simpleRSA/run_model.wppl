@@ -1,0 +1,46 @@
+// run using:
+// webppl run_model.wppl --require ./refModule/
+
+var contexts = [
+	{
+		condition: "ttp",
+		context: ["yellow_banana", "yellow_corn", "orange_banana"]
+	},
+	{
+		condition: "ttn",
+		context: ["yellow_banana", "yellow_corn", "red_apple"]
+	},
+	{
+		condition: "tap",
+		context: ["yellow_banana", "yellow_egg", "orange_banana"]
+	},
+	{
+		condition: "tan",
+		context: ["yellow_banana", "yellow_egg", "red_apple"]
+	},
+	{
+		condition: "atp",
+		context: ["orange_banana", "orange_pumpkin", "yellow_banana"]
+	},
+	{
+		condition: "atn",
+		context: ["orange_banana", "orange_pumpkin", "red_apple"]
+	},
+	{
+		condition: "aap",
+		context: ["orange_banana", "orange_lettuce", "yellow_banana"]
+	},
+	{
+		condition: "aan",
+		context: ["orange_banana", "orange_lettuce", "red_apple"]
+	}
+]
+
+map(function(condition){
+	console.log("context: " + condition.context);
+
+	var speakerModel = speaker(condition.context[0],condition.context);
+	console.log(speakerModel);
+
+	refModule.writeERP(speakerModel, [condition.condition,condition.context[0],condition.context[1],condition.context[2]], "results_wppl/data/speaker_exploration.csv",2);
+},contexts)

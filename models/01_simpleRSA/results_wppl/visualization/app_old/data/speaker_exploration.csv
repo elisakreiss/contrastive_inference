@@ -1,0 +1,96 @@
+ttp,yellow_banana,yellow_corn,blue_banana,red,0.06
+ttp,yellow_banana,yellow_corn,blue_banana,blue,0.02
+ttp,yellow_banana,yellow_corn,blue_banana,yellow,0.11
+ttp,yellow_banana,yellow_corn,blue_banana,corn,0.02
+ttp,yellow_banana,yellow_corn,blue_banana,yellow corn,0.02
+ttp,yellow_banana,yellow_corn,blue_banana,red apple,0.06
+ttp,yellow_banana,yellow_corn,blue_banana,apple,0.08
+ttp,yellow_banana,yellow_corn,blue_banana,egg,0.08
+ttp,yellow_banana,yellow_corn,blue_banana,yellow egg,0.06
+ttp,yellow_banana,yellow_corn,blue_banana,banana,0.18
+ttp,yellow_banana,yellow_corn,blue_banana,blue banana,0.02
+ttp,yellow_banana,yellow_corn,blue_banana,yellow banana,0.29
+ttn,yellow_banana,yellow_corn,red_apple,red,0.02
+ttn,yellow_banana,yellow_corn,red_apple,blue,0.05
+ttn,yellow_banana,yellow_corn,red_apple,yellow,0.10
+ttn,yellow_banana,yellow_corn,red_apple,corn,0.02
+ttn,yellow_banana,yellow_corn,red_apple,yellow corn,0.01
+ttn,yellow_banana,yellow_corn,red_apple,red apple,0.01
+ttn,yellow_banana,yellow_corn,red_apple,apple,0.02
+ttn,yellow_banana,yellow_corn,red_apple,egg,0.07
+ttn,yellow_banana,yellow_corn,red_apple,yellow egg,0.05
+ttn,yellow_banana,yellow_corn,red_apple,banana,0.32
+ttn,yellow_banana,yellow_corn,red_apple,blue banana,0.05
+ttn,yellow_banana,yellow_corn,red_apple,yellow banana,0.26
+tap,yellow_banana,yellow_egg,blue_banana,red,0.06
+tap,yellow_banana,yellow_egg,blue_banana,blue,0.02
+tap,yellow_banana,yellow_egg,blue_banana,yellow,0.11
+tap,yellow_banana,yellow_egg,blue_banana,corn,0.08
+tap,yellow_banana,yellow_egg,blue_banana,yellow corn,0.06
+tap,yellow_banana,yellow_egg,blue_banana,red apple,0.06
+tap,yellow_banana,yellow_egg,blue_banana,apple,0.08
+tap,yellow_banana,yellow_egg,blue_banana,egg,0.04
+tap,yellow_banana,yellow_egg,blue_banana,yellow egg,0.02
+tap,yellow_banana,yellow_egg,blue_banana,banana,0.18
+tap,yellow_banana,yellow_egg,blue_banana,blue banana,0.02
+tap,yellow_banana,yellow_egg,blue_banana,yellow banana,0.29
+tan,yellow_banana,yellow_egg,red_apple,red,0.02
+tan,yellow_banana,yellow_egg,red_apple,blue,0.05
+tan,yellow_banana,yellow_egg,red_apple,yellow,0.10
+tan,yellow_banana,yellow_egg,red_apple,corn,0.07
+tan,yellow_banana,yellow_egg,red_apple,yellow corn,0.05
+tan,yellow_banana,yellow_egg,red_apple,red apple,0.01
+tan,yellow_banana,yellow_egg,red_apple,apple,0.02
+tan,yellow_banana,yellow_egg,red_apple,egg,0.03
+tan,yellow_banana,yellow_egg,red_apple,yellow egg,0.01
+tan,yellow_banana,yellow_egg,red_apple,banana,0.31
+tan,yellow_banana,yellow_egg,red_apple,blue banana,0.05
+tan,yellow_banana,yellow_egg,red_apple,yellow banana,0.26
+atp,blue_banana,yellow_corn,blue_banana,red,0.07
+atp,blue_banana,yellow_corn,blue_banana,blue,0.14
+atp,blue_banana,yellow_corn,blue_banana,yellow,0.02
+atp,blue_banana,yellow_corn,blue_banana,corn,0.03
+atp,blue_banana,yellow_corn,blue_banana,yellow corn,0.02
+atp,blue_banana,yellow_corn,blue_banana,red apple,0.07
+atp,blue_banana,yellow_corn,blue_banana,apple,0.10
+atp,blue_banana,yellow_corn,blue_banana,egg,0.10
+atp,blue_banana,yellow_corn,blue_banana,yellow egg,0.07
+atp,blue_banana,yellow_corn,blue_banana,banana,0.17
+atp,blue_banana,yellow_corn,blue_banana,blue banana,0.14
+atp,blue_banana,yellow_corn,blue_banana,yellow banana,0.07
+atn,blue_banana,yellow_corn,red_apple,red,0.02
+atn,blue_banana,yellow_corn,red_apple,blue,0.23
+atn,blue_banana,yellow_corn,red_apple,yellow,0.02
+atn,blue_banana,yellow_corn,red_apple,corn,0.02
+atn,blue_banana,yellow_corn,red_apple,yellow corn,0.01
+atn,blue_banana,yellow_corn,red_apple,red apple,0.01
+atn,blue_banana,yellow_corn,red_apple,apple,0.02
+atn,blue_banana,yellow_corn,red_apple,egg,0.07
+atn,blue_banana,yellow_corn,red_apple,yellow egg,0.05
+atn,blue_banana,yellow_corn,red_apple,banana,0.25
+atn,blue_banana,yellow_corn,red_apple,blue banana,0.25
+atn,blue_banana,yellow_corn,red_apple,yellow banana,0.05
+aap,blue_banana,yellow_egg,blue_banana,red,0.07
+aap,blue_banana,yellow_egg,blue_banana,blue,0.14
+aap,blue_banana,yellow_egg,blue_banana,yellow,0.02
+aap,blue_banana,yellow_egg,blue_banana,corn,0.09
+aap,blue_banana,yellow_egg,blue_banana,yellow corn,0.07
+aap,blue_banana,yellow_egg,blue_banana,red apple,0.07
+aap,blue_banana,yellow_egg,blue_banana,apple,0.09
+aap,blue_banana,yellow_egg,blue_banana,egg,0.05
+aap,blue_banana,yellow_egg,blue_banana,yellow egg,0.02
+aap,blue_banana,yellow_egg,blue_banana,banana,0.17
+aap,blue_banana,yellow_egg,blue_banana,blue banana,0.14
+aap,blue_banana,yellow_egg,blue_banana,yellow banana,0.07
+aan,blue_banana,yellow_egg,red_apple,red,0.02
+aan,blue_banana,yellow_egg,red_apple,blue,0.23
+aan,blue_banana,yellow_egg,red_apple,yellow,0.02
+aan,blue_banana,yellow_egg,red_apple,corn,0.07
+aan,blue_banana,yellow_egg,red_apple,yellow corn,0.05
+aan,blue_banana,yellow_egg,red_apple,red apple,0.01
+aan,blue_banana,yellow_egg,red_apple,apple,0.02
+aan,blue_banana,yellow_egg,red_apple,egg,0.03
+aan,blue_banana,yellow_egg,red_apple,yellow egg,0.01
+aan,blue_banana,yellow_egg,red_apple,banana,0.25
+aan,blue_banana,yellow_egg,red_apple,blue banana,0.25
+aan,blue_banana,yellow_egg,red_apple,yellow banana,0.05
