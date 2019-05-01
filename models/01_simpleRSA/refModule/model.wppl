@@ -9,7 +9,7 @@ var lexicon = {
       "yellow_banana": .01,
       "red_apple": .01,
       "yellow_corn": .01,
-      "yellow_egg": .01,
+      "yellow_strawberry": .01,
       "orange_pumpkin": .01,
       "orange_lettuce": .01
     },
@@ -18,7 +18,7 @@ var lexicon = {
       "yellow_banana": .97,
       "red_apple": .01,
       "yellow_corn": .01,
-      "yellow_egg": .01,
+      "yellow_strawberry": .01,
       "orange_pumpkin": .01,
       "orange_lettuce": .01
     },
@@ -27,7 +27,7 @@ var lexicon = {
       "yellow_banana": .01,
       "red_apple": .01,
       "yellow_corn": .01,
-      "yellow_egg": .01,
+      "yellow_strawberry": .01,
       "orange_pumpkin": .97,
       "orange_lettuce": .01
     },
@@ -36,7 +36,7 @@ var lexicon = {
       "yellow_banana": .01,
       "red_apple": .01,
       "yellow_corn": .01,
-      "yellow_egg": .01,
+      "yellow_strawberry": .01,
       "orange_pumpkin": .01,
       "orange_lettuce": .97
     },
@@ -45,7 +45,7 @@ var lexicon = {
       "yellow_banana": .9,
       "red_apple": .01,
       "yellow_corn": .01,
-      "yellow_egg": .01,
+      "yellow_strawberry": .01,
       "orange_pumpkin": .01,
       "orange_lettuce": .01
     },
@@ -54,16 +54,16 @@ var lexicon = {
       "yellow_banana": .01,
       "red_apple": .01,
       "yellow_corn": .97,
-      "yellow_egg": .01,
+      "yellow_strawberry": .01,
       "orange_pumpkin": .01,
       "orange_lettuce": .01
     },
-    "yellow egg": {
+    "yellow strawberry": {
       "orange_banana": .01,
       "yellow_banana": .01,
       "red_apple": .01,
       "yellow_corn": .01,
-      "yellow_egg": .97,
+      "yellow_strawberry": .97,
       "orange_pumpkin": .01,
       "orange_lettuce": .01
     },
@@ -72,25 +72,43 @@ var lexicon = {
       "yellow_banana": .01,
       "red_apple": .01,
       "yellow_corn": .9,
-      "yellow_egg": .01,
+      "yellow_strawberry": .01,
       "orange_pumpkin": .01,
       "orange_lettuce": .01
     },
-    "egg": {
+    "strawberry": {
       "orange_banana": .01,
       "yellow_banana": .01,
       "red_apple": .01,
       "yellow_corn": .01,
-      "yellow_egg": .6,
+      "yellow_strawberry": .6,
       "orange_pumpkin": .01,
       "orange_lettuce": .01
+    },
+    "pumpkin": {
+      "orange_banana": .01,
+      "yellow_banana": .01,
+      "red_apple": .01,
+      "yellow_corn": .01,
+      "yellow_strawberry": .01,
+      "orange_pumpkin": .9,
+      "orange_lettuce": .01
+    },
+    "lettuce": {
+      "orange_banana": .01,
+      "yellow_banana": .01,
+      "red_apple": .01,
+      "yellow_corn": .01,
+      "yellow_strawberry": .01,
+      "orange_pumpkin": .01,
+      "orange_lettuce": .6
     },
     "red apple": {
       "orange_banana": .01,
       "yellow_banana": .01,
       "red_apple": .97,
       "yellow_corn": .01,
-      "yellow_egg": .01,
+      "yellow_strawberry": .01,
       "orange_pumpkin": .01,
       "orange_lettuce": .01
     },
@@ -99,7 +117,7 @@ var lexicon = {
       "yellow_banana": .01,
       "red_apple": .9,
       "yellow_corn": .01,
-      "yellow_egg": .01,
+      "yellow_strawberry": .01,
       "orange_pumpkin": .01,
       "orange_lettuce": .01
     },
@@ -108,7 +126,7 @@ var lexicon = {
       "yellow_banana": .9,
       "red_apple": .01,
       "yellow_corn": .9,
-      "yellow_egg": .9,
+      "yellow_strawberry": .9,
       "orange_pumpkin": .01,
       "orange_lettuce": .01
     },
@@ -117,7 +135,7 @@ var lexicon = {
       "yellow_banana": .01,
       "red_apple": .9,
       "yellow_corn": .01,
-      "yellow_egg": .01,
+      "yellow_strawberry": .01,
       "orange_pumpkin": .01,
       "orange_lettuce": .01
     },
@@ -126,7 +144,7 @@ var lexicon = {
       "yellow_banana": .01,
       "red_apple": .01,
       "yellow_corn": .01,
-      "yellow_egg": .01,
+      "yellow_strawberry": .01,
       "orange_pumpkin": .9,
       "orange_lettuce": .9
     }
@@ -139,7 +157,7 @@ var objectPrior = function(context) {
   return obj 
 }
 
-var nouns = ["banana","apple","egg","corn","pumpkin","lettuce"]
+var nouns = ["banana","apple","strawberry","corn","pumpkin","lettuce"]
 
 // utterance cost function
 var cost = function(utterance) {
@@ -165,20 +183,24 @@ var literalListener = function(utterance,context){
 }
 
 // set of utterances
-// var utterances = ["yellow banana", "orange banana", "banana", "yellow egg", "egg"]
-// var utterances = ["yellow banana", "orange banana", "banana", "yellow egg", "egg", "apple", "red apple", "yellow corn", "corn", "yellow", "orange", "red", "orange pumpkin", "orange lettuce", "lettuce"]
-var utterances = Object.keys(lexicon);
-// console.log("lexicon.keys")
-// console.log(Object.keys(lexicon))
+// var utterances = ["yellow banana", "orange banana", "banana", "yellow strawberry", "strawberry", "apple", "red apple", "yellow corn", "corn", "yellow", "orange", "red", "orange pumpkin", "orange lettuce", "lettuce"]
+// var utterances = Object.keys(lexicon);
+var filter_utterances = function(context){
+  var list = map(function(item){
+    _.flatten([item.replace("_"," "), item.split("_")])
+  },context)
+  return _.uniq(_.flatten(list))
+}
 
 // set speaker optimality
-var alpha = 3
+var alpha = 10
 
 // pragmatic speaker
 var speaker = function(obj,context){
   Infer({model: function(){
+    var utterances = filter_utterances(context);
     var utterance = uniformDraw(utterances)
-    factor(alpha * (literalListener(utterance,context).score(obj)) - cost(utterance))
+    factor(alpha * (literalListener(utterance,context).score(obj) - cost(utterance)))
     return utterance
   }})
 }

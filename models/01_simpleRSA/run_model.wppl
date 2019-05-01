@@ -12,11 +12,11 @@ var contexts = [
 	},
 	{
 		condition: "tap",
-		context: ["yellow_banana", "yellow_egg", "orange_banana"]
+		context: ["yellow_banana", "yellow_strawberry", "orange_banana"]
 	},
 	{
 		condition: "tan",
-		context: ["yellow_banana", "yellow_egg", "red_apple"]
+		context: ["yellow_banana", "yellow_strawberry", "red_apple"]
 	},
 	{
 		condition: "atp",

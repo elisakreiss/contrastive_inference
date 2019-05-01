@@ -1,0 +1,60 @@
+ttp,yellow_banana,yellow_corn,orange_banana,orange,0.02
+ttp,yellow_banana,yellow_corn,orange_banana,orange banana,0.02
+ttp,yellow_banana,yellow_corn,orange_banana,corn,0.05
+ttp,yellow_banana,yellow_corn,orange_banana,yellow corn,0.02
+ttp,yellow_banana,yellow_corn,orange_banana,banana,0.40
+ttp,yellow_banana,yellow_corn,orange_banana,yellow,0.14
+ttp,yellow_banana,yellow_corn,orange_banana,yellow banana,0.35
+ttn,yellow_banana,yellow_corn,red_apple,apple,0.04
+ttn,yellow_banana,yellow_corn,red_apple,red,0.02
+ttn,yellow_banana,yellow_corn,red_apple,red apple,0.01
+ttn,yellow_banana,yellow_corn,red_apple,corn,0.04
+ttn,yellow_banana,yellow_corn,red_apple,yellow corn,0.01
+ttn,yellow_banana,yellow_corn,red_apple,banana,0.54
+ttn,yellow_banana,yellow_corn,red_apple,yellow,0.10
+ttn,yellow_banana,yellow_corn,red_apple,yellow banana,0.24
+tap,yellow_banana,yellow_strawberry,orange_banana,orange,0.02
+tap,yellow_banana,yellow_strawberry,orange_banana,orange banana,0.02
+tap,yellow_banana,yellow_strawberry,orange_banana,strawberry,0.08
+tap,yellow_banana,yellow_strawberry,orange_banana,yellow strawberry,0.02
+tap,yellow_banana,yellow_strawberry,orange_banana,banana,0.39
+tap,yellow_banana,yellow_strawberry,orange_banana,yellow,0.13
+tap,yellow_banana,yellow_strawberry,orange_banana,yellow banana,0.34
+tan,yellow_banana,yellow_strawberry,red_apple,apple,0.04
+tan,yellow_banana,yellow_strawberry,red_apple,red,0.01
+tan,yellow_banana,yellow_strawberry,red_apple,red apple,0.01
+tan,yellow_banana,yellow_strawberry,red_apple,strawberry,0.06
+tan,yellow_banana,yellow_strawberry,red_apple,yellow strawberry,0.01
+tan,yellow_banana,yellow_strawberry,red_apple,banana,0.53
+tan,yellow_banana,yellow_strawberry,red_apple,yellow,0.09
+tan,yellow_banana,yellow_strawberry,red_apple,yellow banana,0.24
+atp,orange_banana,orange_pumpkin,yellow_banana,yellow,0.03
+atp,orange_banana,orange_pumpkin,yellow_banana,yellow banana,0.02
+atp,orange_banana,orange_pumpkin,yellow_banana,pumpkin,0.06
+atp,orange_banana,orange_pumpkin,yellow_banana,orange pumpkin,0.02
+atp,orange_banana,orange_pumpkin,yellow_banana,banana,0.30
+atp,orange_banana,orange_pumpkin,yellow_banana,orange,0.16
+atp,orange_banana,orange_pumpkin,yellow_banana,orange banana,0.41
+atn,orange_banana,orange_pumpkin,red_apple,apple,0.04
+atn,orange_banana,orange_pumpkin,red_apple,red,0.02
+atn,orange_banana,orange_pumpkin,red_apple,red apple,0.02
+atn,orange_banana,orange_pumpkin,red_apple,pumpkin,0.04
+atn,orange_banana,orange_pumpkin,red_apple,orange pumpkin,0.02
+atn,orange_banana,orange_pumpkin,red_apple,banana,0.49
+atn,orange_banana,orange_pumpkin,red_apple,orange,0.11
+atn,orange_banana,orange_pumpkin,red_apple,orange banana,0.27
+aap,orange_banana,orange_lettuce,yellow_banana,yellow,0.02
+aap,orange_banana,orange_lettuce,yellow_banana,yellow banana,0.02
+aap,orange_banana,orange_lettuce,yellow_banana,lettuce,0.10
+aap,orange_banana,orange_lettuce,yellow_banana,orange lettuce,0.02
+aap,orange_banana,orange_lettuce,yellow_banana,banana,0.29
+aap,orange_banana,orange_lettuce,yellow_banana,orange,0.15
+aap,orange_banana,orange_lettuce,yellow_banana,orange banana,0.39
+aan,orange_banana,orange_lettuce,red_apple,apple,0.04
+aan,orange_banana,orange_lettuce,red_apple,red,0.02
+aan,orange_banana,orange_lettuce,red_apple,red apple,0.01
+aan,orange_banana,orange_lettuce,red_apple,lettuce,0.07
+aan,orange_banana,orange_lettuce,red_apple,orange lettuce,0.01
+aan,orange_banana,orange_lettuce,red_apple,banana,0.48
+aan,orange_banana,orange_lettuce,red_apple,orange,0.10
+aan,orange_banana,orange_lettuce,red_apple,orange banana,0.26
