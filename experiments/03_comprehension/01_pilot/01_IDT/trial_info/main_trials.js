@@ -1,18 +1,27 @@
 var participant_cond = "typical";
 
-function create_random_distractor(colors,types){
-    // choose color that doesn't occur in the context yet
-    do {
-        var shuffled_lexicon = _.shuffle(color_obj_Lexicon)
-        var dist_color = shuffled_lexicon[0].color;
-    } while(colors.includes(dist_color));
+function create_random_distractor(colors,types,typicality="random"){
 
-    // select objects in this color
-    var possible_types = _.flatten([shuffled_lexicon[0].typical,shuffled_lexicon[0].atypical]);
-
-    // choose object that doesn't occur in the context yet
     do {
+
+        // choose color that doesn't occur in the context yet
+        do {
+            var shuffled_lexicon = _.shuffle(color_obj_Lexicon)
+            var dist_color = shuffled_lexicon[0].color;
+        } while(colors.includes(dist_color));
+
+        // console.log("dist_color: "+dist_color);
+
+        // select objects in this color
+        if (typicality=="random"){
+            var possible_types = _.flatten([shuffled_lexicon[0].typical,shuffled_lexicon[0].atypical]);    
+        } else {
+            // console.log("shuffled_lexicon[0][typicality]: " + shuffled_lexicon[0][typicality]);
+            var possible_types = shuffled_lexicon[0][typicality];
+        }
+
         var dist_type = _.shuffle(possible_types)[0];
+
     } while(types.includes(dist_type));
 
     return([dist_color,dist_type])
@@ -154,7 +163,7 @@ for (col in color_obj_Lexicon){
     }
 }
 
-function compare(a, b) {
+function compare_contrast(a, b) {
     const contextA = a.contrast;
     const contextB = b.contrast;
 
@@ -168,10 +177,14 @@ function compare(a, b) {
 }
 
 function create_fillers(all_contexts){
-	console.log(all_contexts);
+
+    // TODO: This ignores typicality! Unmodified refexps should refer to typical objects!
+    // strong preference for contexts with typical distractor
+    console.log(all_contexts);
+    
     var contexts = (_.shuffle(all_contexts)).slice(0,35);
     // contrast present contexts are in the front now
-    var sorted = contexts.sort(compare);
+    var sorted = contexts.sort(compare_contrast);
     for (i in sorted){
         if (i < 5){
             // 5x utterance: modified; target: contrast
@@ -186,6 +199,7 @@ function create_fillers(all_contexts){
             // 20x utterance: unmodified; target: random distractor
             var ref_object = "distractor";
             var utterance = "unmodified";
+            [sorted[i].distractor_color,sorted[i].distractor_type] = create_random_distractor([sorted[i].targetcomp_color,sorted[i].contrast_color],[sorted[i].target_type,sorted[i].comp_type,sorted[i].contrast_type],typicality="typical");
         }
         sorted[i].ref_object = ref_object;
         sorted[i].utterance = utterance;
@@ -193,7 +207,6 @@ function create_fillers(all_contexts){
     }
     return(sorted)
 }
-
 
 var filler_contexts = create_fillers(potential_filler_contexts);
 

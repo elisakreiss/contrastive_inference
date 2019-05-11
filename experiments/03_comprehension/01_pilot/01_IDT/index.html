@@ -138,23 +138,26 @@
             {{{ question }}}
             </p>
             {{/ question }}
-            <div class="picture">
-                <!-- <img src={{ picture }} alt="a picture" height="180"> -->
-            </div>
-            <br>
-            <p class="answer-container">
-                <textarea rows="1" cols="40" id="refexp-response"></textarea>
-            </p>
+            <button id="next_word">Done -- NEXT WORD, please!</button>
+
+            <section class="answer-container">
+                <div class="grid-container">
+                  <div class="grid-item" id="grid_pos1"><img id="pos1" src={{ item1 }} style="width:150px;"></div>
+                  <div class="grid-item" id="grid_pos2"><img id="pos2" src={{ item2 }} style="width:150px;"></div>
+                  <div class="grid-item" id="grid_pos3"><img id="pos3" src={{ item3 }} style="width:150px;"></div>
+                  <div class="grid-item" id="grid_pos4"><img id="pos4" src={{ item4 }} style="width:150px;"></div>
+                </div>
+            </section>
             <br>
 
             {{# button }}
             <button id="next">{{ button }}</button>
             {{/ button }}
             {{^ button }}
-            <button id="next">Next</button>
+            <button id="next">Continue</button>
             {{/ button }}
             <section class="answer-container">
-                <p class="text" id="error" style="color: #7CB637">You haven't entered anything into the text field.</p>
+                <p class="text" id="error" style="color: #7CB637">Please select an object before you continue.</p>
             </section>
         </div>
         </script>

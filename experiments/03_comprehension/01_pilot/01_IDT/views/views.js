@@ -141,38 +141,160 @@ var main = {
         var viewTemplate = $("#main-view").html();
 
         console.log(exp.trial_info.main_trials[CT]);
+        var context_info = exp.trial_info.main_trials[CT];
+
+        var items = {
+            target: context_info.targetcomp_color + "_" + context_info.target_type,
+            comp: context_info.targetcomp_color + "_" + context_info.comp_type,
+            contrast: context_info.contrast_color + "_" + context_info.contrast_type,
+            distractor: context_info.distractor_color + "_" + context_info.distractor_type
+        };
+
+        [pos1,pos2,pos3,pos4] = _.shuffle(["target","comp","contrast","distractor"]);
+
+        var refexp_target = items[context_info.ref_object];
+
+        var all_utts = [""];
+
+        if (context_info.utterance == "modified"){
+            var adj_utterance = refexp_target.split("_").shift();
+            var full_utterance = refexp_target.replace("_"," ");
+            all_utts.push(adj_utterance,full_utterance);
+            // console.log("modified utterances: " + all_utts);
+        } else {
+            var full_utterance = refexp_target.split("_").pop();
+            all_utts.push(full_utterance);
+            // console.log("unmodified utterances: " + all_utts);
+        }
+
+        var utt = 0;
+
+        var selected_items = [];
+        var selected_item = "initial";
+        var reaction_times = [];
+        var rt = [];
+        var startingTime;
 
         $("#main").html(
             Mustache.render(viewTemplate, {
-                question: "What is this?",
-                picture: "images/.png"
+                question: "Click on the " + all_utts[utt] + "!",
+                item1: "images/" + items[pos1] + ".png",
+                item2: "images/" + items[pos2] + ".png",
+                item3: "images/" + items[pos3] + ".png",
+                item4: "images/" + items[pos4] + ".png"
             })
         );
+
+        $("#next").css("visibility", "hidden");
+
+        //
+        // FUNCTIONS
+        //
+
+        function show_border(grid_id){
+            hide_borders();
+            $("#grid_" + grid_id).css({
+                "border-color": "rgba(63, 195, 128, 1)", 
+                "padding": "16px",
+                "border-width":"5px", 
+                "border-style":"solid"
+            });
+        };
+
+        function hide_borders(){
+            var grid_cells = ["pos1","pos2","pos3","pos4"];
+            for (id in grid_cells){
+                $("#grid_" + grid_cells[id]).css({
+                    "border-color": "rgba(0, 0, 0, 0.8)", 
+                    "padding":"20px",
+                    "border-width":"1px", 
+                    "border-style":"solid"
+                });    
+            }
+        };
+
+        function check_next_step(){
+            if ((utt+1) < all_utts.length){
+                $("#next_word").css("visibility", "visible");
+            } else if ((utt+1) == all_utts.length){
+                $("#next").css("visibility", "visible");
+            } else {
+                console.log("CATASTROPHE!!!!!!")
+            }
+        }
+
+        function show_next_utt(){
+            $(".question").text("Click on the " + all_utts[utt] + "!");
+
+            $("#error").hide();
+            $("#next_word").css("visibility", "hidden");
+            rt = [];
+            startingTime = Date.now();
+        }
+
+        //
+        //
+        //
+
+        show_next_utt();
+
+        $("#pos1,#pos2,#pos3,#pos4").click(function(){
+            rt.push(Date.now()-startingTime);
+            show_border(this.id);
+            selected_item = items[eval(this.id)];
+            check_next_step();
+        });
+
+        // BUTTONS
+
+        $("#next_word").on("click", function(){
+            reaction_times.push(rt);
+            hide_borders();
+            utt = utt+1;
+            if (selected_item != "initial") selected_items.push(selected_item);
+            show_next_utt();
+        })
 
 
         // event listener for buttons; when an input is selected, the response
         // and additional information are stored in exp.trial_info
         $("#next").on("click", function() {
-            if($("#refexp-response").val().length == 0) {
-                $("#error").show();
-            } else {
-                var RT = Date.now() - startingTime; // measure RT before anything else
-                var trial_data = {
-                    trial_number: CT + 1,
-                    type: noun,
-                    color: adj,
-                    typicality_cat: typicality,
-                    refexp: $("#refexp-response").val()
-                };
-                exp.trial_data.push(trial_data);
-                exp.findNextView();
+            reaction_times.push(rt);
+            selected_items.push(selected_item);
+            console.log(selected_items);
+            var trial_data = {
+                trial_number: CT + 1,
+                trial_type: context_info.trial_type,
+                condition: context_info.condition,
+                context_id: context_info.context,
+                ref_object: context_info.ref_object,
+                target: items.target,
+                comp: items.comp,
+                contrast: items.contrast,
+                distractor: items.distractor,
+                pos1: pos1,
+                pos2: pos2,
+                pos3: pos3,
+                pos4: pos4,
+                utterance: full_utterance,
+                utterance_cat: context_info.utterance,
+                selected_item_prior: selected_items[0],
+                selected_item1: selected_items[1],
+                selected_item2: selected_items[2],
+                // maybe add binary typicality values?
+                reaction_time_prior: reaction_times[0],
+                reaction_time1: reaction_times[1],
+                reaction_time2: reaction_times[2],
+                RT: Date.now()-initialStartingTime
             };
+            exp.trial_data.push(trial_data);
+            exp.findNextView();
         });
 
         // record trial starting time
-        var startingTime = Date.now();
+        var initialStartingTime = Date.now();
     },
-    trials: 55
+    trials: 3
 };
 
 var postTest = {

@@ -127,6 +127,21 @@ button:focus,
     height: 14px;
 }
 
+.grid-container {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  /*background-color: #2196F3;*/
+  padding: 5px;
+}
+
+.grid-item {
+  background-color: #d8d8d8;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+
 .stimulus-container {
     height: 300px;
     margin: 0 auto;
@@ -198,6 +213,12 @@ button:focus,
 
 .answer-container .img-answer {
     margin: 20px;
+}
+
+#next_word {
+    background-color: grey;
+    margin-top: 0px;
+    margin-bottom: 30px;
 }
 
 /* slider response */
