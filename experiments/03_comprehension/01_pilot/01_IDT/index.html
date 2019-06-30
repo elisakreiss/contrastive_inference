@@ -30,6 +30,7 @@
 
         <!-- local trial_info files -->
         <script src="trial_info/main_trials.js"></script>
+        <script src="trial_info/practice_trials.js"></script>
 
         <!-- views -->
         <script src="views/views.js"></script>
@@ -130,9 +131,49 @@
             </div>
         </script>
 
+        <!-- practice view (buttons response) -->
+        <script id="practice-view" type="text/html">
+            <div class="view">
+                {{# title }}
+                <h1 class="title">{{ title }}</h1>
+                {{/ title }}
+    
+                {{# question }}
+                <p class="question">
+                {{{ question }}}
+                </p>
+                {{/ question }}
+                <button id="next_word">Done -- NEXT WORD, please!</button>
+    
+                <section class="answer-container">
+                    <div class="grid-container">
+                      <div class="grid-item" id="grid_pos1"><img id="pos1" src={{ item1 }} style="width:150px;"></div>
+                      <div class="grid-item" id="grid_pos2"><img id="pos2" src={{ item2 }} style="width:150px;"></div>
+                      <div class="grid-item" id="grid_pos3"><img id="pos3" src={{ item3 }} style="width:150px;"></div>
+                      <div class="grid-item" id="grid_pos4"><img id="pos4" src={{ item4 }} style="width:150px;"></div>
+                    </div>
+                </section>
+                <br>
+    
+                {{# button }}
+                <button id="next">{{ button }}</button>
+                {{/ button }}
+                {{^ button }}
+                <button id="next">Continue</button>
+                {{/ button }}
+                <section class="answer-container">
+                    <p class="text" id="error" style="color: #7CB637">Please select an object before you continue.</p>
+                </section>
+            </div>
+            </script>
+
         <!-- main view (buttons response) -->
         <script id="main-view" type="text/html">
         <div class="view">
+            {{# title }}
+            <h1 class="title">{{ title }}</h1>
+            {{/ title }}
+
             {{# question }}
             <p class="question">
             {{{ question }}}
