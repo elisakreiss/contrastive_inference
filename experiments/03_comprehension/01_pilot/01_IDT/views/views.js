@@ -156,7 +156,7 @@ var practice = {
     $('#main').html(
       Mustache.render(viewTemplate, {
         title: 'What should another person click on?',
-        question: 'Click on the blub!',
+        question: 'Click on the ',
         item1: 'images/' + items[pos1] + '.png',
         item2: 'images/' + items[pos2] + '.png',
         item3: 'images/' + items[pos3] + '.png',
@@ -164,26 +164,59 @@ var practice = {
       })
     );
 
+    $('#error').css('visibility', 'hidden');
+    $('#refexp').focus();
+
+    var posAll = [pos1, pos2, pos3, pos4];
+    for (var obj in posAll) {
+      if (posAll[obj] === 'target') {
+        var itemNr = parseInt(obj) + 1;
+        $('#grid_pos' + itemNr).css({
+          'border-color': 'rgba(63, 195, 128, 1)',
+          'padding': '16px',
+          'border-width': '5px',
+          'border-style': 'solid'
+        });
+      }
+    }
+
+    // pressing enter key triggers "continue" button press
+    $('#refexp').keypress(function (e) {
+      var key = e.which;
+      if (key === 13) {
+        $('#next').click();
+      }
+    });
+
     // event listener for buttons; when an input is selected, the response
     // and additional information are stored in exp.trial_info
     $('#next').on('click', function () {
-      var trialData = {
-        trial_number: CT + 1,
-        trial_type: 'practice',
-        condition: contextInfo.condition,
-        context_id: contextInfo.context,
-        refObject: contextInfo.refObject,
-        target: items.target,
-        comp: items.comp,
-        contrast: items.contrast,
-        distractor: items.distractor,
-        utterance: fullUtterance,
-        RT: Date.now() - initialStartingTime
-      };
-      exp.trial_data.push(trialData);
-      exp.findNextView();
+      console.log($('#refexp').val());
+      if ($('#refexp').val().length < 3) {
+        $('#error').css('visibility', 'visible');
+        $('#refexp').focus();
+      } else {
+        var trialData = {
+          trial_number: CT + 1,
+          trial_type: 'practice',
+          condition: contextInfo.condition,
+          context_id: contextInfo.context,
+          target: items.target,
+          comp: items.comp,
+          contrast: items.contrast,
+          distractor: items.distractor,
+          refObject: 'target',
+          pos1: pos1,
+          pos2: pos2,
+          pos3: pos3,
+          pos4: pos4,
+          utterance: $('#refexp').val(),
+          RT: Date.now() - initialStartingTime
+        };
+        exp.trial_data.push(trialData);
+        exp.findNextView();
+      }
     });
-
     // record trial starting time
     var initialStartingTime = Date.now();
   },

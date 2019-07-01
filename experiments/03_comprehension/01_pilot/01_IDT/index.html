@@ -140,10 +140,9 @@
     
                 {{# question }}
                 <p class="question">
-                {{{ question }}}
+                {{{ question }}} <input type="text" id="refexp" placeholder="..." style="font-size:25px;"> !
                 </p>
                 {{/ question }}
-                <button id="next_word">Done -- NEXT WORD, please!</button>
     
                 <section class="answer-container">
                     <div class="grid-container">
@@ -162,7 +161,7 @@
                 <button id="next">Continue</button>
                 {{/ button }}
                 <section class="answer-container">
-                    <p class="text" id="error" style="color: #7CB637">Please select an object before you continue.</p>
+                    <p class="text" id="error" style="color: #7CB637">Please enter into the text field what the other person should click on.</p>
                 </section>
             </div>
             </script>
