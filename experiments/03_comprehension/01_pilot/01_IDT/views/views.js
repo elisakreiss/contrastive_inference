@@ -138,7 +138,7 @@ var intro = {
 var practiceIntro = {
   name: 'practiceIntro',
   title: 'First Part',
-  text: 'First, you are the speaker. You will see 4 objects, one of them with a green border. You are asked to complete the sentence "Click on the ... !" such that another person knows which one was the target.',
+  text: 'First, you are the speaker. You will see 4 objects, one of them with a green border, just as shown below. You are asked to complete the sentence "Click on the ... !" such that another person knows which one was the target.',
   buttonText: 'Let\'s go!',
   render: function () {
     var viewTemplate = $('#practiceIntro-view').html();
@@ -253,7 +253,7 @@ var practice = {
 var mainIntro = {
   name: 'mainIntro',
   title: 'Second Part',
-  text: 'Now, it\'s your turn to select the right object! Word by word a message will uncover. After each new word you are asked to make a guess which object the speaker might be referring to.',
+  text: 'Now, it\'s your turn to select the right object! <strong>Word by word a message will uncover</strong>. After each new word you are asked to make a guess which object the speaker might be referring to.',
   buttonText: 'Let\'s go!',
   render: function () {
     var viewTemplate = $('#mainIntro-view').html();

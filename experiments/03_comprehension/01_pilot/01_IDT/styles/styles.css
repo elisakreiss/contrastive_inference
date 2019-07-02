@@ -33,7 +33,7 @@ hr {
     box-sizing: border-box;
     max-width: 960px;
     margin: 0 auto;
-    padding: 50px 0;
+    padding: 30px 0;
 }
 
 .thanks-templ {
@@ -44,7 +44,7 @@ hr {
 h1 {
     color: rgba(0, 0, 0, 0.87);
     font-family: "Playfair Display", "Noto Serif", serif;
-    font-size: 34px;
+    font-size: 30px;
     text-align: center;
 }
 
@@ -100,7 +100,7 @@ button:focus,
 
 .progress-bar-container {
     float: right;
-    margin: 0 10px 60px 10px;
+    margin: 0 10px 0px 10px;
 }
 
 .progress-bar-container p {

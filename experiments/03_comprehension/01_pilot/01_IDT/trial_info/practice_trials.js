@@ -22,13 +22,13 @@ var practice_trials = [
   },
   {
     contrast: 'present',
-    targetType: 'bicycle',
+    targetType: 'jacket',
     targetcompColor: 'yellow',
-    compType: 'jacket',
+    compType: 'bike',
     distractorType: 'butterfly',
     distractorColor: 'orange',
-    contrastType: 'bicycle',
-    contrastColor: 'green'
+    contrastType: 'jacket',
+    contrastColor: 'red'
   },
   {
     contrast: 'not_present',
@@ -41,5 +41,3 @@ var practice_trials = [
     contrastColor: 'light'
   }
 ];
-
-console.log('practice_trials: ' + practice_trials[0].contrast)
