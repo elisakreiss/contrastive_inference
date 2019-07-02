@@ -131,6 +131,31 @@
             </div>
         </script>
 
+        <!-- Practice Introduction view -->
+        <script id="practiceIntro-view" type="text/html">
+            <div class='view'>
+                {{# title }}
+                <h1 class="title">{{ title }}</h1>
+                {{/ title }}
+                {{# text }}
+                <section class="text-container">
+                    <p class="text">{{{ text }}}</p>
+                </section>
+                {{/ text }}
+                <br>
+                <br>
+                <div class="picture">
+                    <img src={{ img }} alt="a picture" height="360">
+                </div>
+                {{# button }}
+                <button id="next">{{ button }}</button>
+                {{/ button }}
+                {{^ button }}
+                <button id="next">Next</button>
+                {{/ button }}
+            </div>
+        </script>
+
         <!-- practice view (buttons response) -->
         <script id="practice-view" type="text/html">
             <div class="view">
@@ -146,25 +171,50 @@
     
                 <section class="answer-container">
                     <div class="grid-container">
-                      <div class="grid-item" id="grid_pos1"><img id="pos1" src={{ item1 }} style="width:150px;"></div>
-                      <div class="grid-item" id="grid_pos2"><img id="pos2" src={{ item2 }} style="width:150px;"></div>
-                      <div class="grid-item" id="grid_pos3"><img id="pos3" src={{ item3 }} style="width:150px;"></div>
-                      <div class="grid-item" id="grid_pos4"><img id="pos4" src={{ item4 }} style="width:150px;"></div>
+                        <div class="grid-item" id="grid_pos1"><img id="pos1" src={{ item1 }} style="width:150px;"></div>
+                        <div class="grid-item" id="grid_posa"></div>
+                        <div class="grid-item" id="grid_pos2"><img id="pos2" src={{ item2 }} style="width:150px;"></div>
+                        <div class="grid-item" id="grid_posb"></div>
+                        <div class="grid-item" id="grid_posc">
+                            <button id="next">Continue!</button>
+                        </div>
+                        <div class="grid-item" id="grid_posd"></div>
+                        <div class="grid-item" id="grid_pos3"><img id="pos3" src={{ item3 }} style="width:150px;"></div>
+                        <div class="grid-item" id="grid_pose"></div>
+                        <div class="grid-item" id="grid_pos4"><img id="pos4" src={{ item4 }} style="width:150px;"></div>
                     </div>
                 </section>
                 <br>
-    
-                {{# button }}
-                <button id="next">{{ button }}</button>
-                {{/ button }}
-                {{^ button }}
-                <button id="next">Continue</button>
-                {{/ button }}
                 <section class="answer-container">
                     <p class="text" id="error" style="color: #7CB637">Please enter into the text field what the other person should click on.</p>
                 </section>
             </div>
-            </script>
+        </script>
+
+        <!-- Main Introduction view -->
+        <script id="mainIntro-view" type="text/html">
+            <div class='view'>
+                {{# title }}
+                <h1 class="title">{{ title }}</h1>
+                {{/ title }}
+                {{# text }}
+                <section class="text-container">
+                    <p class="text">{{{ text }}}</p>
+                </section>
+                {{/ text }}
+                <br>
+                <br>
+                <!-- <div class="picture">
+                    <img src={{ img }} alt="a picture" height="360">
+                </div> -->
+                {{# button }}
+                <button id="next">{{ button }}</button>
+                {{/ button }}
+                {{^ button }}
+                <button id="next">Next</button>
+                {{/ button }}
+            </div>
+        </script>
 
         <!-- main view (buttons response) -->
         <script id="main-view" type="text/html">
@@ -178,24 +228,26 @@
             {{{ question }}}
             </p>
             {{/ question }}
-            <button id="next_word">Done -- NEXT WORD, please!</button>
+            <!-- <button id="next_word">Done -- NEXT WORD, please!</button> -->
 
             <section class="answer-container">
                 <div class="grid-container">
                   <div class="grid-item" id="grid_pos1"><img id="pos1" src={{ item1 }} style="width:150px;"></div>
+                  <div class="grid-item" id="grid_posa"></div>
                   <div class="grid-item" id="grid_pos2"><img id="pos2" src={{ item2 }} style="width:150px;"></div>
+                  <div class="grid-item" id="grid_posb"></div>
+                  <div class="grid-item" id="grid_posc">
+                    <button id="next_word">Next word!</button>
+                    <button id="next_context">Continue!</button>
+                  </div>
+                  <div class="grid-item" id="grid_posd"></div>
                   <div class="grid-item" id="grid_pos3"><img id="pos3" src={{ item3 }} style="width:150px;"></div>
+                  <div class="grid-item" id="grid_pose"></div>
                   <div class="grid-item" id="grid_pos4"><img id="pos4" src={{ item4 }} style="width:150px;"></div>
                 </div>
             </section>
             <br>
 
-            {{# button }}
-            <button id="next">{{ button }}</button>
-            {{/ button }}
-            {{^ button }}
-            <button id="next">Continue</button>
-            {{/ button }}
             <section class="answer-container">
                 <p class="text" id="error" style="color: #7CB637">Please select an object before you continue.</p>
             </section>

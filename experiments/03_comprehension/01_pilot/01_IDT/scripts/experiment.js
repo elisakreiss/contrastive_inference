@@ -6,8 +6,10 @@ exp.customize = function () {
   // specify view order
   this.views_seq = [
     // botcaptcha,
-    // intro,
+    intro,
+    practiceIntro,
     practice,
+    mainIntro,
     main,
     // postTest,
     thanks

@@ -129,7 +129,7 @@ button:focus,
 
 .grid-container {
   display: inline-grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto auto auto;
   /*background-color: #2196F3;*/
   padding: 5px;
 }
@@ -215,10 +215,12 @@ button:focus,
     margin: 20px;
 }
 
-#next_word {
-    background-color: grey;
+#next_word, #next_context {
+    background-color: #324D93;
     margin-top: 0px;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
+    width: 100px;
+    height: 50px;
 }
 
 /* slider response */

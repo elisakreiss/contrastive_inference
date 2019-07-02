@@ -135,6 +135,32 @@ var intro = {
 };
 
 // eslint-disable-next-line no-unused-vars
+var practiceIntro = {
+  name: 'practiceIntro',
+  title: 'First Part',
+  text: 'First, you are the speaker. You will see 4 objects, one of them with a green border. You are asked to complete the sentence "Click on the ... !" such that another person knows which one was the target.',
+  buttonText: 'Let\'s go!',
+  render: function () {
+    var viewTemplate = $('#practiceIntro-view').html();
+
+    $('#main').html(
+      Mustache.render(viewTemplate, {
+        name: this.name,
+        title: this.title,
+        text: this.text,
+        img: 'images/practiceContext.png',
+        button: this.buttonText
+      })
+    );
+
+    $('#next').on('click', function () {
+      exp.findNextView();
+    });
+  },
+  trials: 1
+};
+
+// eslint-disable-next-line no-unused-vars
 var practice = {
   name: 'practice',
   render: function (CT) {
@@ -224,6 +250,32 @@ var practice = {
 };
 
 // eslint-disable-next-line no-unused-vars
+var mainIntro = {
+  name: 'mainIntro',
+  title: 'Second Part',
+  text: 'Now, it\'s your turn to select the right object! Word by word a message will uncover. After each new word you are asked to make a guess which object the speaker might be referring to.',
+  buttonText: 'Let\'s go!',
+  render: function () {
+    var viewTemplate = $('#mainIntro-view').html();
+
+    $('#main').html(
+      Mustache.render(viewTemplate, {
+        name: this.name,
+        title: this.title,
+        text: this.text,
+        // img: 'images/practiceContext.png',
+        button: this.buttonText
+      })
+    );
+
+    $('#next').on('click', function () {
+      exp.findNextView();
+    });
+  },
+  trials: 1
+};
+
+// eslint-disable-next-line no-unused-vars
 var main = {
   name: 'main',
   render: function (CT) {
@@ -278,7 +330,7 @@ var main = {
       })
     );
 
-    $('#next').css('visibility', 'hidden');
+    $('#next_context').css('display', 'none');
 
     //
     // FUNCTIONS
@@ -310,7 +362,8 @@ var main = {
       if ((utt + 1) < allUtts.length) {
         $('#next_word').css('visibility', 'visible');
       } else if ((utt + 1) === allUtts.length) {
-        $('#next').css('visibility', 'visible');
+        $('#next_word').css('display', 'none');
+        $('#next_context').css('display', 'block');
       } else {
         console.log('CATASTROPHE!!!!!!')
       }
@@ -350,7 +403,7 @@ var main = {
 
     // event listener for buttons; when an input is selected, the response
     // and additional information are stored in exp.trial_info
-    $('#next').on('click', function () {
+    $('#next_context').on('click', function () {
       reactionTimes.push(rt);
       selectedItems.push(selectedItem);
       console.log(selectedItems);
