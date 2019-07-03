@@ -6,12 +6,13 @@ exp.customize = function () {
   // specify view order
   this.views_seq = [
     // botcaptcha,
-    // intro,
-    // practiceIntro,
-    // practice,
-    // mainIntro,
+    intro,
+    practiceIntro,
+    practice,
+    mainIntro,
     main,
-    // postTest,
+    debriefing,
+    postTest,
     thanks
   ];
 

@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 var practice_trials = [
   {
-    contrast: 'present',
+    condition: 'contrast_present',
     targetType: 'flower',
     targetcompColor: 'red',
     compType: 'candle',
@@ -11,7 +11,7 @@ var practice_trials = [
     contrastColor: 'purple'
   },
   {
-    contrast: 'not_present',
+    condition: 'contrast_not_present',
     targetType: 'bellpepper',
     targetcompColor: 'red',
     compType: 'book',
@@ -21,7 +21,7 @@ var practice_trials = [
     contrastColor: 'yellow'
   },
   {
-    contrast: 'present',
+    condition: 'contrast_present',
     targetType: 'jacket',
     targetcompColor: 'yellow',
     compType: 'bike',
@@ -31,7 +31,7 @@ var practice_trials = [
     contrastColor: 'red'
   },
   {
-    contrast: 'not_present',
+    condition: 'contrast_not_present',
     targetType: 'scissors',
     targetcompColor: 'green',
     compType: 'toothbrush',

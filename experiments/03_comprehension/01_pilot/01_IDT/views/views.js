@@ -172,6 +172,9 @@ var practiceIntro = {
       $('#text2').css('visibility', 'visible');
       $('#next').css('visibility', 'visible');
       $('#more_info').css('display', 'none');
+      $([document.documentElement, document.body]).animate({
+        scrollTop: $("#next").offset().top
+      }, 2000);
     });
 
     $('#next').on('click', function () {
@@ -231,13 +234,13 @@ var practice = {
     $('#refexp').keypress(function (e) {
       var key = e.which;
       if (key === 13) {
-        $('#next').click();
+        $('#next_context').click();
       }
     });
 
     // event listener for buttons; when an input is selected, the response
     // and additional information are stored in exp.trial_info
-    $('#next').on('click', function () {
+    $('#next_context').on('click', function () {
       console.log($('#refexp').val());
       if ($('#refexp').val().length < 3) {
         $('#error').css('visibility', 'visible');
@@ -247,7 +250,6 @@ var practice = {
           trial_number: CT + 1,
           trial_type: 'practice',
           condition: contextInfo.condition,
-          context_id: contextInfo.context,
           target: items.target,
           comp: items.comp,
           contrast: items.contrast,
@@ -274,7 +276,7 @@ var practice = {
 var mainIntro = {
   name: 'mainIntro',
   title: 'Second Part',
-  buttonText: 'I\'m ready... Let\'s go!',
+  buttonText: 'Let\'s go!',
   render: function () {
     var viewTemplate = $('#mainIntro-view').html();
 
@@ -308,6 +310,9 @@ var mainIntro = {
       $('#text2').css('visibility', 'visible');
       $('#next').css('visibility', 'visible');
       $('#more_info').css('display', 'none');
+      $([document.documentElement, document.body]).animate({
+        scrollTop: $("#next").offset().top
+      }, 2000);
     });
 
     $('#next').on('click', function () {
@@ -345,18 +350,16 @@ var main = {
       var adjUtterance = refexpTarget.split('_').shift() + ' ...';
       var fullUtterance = refexpTarget.replace('_', ' ');
       allUtts.push(adjUtterance, fullUtterance);
-      // console.log('modified utterances: ' + allUtts);
     } else {
       console.log('refexpTarget: ' + refexpTarget);
       var fullUtterance = refexpTarget.split('_').pop();
       allUtts.push(fullUtterance);
-      // console.log('unmodified utterances: ' + allUtts);
     }
 
     var utt = 0;
 
-    var selectedItems = [];
-    var selectedItem = 'initial';
+    var selectedItemsAll = [];
+    var selectedItem = [];
     var reactionTimes = [];
     var rt = [];
     var startingTime;
@@ -418,6 +421,7 @@ var main = {
       $('#error').hide();
       $('#next_word').css('visibility', 'hidden');
       rt = [];
+      selectedItem = [];
       startingTime = Date.now();
     }
 
@@ -429,13 +433,14 @@ var main = {
 
     $('#pos1,#pos2,#pos3,#pos4').click(function () {
       rt.push(Date.now() - startingTime);
+      selectedItem.push(items[eval(this.id)]);
       showBorder(this.id);
-      selectedItem = items[eval(this.id)];
       checkNextStep();
     });
 
     // BUTTONS
 
+    // help button
     var active = false;
     $('#help').on('click', function () {
       console.log("clicked");
@@ -456,9 +461,9 @@ var main = {
 
     $('#next_word').on('click', function () {
       reactionTimes.push(rt);
+      selectedItemsAll.push(selectedItem);
       hideBorders();
       utt = utt + 1;
-      if (selectedItem !== 'initial') selectedItems.push(selectedItem);
       showNextUtt();
     })
 
@@ -466,8 +471,8 @@ var main = {
     // and additional information are stored in exp.trial_info
     $('#next_context').on('click', function () {
       reactionTimes.push(rt);
-      selectedItems.push(selectedItem);
-      console.log(selectedItems);
+      selectedItemsAll.push(selectedItem);
+      console.log(selectedItemsAll);
       var trialData = {
         trial_number: CT + 1,
         trial_type: contextInfo.trial_type,
@@ -484,9 +489,9 @@ var main = {
         pos4: pos4,
         utterance: fullUtterance,
         utterance_cat: contextInfo.utterance,
-        selectedItem_prior: selectedItems[0],
-        selectedItem1: selectedItems[1],
-        selectedItem2: selectedItems[2],
+        selectedItem_prior: selectedItemsAll[0],
+        selectedItem1: selectedItemsAll[1],
+        selectedItem2: selectedItemsAll[2],
         // maybe add binary typicality values?
         reaction_time_prior: reactionTimes[0],
         reaction_time1: reactionTimes[1],
@@ -501,6 +506,30 @@ var main = {
     var initialStartingTime = Date.now();
   },
   trials: 4
+};
+
+// eslint-disable-next-line no-unused-vars
+var debriefing = {
+  name: 'debriefing',
+  title: 'Debriefing',
+  text:
+        'Great, you\'re almost done! <br> Please note that we came up with the expressions you saw and not another MTurk worker. Although your responses most likely will affect future studies, there is no one-on-one mapping to another worker. If you have further questions or concerns, don\'t hesitate to contact us.',
+  buttonText: 'Got it!',
+  render: function () {
+    var viewTemplate = $('#debriefing-view').html();
+    $('#main').html(
+      Mustache.render(viewTemplate, {
+        title: this.title,
+        text: this.text,
+        buttonText: this.buttonText
+      })
+    );
+
+    $('#next').on('click', function () {
+      exp.findNextView();
+    });
+  },
+  trials: 1
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -528,7 +557,7 @@ var postTest = {
       exp.global_data.HitCorrect = $('#HitCorrect').val();
       exp.global_data.age = $('#age').val();
       exp.global_data.gender = $('#gender').val();
-      exp.global_data.education = $('#education').val();
+      // exp.global_data.education = $('#education').val();
       exp.global_data.languages = $('#languages').val();
       exp.global_data.enjoyment = $('#enjoyment').val();
       exp.global_data.comments = $('#comments')

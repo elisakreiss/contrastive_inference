@@ -183,7 +183,7 @@
                         <div class="grid-item" id="grid_pos2"><img id="pos2" src={{ item2 }} style="width:130px;"></div>
                         <div class="grid-item" id="grid_posb"></div>
                         <div class="grid-item" id="grid_posc">
-                            <button id="next">Continue!</button>
+                            <button id="next_context">Continue!</button>
                         </div>
                         <div class="grid-item" id="grid_posd"></div>
                         <div class="grid-item" id="grid_pos3"><img id="pos3" src={{ item3 }} style="width:130px;"></div>
@@ -306,7 +306,7 @@
                     <option value="other">Other</option>
                 </select>
             </p>
-            <p>
+            <!-- <p>
                 <label for="education">Level of Education:</label>
                 <select id="education" name="education">
                     <option></option>
@@ -316,7 +316,7 @@
                     <option value="graduated_college">Graduated College</option>
                     <option value="higher_degree">Hold a Higher Degree</option>
                 </select>
-            </p>
+            </p> -->
             <p>
                 <label for="languages" name="languages">Native Languages: <br /><span>(i.e. the language(s) spoken at home when you were a child)</</span></label>
                 <input type="text" id="languages"/>
@@ -342,6 +342,26 @@
             <button id="next">Next</button>
             {{/ buttonText }}
             </form>
+            </div>
+        </script>
+
+        <!-- debriefing view -->
+        <script id="debriefing-view" type="text/html">
+            <div class="view">
+                {{# title }}
+                <h1>{{ title }}</h1>
+                {{/ title }}
+                {{# text }}
+                <section class="text-container">
+                    <p class="text">{{{ text }}}</p>
+                </section>
+                {{/ text }}
+                {{# button }}
+                <button id="next">{{ button }}</button>
+                {{/ button }}
+                {{^ button }}
+                <button id="next">Got it!</button>
+                {{/ button }}
             </div>
         </script>
 
