@@ -15,7 +15,7 @@
 *.DS_Store*
 *node_modules*
 *dump.rdb
-*raw*
+raw*
 *submiterator*
 *object_stroop_corpus/
 *0_old/
