@@ -138,20 +138,41 @@ var intro = {
 var practiceIntro = {
   name: 'practiceIntro',
   title: 'First Part',
-  text: 'First, you are the speaker. You will see 4 objects, one of them with a green border, just as shown below. You are asked to complete the sentence "Click on the ... !" such that another person knows which one was the target.',
-  buttonText: 'Let\'s go!',
+  buttonText: 'I\'m ready... Let\'s go!',
   render: function () {
     var viewTemplate = $('#practiceIntro-view').html();
+
+    var text1 = 'Imagine you\'re playing a game with another MTurk worker. Both of you will see a display of 4 objects. However, you also see that one of the objects has a green border around it.';
+
+    var text2 = 'You\'re goal is to tell your partner which object they should click on. To do so, simply complete the sentence "Click on the ...!".<br> Whenever you\'re done, press the Continue! button in the center of the screen.';
 
     $('#main').html(
       Mustache.render(viewTemplate, {
         name: this.name,
         title: this.title,
-        text: this.text,
+        text1: text1,
+        text2: text2,
         img: 'images/practiceContext.png',
         button: this.buttonText
       })
     );
+
+    $('#img').css('visibility', 'hidden');
+    $('#more_info').css('visibility', 'hidden');
+    $('#text2').css('visibility', 'hidden');
+    $('#next').css('visibility', 'hidden');
+
+    $('#show_pic').on('click', function () {
+      $('#img').css('visibility', 'visible');
+      $('#more_info').css('visibility', 'visible');
+      $('#show_pic').css('display', 'none');
+    });
+
+    $('#more_info').on('click', function () {
+      $('#text2').css('visibility', 'visible');
+      $('#next').css('visibility', 'visible');
+      $('#more_info').css('display', 'none');
+    });
 
     $('#next').on('click', function () {
       exp.findNextView();
@@ -181,7 +202,7 @@ var practice = {
 
     $('#main').html(
       Mustache.render(viewTemplate, {
-        title: 'What should another person click on?',
+        title: 'What should your partner click on?',
         question: 'Click on the ',
         item1: 'images/' + items[pos1] + '.png',
         item2: 'images/' + items[pos2] + '.png',
@@ -253,20 +274,41 @@ var practice = {
 var mainIntro = {
   name: 'mainIntro',
   title: 'Second Part',
-  text: 'Now, it\'s your turn to select the right object! <strong>Word by word a message will uncover</strong>. After each new word you are asked to make a guess which object the speaker might be referring to.',
-  buttonText: 'Let\'s go!',
+  buttonText: 'I\'m ready... Let\'s go!',
   render: function () {
     var viewTemplate = $('#mainIntro-view').html();
+
+    var text1 = 'Well done! <br>Now the roles are reversed. This time you will be told which object to click on!';
+
+    var text2 = 'But you won\'t see the whole expression at once. After each word following "Click on the ..." you will be asked to make your best guess on what you\'re partner might try to communicate.';
 
     $('#main').html(
       Mustache.render(viewTemplate, {
         name: this.name,
         title: this.title,
-        text: this.text,
-        // img: 'images/practiceContext.png',
+        text1: text1,
+        text2: text2,
+        img: 'images/mainContext.png',
         button: this.buttonText
       })
     );
+
+    $('#img').css('visibility', 'hidden');
+    $('#more_info').css('visibility', 'hidden');
+    $('#text2').css('visibility', 'hidden');
+    $('#next').css('visibility', 'hidden');
+
+    $('#show_pic').on('click', function () {
+      $('#img').css('visibility', 'visible');
+      $('#more_info').css('visibility', 'visible');
+      $('#show_pic').css('display', 'none');
+    });
+
+    $('#more_info').on('click', function () {
+      $('#text2').css('visibility', 'visible');
+      $('#next').css('visibility', 'visible');
+      $('#more_info').css('display', 'none');
+    });
 
     $('#next').on('click', function () {
       exp.findNextView();
@@ -321,7 +363,7 @@ var main = {
 
     $('#main').html(
       Mustache.render(viewTemplate, {
-        title: 'Guess what the speaker wants you to click on!',
+        title: 'Guess what your partner wants you to click on!',
         question: 'Click on the ' + allUtts[utt] + '!',
         item1: 'images/' + items[pos1] + '.png',
         item2: 'images/' + items[pos2] + '.png',
@@ -331,6 +373,7 @@ var main = {
     );
 
     $('#next_context').css('display', 'none');
+    $('#helpText').css('display', 'none');
 
     //
     // FUNCTIONS
@@ -392,6 +435,19 @@ var main = {
     });
 
     // BUTTONS
+
+    var active = false;
+    $('#help').on('click', function () {
+      console.log("clicked");
+      if (!active) {
+        console.log("activated button")
+        $('#helpText').css('display','block')
+        active = true;
+      } else {
+        $('#helpText').css('display','none')
+        active = false;
+      }
+    })
 
     $('#next_word').on('click', function () {
       reactionTimes.push(rt);

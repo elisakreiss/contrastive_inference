@@ -137,16 +137,23 @@
                 {{# title }}
                 <h1 class="title">{{ title }}</h1>
                 {{/ title }}
-                {{# text }}
+                {{# text1 }}
                 <section class="text-container">
-                    <p class="text">{{{ text }}}</p>
+                    <p class="text">{{{ text1 }}}</p>
                 </section>
-                {{/ text }}
+                {{/ text1 }}
                 <br>
-                <br>
+                <button id="show_pic">Show me an example!</button>
                 <div class="picture">
-                    <img src={{ img }} alt="a picture" height="400" border="2">
+                    <img id="img" src={{ img }} alt="a picture" height="400" border="1">
                 </div>
+                <button id="more_info">More info!</button>
+                <br>
+                {{# text2 }}
+                <section class="text-container">
+                    <p class="text" id="text2">{{{ text2 }}}</p>
+                </section>
+                {{/ text2 }}
                 {{# button }}
                 <button id="next">{{ button }}</button>
                 {{/ button }}
@@ -197,16 +204,23 @@
                 {{# title }}
                 <h1 class="title">{{ title }}</h1>
                 {{/ title }}
-                {{# text }}
+                {{# text1 }}
                 <section class="text-container">
-                    <p class="text">{{{ text }}}</p>
+                    <p class="text">{{{ text1 }}}</p>
                 </section>
-                {{/ text }}
+                {{/ text1 }}
                 <br>
+                <button id="show_pic">Show me the example again!</button>
+                <div class="picture">
+                    <img id="img" src={{ img }} alt="a picture" height="400" border="1">
+                </div>
+                <button id="more_info">More info!</button>
                 <br>
-                <!-- <div class="picture">
-                    <img src={{ img }} alt="a picture" height="360">
-                </div> -->
+                {{# text2 }}
+                <section class="text-container">
+                    <p class="text" id="text2">{{{ text2 }}}</p>
+                </section>
+                {{/ text2 }}
                 {{# button }}
                 <button id="next">{{ button }}</button>
                 {{/ button }}
@@ -247,7 +261,12 @@
                 </div>
             </section>
             <br>
-
+            <button id="help">Help</button>
+            <div id="helpText">
+                <p>
+                    Above the grid of objects there is an expression that starts with "Click on the". Make your best guess which of the 4 objects could be the goal object. Don't worry if you're not sure. Indicate your response by clicking on the object.
+                </p>
+            </div>
             <section class="answer-container">
                 <p class="text" id="error" style="color: #7CB637">Please select an object before you continue.</p>
             </section>

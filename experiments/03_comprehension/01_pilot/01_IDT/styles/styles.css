@@ -215,6 +215,17 @@ button:focus,
     margin: 20px;
 }
 
+#help {
+    margin-left: 20px;
+}
+#helpText {
+    margin-left: 20px;
+    width: 500px;
+    padding: 10px 10px 10px 10px;
+    border: 1px solid rgb(199, 199, 199);
+    background-color: rgb(241, 241, 241);
+}
+
 #next_word, #next_context {
     background-color: #324D93;
     margin-top: 0px;
