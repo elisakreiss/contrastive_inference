@@ -217,6 +217,7 @@ button:focus,
 
 #help {
     margin-left: 20px;
+    background-color: rgb(214, 214, 214);
 }
 #helpText {
     margin-left: 20px;

@@ -144,7 +144,7 @@ var practiceIntro = {
 
     var text1 = 'Imagine you\'re playing a game with another MTurk worker. Both of you will see a display of 4 objects. However, you also see that one of the objects has a green border around it.';
 
-    var text2 = 'You\'re goal is to tell your partner which object they should click on. To do so, simply complete the sentence "Click on the ...!".<br> Whenever you\'re done, press the Continue! button in the center of the screen.';
+    var text2 = 'Your goal is to tell your partner which object they should click on. To do so, simply complete the sentence "Click on the ...!".<br> Whenever you\'re done, press the Continue! button in the center of the screen.';
 
     $('#main').html(
       Mustache.render(viewTemplate, {
@@ -280,7 +280,7 @@ var mainIntro = {
 
     var text1 = 'Well done! <br>Now the roles are reversed. This time you will be told which object to click on!';
 
-    var text2 = 'But you won\'t see the whole expression at once. After each word following "Click on the ..." you will be asked to make your best guess on what you\'re partner might try to communicate.';
+    var text2 = 'But you won\'t see the whole expression at once. After each word following "Click on the ..." you will be asked to make your best guess on what your partner might try to communicate.';
 
     $('#main').html(
       Mustache.render(viewTemplate, {
@@ -440,12 +440,17 @@ var main = {
     $('#help').on('click', function () {
       console.log("clicked");
       if (!active) {
-        console.log("activated button")
         $('#helpText').css('display','block')
         active = true;
+        $("#help").html('Hide Help');
+        $([document.documentElement, document.body]).animate({
+          scrollTop: $("#helpText").offset().top
+        }, 2000);
       } else {
+        $('html,body').scrollTop(0);
         $('#helpText').css('display','none')
         active = false;
+        $("#help").html('Help');
       }
     })
 
