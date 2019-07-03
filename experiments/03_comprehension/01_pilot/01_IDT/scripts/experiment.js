@@ -25,6 +25,16 @@ exp.customize = function () {
 
   console.log(main_trials.length);
 
+  // preload images
+  function preloadImage(images){
+    for (var pos in images){
+        (new Image()).src = 'images/' + images[pos] + '.png';
+    };
+    console.log('pictures are loaded');
+  };
+  var images = ['orange_balloon', 'red_car', 'white_swan', 'alpslogo', 'orange_banana', 'red_corn', 'white_tomato', 'black_feather', 'orange_butterfly', 'red_flower', 'whitebrown_horse', 'blue_sponge', 'orange_carrot', 'red_jacket', 'yellow_banana', 'green_bicycle', 'orange_lettuce', 'red_pumpkin', 'yellow_bicycle', 'green_broccoli', 'orange_mug', 'red_rock', 'yellow_bike', 'green_carrot', 'orange_pumpkin', 'red_soap', 'yellow_bike_oldbutnormed', 'green_corn', 'practiceContext', 'red_strawberry', 'yellow_corn', 'green_lettuce', 'practiceContext_old', 'red_table', 'yellow_egg', 'green_scissors', 'purple_flower', 'red_tomato', 'yellow_jacket', 'green_swan', 'red_bellpepper', 'white_carrot', 'yellow_lamp', 'green_toothbrush', 'red_book', 'white_egg', 'yellow_snowman', 'light_chair', 'red_broccoli', 'white_pumpkin', 'yellow_strawberry', 'mainContext', 'red_candle', 'white_snowman'];
+  preloadImage(images);
+
   // adds progress bars to the views listed
   // view's name is the same as object's name
   // this.progress_bar_in = ['main'];
