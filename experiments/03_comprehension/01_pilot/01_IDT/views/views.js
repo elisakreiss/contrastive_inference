@@ -77,7 +77,7 @@ var intro = {
   title: 'ALPS lab Stanford',
   // introduction text
   text:
-        'Thank you for participating in our study. In this study, you will see 4 objects. In the first part, you are asked to refer to one of them and in the second part select a described one. It will take approximately <strong>5</strong> minutes.<br>Please only participate once in this series of HITs.<br>Please do <strong>not</strong> do this HIT on a <strong>cell phone</strong>.',
+        'Thank you for participating in our study. This study has two parts. In the first part, you\'ll tell someone which of four objects to click on. In the second part, you\'ll be the one to click on objects. It will take approximately <strong>3</strong> minutes.<br>Please only participate once in this series of HITs.<br>Please do <strong>not</strong> do this HIT on a <strong>cell phone</strong>.',
   legal_info:
         '<strong>LEGAL INFORMATION</strong>:<br><br>We invite you to participate in a research study on language production and comprehension.<br>Your experimenter will ask you to do a linguistic task such as reading sentences or words, naming pictures or describing scenes, making up sentences of your own, or participating in a simple language game.<br><br>You will be paid for your participation at the posted rate.<br><br>There are no risks or benefits of any kind involved in this study.<br><br>If you have read this form and have decided to participate in this experiment, please understand your participation is voluntary and you have the right to withdraw your consent or discontinue participation at any time without penalty or loss of benefits to which you are otherwise entitled. You have the right to refuse to do particular tasks. Your individual privacy will be maintained in all published and written data resulting from the study.<br>You may print this form for your records.<br><br>CONTACT INFORMATION:<br>If you have any questions, concerns or complaints about this research study, its procedures, risks and benefits, you should contact the Protocol Director Meghan Sumner at <br>(650)-725-9336<br><br>If you are not satisfied with how this study is being conducted, or if you have any concerns, complaints, or general questions about the research or your rights as a participant, please contact the Stanford Institutional Review Board (IRB) to speak to someone independent of the research team at (650)-723-2480 or toll free at 1-866-680-2906. You can also write to the Stanford IRB, Stanford University, 3000 El Camino Real, Five Palo Alto Square, 4th Floor, Palo Alto, CA 94306 USA.<br><br>If you agree to participate, please proceed to the study tasks.',
   // introduction's slide proceeding button text
@@ -142,9 +142,9 @@ var practiceIntro = {
   render: function () {
     var viewTemplate = $('#practiceIntro-view').html();
 
-    var text1 = 'Imagine you\'re playing a game with another MTurk worker. Both of you will see a display of 4 objects. However, you also see that one of the objects has a green border around it.';
+    var text1 = 'Imagine you\'re playing a game with another MTurk worker. Both of you see a display of the same 4 objects, but the objects are in different locations for the two of you. Your job is to get the other player to click on the object that has a green border around it. Only you can see which object has the green border.';
 
-    var text2 = 'Your goal is to tell your partner which object they should click on. To do so, simply complete the sentence "Click on the ...!".<br> Whenever you\'re done, press the Continue! button in the center of the screen.';
+    var text2 = 'To tell the other player which object to click on, complete the sentence "Click on the ...!". When you\'re done, press the Continue button.';
 
     $('#main').html(
       Mustache.render(viewTemplate, {
@@ -280,9 +280,9 @@ var mainIntro = {
   render: function () {
     var viewTemplate = $('#mainIntro-view').html();
 
-    var text1 = 'Well done! <br>Now the roles are reversed. This time you will be told which object to click on!';
+    var text1 = 'Well done! <br>Now the roles are reversed. This time your task is to click on the right object.';
 
-    var text2 = 'But you won\'t see the whole expression at once. After each word following "Click on the ..." you will be asked to make your best guess on what your partner might try to communicate.';
+    var text2 = 'You won\'t see the whole expression at once. After each word following "Click on the ...", you\'ll be asked for your best guess about the object the other player wants you to click on.';
 
     $('#main').html(
       Mustache.render(viewTemplate, {
@@ -366,7 +366,7 @@ var main = {
 
     $('#main').html(
       Mustache.render(viewTemplate, {
-        title: 'Guess what your partner wants you to click on!',
+        // title: 'Guess what your partner wants you to click on!',
         question: 'Click on the ' + allUtts[utt] + '!',
         item1: 'images/' + items[pos1] + '.png',
         item2: 'images/' + items[pos2] + '.png',
@@ -513,7 +513,7 @@ var debriefing = {
   name: 'debriefing',
   title: 'Debriefing',
   text:
-        'Great, you\'re almost done! <br> Please note that we came up with the expressions you saw and not another MTurk worker. Although your responses most likely will affect future studies, there is no one-on-one mapping to another worker. If you have further questions or concerns, don\'t hesitate to contact us.',
+        'Great, you\'re almost done! <br> Please note that we came up with the expressions you saw and not another MTurk worker. If you have further questions or concerns, don\'t hesitate to contact us.',
   buttonText: 'Got it!',
   render: function () {
     var viewTemplate = $('#debriefing-view').html();
