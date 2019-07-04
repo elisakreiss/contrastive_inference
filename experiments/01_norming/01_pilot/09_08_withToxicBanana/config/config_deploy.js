@@ -4,7 +4,7 @@ var config_deploy = {
 
     // the experimentID is needed to recover data from the _babe server app
     // you receive the experimentID when you create the experiment using the _babe server app
-    "experimentID": "50",
+    "experimentID": "59",
 
     // if you use the _babe server app, specify its URL here
     "serverAppURL": "https://mcmpact.ikw.uni-osnabrueck.de/babe/api/submit_experiment/",
@@ -14,8 +14,8 @@ var config_deploy = {
     // 'MTurkSandbox', 'Prolific', 'directLink'
     // "deployMethod": "debug",
     // "deployMethod": "directLink",
-    "deployMethod": "MTurk",
-    // "deployMethod": "MTurkSandbox",
+    // "deployMethod": "MTurk",
+    "deployMethod": "MTurkSandbox",
 
     // who to contact in case of trouble
     "contact_email": "ekreiss@stanford.edu",
