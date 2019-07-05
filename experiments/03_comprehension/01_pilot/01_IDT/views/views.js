@@ -96,6 +96,8 @@ var intro = {
       })
     );
 
+    $('html,body').scrollTop(0);
+
     var prolificId = $('#prolific-id');
     var IDform = $('#prolific-id-form');
     var next = $('#next');
@@ -157,6 +159,8 @@ var practiceIntro = {
       })
     );
 
+    $('html,body').scrollTop(0);
+
     $('#img').css('visibility', 'hidden');
     $('#more_info').css('visibility', 'hidden');
     $('#text2').css('visibility', 'hidden');
@@ -166,6 +170,9 @@ var practiceIntro = {
       $('#img').css('visibility', 'visible');
       $('#more_info').css('visibility', 'visible');
       $('#show_pic').css('display', 'none');
+      $([document.documentElement, document.body]).animate({
+        scrollTop: $("#img").offset().top
+      }, 1000);
     });
 
     $('#more_info').on('click', function () {
@@ -174,7 +181,7 @@ var practiceIntro = {
       $('#more_info').css('display', 'none');
       $([document.documentElement, document.body]).animate({
         scrollTop: $("#next").offset().top
-      }, 2000);
+      }, 1000);
     });
 
     $('#next').on('click', function () {
@@ -250,16 +257,24 @@ var practice = {
           trial_number: CT + 1,
           trial_type: 'practice',
           condition: contextInfo.condition,
+          context_id: 'NaN',
+          refObject: 'target',
           target: items.target,
           comp: items.comp,
           contrast: items.contrast,
           distractor: items.distractor,
-          refObject: 'target',
           pos1: pos1,
           pos2: pos2,
           pos3: pos3,
           pos4: pos4,
           utterance: $('#refexp').val(),
+          utterance_cat: 'NaN',
+          selectedItem_prior: 'NaN',
+          selectedItem1: 'NaN',
+          selectedItem2: 'NaN',
+          reaction_time_prior: 'NaN',
+          reaction_time1: 'NaN',
+          reaction_time2: 'NaN',
           RT: Date.now() - initialStartingTime
         };
         exp.trial_data.push(trialData);
@@ -304,6 +319,9 @@ var mainIntro = {
       $('#img').css('visibility', 'visible');
       $('#more_info').css('visibility', 'visible');
       $('#show_pic').css('display', 'none');
+      $([document.documentElement, document.body]).animate({
+        scrollTop: $("#img").offset().top
+      }, 1000);
     });
 
     $('#more_info').on('click', function () {
@@ -312,7 +330,7 @@ var mainIntro = {
       $('#more_info').css('display', 'none');
       $([document.documentElement, document.body]).animate({
         scrollTop: $("#next").offset().top
-      }, 2000);
+      }, 1000);
     });
 
     $('#next').on('click', function () {
@@ -450,7 +468,7 @@ var main = {
         $("#help").html('Hide Help');
         $([document.documentElement, document.body]).animate({
           scrollTop: $("#helpText").offset().top
-        }, 2000);
+        }, 1000);
       } else {
         $('html,body').scrollTop(0);
         $('#helpText').css('display','none')
@@ -473,6 +491,15 @@ var main = {
       reactionTimes.push(rt);
       selectedItemsAll.push(selectedItem);
       console.log(selectedItemsAll);
+      var item2;
+      var rt2;
+      if (contextInfo.utterance === "modified") {
+        item2 = selectedItemsAll[2].join()
+        rt2 = reactionTimes[2].join()
+      } else {
+        item2 = "NaN"
+        rt2 = "NaN"
+      }
       var trialData = {
         trial_number: CT + 1,
         trial_type: contextInfo.trial_type,
@@ -489,13 +516,13 @@ var main = {
         pos4: pos4,
         utterance: fullUtterance,
         utterance_cat: contextInfo.utterance,
-        selectedItem_prior: selectedItemsAll[0],
-        selectedItem1: selectedItemsAll[1],
-        selectedItem2: selectedItemsAll[2],
+        selectedItem_prior: selectedItemsAll[0].join(),
+        selectedItem1: selectedItemsAll[1].join(),
+        selectedItem2: item2,
         // maybe add binary typicality values?
-        reaction_time_prior: reactionTimes[0],
-        reaction_time1: reactionTimes[1],
-        reaction_time2: reactionTimes[2],
+        reaction_time_prior: reactionTimes[0].join(),
+        reaction_time1: reactionTimes[1].join(),
+        reaction_time2: rt2,
         RT: Date.now() - initialStartingTime
       };
       exp.trial_data.push(trialData);
@@ -525,6 +552,8 @@ var debriefing = {
       })
     );
 
+    $('html,body').scrollTop(0);
+
     $('#next').on('click', function () {
       exp.findNextView();
     });
@@ -548,6 +577,8 @@ var postTest = {
         buttonText: this.buttonText
       })
     );
+
+    $('html,body').scrollTop(0);
 
     $('#next').on('click', function (e) {
       // prevents the form from submitting
