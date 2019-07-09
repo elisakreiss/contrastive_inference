@@ -1,0 +1,291 @@
+---
+title: "CI: IDT analysis"
+# output: html_document
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r data import, include=FALSE}
+library(cowplot)
+library(plyr)
+library(tidyverse)
+library(here)
+
+df_import = read_csv(here("data","03_comprehension","01_pilot","01_IDT","data.csv")) %>%
+  # exclude test
+  # weird filter property will exclude NAs
+  filter(is.na(comments) | comments != "TEST")
+```
+
+```{r botresponse, include=FALSE}
+ggplot(df_import,aes(x=str_to_lower(botresponse))) +
+  geom_histogram(stat="count")
+```
+
+```{r responses to postquestionnaire, eval=FALSE, fig.height=1.5, fig.width=4, include=FALSE}
+# check responses to post questionnaire, which participants I need to exclude (e.g., HitCorrect and NativeLanguage)
+df_hitcorrect = df_import %>% 
+  mutate_at(vars(HitCorrect),
+            funs(ifelse(HitCorrect==0,"no",
+                        ifelse(HitCorrect==404,"confused","yes"))))
+
+ggplot(df_hitcorrect,aes(x=HitCorrect)) +
+  geom_bar(width = .5,
+           fill = "orange") +
+  xlab("did you do the hit correctly")
+
+# languages
+unique(df_import$languages)
+
+# comments
+unique(df_import$comments)
+```
+
+
+```{r create main data frame, message=FALSE, include=FALSE}
+
+df_clean = df_import
+
+# number of participants before exclusion (6)
+length(unique(df_import$anon_worker_id))
+# number of participants after exclusion (6)
+length(unique(df_clean$anon_worker_id))
+
+
+df = df_clean %>%
+  select(-startDate,-botresponse,-HitCorrect)
+```
+
+
+### About the participants (after exclusion)
+
+```{r subj, echo=FALSE, fig.height=6, fig.width=8, message=FALSE, warning=FALSE}
+# other info
+engl_spellings = c("english", "englis", "eng", "engilsh", "englsh", "en")
+
+df_subj = df_clean %>% 
+  select(age,gender,languages,enjoyment,timeSpent,HitCorrect,comments,anon_worker_id) %>% 
+  distinct() %>% 
+  mutate_at(vars(languages), funs(str_to_lower(.))) %>% 
+  mutate_at(vars(languages), funs(ifelse(. %in% engl_spellings, "english", .))) %>% 
+  mutate(lang=ifelse(languages == "english","english","other")) %>% 
+  mutate_at(vars(age), funs(as.integer(.))) %>% 
+  mutate_at(vars(enjoyment), 
+            funs(ifelse(.==1,"average",
+                        ifelse(.==2,"awesome","other"))))
+
+mean_age = round(mean(df_subj$age),digits = 1)
+p_age = ggplot(df_subj,aes(x=age)) +
+  geom_bar(width = .5,
+           fill = "orange",
+           color = "black") +
+  geom_vline(xintercept= mean_age) +
+  scale_x_continuous(breaks=c(25,30,35,mean_age))
+
+p_gen = ggplot(df_subj,aes(x=gender)) +
+  geom_bar(width = .5,
+           fill = "orange",
+           color = "black")
+
+p_lang = ggplot(df_subj,aes(x=lang)) +
+  geom_bar(width = .5,
+           fill = "orange",
+           color = "black") +
+  xlab("language")
+  # theme(axis.text.x = element_text(angle=45,hjust=1))
+
+p_enj = ggplot(df_subj,aes(x=enjoyment)) +
+  geom_bar(width = .5,
+           fill = "orange",
+           color = "black")
+
+mean_time = round(mean(df_subj$timeSpent), digits = 1)
+median_time = round(median(df_subj$timeSpent), digits = 1)
+p_time = ggplot(df_subj,aes(x=timeSpent)) +
+  geom_histogram(fill = "orange",
+           color = "black") +
+  geom_vline(xintercept=mean_time) +
+  geom_vline(xintercept=median_time,linetype="dashed") +
+  scale_x_continuous(breaks=c(median_time,mean_time,floor(0),floor(1),floor(2),floor(3),floor(5),floor(10))) +
+  xlab("time spent") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+plot_grid(p_age,p_gen,p_lang,p_enj,p_time, labels = "AUTO", ncol = 2, align = 'v')
+
+```
+
+## Practice Trials
+
+```{r practice trial data}
+
+df_practice = df %>% 
+  filter(trial_type == "practice") %>% 
+  select(condition,utterance,target,comp,contrast,distractor,pos1,pos2,pos3,pos4,anon_worker_id)
+
+```
+
+```{r practice trial modifier by condition}
+
+color = "yellow|red|green"
+
+df_mod = df_practice %>% 
+  mutate_at(vars(condition),funs(ifelse(. == "contrast_present", T, F))) %>% 
+  rename(contrast_present = condition) %>% 
+  mutate(modifier_use = str_detect(utterance,color))
+
+# df_mod[!df_mod$modifier_use,c("utterance")]
+
+df_modplot = df_mod %>% 
+  group_by(contrast_present) %>% 
+  summarize(modProp = sum(modifier_use)/n())
+
+ggplot(df_modplot, aes(x=contrast_present, y=modProp)) +
+  geom_col()
+
+# one person said "red pepper when there was no contrast"
+# 355645969470185 didn't care that there were contrasts and also identified bell pepper as apple (even though native language is reported as English) -- unreliable worker
+```
+
+### Main Trials
+
+```{r main trial data}
+
+df_main = df %>% 
+  filter(trial_type == "critical" | trial_type == "filler") %>% 
+  select(trial_type,refObject,context_id,condition,utterance,utterance_cat,target,comp,contrast,distractor,pos1,pos2,pos3,pos4,selectedItem_prior,selectedItem1,selectedItem2,reaction_time_prior,reaction_time1,reaction_time2,anon_worker_id,trial_number) %>%
+  gather(timeStep_selec,selectedItem,selectedItem_prior,selectedItem1,selectedItem2) %>%
+  mutate(clickedType = case_when(
+    selectedItem == target ~ "target",
+    selectedItem == comp ~ "comp",
+    selectedItem == contrast  ~ "contrast/distractor",
+    selectedItem == distractor ~ "distractor",
+    TRUE ~ "other"
+  )) %>% 
+  # order them according to relevance for later plotting
+  mutate_at(vars(clickedType), funs(factor(., levels=c("target", "comp", "contrast/distractor", "distractor", "other")))) %>% 
+  mutate(contrast_present = str_detect(condition,"p")) %>% 
+  mutate(trial_half = ifelse(trial_number < max(trial_number)/2, "first half", "second half"))
+
+```
+
+```{r prepare prior df}
+
+df_prior = df_main %>%
+  filter(timeStep_selec == "selectedItem_prior")
+
+```
+
+
+```{r contrast present prior distribution}
+# independent of typicality
+# TODO: facet_wrap by condition!
+
+df_prior_contrast = df_prior %>% 
+  filter(contrast_present) %>% 
+  slice(rep(1:n(), each = 5)) %>% 
+  select(trial_type, condition, context_id, anon_worker_id, timeStep_selec, clickedType) %>% 
+  mutate(obj_in_display = c("target", "comp", "contrast/distractor", "distractor", "other"))
+
+# prior distribution over all objects in the display from main and filler trials
+# (would also be interesting to see trials after fillers where assumption was broken)
+# "other" utterances are multiple selections -- also interesting to investigate
+# does the number of multiple selections in one go decrease over time? (possibly because participants become more familiar with the task and the stimuli)
+df_prior_contrast %>% 
+  count(clickedType) %>% 
+  mutate(prop = n/sum(n)) %>% 
+  ggplot(aes(x=clickedType, y=prop, fill=clickedType)) + 
+    geom_bar(stat="identity",position="dodge",color="black") +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+df_prior_contrast %>% 
+  count(clickedType,trial_half) %>% 
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x=clickedType, y=prop, fill=clickedType)) + 
+    geom_bar(stat="identity",position="dodge",color="black") +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+    facet_wrap(vars(trial_half))
+
+```
+
+```{r non-contrast present prior distribution}
+# independent of typicality
+
+df_prior_nocontrast = df_prior %>% 
+  filter(!contrast_present)
+
+# are the two objects with the same color (target and competitor) chosen more often than the other objects?
+ggplot(df_prior_nocontrast, aes(x=clickedType, fill=clickedType)) + 
+  geom_bar(stat="count",position="dodge",color="black") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+ggplot(df_prior_nocontrast, aes(x=clickedType, fill=clickedType)) + 
+  geom_bar(stat="count",position="dodge",color="black") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  facet_wrap(vars(trial_half))
+
+```
+
+```{r atypicality bias prior distribution}
+
+typ_obj = c("yellow_banana","yellow_corn","red_strawberry")
+atyp_obj = c("yellow_egg","yellow_strawberry","white_pumpkin","white_tomato","red_corn","red_broccoli")
+
+df_prior_typicality = df_prior %>% 
+  mutate(selItemTyp = ifelse(selectedItem %in% typ_obj, "typical", 
+                             ifelse(selectedItem %in% atyp_obj, "atypical", "other"))) %>% 
+  mutate_at(vars(selItemTyp), funs(factor(., levels=c("typical", "atypical", "other"))))
+
+# is there a bias towards chosing the atypical object
+ggplot(df_prior_typicality, aes(x=selItemTyp, fill=selItemTyp)) + 
+  geom_bar(stat="count",position="dodge",color="black") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+```
+
+```{r}
+# clicks on target if contrast present > than clicks on target when contrast not present?
+# to investigate this, we'll need the critical trials, modified utterances (all should be modified in critical trials anyways), and look at the second selected item (selItem1)
+
+df_critical = df_main %>%
+  filter(trial_type == "critical") %>% 
+  filter(timeStep_selec == "selectedItem1") %>% 
+  select(clickedType,contrast_present)
+  
+
+ggplot(df_critical, aes(x=clickedType, fill=contrast_present)) + 
+  geom_bar(stat="count",position="dodge",color="black") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  # facet_wrap(vars(contrast_present))
+```
+
+
+```{r reaction time}
+# not sure that this analysis makes sense
+
+df_rt = df_main %>% 
+  gather(timeStep_rt, rt, reaction_time_prior, reaction_time1, reaction_time2) %>% 
+  # mutate(rt_shortened = sapply(str_split(rt,","),tail,1)) %>%
+  # mutate_at(vars(rt_shortened), funs(as.integer(.)))
+  filter(!str_detect(rt,",")) %>%
+  mutate_at(vars(rt), funs(as.integer(.)))
+  
+
+# missing values are the ones where there was an unmodified utterance and therefore there was no reaction_time2
+ggplot(df_rt, aes(x=timeStep_rt, y=rt)) + 
+  geom_point(alpha=0.5) +
+  facet_wrap(vars(utterance_cat)) +
+  # ylim(0,5000) +
+  stat_summary(fun.y = "mean", colour = "red", size = 1, geom = "point") +
+  stat_summary(fun.data = "mean_cl_boot", colour = "red", size = 1)
+```
+
+
+
+
+
+
+
+

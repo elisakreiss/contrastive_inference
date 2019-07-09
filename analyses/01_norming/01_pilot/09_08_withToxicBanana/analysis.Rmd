@@ -1,0 +1,74 @@
+---
+title: "CI: object reference toxic banana pilot analysis"
+# output: html_document
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r data import, include=FALSE}
+library(cowplot)
+library(plyr)
+library(tidyverse)
+library(here)
+
+df_import = read_csv(here("data","01_norming","01_pilot","09_08_withToxicBanana","data.csv")) %>%
+  # exclude test
+  # weird filter property that it will exclude NAs
+  filter(is.na(comments) | comments != "TEST")
+```
+
+```{r botresponse, include=FALSE}
+ggplot(df_import,aes(x=str_to_lower(botresponse))) +
+  geom_histogram(stat="count")
+```
+
+```{r responses to postquestionnaire, eval=FALSE, fig.height=1.5, fig.width=4, include=FALSE}
+
+# languages
+unique(df_import$languages)
+
+# comments
+unique(df_import$comments)
+```
+
+
+```{r create main data frame, message=FALSE, include=FALSE}
+
+df_clean = df_import %>% 
+  # exclude multiple submissions
+  arrange(startTime) %>% 
+  distinct(anon_worker_id,trial_number, .keep_all = TRUE)
+
+# number of participants before exclusion (118)
+length(unique(df_import$anon_worker_id))
+# number of participants after exclusion (118)
+length(unique(df_clean$anon_worker_id))
+
+
+df = df_clean %>%
+  select(item,refexp,trial_number,anon_worker_id) %>% 
+  mutate_at(vars(item),funs(str_replace(.,"images/",""))) %>% 
+  mutate_at(vars(item),funs(str_replace(.,".png",""))) %>% 
+  rename(col_item = item)
+  
+```
+
+### Analysis
+
+Only unmodified referring expressions -> no improvement to other banana case
+
+```{r toxic banana analysis}
+
+unique(df$refexp)
+
+```
+
+
+
+
+
+
+
