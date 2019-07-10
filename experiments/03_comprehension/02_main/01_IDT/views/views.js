@@ -516,10 +516,10 @@ var main = {
         pos4: pos4,
         utterance: fullUtterance,
         utterance_cat: contextInfo.utterance,
+        // TODO: change selectedItem to pick out the object type in context, like "target" or "competitor"... maybe....
         selectedItem_prior: selectedItemsAll[0].join(),
         selectedItem1: selectedItemsAll[1].join(),
         selectedItem2: item2,
-        // maybe add binary typicality values?
         reaction_time_prior: reactionTimes[0].join(),
         reaction_time1: reactionTimes[1].join(),
         reaction_time2: rt2,
@@ -532,7 +532,7 @@ var main = {
     // record trial starting time
     var initialStartingTime = Date.now();
   },
-  trials: 4
+  trials: 55
 };
 
 // eslint-disable-next-line no-unused-vars

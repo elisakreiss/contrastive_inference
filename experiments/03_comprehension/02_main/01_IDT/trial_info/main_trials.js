@@ -3,6 +3,7 @@
 var participantCond = 'typical';
 
 function createRandomDistractor (colors, types, typicality = 'random') {
+  // I think this 'do' is vacuous
   do {
     // choose color that doesn't occur in the context yet
     do {
@@ -10,19 +11,12 @@ function createRandomDistractor (colors, types, typicality = 'random') {
       var distColor = shuffledLexicon[0].color;
     } while (colors.includes(distColor));
 
-    // console.log('distColor: '+distColor);
-
-    // select objects in this color
-    if (typicality === 'random') {
-      var possibleTypes = _.flatten([shuffledLexicon[0].typical, shuffledLexicon[0].atypical]);
-    } else {
-      // console.log('shuffledLexicon[0][typicality]: ' + shuffledLexicon[0][typicality]);
-      var possibleTypes = shuffledLexicon[0][typicality];
-    }
-
-    var distType = _.shuffle(possibleTypes)[0];
+    // select objects in this color/typicality
+    var distTypicality = typicality === 'random' ? _.shuffle(["typical", "atypical"])[0] : typicality;
+    var possibleType = shuffledLexicon[0][distTypicality];
+    var distType = _.shuffle(possibleType)[0];
   } while (types.includes(distType));
-  return ([distColor, distType])
+  return ([distColor, distType, distTypicality])
 }
 
 function findContrastColor (targetColor, type) {
@@ -48,7 +42,7 @@ function completeContext (targetcompColor, targetType, compType, contrast, targe
   }
 
   // create a fourth random distractor
-  var [distractorColor, distractorType] = createRandomDistractor([targetcompColor, contrastColor], [targetType, compType, contrastType]);
+  var [distractorColor, distractorType, distractorTypicality] = createRandomDistractor([targetcompColor, contrastColor], [targetType, compType, contrastType]);
 
   // define condition and unique context name
   var condition = targetTypicality[0] +
@@ -72,6 +66,7 @@ function completeContext (targetcompColor, targetType, compType, contrast, targe
     contrastColor: contrastColor,
     distractorColor: distractorColor,
     distractorType: distractorType,
+    distractorTypicality: distractorTypicality,
     refObject: 'target',
     utterance: 'modified',
     trial_type: 'critical'
@@ -81,7 +76,7 @@ function completeContext (targetcompColor, targetType, compType, contrast, targe
 }
 
 var criticalContexts = [];
-var potentialFillerFontexts = [];
+var potentialFillerContexts = [];
 var colorObjLexicon = [
   {
     color: 'yellow',
@@ -141,66 +136,83 @@ for (var col in colorObjLexicon) {
         var criticalContext = completeContext(targetColor, targetTypeCritical, compTypeCritical, contrast[contr], typicality[tTarget], typicality[tComp]);
         var fillerContext = completeContext(targetColor, targetTypeFiller, compTypeFiller, contrast[contr], typicality[tTarget], typicality[tComp]);
 
-        potentialFillerFontexts.push(fillerContext);
+        potentialFillerContexts.push(fillerContext);
 
         if (typicality[tComp] == participantCond) {
           // push the context to their respective lists
           criticalContexts.push(criticalContext);
         } else {
-          potentialFillerFontexts.push(criticalContext);
+          potentialFillerContexts.push(criticalContext);
         }
       }
     }
   }
 }
 
-function compareContrast (a, b) {
-  const contextA = a.contrast;
-  const contextB = b.contrast;
-
-  let comparison = 0;
-  if (contextA > contextB) {
-    comparison = 1;
-  } else if (contextA < contextB) {
-    comparison = -1;
-  }
-  return comparison * -1;
+function updateFillerinfo (context, refObject, utterance) {
+  context.refObject = refObject;
+  context.utterance = utterance;
+  context.trial_type = 'filler';
+  return (context);
 }
 
 function createFillers (allContexts) {
-  // TODO: This ignores typicality! Unmodified refexps should refer to typical objects!
-  // strong preference for contexts with typical distractor
-  console.log(allContexts);
+  var contexts = (_.shuffle(allContexts));
+  var fillers = [];
 
-  var contexts = (_.shuffle(allContexts)).slice(0,35);
-  // contrast present contexts are in the front now
-  var sorted = contexts.sort(compareContrast);
-  for (var i in sorted) {
-    if (i < 5) {
-      // 5x utterance: modified; target: contrast
-      var refObject = 'contrast';
-      var utterance = 'modified';
-    } else if (i < 15) {
-      // 5x utterance: modified; target: color competitor
-      // 5x utterance: unmodified; target: color competitor
-      var refObject = 'comp';
-      var utterance = i % 2 ? 'modified': 'unmodified';
+  var c = 0;
+  while (fillers.length < 5) {
+    // 5x utterance: modified; target: contrast
+    if (contexts[c].contrast === 'present') {
+      var new_context = updateFillerinfo(contexts[c], refObject='contrast', utterance='modified');
+      fillers.push(new_context);
+      contexts.splice(c, 1);
     } else {
-      // 20x utterance: unmodified; target: random distractor
-      var refObject = 'distractor';
-      var utterance = 'unmodified';
-      [sorted[i].distractorColor,sorted[i].distractorType] = createRandomDistractor([sorted[i].targetcompColor,sorted[i].contrastColor],[sorted[i].targetType,sorted[i].compType,sorted[i].contrastType],typicality='typical');
+      c += 1;
     }
-    sorted[i].refObject = refObject;
-    sorted[i].utterance = utterance;
-    sorted[i].trial_type = 'filler';
   }
-  return (sorted)
+
+  c = 0;
+  while (fillers.length < 10) {
+    // 5x utterance: unmodified; target: color competitor
+    // to avoid priming, exclude contexts where comp is atypical
+    if (contexts[c].compTypicality === 'typical') {
+      var new_context = updateFillerinfo(contexts[c], refObject='comp', utterance='unmodified');
+      fillers.push(new_context);
+      contexts.splice(c, 1);
+    } else {
+      c += 1;
+    }
+  }
+
+  c = 0;
+  while (fillers.length < 15) {
+    // 5x utterance: modified; target: color competitor
+    // to avoid priming, exclude contexts where comp is typical and where the target has a contrast
+    if (contexts[c].compTypicality === 'atypical' & contexts[c].contrast === 'not_present') {
+      var new_context = updateFillerinfo(contexts[c], refObject='comp', utterance='modified');
+      fillers.push(new_context);
+      contexts.splice(c, 1);
+    } else {
+      c += 1;
+    }
+  }
+
+  while (fillers.length < 35) {
+    // 20x utterance: unmodified; target: random distractor
+    // since the utterance is unmodified, only use typical distractors
+    var new_context = updateFillerinfo(contexts[0], refObject='distractor', utterance='unmodified');
+    // if distractor is atypical, create typical distractor for the context
+    if (new_context.distractorTypicality === 'atypical') {
+      [new_context.distractorColor,new_context.distractorType,new_context.distractorTypicality] = createRandomDistractor([new_context.targetcompColor,new_context.contrastColor],[new_context.targetType,new_context.compType,new_context.contrastType],typicality='typical');
+    }
+    fillers.push(new_context);
+    contexts.splice(0, 1);
+  }
+                            
+  return (fillers)
 }
 
-var fillerContexts = createFillers(potentialFillerFontexts);
-
-// console.log(fillerContexts);
-// console.log(criticalContexts);
+var fillerContexts = createFillers(potentialFillerContexts);
 
 var main_trials = _.flatten([criticalContexts, fillerContexts]);

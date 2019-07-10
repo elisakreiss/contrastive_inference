@@ -7,23 +7,36 @@ exp.customize = function () {
   this.views_seq = [
     // botcaptcha,
     intro,
-    practiceIntro,
-    practice,
-    mainIntro,
+    // practiceIntro,
+    // practice,
+    // mainIntro,
     main,
-    debriefing,
+    // debriefing,
     postTest,
     thanks
   ];
 
   // prepare information about trials (procedure)
   // randomize main trial order, but keep practice trial order fixed
-  // TODO: sort according to congruency!
-  console.log('TODO: sort according to congruency!');
-  this.trial_info.main_trials = _.shuffle(main_trials);
-  this.trial_info.practice_trials = _.shuffle(practice_trials);
 
-  console.log(main_trials.length);
+  // have no incongruent trials among the first 15 trials of the experiment
+  var shuffled_main_trials = _.shuffle(main_trials);
+  var i = 0;
+  while (i < 15) {
+    var context = shuffled_main_trials[i];
+    if (context.trial_type === 'critical' & (context.condition === 'tan' | context.condition === 'ttn')) {
+      console.log("I need to change the position of this trial")
+      shuffled_main_trials.splice(i, 1);
+      var new_pos = _.random(15,shuffled_main_trials.length);
+      shuffled_main_trials.splice(new_pos, 0, context);
+      console.log("changing from position " + i + " to " + new_pos)
+    } else {
+      i += 1;
+    }
+  }
+
+  this.trial_info.main_trials = shuffled_main_trials;
+  this.trial_info.practice_trials = _.shuffle(practice_trials);
 
   // preload images
   function preloadImage(images){
