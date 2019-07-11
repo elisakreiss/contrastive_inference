@@ -7,11 +7,11 @@ exp.customize = function () {
   this.views_seq = [
     // botcaptcha,
     intro,
-    // practiceIntro,
-    // practice,
-    // mainIntro,
+    practiceIntro,
+    practice,
+    mainIntro,
     main,
-    // debriefing,
+    debriefing,
     postTest,
     thanks
   ];
