@@ -176,10 +176,13 @@ df_selec = df_main %>%
   gather(timeStep_selec,selectedItem,selectedItem_prior,selectedItem1,selectedItem2) %>%
   # remove selectedItem2 rows when referring expression was unmodified
   # because this is always NaN
-  filter(timeStep_selec != "selectedItem2" & utterance_cat != "unmodified") %>% 
+  filter(!(timeStep_selec == "selectedItem2" & utterance_cat == "unmodified")) %>% 
   # if there were multiple selections (which are separated by commas),
   # select the last one
   mutate(lastSelectedItem = sapply(str_split(selectedItem,","),tail,1)) %>% 
+  # mark the ones that had multiple selections
+  mutate(mult_selec = str_detect(selectedItem, ",")) %>% 
+  # encode the clicked type of the object
   mutate(clickedType = case_when(
     lastSelectedItem == target ~ "target",
     lastSelectedItem == comp ~ "comp",
@@ -367,7 +370,7 @@ The color is already known such that target and color competitor are possible ta
 
 # number of wrong selections
 df_adj %>% 
-  filter(clickedType == "contrast/distractor" | clickedType == "distractor") %>% 
+  filter(clicked & (clickedType == "contrast/distractor" | clickedType == "distractor")) %>% 
   nrow()
 
 ggplot(df_adj, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
@@ -599,53 +602,135 @@ ggplot(df_adj, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
 
 (use only critical contexts)
 
+```{r prepare after adj selection}
+
+df_noun = df_objselec %>%
+  filter(timeStep_selec == "selectedItem2",
+         trial_type == "critical")
+
+```
+
+##### What is the proportion of wrongly selected objects?
+
+```{r}
+
+df_noun %>% 
+  filter(clicked & clickedType != "target") %>% 
+  nrow()
+
+ggplot(df_noun, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
+  stat_summary(fun.y = "mean", 
+               geom = "bar") +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               size = .3,
+               width = 0.3) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+```
 
 
+##### Is there a difference in reaction time between the atp and ttn (or aap and tan) context?
 
+```{r}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r reaction time}
-# not sure that this analysis makes sense
-
-df_rt = df_main %>% 
+df_rt = df_noun %>% 
   gather(timeStep_rt, rt, reaction_time_prior, reaction_time1, reaction_time2) %>% 
-  # mutate(rt_shortened = sapply(str_split(rt,","),tail,1)) %>%
-  # mutate_at(vars(rt_shortened), funs(as.integer(.)))
-  filter(!str_detect(rt,",")) %>%
-  mutate_at(vars(rt), funs(as.integer(.)))
-  
+  mutate(rt_shortened = sapply(str_split(rt,","),tail,1)) %>%
+  mutate_at(vars(rt_shortened), funs(as.integer(.))) %>% 
+  filter(condition == "atp" | condition == "ttn")
 
-# missing values are the ones where there was an unmodified utterance and therefore there was no reaction_time2
-ggplot(df_rt, aes(x=timeStep_rt, y=rt)) + 
-  geom_point(alpha=0.5) +
-  facet_wrap(vars(utterance_cat)) +
+ggplot(df_rt, aes(x=condition, y=rt_shortened)) + 
+  geom_point(alpha=0.5, position="jitter") +
   # ylim(0,5000) +
   stat_summary(fun.y = "mean", colour = "red", size = 1, geom = "point") +
   stat_summary(fun.data = "mean_cl_boot", colour = "red", size = 1)
+
 ```
+
+
+##### Is there a pattern to where the most errors/multiple selections occur? (dependent on condition?)
+
+```{r}
+
+df_multselec = df_noun %>% 
+  filter(clicked & mult_selec)
+
+nrow(df_multselec)
+table(df_multselec$condition)
+
+```
+
+
+### Generally
+
+##### Is there an overall target position bias? (We need this to address the position bias question in the prior, if existent. But for this we also need to consider the fillers and not just the critical trials.)
+
+```{r}
+
+df_targetpos = df_objselec %>% 
+  gather(position, obj_in_pos, pos1, pos2, pos3, pos4) %>% 
+  mutate(target_pos = ifelse(obj_in_pos == "target", 1, 0))
+
+ggplot(df_targetpos, aes(x=position, y=target_pos, fill=position)) +
+  stat_summary(fun.y = "mean", 
+               geom = "bar") +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               size = .3,
+               width = 0.3) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+```
+
+
+##### When do most multiple selections occur (prior, after adj, after noun? is there a condition-wise split? a first/second half of trials split?)
+
+```{r}
+
+# Multiple selection analysis
+
+df_mult = df_objselec %>% 
+  filter(trial_type=='critical') %>% 
+  filter(clicked & mult_selec)
+
+nrow(df_mult)
+table(df_mult$timeStep_selec)
+table(df_mult$condition)
+table(df_mult$trial_half)
+
+# Error analysis
+
+df_error = df_objselec %>% 
+  filter(trial_type=='critical',
+         clicked) %>% 
+  mutate(adj_error = ifelse(timeStep_selec == "selectedItem1" & (clickedType == "contrast/distractor" | clickedType == "distractor"), T, F)) %>% 
+  mutate(noun_error = ifelse(timeStep_selec == "selectedItem2" & clickedType != "target", T, F)) %>% 
+  mutate(overall_error = ifelse(adj_error | noun_error, T, F)) %>% 
+  filter(overall_error)
+  
+nrow(df_error)
+table(df_error$timeStep_selec)
+table(df_error$condition)
+table(df_error$trial_half)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -682,6 +767,4 @@ df_modplot = df_mod %>%
 ggplot(df_modplot, aes(x=contrast_present, y=modProp)) +
   geom_col()
 
-# one person said "red pepper when there was no contrast"
-# 355645969470185 didn't care that there were contrasts and also identified bell pepper as apple (even though native language is reported as English) -- unreliable worker
 ```

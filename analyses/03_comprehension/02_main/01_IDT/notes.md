@@ -1,5 +1,7 @@
 # Analyses
 
+- Some of these analyses can only be done with the whole data set, i.e., when color competitor is typical and atypical. There are straight forward adaptations for the case where there is only one data set available.
+
 ## Main Trials
 
 ### Prior (use all main contexts -- critical and filler)
