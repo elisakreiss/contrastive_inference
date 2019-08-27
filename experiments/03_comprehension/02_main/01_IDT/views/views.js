@@ -199,7 +199,7 @@ var practice = {
     // fill variables in view-template
     var viewTemplate = $('#practice-view').html();
 
-    console.log(exp.trial_info.practice_trials[CT]);
+    // console.log(exp.trial_info.practice_trials[CT]);
     var contextInfo = exp.trial_info.practice_trials[CT];
 
     var items = {
@@ -249,7 +249,7 @@ var practice = {
     // event listener for buttons; when an input is selected, the response
     // and additional information are stored in exp.trial_info
     $('#next_context').on('click', function () {
-      console.log($('#refexp').val());
+      // console.log($('#refexp').val());
       if ($('#refexp').val().length < 3) {
         $('#error').css('visibility', 'visible');
         $('#refexp').focus();
@@ -348,7 +348,7 @@ var main = {
     // fill variables in view-template
     var viewTemplate = $('#main-view').html();
 
-    console.log(exp.trial_info.main_trials[CT]);
+    // console.log(exp.trial_info.main_trials[CT]);
     var contextInfo = exp.trial_info.main_trials[CT];
 
     var items = {
@@ -365,12 +365,12 @@ var main = {
     var allUtts = [' ...'];
 
     if (contextInfo.utterance === 'modified') {
-      console.log('refexpTarget: ' + refexpTarget);
+      // console.log('refexpTarget: ' + refexpTarget);
       var adjUtterance = refexpTarget.split('_').shift() + ' ...';
       var fullUtterance = refexpTarget.replace('_', ' ');
       allUtts.push(adjUtterance, fullUtterance);
     } else {
-      console.log('refexpTarget: ' + refexpTarget);
+      // console.log('refexpTarget: ' + refexpTarget);
       var fullUtterance = refexpTarget.split('_').pop();
       allUtts.push(fullUtterance);
     }
@@ -462,7 +462,7 @@ var main = {
     // help button
     var active = false;
     $('#help').on('click', function () {
-      console.log("clicked");
+      // console.log("clicked");
       if (!active) {
         $('#helpText').css('display','block')
         active = true;
@@ -491,7 +491,7 @@ var main = {
     $('#next_context').on('click', function () {
       reactionTimes.push(rt);
       selectedItemsAll.push(selectedItem);
-      console.log(selectedItemsAll);
+      // console.log(selectedItemsAll);
       var item2;
       var rt2;
       if (contextInfo.utterance === "modified") {
