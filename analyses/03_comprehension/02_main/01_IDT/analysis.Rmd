@@ -49,6 +49,10 @@ unique(df_import$comments)
 
 ```{r create main data frame, message=FALSE, include=FALSE}
 
+# TODO: what should the data exclusion be here?
+# 1) if hit was reportedly done incorrectly (i.e., HitCorrect)
+# 2) if native language is not english
+# 3) if comments suggest that the hit was done incorrectly
 df_clean = df_import
 
 # number of participants before exclusion (6)
@@ -123,7 +127,10 @@ plot_grid(p_age,p_gen,p_lang,p_enj,p_time, labels = "AUTO", ncol = 2, align = 'v
 
 ### Main Trials
 
-```{r import typicality data}
+# TODO: check that typicality visualizations are valid
+# TODO: include the statistical analyses
+
+```{r import typicality data, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 
 typ_data = read_csv(here("data","01_norming","02_main","typicality_data.csv"))
 
@@ -140,7 +147,7 @@ atyp_obj = typ_data %>%
 
 ```
 
-```{r main trial data}
+```{r prepare df for main trial data, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 
 df_main = df %>% 
   # select main trials
@@ -213,9 +220,7 @@ unique(df_objselec$obj_in_display)
 
 (use all main contexts -- critical and filler)
 
-##### Is there an atypicality bias, i.e., is the proportion of clicks on atypical object higher than typical ones?
-
-```{r prepare prior df}
+```{r prepare prior df, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 
 df_prior = df_objselec %>%
   filter(timeStep_selec == "selectedItem_prior")
@@ -226,7 +231,7 @@ df_prior = df_objselec %>%
 
 E.g., Is there a color competitor bias, i.e., are participants more likely to select one of the two objects of the same color?
 
-```{r prior distribution}
+```{r prior overall, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 
 ggplot(df_prior, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
   stat_summary(fun.y = "mean", 
@@ -236,25 +241,30 @@ ggplot(df_prior, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
                color = "black",
                size = .3,
                width = 0.3) +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none") +
+  ggtitle("Overall prior distribution")
 
-# ggplot(df_prior_contrast, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
-#   facet_wrap(vars(trial_half)) +
-#   stat_summary(fun.y = "mean", 
-#                geom = "bar") +
-#   stat_summary(fun.data = "mean_cl_boot",
-#                geom = "errorbar",
-#                color = "black",
-#                size = .3,
-#                width = 0.3) +
-#   theme(axis.text.x = element_text(angle = 30, hjust = 1))
+ggplot(df_prior, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
+  facet_wrap(vars(trial_half)) +
+  stat_summary(fun.y = "mean",
+               geom = "bar") +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               size = .3,
+               width = 0.3) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none") +
+  ggtitle("Overall prior distribution, split by trial half")
+
 ```
 
 ##### Is there a contrast bias, i.e., if a contrast object is present, is it more likely that the target/contrast are selected? (contexts: contrast present)
 
 Also: Is there a contrastive inference bias, i.e., contrast + competitor bias: if a contrast is present, is it more likely that the target is selected?
 
-```{r contrast present prior distribution}
+```{r prior target bias, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 
 # Do the prior distributions of clicks change dependent on contrast presence?
 ggplot(df_prior, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
@@ -266,7 +276,9 @@ ggplot(df_prior, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
                color = "black",
                size = .3,
                width = 0.3) +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none") +
+  ggtitle("Prior distribution faceted by contrast presence \n(TRUE == contrast present)")
 
 # If a contrast is present, do the prior distributions change between the first and 
 # second half of the experiment?
@@ -279,7 +291,9 @@ ggplot(df_prior[df_prior$contrast_present,], aes(x=obj_in_display, y=clicked, fi
                color = "black",
                size = .3,
                width = 0.3) +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none") +
+  ggtitle("Prior distribution when contrast is present, by trial half")
 
 # If a contrast is NOT present, do the prior distributions change between the first and 
 # second half of the experiment?
@@ -292,12 +306,14 @@ ggplot(df_prior[!df_prior$contrast_present,], aes(x=obj_in_display, y=clicked, f
                color = "black",
                size = .3,
                width = 0.3) +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none") +
+  ggtitle("Prior distribution when contrast is not present, by trial half")
 ```
 
 ##### Is there an atypicality bias, i.e., is the proportion of clicks on atypical object higher than typical ones?
 
-```{r atypicality bias prior distribution}
+```{r prior atypicality bias, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 
 df_prior_typicality = df_prior %>% 
   mutate(obj_in_display_typ = case_when(
@@ -317,7 +333,8 @@ ggplot(df_prior_typicality, aes(x=obj_in_display_typ, y=clicked, fill=obj_in_dis
                color = "black",
                size = .3,
                width = 0.3) +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none")
 
 ```
 
@@ -325,7 +342,7 @@ ggplot(df_prior_typicality, aes(x=obj_in_display_typ, y=clicked, fill=obj_in_dis
 ##### Is there a position bias, i.e., is there one position on the grid that is preferred?
 
 
-```{r}
+```{r prior position bias, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 df_prior_pos = df_prior %>%
   mutate_at(vars(pos1,pos2,pos3,pos4), funs(ifelse(. == "contrast", "contrast/distractor", .))) %>% 
   mutate(clicked_obj_pos = case_when(
@@ -344,7 +361,8 @@ ggplot(df_prior_pos, aes(x=clicked_obj_pos, y=clicked, fill=clicked_obj_pos)) +
                color = "black",
                size = .3,
                width = 0.3) +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none")
 ```
 
 ### After adjective 
@@ -353,7 +371,7 @@ ggplot(df_prior_pos, aes(x=clicked_obj_pos, y=clicked, fill=clicked_obj_pos)) +
 
 Note that there are only 4 conditions in the critical context, because the typicality of the color competitor is held stable.
 
-```{r prepare after adj selection}
+```{r prepare after adj selection df, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 
 df_adj = df_objselec %>%
   filter(timeStep_selec == "selectedItem1",
@@ -366,7 +384,7 @@ df_adj = df_objselec %>%
 
 The color is already known such that target and color competitor are possible targets, but not the two distractors. Clicks on these two should be considered wrong.
 
-```{r}
+```{r after adj wrong selections, echo=FALSE, warning=FALSE, paged.print=FALSE}
 
 # number of wrong selections
 df_adj %>% 
@@ -381,7 +399,8 @@ ggplot(df_adj, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
                color = "black",
                size = .3,
                width = 0.3) +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none")
 
 ```
 
@@ -390,9 +409,9 @@ ggplot(df_adj, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
 The contrastive inference effect would potentially predict that as soon as there is a contrast present, it is more likely that we consider the target as the actual target (even before observing the noun).
 However: Is this really contrastive inference or simply solving the task in an experiment -- logical reasoning? One potential clue could give whether the clicks to the target were already increased before the adjective was observed. But maybe the difference increases?
 
-(This is only possible with the data set where the color competitor is typical.)
+(This is only possible with the data set where the color competitor is typical. -- but also compare the aap to the aan context -- what is the difference?)
 
-```{r}
+```{r after adj contrastive inference, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 df_ttp_ttn = df_adj %>% 
   filter(condition == "ttp" | condition == "ttn")
 
@@ -410,7 +429,8 @@ df_prior %>%
                  size = .3,
                  width = 0.3) +
     theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
-    ggtitle("Prior distribution")
+    ggtitle("Prior distribution") +
+    theme(legend.position = "none")
 
 # after adjective distribution
 ggplot(df_ttp_ttn, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
@@ -423,23 +443,22 @@ ggplot(df_ttp_ttn, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
                size = .3,
                width = 0.3) +
   theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
-    ggtitle("After adjective distribution")
+  ggtitle("After adjective distribution") +
+  theme(legend.position = "none")
 
 ```
 
+Do the results look different when target and color competitor are atypical?
+Are typicality considerations relevant for the contrastive inference effects (or whatever this is here)?
 
-##### Is there a clear pattern difference in the atp context, as opposed to the tan context? (In atp, all cues suggest that the target should be the target; in tan, there might be a slight tendency for the color competitor.)
-
-Since we do a between subject manipulation for the competitor typicality, we can only compare atp and ttn (or reversely aap and tan) in this data set.
-
-```{r}
-df_atp_ttn = df_adj %>% 
-  filter(condition == "atp" | condition == "ttn")
+```{r after adj atypical contrastive inference, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+df_ttp_ttn = df_adj %>% 
+  filter(condition == "aap" | condition == "aan")
 
 # prior distribution
 df_prior %>% 
   filter(trial_type == "critical",
-         condition == "atp" | condition == "ttn") %>% 
+         condition == "aap" | condition == "aan") %>% 
   ggplot(aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
     facet_wrap(vars(condition)) +
     stat_summary(fun.y = "mean", 
@@ -450,7 +469,47 @@ df_prior %>%
                  size = .3,
                  width = 0.3) +
     theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
-    ggtitle("Prior distribution")
+    ggtitle("Prior distribution") +
+    theme(legend.position = "none")
+
+# after adjective distribution
+ggplot(df_ttp_ttn, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
+  facet_wrap(vars(condition)) +
+  stat_summary(fun.y = "mean", 
+               geom = "bar") +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               size = .3,
+               width = 0.3) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  ggtitle("After adjective distribution") +
+  theme(legend.position = "none")
+
+```
+
+##### Is there a clear pattern difference in the atp context, as opposed to the tan context? (In atp, all cues suggest that the target should be the target; in tan, there might be a slight tendency for the color competitor.)
+
+```{r after adj atp vs tan, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+df_atp_ttn = df_adj %>% 
+  filter(condition == "atp" | condition == "tan")
+
+# prior distribution
+df_prior %>% 
+  filter(trial_type == "critical",
+         condition == "atp" | condition == "tan") %>% 
+  ggplot(aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
+    facet_wrap(vars(condition)) +
+    stat_summary(fun.y = "mean", 
+                 geom = "bar") +
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "errorbar",
+                 color = "black",
+                 size = .3,
+                 width = 0.3) +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+    ggtitle("Prior distribution") +
+    theme(legend.position = "none")
 
 # after adjective distribution
 ggplot(df_atp_ttn, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
@@ -463,14 +522,15 @@ ggplot(df_atp_ttn, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
                size = .3,
                width = 0.3) +
   theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
-    ggtitle("After adjective distribution")
+  ggtitle("After adjective distribution") +
+  theme(legend.position = "none")
 
 ```
 
 
 ##### Independent of typicality, is there overall a selection bias for the object with the contrast (i.e., the target)? (contexts: ttp,tap,atp,aap)
 
-Note that the competitor is always typical, so this could also be driven by typicality
+TODO: look over the following three plots
 
 ```{r}
 # prior distribution
@@ -485,7 +545,8 @@ df_prior %>%
                  size = .3,
                  width = 0.3) +
     theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
-    ggtitle("Prior distribution")
+    ggtitle("Prior distribution") +
+    theme(legend.position = "none")
 
 # after adjective distribution
 df_adj %>% 
@@ -499,13 +560,14 @@ df_adj %>%
                  size = .3,
                  width = 0.3) +
     theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
-    ggtitle("After adjective distribution")
+    ggtitle("After adjective distribution") +
+    theme(legend.position = "none")
 
 ```
 
 ##### Independent of contrast, is there overall a selection bias for the atypically colored object, when target and competitor differ in typicality? (contexts: tap,tan,atp,atn)
 
-```{r atypicality bias prior distribution}
+```{r after adj atypicality bias, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 
 df_adj_typicality = df_adj %>% 
   mutate(obj_in_display_typ = case_when(
@@ -526,16 +588,17 @@ ggplot(df_adj_typicality, aes(x=obj_in_display_typ, y=clicked, fill=obj_in_displ
                color = "black",
                size = .3,
                width = 0.3) +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none")
 
 ```
 
 ##### When target and competitor have the same typicality and there is a contrast, is there a selection bias for the object with the contrast (i.e., the target)? (contexts: ttp,aap)
 
-```{r}
+```{r after adj contrast bias, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 # prior distribution
 df_prior %>% 
-  filter(condition == "ttp") %>% 
+  filter(condition == "ttp" | condition == "aap") %>% 
   ggplot(aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
     stat_summary(fun.y = "mean", 
                  geom = "bar") +
@@ -545,11 +608,12 @@ df_prior %>%
                  size = .3,
                  width = 0.3) +
     theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
-    ggtitle("Prior distribution")
+    ggtitle("Prior distribution") +
+    theme(legend.position = "none")
 
 # after adjective distribution
 df_adj %>% 
-  filter(condition == "ttp") %>% 
+  filter(condition == "ttp" | condition == "aap") %>% 
   ggplot(aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
     stat_summary(fun.y = "mean", 
                  geom = "bar") +
@@ -559,16 +623,17 @@ df_adj %>%
                  size = .3,
                  width = 0.3) +
     theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
-    ggtitle("After adjective distribution")
+    ggtitle("After adjective distribution") +
+    theme(legend.position = "none")
 ```
 
 
 ##### When contrast is absent and target and competitor differ in typicality, is there an overall selection bias for the atypical object? (contexts: tan,atn)
 
-```{r atypicality bias adj distribution}
+```{r after adj atypicality bias, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 
 df_adj_typicality %>% 
-  filter(condition == "atn") %>% 
+  filter(condition == "atn" | condition == "tan") %>% 
   ggplot(aes(x=obj_in_display_typ, y=clicked, fill=obj_in_display_typ)) +
     stat_summary(fun.y = "mean", 
                  geom = "bar") +
@@ -577,16 +642,17 @@ df_adj_typicality %>%
                  color = "black",
                  size = .3,
                  width = 0.3) +
-    theme(axis.text.x = element_text(angle = 30, hjust = 1))
+    theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+    theme(legend.position = "none")
 
 ```
 
 ##### What are the overall selection patterns for each condition?
 
-```{r}
+```{r after adj overall selection patterns, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 
 ggplot(df_adj, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
-  facet_wrap(vars(condition)) +
+  facet_wrap(vars(condition), nrow = 2) +
   stat_summary(fun.y = "mean", 
                geom = "bar") +
   stat_summary(fun.data = "mean_cl_boot",
@@ -594,7 +660,8 @@ ggplot(df_adj, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
                color = "black",
                size = .3,
                width = 0.3) +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none")
 
 ```
 
@@ -602,7 +669,7 @@ ggplot(df_adj, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
 
 (use only critical contexts)
 
-```{r prepare after adj selection}
+```{r prepare after adj df, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 
 df_noun = df_objselec %>%
   filter(timeStep_selec == "selectedItem2",
@@ -612,7 +679,7 @@ df_noun = df_objselec %>%
 
 ##### What is the proportion of wrongly selected objects?
 
-```{r}
+```{r after noun errors, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 
 df_noun %>% 
   filter(clicked & clickedType != "target") %>% 
@@ -626,20 +693,21 @@ ggplot(df_noun, aes(x=obj_in_display, y=clicked, fill=obj_in_display)) +
                color = "black",
                size = .3,
                width = 0.3) +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none")
 
 ```
 
 
-##### Is there a difference in reaction time between the atp and ttn (or aap and tan) context?
+##### Is there a difference in reaction time between the atp and tan context?
 
-```{r}
+```{r after noun rt atp tan, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 
 df_rt = df_noun %>% 
   gather(timeStep_rt, rt, reaction_time_prior, reaction_time1, reaction_time2) %>% 
   mutate(rt_shortened = sapply(str_split(rt,","),tail,1)) %>%
   mutate_at(vars(rt_shortened), funs(as.integer(.))) %>% 
-  filter(condition == "atp" | condition == "ttn")
+  filter(condition == "atp" | condition == "tan")
 
 ggplot(df_rt, aes(x=condition, y=rt_shortened)) + 
   geom_point(alpha=0.5, position="jitter") +
@@ -652,7 +720,7 @@ ggplot(df_rt, aes(x=condition, y=rt_shortened)) +
 
 ##### Is there a pattern to where the most errors/multiple selections occur? (dependent on condition?)
 
-```{r}
+```{r after noun error and mult selections, echo=FALSE, warning=FALSE, paged.print=FALSE}
 
 df_multselec = df_noun %>% 
   filter(clicked & mult_selec)
@@ -667,7 +735,7 @@ table(df_multselec$condition)
 
 ##### Is there an overall target position bias? (We need this to address the position bias question in the prior, if existent. But for this we also need to consider the fillers and not just the critical trials.)
 
-```{r}
+```{r general target position bias, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 
 df_targetpos = df_objselec %>% 
   gather(position, obj_in_pos, pos1, pos2, pos3, pos4) %>% 
@@ -681,14 +749,15 @@ ggplot(df_targetpos, aes(x=position, y=target_pos, fill=position)) +
                color = "black",
                size = .3,
                width = 0.3) +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none")
 
 ```
 
 
 ##### When do most multiple selections occur (prior, after adj, after noun? is there a condition-wise split? a first/second half of trials split?)
 
-```{r}
+```{r general error and selection analysis, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 
 # Multiple selection analysis
 

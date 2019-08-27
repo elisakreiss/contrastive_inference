@@ -39,3 +39,4 @@
     - 20x utterance: unmodified; target: random distractor (taken at random from the left-over contexts, but always making sure that the distractor is typical -- if it's not, generate new distractor)
 - all contexts have two objects of the same color in them 
 	- minimizes the prior participants could have about the potential target given the context
+- incongruent trials, i.e., modified ttn and modified tan contexts, can only occur after trial 15 to avoid priming

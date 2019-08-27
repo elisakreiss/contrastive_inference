@@ -1,6 +1,9 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-tabs */
-var participantCond = 'typical';
+// var participantCond = 'typical';
+// var participantCond = 'atypical';
+var participantCond = COMPETITOR_TYPICALITY;
+// console.log("color competitor typicality: ", participantCond)
 
 function createRandomDistractor (colors, types, typicality = 'random') {
   // I think this 'do' is vacuous

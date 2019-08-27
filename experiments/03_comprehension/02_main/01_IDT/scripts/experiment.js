@@ -5,7 +5,7 @@ exp.customize = function () {
   this.global_data.startTime = Date.now();
   // specify view order
   this.views_seq = [
-    // botcaptcha,
+    botcaptcha,
     intro,
     practiceIntro,
     practice,
@@ -25,11 +25,9 @@ exp.customize = function () {
   while (i < 15) {
     var context = shuffled_main_trials[i];
     if (context.trial_type === 'critical' & (context.condition === 'tan' | context.condition === 'ttn')) {
-      console.log("I need to change the position of this trial")
       shuffled_main_trials.splice(i, 1);
       var new_pos = _.random(15,shuffled_main_trials.length);
       shuffled_main_trials.splice(new_pos, 0, context);
-      console.log("changing from position " + i + " to " + new_pos)
     } else {
       i += 1;
     }
