@@ -56,47 +56,7 @@ Is there one position on the grid that is preferred? Yes, in fact the two upper 
 
 Overall, there seems to be cluster suggesting that participants had a tendency to prefer typical over atypical objects. The green swan (which is highly atypical) is an exception, as it is highly atypical but was selected very often. Given that the swan is the only atypically colored animal it might be salient in some way.
 
-``` r
-# total occurrences range between 623 (white pumpkin) and 825 (red strawberry)
-df_byitemprior = df_prior %>%
-  # filter(condition=="aan") %>% 
-  select(clickedType, target, comp, contrast, distractor, anon_worker_id, trial_number) %>% 
-  distinct() %>% 
-  gather(obj_fct, item, target, comp, contrast, distractor) %>% 
-  mutate(clicked = ifelse(clickedType == obj_fct, 1, 0)) %>% 
-  left_join(typ_data, by=c("item"="col_type")) %>% 
-  mutate(bin_typ=factor(ifelse(typicality>50,"typical","atypical"), 
-                        levels = c("typical", "atypical")))
-
-ggplot(df_byitemprior, aes(x=reorder(item, clicked), y=clicked, fill=typicality)) +
-  stat_summary(fun.y = "mean", 
-               geom = "bar") +
-  stat_summary(fun.data = "mean_cl_boot",
-               geom = "errorbar",
-               color = "black",
-               size = .3,
-               width = 0.3) +
-  theme(axis.text.x = element_text(angle=40, hjust=1))
-```
-
 ![](analysis_files/figure-markdown_github/byitem%20prior-1.png)
-
-``` r
-# # This plot shows the difference between items of the same typicality and color. 
-# # They are generally very close, with the exception of the green carrot and green swan. 
-# ggplot(df_byitemprior, aes(x=reorder(item, clicked), y=clicked, fill=color)) +
-#   stat_summary(fun.y = "mean",
-#                geom = "bar",
-#                color = "black") +
-#   stat_summary(fun.data = "mean_cl_boot",
-#                geom = "errorbar",
-#                color = "black",
-#                size = .3,
-#                width = 0.3) +
-#   facet_wrap(vars(bin_typ), scales = "free_x") +
-#   theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
-#   scale_fill_identity()
-```
 
 After adjective -- partial information available
 ------------------------------------------------
@@ -168,7 +128,7 @@ When contrast is absent and target and competitor differ in typicality, there is
 
 We see a target boost/competitor reduction though in all conditions. However, if the aan condition was random, there wouldn't be one and there is only a small one in the atn-atp.
 
-![](analysis_files/figure-markdown_github/after%20adj%20overall%20selection%20patterns-1.png)![](analysis_files/figure-markdown_github/after%20adj%20overall%20selection%20patterns-2.png)
+![](analysis_files/figure-markdown_github/after%20adj%20overall%20selection%20patterns-1.png)![](analysis_files/figure-markdown_github/after%20adj%20overall%20selection%20patterns-2.png)![](analysis_files/figure-markdown_github/after%20adj%20overall%20selection%20patterns-3.png)
 
 #### Change from prior per condition
 
@@ -182,9 +142,15 @@ Can I do this plot like this? This is basically ignoring all clicks to other obj
 
 #### Statistical analysis
 
-Significant: contrast presence, competitor typicality
+If we ignore the prior probability, contrast presence and competitor typicality come out as main effects. Target typicality and interactions are not significant.
 
-Non-significant: target typicality, all interactions between the three
+However, if we include the prior probability as a (main) predictor, only the prior and target typicality come out as main effects, but everything else as not significant.
+
+![with prior](graphs/posterior_density_prior.png) ![without prior](graphs/posterior_density_noprior.png)
+
+The prior distribution is mainly explained by the position, i.e., a target selection was more likely when it occurred in one of the two upper grid cells.
+
+![prior pred](graphs/prior_density.png)
 
 #### By-item analysis
 
@@ -192,37 +158,13 @@ We see a shift here compared to the prior. Now atypical items are more likely to
 
 ![](analysis_files/figure-markdown_github/itemwise-1.png)
 
-<!-- #### By-item & condition analysis -->
-<!-- ```{r after adj item and condition selection patterns, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE} -->
-<!-- plot_item_conditions <- function(df, cond) { -->
-<!--   df %>% -->
-<!--     filter(condition==cond) %>%  -->
-<!--     ggplot(., aes(x=obj_in_display, y=clicked, fill=obj_in_display)) + -->
-<!--       facet_wrap(vars(target_comp)) + -->
-<!--       stat_summary(fun.y = "mean",  -->
-<!--                    geom = "bar") + -->
-<!--       stat_summary(fun.data = "mean_cl_boot", -->
-<!--                    geom = "errorbar", -->
-<!--                    color = "black", -->
-<!--                    size = .3, -->
-<!--                    width = 0.3) + -->
-<!--       theme(axis.text.x = element_text(angle = 30, hjust = 1)) + -->
-<!--       theme(legend.position = "none") -->
-<!-- } -->
-<!-- df_itemcond = df_adj %>% -->
-<!--   separate(target, c("t_color", "t_type"), sep = "_", remove = FALSE) %>%  -->
-<!--   separate(comp, c("c_color", "c_type"), sep = "_", remove = FALSE) %>%  -->
-<!--   mutate(target_comp = str_c(t_type, c_type, sep = "-")) -->
-<!-- plot_item_conditions(df_itemcond, "atn") -->
-<!-- ``` -->
+#### By-item & condition analysis
+
+![](analysis_files/figure-markdown_github/after%20adj%20item%20and%20condition%20selection%20patterns-1.png)![](analysis_files/figure-markdown_github/after%20adj%20item%20and%20condition%20selection%20patterns-2.png)![](analysis_files/figure-markdown_github/after%20adj%20item%20and%20condition%20selection%20patterns-3.png)![](analysis_files/figure-markdown_github/after%20adj%20item%20and%20condition%20selection%20patterns-4.png)![](analysis_files/figure-markdown_github/after%20adj%20item%20and%20condition%20selection%20patterns-5.png)![](analysis_files/figure-markdown_github/after%20adj%20item%20and%20condition%20selection%20patterns-6.png)
+
 #### Switching behavior
 
 Do people switch from their prior selection when they don't have to (due to informativity)? Mainly they don't, but there are differences in the patterns for different conditions.
-
-    ##    
-    ##     target-target comp-comp comp-target target-comp
-    ##   0           244       235           0           0
-    ##   1             0         0         106          65
 
 ![](analysis_files/figure-markdown_github/switch-1.png)![](analysis_files/figure-markdown_github/switch-2.png)![](analysis_files/figure-markdown_github/switch-3.png)
 
