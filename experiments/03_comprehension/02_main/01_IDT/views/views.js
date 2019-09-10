@@ -517,7 +517,6 @@ var main = {
         pos4: pos4,
         utterance: fullUtterance,
         utterance_cat: contextInfo.utterance,
-        // TODO: change selectedItem to pick out the object type in context, like "target" or "competitor"... maybe....
         selectedItem_prior: selectedItemsAll[0].join(),
         selectedItem1: selectedItemsAll[1].join(),
         selectedItem2: item2,
