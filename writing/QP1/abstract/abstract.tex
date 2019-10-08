@@ -1,0 +1,50 @@
+\documentclass[a4paper,man,floatsintext,natbib,donotrepeattitle]{apa6}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{natbib}
+\usepackage{subcaption}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	citecolor=black,
+	urlcolor=black
+}
+
+\definecolor{Blue}{RGB}{0,0,255}
+\definecolor{Green}{RGB}{10,200,100}
+\definecolor{Red}{RGB}{255,0,0}
+\definecolor{Orange}{RGB}{255,140,0}
+\newcommand{\jd}[1]{\textcolor{Blue}{[jd: #1]}}  
+\newcommand{\ek}[1]{\textcolor{Orange}{[ek: #1]}} 
+
+\newcommand{\subsubsubsection}[1]{{\em #1}}
+\newcommand{\eref}[1]{(\ref{#1})}
+\newcommand{\tableref}[1]{Table \ref{#1}}
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newcommand{\appref}[1]{Appendix \ref{#1}}
+\newcommand{\sectionref}[1]{Section \ref{#1}}
+
+%\title{Modeling Natural Language in the RSA Framework: Typicality Effects in Overinformative Referring Expressions}
+\shorttitle{INSERT SOME SHORT TITLE}
+%\author{Elisa Kreiss} 
+%\affiliation{Osnabrueck University}
+%
+%\abstract{Your abstract here.\ek{general remarks: unify when to write ``hello" and when \textit{hello}; decide on Oxford comma; check notes app and bachelor thesis notes for things you wanted to incorporate; make sure the section citations work; make sure you say 'RSA' or 'the RSA model'; look again at Koolen 2011}}
+
+\begin{document}
+
+\pagenumbering{Roman}
+
+\section{Abstract}
+INSERT SOME ABSTRACT
+
+\bibliography{library}
+
+\end{document}

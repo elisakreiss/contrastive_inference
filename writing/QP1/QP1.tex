@@ -1,0 +1,414 @@
+\documentclass[a4paper,man,floatsintext,natbib,donotrepeattitle]{apa6}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{natbib}
+\usepackage{subcaption}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+\usepackage{comment}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	citecolor=black,
+	urlcolor=black
+}
+
+\definecolor{Blue}{RGB}{0,0,255}
+\definecolor{Green}{RGB}{10,200,100}
+\definecolor{Red}{RGB}{255,0,0}
+\definecolor{Orange}{RGB}{255,140,0}
+\definecolor{White}{RGB}{255,255,255}
+\newcommand{\jd}[1]{\textcolor{Blue}{[jd: #1]}}  
+\newcommand{\ek}[1]{\textcolor{Orange}{[ek: #1]}} 
+\newcommand{\hideref}[1]{\textcolor{White}{[refs: #1]}} 
+
+\newcommand{\subsubsubsection}[1]{{\em #1}}
+\newcommand{\eref}[1]{(\ref{#1})}
+\newcommand{\tableref}[1]{Table \ref{#1}}
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newcommand{\appref}[1]{Appendix \ref{#1}}
+\newcommand{\sectionref}[1]{Section \ref{#1}}
+
+%\title{TITLE}
+\shorttitle{INSERT SOME SHORT TITLE}
+%\author{Elisa Kreiss} 
+%\affiliation{Osnabrueck University}
+
+\begin{document}
+
+\pagenumbering{Roman}
+
+\includepdf[pages={1}]{titlepage/titlepage.pdf}
+
+\includepdf[pages={1}]{abstract/abstract.pdf}
+
+\clearpage
+
+%{\def\addcontentsline#1#2#3{}}
+\setcounter{page}{2}
+\tableofcontents
+
+\setcounter{secnumdepth}{3}
+
+\clearpage
+
+\ek{determine how to spell (non)colordiagnosticity}
+
+\section{Introduction}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\subsection{SOME SUBSECTION}\label{sec:somesubsection}
+
+\section{Experiment: Norming} \label{experiment}
+
+Started off with 6 colors (green, orange, pink, red, white, yellow), each with 4 possible colordiagnostic instances; goal was to find 2 cd objects for 5 of the colors, because we always need at least two typical instances of a color to create the tt(p/n) conditions; 
+
+\subsection{Norming for color-diagnosticity}
+% List feature norming
+
+Inspired by Tanaka and Presnell
+
+Goal: determine color diagnosticity
+(1) Is color a property that is closely associated with the object?
+(2) If a color is mentioned, do participants agree on the color?
+
+Task: "List 3 perceptual features of a \textbf{NOUN}"
+
+free production and checkbox with possibility to say "I don't know this object."
+
+52 trials;
+4 control trials with nonce words;
+25 presumably color diagnostic objects (4 for each of the 6 colors + 1 more green thing) and 23 presumably non-color diagnostic objects
+
+40 participants;
+exclusion criteria: everyone correctly identified the 4 nonce words as unknown objects; and if they rated more than 8 objects as "object unknown" they were excluded (2 participants);
+resulting number of participants: 38
+
+we evaluated the results according to whether 
+(1) a color was mentioned at all in the features
+(2) a color was mentioned as a first feature
+(3) if a color was mentioned, was it the same or did they differ
+
+\subsection{Norming for nameability}
+
+Goal: Are the image depictions we chose nameable, the way we intended?
+
+Task: "What is this?"
+
+free production
+
+50 trials;
+26 depictions of presumably color diagnostic objects (same as in color diagnosticity norming + 1 more lettuce depiction) and 24 presumably non-color diagnostic ones (same as in color diagnosticity norming + 1 more (sports)car);
+
+20 participants;
+exclusion: 2 participants because they indicated that they were confused or didn't do the HIT correctly;
+resulting number of participants: 18
+
+We evaluated the results according to how many labels were used. If more than one label was used, we favored cohort competitors over entirely separate terms (e.g., bike and bicycle are more acceptable than traffic cone and cone);
+Wrt to lettuce we had romaine and iceberg lettuce depictions. The simple noun lettuce was more frequently used for the iceberg than the romaine lettuce which is why we favored the iceberg lettuce.; 
+other things: zucchini was half of the time misclassified as cucumber, similarly for pickle, traffic cone had a lot of different labels, such as simply cone, caution cone, hazard cone, safety cone
+
+\subsection{Norming for typicality}
+
+Goal: Does the color manipulation of the images show the desired difference in typicality ratings?
+
+Task: "How typical is this object for a \textbf{NOUN}?"
+
+slider rating, underlyingly coded as ranging from 0 to 100
+
+45 trials;
+11 color diagnostic objects, each in their typical color and 1-2 atypical colors (i.e., 25 stimuli); 20 non-color diagnostic stimuli
+
+30 participants;
+exclusions: none; everyone thought they did the HIT correctly
+
+Results: generally clear distinction between typical and atypical instance;
+From the three items that were normed in two atypical colors (carrot, corn, pumpkin), we see the biggest difference between the red and white pumpkin. Therefore, we should choose the white pumpkin and (following from that) the green carrot and red corn.
+There does not seem to be a big difference between the yellow egg and snowman, but the white egg is rated even more typical and its size fits better to the other stimuli. Therefore, we should choose the egg over the snowman (given that both are also nameable).
+Even though the orange banana is predominantly rated below 50, it is still not as atypical as other objects.;
+The non-color diagnostic objects are all rated as very typical instances.
+
+\subsection{Norming for free production}
+
+Goal: Are the image depictions we chose nameable, the way we intended?
+
+Task: "What is this?"
+
+free production
+
+31 trials (22 cd -- each participant saw one instance of each object at random, i.e., either typical or atypical; 20 non-cd)
+
+Results: swan is often called a goose; two people identified the white carrot as parsnip
+
+\subsection{Final stimuli selection}
+
+In the end, we have 10 objects, each occurring in a typical and atypical color.
+Items can occur in the colors yellow, red, green, orange and white. Each color occurs twice as typical and twice as atypical. This counterbalance aims to reduce artifacts of salience such as red is generally more salient as a warn signal \ek{ref?} and blue is highly atypical for most objects. A full list of stimuli can be found in table \ek{add table and reference}.
+
+% \subsection{Norming for multiple choice}
+
+% \subsection{Norming for voice}
+
+\section{Experiment: Production} \label{experiment}
+
+\subsection{Method}
+
+\paragraph{Participants}
+
+\paragraph{Procedure}
+
+\paragraph{Materials}
+
+\paragraph{Data Preprocessing and exclusion}
+
+\subsection{Results}
+
+\section{Experiment: Comprehension} \label{experiment}
+
+\subsection{Method}
+
+\paragraph{Participants}
+We recruited 80 participants over Amazon's Mechanical Turk, 40 for each color competitor typicality manipulation. The study took on average 7 minutes and each of them were paid \ek{...} for their participation. We restricted participation to workers with IP addresses in the US and a approval rate of previous work above 97\%.
+
+\paragraph{Procedure}
+This experiment is a one-player adaption of the production study explained in \ek{ref to section}. In the four practice trials, the participant was given the role of the speaker and in the main experiment the role of the listener. In the speaker role, they saw a grid of four non-color diagnostic objects, one of which was marked as the target by a green border surrounding it. They were then asked to refer to the object such that a second player could identify it. The practice trials were introduced to familiarize the participants with the task.
+
+In the main part of the experiment, participants were put into the listener role of the reference game. That means, they needed to identify which object was the target given a referring expression placed above the grid. Crucially, they do not get the complete referring expression at once. The utterance is gradually revealed to the parti...\ek{CONTINUE HERE} (This method is highly inspired by the incremental decision task introduced by \ek{cite Qing}.)
+
+4 practice trials from the speaker perspective with non-color diagnostic objects. Then 55 trials (20 critical, 35 fillers).
+
+\paragraph{Materials}
+
+\paragraph{Data Preprocessing and exclusion}
+
+\subsection{Results}
+
+\section{Discussion}
+
+\paragraph{Summary}
+
+\subsection{Conclusion}
+
+% \begin{figure}[bt!]
+% 	% following line responsible for centered subfigure captions -- maybe don't do it
+% 	% \captionsetup[subfigure]{justification=centering}
+% 	\begin{subfigure}{.5\textwidth}
+% 		\centering
+% 		\includegraphics[width=.8\textwidth]{img/cond_inf.png}
+% 		\caption{informative without color competitor}
+% 		\label{fig:condInf}
+% 	\end{subfigure}
+% 	\begin{subfigure}{.5\textwidth}
+% 		\centering
+% 		\includegraphics[width=.8\textwidth]{img/cond_infcc.png}
+% 		\centering
+% 		\caption{informative with color competitor}
+% 		\label{fig:condInfcc}
+% 	\end{subfigure}
+% 	\begin{subfigure}{.5\textwidth}
+% 		\centering
+% 		\includegraphics[width=.8\textwidth]{img/cond_overinf.png}
+% 		\caption{overinformative without color competitor}
+% 		\label{fig:condOverinf}
+% 	\end{subfigure}
+% 	\begin{subfigure}{.5\textwidth}
+% 		\centering
+% 		\includegraphics[width=.8\textwidth]{img/cond_overinfcc.png}
+% 		\centering
+% 		\caption{overinformative with color competitor}
+% 		\label{fig:condOverinfcc}
+% 	\end{subfigure}
+% 	\caption{The four different context conditions in our reference game study. The green border marks the object that needs to be communicated, i.e., the intended referent.}
+% 	\label{fig:conditions}
+% \end{figure}
+
+% \begin{figure}[bt!]
+% 	\subcaptionbox{Adjective \& Noun -- Object. \label{fig:colorobj}} {\includegraphics[width=2in]{img/typnorm_colorobj}} \hfill
+% 	\subcaptionbox{Noun -- Object. \label{fig:obj}} 
+% 	{\includegraphics[width=2in]{img/typnorm_obj}} \hfill
+% 	\subcaptionbox{Adjective -- Color Patch. \label{fig:colorpatch}} {\includegraphics[width=2in]{img/typnorm_colorpatch}}%
+% 	\caption{The three different types of typicality norming studies. They differed in the utterance that was asked for and the object that was displayed. The figure descriptions follow the principle of utterance -- object.}
+% 	\label{fig:typ_norm}
+% \end{figure}
+
+% \begin{table}[bt!]
+% 	\begin{tabular}{l l l l l l l}
+% 		\toprule
+% 		Utterances & Example & Images & Participants & Trials & Items & Excluded\\
+% 		\midrule
+% 		Adj Noun & \emph{yellow banana} & object & 174 & 110 & 484 & 14\\ 
+% 		Noun & \emph{banana} & object & 75 & 90 & 154 (198) & 1\\
+% 		Adj & \emph{yellow} & color patch & 110 & 90 & 176 & None\\
+% 		\bottomrule
+% 	\end{tabular}
+% 	\vspace{2mm}
+% 	\caption{Overview of typicality norming studies; the value in brackets shows the number of items including \textit{fruit}, \textit{vegetable} and \textit{cup}.}
+% 	\label{tab:normingoverview}
+% \end{table}
+
+%  Table~\ref{tab:bananatypicalities}
+
+% \begin{figure}[bt]
+% 	\centering
+% 	\includegraphics[width=1\textwidth]{graphs/empiricalProportions.png}
+% 	\caption{For each target, proportion of color-only (``yellow''), type-only (``banana''), color-and-type (``yellow banana''), and other (``dying banana'') utterances as a function of mean Noun -- Object typicality values, across conditions. \emph{\textsc{color} banana} cases are circled in their respective color.}
+% 	\label{fig:proportions}
+% \end{figure}
+
+% \begin{figure}[bt]
+% 	\centering
+% 	\includegraphics[width=1\textwidth]{graphs/byitem_variability.png}
+% 	\caption{Proportion of mentioning color apportioned to the different items used. Typical objects are those items with typicality $\geq$ 0.784. This value was obtained by calculating the mean of all midtypical object typicality ratings.}
+% 	\label{fig:byitem}
+% \end{figure}
+
+
+% \begin{table}[bt!]
+% 	\centering
+% \begin{tabular}{lccccc}
+% 	\hline
+% 	& \textbf{inf} & \textbf{inf-cc} & \textbf{overinf} & \textbf{overinf-cc} & \textbf{total} \\ \hline
+% 	\textbf{color \& type}  & 344 (69\%) & 423 (88\%) & 132 (28\%) & 166  (35\%)  & 1065  (55\%) \\ 
+% 	\textbf{type}                 & 7 (1\%)        & 6 (1\%)        & 225 (47\%) & 284 (59\%) & 522 (27\%)  \\ 
+% 	\textbf{color}                & 128 (26\%)  & 9 (2\%)       & 101 (21\%)   & 2 (0\%)    & 240 (12\%)  \\ 
+% 	\textbf{other}                & 22 (4\%)     & 40 (8\%)     & 20 (4\%)     & 27 (6\%)      & 109 (6\%)   \\ 
+% 	\textbf{rest}                  & 0 (0\%)        & 3 (1\%)        & 1 (0\%)     & 2 (0\%)    & 6 (3\%)    \\ \hline
+% 	\textbf{total}            &  501 (100\%) &  481 (100\%) & 479 (100\%) & 481 (100\%) & 1942 (100\%) \\ \hline
+% \end{tabular}
+% 	\vspace{5mm}
+% 	\caption{Number of utterance types used in different context conditions (informative, informative with color competitor, overinformative, overinformative with color competitor). Percentages for each context (and the total number) of utterance types mentioned are displayed in brackets.}
+% 	\label{tab:gameUttNum}
+% \end{table}
+
+% \begin{figure}[bt!]
+% 	\centering
+% 	\includegraphics[width=1\textwidth]{graphs/modelPredictions.png}
+% 	\caption{Predicted utterance proportions over typicalities, separated by the different context conditions.}
+% 	\label{fig:modPred}
+% \end{figure}
+
+% \figref{fig:modPred}
+
+
+\vfill
+
+\pagebreak
+
+%\appendix
+%\renewcommand\thefigure{\thesection.\arabic{figure}}
+\section{Appendix}
+
+\renewcommand\thefigure{A\arabic{figure}}
+
+The appendix could not be included, due to file size restrictions. If you are interested in the full version of the thesis, I am happy to provide it.
+\vfill
+\pagebreak
+
+% \begin{figure}
+% 	\centering
+% 	\includegraphics[width=1\textwidth]{graphs/typicalities_colpatch.png}
+% 	\caption{Typicality norming study \textit{Adjective -- Color Patch} results. The facet titles are the utterances from ``How typical is this color for the color \textbf{X}?''.}
+% 	\label{fig:colpatch_typs}
+% \end{figure}
+% \vfill
+% \pagebreak
+% \begin{figure}
+% 	\centering
+% 	\includegraphics[width=1\textwidth]{graphs/typicalities_nounobj.png}
+% 	\caption{Typicality norming study \textit{Noun -- Object} results. The facet titles are the utterances from ``How typical is this object for an \textbf{X}?''.}
+% 	\label{fig:nounobj_typs}
+% \end{figure}
+% \vfill
+% \pagebreak
+% \begin{figure}
+% 	\centering
+% 	\includegraphics[width=1\textwidth]{graphs/typicalities_adjnounobj.png}
+% 	\caption{Typicality norming study \textit{Adjective \& Noun -- Object} results. The facet titles are the utterances from ``How typical is this object for an \textbf{X}?''.}
+% 	\label{fig:adjnounobj_typs}
+% \end{figure}
+% \vfill
+% \pagebreak
+% \begin{figure}
+% 	\begin{subfigure}{.9\textwidth}
+% 		\centering
+% 		\includegraphics[width=1\textwidth]{graphs/typcolpatch_fitvsnonfit.png}
+% 		\caption{\textit{Adjective -- Color Patch}}
+% 		\label{fig:colpatch_fitvsnonfit}
+% 	\end{subfigure}
+% 	\begin{subfigure}{.9\textwidth}
+% 		\centering
+% 		\includegraphics[width=1\textwidth]{graphs/typnounobj_fitvsnonfit.png}
+% 		\caption{\textit{Noun -- Object}}
+% 		\label{fig:nounobj_fitvsnonfit}
+% 	\end{subfigure}
+% 	\caption{Comparisons of the trials in the two typicality norming studies that included color consistent trials vs. the ones that did not. There does not seem to be a systematic change in classification which is why we use the data from both experiments.}
+% 	\label{fig:fitvsnonfit}
+% \end{figure}
+% \vfill
+% \pagebreak
+% \begin{figure}
+% 	\centering
+% 	\includegraphics[width=1\textwidth]{graphs/utterance_by_conttyp_colorNoncolor.png}
+% 	\caption{Reference game results of color vs. non-color utterances that were also analyzed in the mixed effects logistic regression.}
+% 	\label{fig:ref_noncol}
+% \end{figure}
+% \vfill
+% \pagebreak
+% \begin{figure}
+% 	\begin{subfigure}{1\textwidth}
+% 		\centering
+% 		\includegraphics[width=1\textwidth]{graphs/freq_bigram.png}
+% 		\caption{Two-word utterances to see the difference in frequency of three of the four pepper items compared to the other objects.}
+% 	\end{subfigure}
+% 	\begin{subfigure}{1\textwidth}
+% 		\centering
+% 		\includegraphics[width=1\textwidth]{graphs/freq_bigram_allitems.png}
+% 		\caption{All utterances used in the study. In general, color utterances are more frequent than type-only and two-word utterances.}
+% 	\end{subfigure}
+% 	\caption{Google Books frequencies for utterances used in the model; frequencies are collected from the time span 1960-2008.}
+% 	\label{fig:freq}
+% \end{figure}
+% \vfill
+% \pagebreak
+% \begin{figure}
+% 	\centering
+% 	\includegraphics[width=1\textwidth]{img/optimal_corr_small.png}
+% 	\caption{ShinyApp interface for model exploration. Correlation between model predictions and empirical data, color-coded according to condition.}
+% 	\label{fig:shiny}
+% \end{figure}
+% \vfill
+% \pagebreak
+%\begin{figure}
+%	\centering
+%	\includegraphics[width=1\textwidth]{graphs/frq_length_corr.png}
+%	\caption{Correlation between utterance frequency and length.}
+%	\label{fig:frqLenCorr}
+%\end{figure}
+%\vfill
+%\pagebreak
+
+\section{Acknowledgments}
+
+First and foremost, I would like to thank Judith Degen for her scientific guidance in all respects and also for her personal support throughout the whole project. \\
+I would also like to thank the Computation and Cognition Lab at Stanford University for hosting me, which enabled this project in the first place. I am especially thankful to Robert X. D. Hawkins and Noah D. Goodman who were always available for scientific and personal advice and discussions.\\
+Finally, I'm grateful for the continuous support from Eleni Gregoromichelaki who provided place for project-related exchanges with other students and whose belief in me was a constant motivation.
+
+\bibliography{QP1}
+
+\vfill
+\pagebreak
+
+\end{document}
+
+%
+% Please see the package documentation for more information
+% on the APA6 document class:
+%
+% http://www.ctan.org/pkg/apa6
+%
