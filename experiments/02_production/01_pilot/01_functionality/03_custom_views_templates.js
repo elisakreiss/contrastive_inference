@@ -533,10 +533,10 @@ const color_ref_views = {
                         </div>
 
                         <div class="color-container">
-                            <div class="color-div color-div-1"><img class='color-img' src=images/${items.target}/></div>
-                            <div class="color-div color-div-2"><img class='color-img' src=images/${items.comp}/></div>
-                            <div class="color-div color-div-3"><img class='color-img' src=images/${items.contrast}/></div>
-                            <div class="color-div color-div-4"><img class='color-img' src=images/${items.distractor}/></div>
+                            <div class="color-div color-div-1"><img class='color-img' src=images/${items.target}></div>
+                            <div class="color-div color-div-2"><img class='color-img' src=images/${items.comp}></div>
+                            <div class="color-div color-div-3"><img class='color-img' src=images/${items.contrast}></div>
+                            <div class="color-div color-div-4"><img class='color-img' src=images/${items.distractor}></div>
                         </div>
                     </div>
                 `;
