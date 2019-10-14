@@ -30,12 +30,12 @@ const instructions = magpieViews.view_generator("instructions", {
     trials: 1,
     name: "instructions",
     title: "General Instructions",
-    text: `In this experiment you will play a communication game with another MTurk worker. In each round, you and your partner are shown three color patches. One of you will see a thick black border around one of those patches. This player will be called the <strong>manager</strong>. The other player is the <strong>intern</strong>. It's the goal in each round that the intern can find and click on that color. The manager needs to tell the intern which color patch they need to click on. 
+    text: `In this experiment you will play a communication game with another MTurk worker. In each round, you and your partner are shown three color patches. One of you will see a thick black border around one of those patches. This player will be called the <strong>director</strong>. The other player is the <strong>matcher</strong>. It's the goal in each round that the matcher can find and click on that color. The director needs to tell the matcher which color patch they need to click on. 
 
     <br>
     <br>
 
-    You can talk to each other freely over a chat box. Remember that both of you can see the same colors but in a scrambled order, which means that <strong>information about the location is not useful</strong>. Once the intern feels confident enough, they can click on one of the colors. The experiment then moves on to the next round. The roles will be assigned at random.
+    You can talk to each other freely over a chat box. Remember that both of you can see the same colors but in a scrambled order, which means that <strong>information about the location is not useful</strong>. Once the matcher feels confident enough, they can click on one of the colors. The experiment then moves on to the next round. The roles will be assigned at random.
     
     <br>
     <br>
@@ -54,7 +54,8 @@ const lobby = color_ref_views.interactiveExperimentLobby({
 
 const game = color_ref_views.game({
     name: "game",
-    trials: main_trials.color_ref.length,
+    // trials: main_trials.color_ref[0].length,
+    trials: 3,
     title: "Color Reference Game",
     data: main_trials.color_ref
 });
@@ -90,22 +91,22 @@ const postTest = magpieViews.view_generator("post_test", {
                             <option value="${quest.edu.higher_degree}">${quest.edu.higher_degree}</option>
                         </select>
                     </p>
-                    <p class='magpie-view-text'>
+                    <!-- <p class='magpie-view-text'>
                         <label for="bot">Do you think your partner was a bot or a human?</label>
                         <select id="bot" name="bot">
                             <option></option>
                             <option value="bot">Bot</option>
                             <option value="human">Human</option>
                         </select>
-                    </p>
-                    <p class='magpie-view-text'>
+                    </p> -->
+                    <!-- <p class='magpie-view-text'>
                         <label for="fun">Did you have fun?</label>
                         <select id="fun" name="fun">
                             <option></option>
                             <option value="yes">yes</option>
                             <option value="no">no</option>
                         </select>
-                    </p>
+                    </p> -->
                     <p class='magpie-view-text'>
                         <label for="languages" name="languages">${quest.langs.title}:<br /><span>${quest.langs.text}</</span></label>
                         <input type="text" id="languages"/>
@@ -125,8 +126,8 @@ const postTest = magpieViews.view_generator("post_test", {
             e.preventDefault();
 
             // records the post test info
-            magpie.global_data.bot = $("#bot").val();
-            magpie.global_data.fun = $("#fun").val();
+            // magpie.global_data.bot = $("#bot").val();
+            // magpie.global_data.fun = $("#fun").val();
             magpie.global_data.age = $("#age").val();
             magpie.global_data.gender = $("#gender").val();
             magpie.global_data.education = $("#education").val();

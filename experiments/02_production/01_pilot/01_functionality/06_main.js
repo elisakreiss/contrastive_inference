@@ -9,7 +9,7 @@ $("document").ready(function() {
     };
 
     window.magpie_monitor = magpieInit({
-        // views_seq: [init, intro, instructions, lobby, game, thanks],
+        // views_seq: [init, lobby, game, thanks],
         views_seq: [intro, postTest, instructions, init, lobby, game, thanks],
         deploy: {
             // experimentID: "20",
@@ -21,7 +21,7 @@ $("document").ready(function() {
             // socketURL: "ws://localhost:4000/socket",
             // deployMethod: "MTurkSandbox",
             deployMethod: "debug",
-            contact_email: "YOUREMAIL@wherelifeisgreat.you",
+            contact_email: "ekreiss@stanford.edu",
             prolificURL:
                 "https://app.prolific.ac/submissions/complete?cc=EXAMPLE1234"
         },

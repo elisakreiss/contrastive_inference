@@ -160,6 +160,26 @@ const color_ref_views = {
                     div.dataset.type = type;
                 };
 
+                let fillImage = function(div, image, type) {
+                    
+                    div.classList.remove([
+                        "target",
+                        "comp",
+                        "contrast",
+                        "distractor"
+                    ]);
+
+                    div.classList.add(type);
+
+                    if (type == "target" && magpie.variant == 1) {
+                        div.classList.add("speaker-target");
+                    }
+
+                    div.innerHTML = `<img class=color-img src=images/${image}>`;
+
+                    div.dataset.type = type;
+                };
+
                 let saveTrialData = function(prev_round_trial_data) {
                     // These could be different for each participant, thus they fill them in before recording them.
                     prev_round_trial_data["variant"] = magpie.variant;
@@ -169,21 +189,18 @@ const color_ref_views = {
                     magpie.trial_data.push(prev_round_trial_data);
                 };
 
-                let setUpOneRound = function(colors) {
+                let setUpOneRound = function(images) {
 
-                    /*
-                    // Seems that we just have to store them globally somewhere.
+                    // Seems that we just have to store them globally somewhere
                     magpie.indices = [0, 1, 2, 3];
                     color_ref_utils.shuffleArray(magpie.indices);
-                    */
+
                     let color_divs = document.getElementsByClassName(
                         "color-div"
                     );
                     let count = 0;
-                    // var pos = {};
-                    for (let [type, color] of Object.entries(colors)) {
-                        fillColor(color_divs[magpie.indices[count]], color, type);
-                        // pos[type] = indices[count];
+                    for (let [type, img] of Object.entries(images)) {
+                        fillImage(color_divs[magpie.indices[count]], img, type);
                         count += 1;
                     }
 
@@ -202,22 +219,16 @@ const color_ref_views = {
                                     const trial_data = {
                                         trial_type: config.trial_type,
                                         trial_number: magpie.trial_counter,
-
-                                       /* color_first_distractor:
-                                            colors["firstDistractor"],
-                                        color_second_distractor:
-                                            colors["secondDistractor"],
-                                        color_target: colors["target"],
-                                        color_third_distractor: colors["thirdDistractor"],
-                                        // pos_first_distractor:
-                                        //     pos["firstDistractor"],
-                                        // pos_second_distractor: pos["secondDistractor"],
-                                        // pos_target: pos["target"],
-                                        selected_type: div.dataset.type,
-                                        selected_color:
-                                            div.style["background-color"], */
                                         images: magpie.curr_images,
                                         selected_image: div.innerHTML,
+                                        color_first_distractor:
+                                            images["comp"],
+                                        color_second_distractor:
+                                            images["contrast"],
+                                        color_target: images["target"],
+                                        color_third_distractor: images["distractor"],
+                                        selected_type: div.dataset.type,
+                                        selected_image: div.children[0].src.split("/").pop(),
                                         // Better put them into one single string.
                                         conversation: magpie.conversation.join("\n"),
                                         speaker_chat: magpie.speaker_chat.join("|||"),
@@ -231,11 +242,14 @@ const color_ref_views = {
                                             magpie.trial_counter
                                         }, num_game_trials is ${
                                             magpie.num_game_trials
-                                        }`
+                                        }, ${trial_data.selected_image}`
                                     );
                                     if (magpie.trial_counter < magpie.num_game_trials) {
                                         magpie.gameChannel.push("next_round", {
                                             colors: color_ref_utils.sampleColors(),
+                                            // THIS IS EVERY SUBSEQUENT TRIAL, CALL ALREADY CREATED CONTEXTS
+                                            images: magpie.trialinfo[magpie.trial_counter],
+                                            // images: magpie.trialinfo(),
                                             prev_round_trial_data: trial_data
                                         });
                                     } else {
@@ -342,8 +356,13 @@ const color_ref_views = {
 
                     // One of the participants need to generate and send the data for the very first round.
                     if (magpie.variant == 2) {
+                        magpie.trialinfo = color_ref_utils.sampleImages();
                         magpie.gameChannel.push("initialize_game", {
-                            colors: color_ref_utils.sampleColors()
+                            colors: color_ref_utils.sampleColors(),
+                            // THIS IS THE VERY FIRST ROUND: CREATE ALL TRIALS
+                            images: magpie.trialinfo[0]
+                            // images: color_ref_utils.sampleImages()
+                            // call trial generation and safe in magpie.trialinformation
                         });
                     }
                 });
@@ -433,7 +452,7 @@ const color_ref_views = {
                     view.after(container);
                     // We run findNextView() to advance to the next round.
                     magpie.findNextView();
-                    setUpOneRound(payload.colors);
+                    setUpOneRound(payload.images);
                     if (magpie.role === 'speaker') {
                         // Start speaker timeout
                         interval_storage = setInterval(timer_fn, 2000);
@@ -460,7 +479,7 @@ const color_ref_views = {
                     // We run findNextView() to advance to the next round.
                     magpie.findNextView();
 
-                    setUpOneRound(payload.colors);
+                    setUpOneRound(payload.images);
                     // Stop old intervals
                     idle_time = 0;
                     clearInterval(interval_storage);
@@ -499,17 +518,17 @@ const color_ref_views = {
             name: config.name,
             title: config.title,
             render: function(CT, magpie) {
-                magpie.indices = [0,1,2,3];
-                color_ref_utils.shuffleArray(magpie.indices);
 
-                var contextInfo = config.data[0][CT];
+                // var contextInfo = config.data[0][CT];
 
-                var items = {
-                    target: contextInfo.targetcompColor + '_' + contextInfo.targetType + '.png',
-                    comp: contextInfo.targetcompColor + '_' + contextInfo.compType + '.png',
-                    contrast: contextInfo.contrastColor + '_' + contextInfo.contrastType + '.png',
-                    distractor: contextInfo.distractorColor + '_' + contextInfo.distractorType + '.png'
-                };
+                // var items = {
+                //     target: contextInfo.targetcompColor + '_' + contextInfo.targetType + '.png',
+                //     comp: contextInfo.targetcompColor + '_' + contextInfo.compType + '.png',
+                //     contrast: contextInfo.contrastColor + '_' + contextInfo.contrastType + '.png',
+                //     distractor: contextInfo.distractorColor + '_' + contextInfo.distractorType + '.png'
+                // };
+
+                // var [pos1, pos2, pos3, pos4] = _.shuffle(['target', 'comp', 'contrast', 'distractor']);
 
                 const viewTemplate = `
                     <div class='magpie-view'>
@@ -531,20 +550,17 @@ const color_ref_views = {
                             <button type="submit" class="magpie-view-button">Send</button>
                         </form>
                         </div>
-
+\
                         <div class="color-container">
-                            <div class="color-div color-div-1"><img class='color-img' src=images/${items.target}></div>
-                            <div class="color-div color-div-2"><img class='color-img' src=images/${items.comp}></div>
-                            <div class="color-div color-div-3"><img class='color-img' src=images/${items.contrast}></div>
-                            <div class="color-div color-div-4"><img class='color-img' src=images/${items.distractor}></div>
+                            <div class="color-div color-div-1"></div>
+                            <div class="color-div color-div-2"></div>
+                            <div class="color-div color-div-3"></div>
+                            <div class="color-div color-div-4"></div>
                         </div>
                     </div>
                 `;
 
                 $("#main").html(viewTemplate);
-
-                // Quick Hack Save current images globally
-                magpie.curr_images = config.data[CT];
 
                 // We need to store this as a global variable. See above.
                 magpie.num_game_trials = config.trials;
@@ -559,13 +575,13 @@ const color_ref_views = {
                         "game-instructions"
                     );
                     if (role == "speaker") {
-                        title.innerText = "You are the manager";
+                        title.innerText = "You are the director";
                         instructions.innerText =
-                            "Send messages to tell the intern which object is the target (the one with the border).";
+                            "Send messages to tell the matcher which object is the target (the one with the green border).";
                     } else if (role == "listener") {
-                        title.innerText = "You are the intern";
+                        title.innerText = "You are the matcher";
                         instructions.innerText =
-                            "Communicate with the manager using the chatbox. Click on the target object which the manager is telling you about once you feel confident enough.";
+                            "Communicate with the director using the chatbox. Click on the target object which the director is telling you about once you feel confident enough.";
                     }
                 };
 
@@ -588,8 +604,8 @@ const color_ref_views = {
                        document.getElementById("participant-msg").value = '';
                         magpie.gameChannel.push("new_msg", {
                             message: magpie.role === "speaker" ?
-                            "<strong>Manager</strong>" + `: ${text}` : 
-                            "<strong>Intern</strong>" + `: ${text}`,
+                            "<strong>Director</strong>" + `: ${text}` : 
+                            "<strong>Matcher</strong>" + `: ${text}`,
                             text: text,
                             role: magpie.role,
                             timestamp: Date.now(),
