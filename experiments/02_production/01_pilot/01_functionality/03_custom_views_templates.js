@@ -402,7 +402,7 @@ const color_ref_views = {
 
                 // For timer/interval
                 let idle_time = 0;
-                const max_time = 90; // in seconds
+                const max_time = 120; // in seconds
                 const show_info_time = 0.5; // In percent; show warning after 50%
                 // information needed for blinking of page title
                 let is_old_title = true;

@@ -195,7 +195,7 @@ const color_ref_utils = {
             thirdDistractor: 'green_carrot.png'
         };
 
-        console.log(_.shuffle(retrieve_contexts()));
+        // console.log(_.shuffle(retrieve_contexts()));
         return _.shuffle([atp, ttp, ttn, aap, tan]);
 
         // for main experiment
