@@ -15,7 +15,8 @@ $("document").ready(function() {
             // experimentID: "20",
             experimentID: "69",
             serverAppURL:
-                "https://magpie-demo.herokuapp.com/api/submit_experiment/",
+                // "https://magpie-demo.herokuapp.com/api/submit_experiment/",
+                "https://mcmpact.ikw.uni-osnabrueck.de/babe/api/submit_experiment/",
             // serverAppURL: "http://localhost:4000/api/submit_experiment/",
             socketURL: "wss://magpie-demo.herokuapp.com/socket",
             // socketURL: "ws://localhost:4000/socket",
