@@ -13,15 +13,15 @@ $("document").ready(function() {
         views_seq: [intro, postTest, instructions, init, lobby, game, thanks],
         deploy: {
             // experimentID: "20",
-            experimentID: "69",
+            experimentID: "71",
             serverAppURL:
                 // "https://magpie-demo.herokuapp.com/api/submit_experiment/",
                 "https://mcmpact.ikw.uni-osnabrueck.de/babe/api/submit_experiment/",
             // serverAppURL: "http://localhost:4000/api/submit_experiment/",
             // socketURL: "wss://magpie-demo.herokuapp.com/socket",
-            socketURL: "https://mcmpact.ikw.uni-osnabrueck.de/babe/api/submit_experiment/",
-            deployMethod: "MTurkSandbox",
-            // deployMethod: "debug",
+            socketURL: "wss://mcmpact.ikw.uni-osnabrueck.de/babe/api/submit_experiment/",
+            // deployMethod: "MTurkSandbox",
+            deployMethod: "debug",
             contact_email: "ekreiss@stanford.edu",
             prolificURL:
                 "https://app.prolific.ac/submissions/complete?cc=EXAMPLE1234"
