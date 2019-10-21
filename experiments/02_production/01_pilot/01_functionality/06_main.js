@@ -20,7 +20,8 @@ $("document").ready(function() {
             // serverAppURL: "http://localhost:4000/api/submit_experiment/",
             // socketURL: "wss://magpie-demo.herokuapp.com/socket",
             socketURL: "wss://mcmpact.ikw.uni-osnabrueck.de/babe/socket",
-            deployMethod: "MTurkSandbox",
+            // deployMethod: "MTurkSandbox",
+            deployMethod: "MTurk",
             // deployMethod: "debug",
             contact_email: "ekreiss@stanford.edu",
             prolificURL:
