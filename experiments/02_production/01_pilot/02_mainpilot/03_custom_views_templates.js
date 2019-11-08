@@ -191,6 +191,9 @@ const color_ref_views = {
 
                 let setUpOneRound = function(images) {
 
+                    console.log("images");
+                    console.log(images);
+
                     // Seems that we just have to store them globally somewhere
                     magpie.indices = [0, 1, 2, 3];
                     color_ref_utils.shuffleArray(magpie.indices);
@@ -218,6 +221,11 @@ const color_ref_views = {
                                 // Note that we can only record the reaction time of the guy who actively ended this round. Other interactive experiments might have different requirements though.
                                 // proceed only if at least one message has been sent by the speaker
                                 if (magpie.speaker_chat.length >= 1) {
+                                    if (div.dataset.type === images.intended_target) {
+                                        div.classList.add("pos-feedback");
+                                    } else {
+                                        div.classList.add("neg-feedback");
+                                    }
                                     const RT = Date.now() - magpie.startingTime;
                                     const trial_data = {
                                         trial_type: config.trial_type,
@@ -257,19 +265,21 @@ const color_ref_views = {
                                             magpie.num_game_trials
                                         }, ${trial_data.selected_image}`
                                     );
-                                    if (magpie.trial_counter < magpie.num_game_trials) {
-                                        magpie.gameChannel.push("next_round", {
-                                            colors: color_ref_utils.sampleColors(),
-                                            // THIS IS EVERY SUBSEQUENT TRIAL, CALL ALREADY CREATED CONTEXTS
-                                            images: magpie.trialinfo[magpie.trial_counter],
-                                            // images: magpie.trialinfo(),
-                                            prev_round_trial_data: trial_data
-                                        });
-                                    } else {
-                                        magpie.gameChannel.push("end_game", {
-                                            prev_round_trial_data: trial_data
-                                        });
-                                    }
+                                    setTimeout(function() {
+                                        if (magpie.trial_counter < magpie.num_game_trials) {
+                                            magpie.gameChannel.push("next_round", {
+                                                colors: color_ref_utils.sampleColors(),
+                                                // THIS IS EVERY SUBSEQUENT TRIAL; CALL ALREADY CREATED CONTEXTS
+                                                images: magpie.trialinfo[magpie.trial_counter],
+                                                // images: magpie.trialinfo(),
+                                                prev_round_trial_data: trial_data
+                                            });
+                                        } else {
+                                            magpie.gameChannel.push("end_game", {
+                                                prev_round_trial_data: trial_data
+                                            });
+                                        }
+                                    }, 500);
                                 }
                             };
                         }
@@ -477,16 +487,22 @@ const color_ref_views = {
                 magpie.gameChannel.on("next_round", (payload) => {
                     document.title = old_title;
                     let snackbar = document.getElementById("snackbar");
-                    snackbar.innerHTML = "Next round";
-                    // if (payload.prev_round_trial_data.selected_type === "target") {
-                    //     snackbar.innerHTML = "The last round was successful.";
-                    // } else {
-                    //     snackbar.innerHTML = "The last choice was incorrect.";
-                    // }
-                    snackbar.className = "show";
-                    setTimeout(function() {
-                        snackbar.className = 'hide';
-                    }, 2000);
+                    // snackbar.innerHTML = "Next round";
+                    if (magpie.role === 'speaker') {
+                        console.log("payload.prev_round_trial_data.selected_type");
+                        console.log(payload.prev_round_trial_data.selected_type);
+                        console.log("payload.images.intended_target");
+                        console.log(payload.images.intended_target);
+                        if (payload.prev_round_trial_data.selected_type === payload.prev_round_trial_data.intended_target) {
+                            snackbar.innerHTML = "Good job!";
+                        } else {
+                            snackbar.innerHTML = "Oh no! The matcher selected the wrong object.";
+                        }
+                        snackbar.className = "show";
+                        setTimeout(function() {
+                            snackbar.className = 'hide';
+                        }, 2000);
+                    }
                     payload.prev_round_trial_data.color_indices = magpie.indices;
                     saveTrialData(payload.prev_round_trial_data);
 
@@ -561,7 +577,7 @@ const color_ref_views = {
                                 placeholder="Type your message to the other participant here."
                                 id="participant-msg"
                             ></textarea>
-                            <button type="submit" class="magpie-view-button">Send</button>
+                            <button id="submit_msg" type="submit" class="magpie-view-button">Send</button>
                         </form>
                         </div>
 \
@@ -595,7 +611,7 @@ const color_ref_views = {
                     } else if (role == "listener") {
                         title.innerText = "You are the matcher";
                         instructions.innerText =
-                            "Communicate with the director using the chatbox. Click on the target object which the director is telling you about once you feel confident enough.";
+                            "Communicate with the director using the chatbox. Click on the target object that the director is telling you about.";
                     }
                 };
 
@@ -604,7 +620,15 @@ const color_ref_views = {
                 magpie.listener_chat = [];
                 magpie.speaker_timestamps = [];
                 magpie.listener_timestamps = [];
-                
+
+                $("#participant-msg").keypress(function (e) {
+                    console.log("pressed a key?");
+                    var key = e.which;
+                    if (key === 13) {
+                        console.log("pressed enter?");
+                        $("#submit_msg").click();
+                    }
+                });
 
                 // Messages are sent to each other via the `new_msg` event.
                 // I think we have to clone the element if we
@@ -615,7 +639,7 @@ const color_ref_views = {
 
                         let text = document.getElementById("participant-msg")
                             .value;
-                       document.getElementById("participant-msg").value = '';
+                        document.getElementById("participant-msg").value = '';
                         magpie.gameChannel.push("new_msg", {
                             message: magpie.role === "speaker" ?
                             "<strong>Director</strong>" + `: ${text}` : 

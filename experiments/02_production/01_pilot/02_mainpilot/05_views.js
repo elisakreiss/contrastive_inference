@@ -30,18 +30,17 @@ const instructions = magpieViews.view_generator("instructions", {
     trials: 1,
     name: "instructions",
     title: "General Instructions",
-    text: `In this experiment you will play a communication game with another MTurk worker. In each round, you and your partner are shown 4 objects. One of you will see a green border around one of those objects. This player will be called the <strong>director</strong>. The other player is the <strong>matcher</strong>. The goal is that in each round the matcher can find and click on the target object. The director needs to tell the matcher which object they need to click on. 
+    text: `In this HIT you will play a communication game with another MTurk worker. In each round, you and your partner will see 4 objects. One of you is the director and will see a green border around one of the displayed objects. This is the target object. The other player is the matcher. The goal on each round is for the matcher to find and click on the target object. The director needs to tell the matcher which object to click on.
 
     <br>
     <br>
 
-    You can talk to each other freely over a chat box. Remember that both of you can see the same objects but in a scrambled order, which means that <strong>information about the location is not useful</strong>. Once the matcher feels confident enough, they can click on one of the objects. The experiment then moves on to the next round. The roles will be assigned at random.
-    
+    You can talk to each other freely over a chat box. Remember that both of you can see the same objects but in a scrambled order, so location information won't be useful. Once the matcher feels confident they know which object is the target object, they can click on one of the objects. The game then moves on to the next round. The roles will be assigned at random.
+
     <br>
     <br>
 
-    You can now enter the lobby to wait for a partner. The matching procedure should be fairly quick, so please pay attention and don't let your partner wait. If you let your partner wait for too long (more than 2 minutes), the experiment will time out and end for you.
-    `,
+    You can now enter the lobby to wait for a partner. The matching procedure should be fairly quick, so please pay attention and don't let your partner wait. If you let your partner wait for too long (more than 2 minutes), the HIT will time out and end for you.`,
     buttonText: "To the Lobby"
 });
 
