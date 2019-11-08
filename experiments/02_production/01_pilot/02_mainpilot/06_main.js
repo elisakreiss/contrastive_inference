@@ -20,15 +20,15 @@ $("document").ready(function() {
             // serverAppURL: "http://localhost:4000/api/submit_experiment/",
             // socketURL: "wss://magpie-demo.herokuapp.com/socket",
             socketURL: "wss://mcmpact.ikw.uni-osnabrueck.de/babe/socket",
-            deployMethod: "MTurkSandbox",
-            // deployMethod: "MTurk",
+            // deployMethod: "MTurkSandbox",
+            deployMethod: "MTurk",
             // deployMethod: "debug",
             contact_email: "ekreiss@stanford.edu",
             prolificURL:
                 "https://app.prolific.ac/submissions/complete?cc=EXAMPLE1234"
         },
         progress_bar: {
-            in: ["forcedChoice"],
+            in: ["game"],
             style: "default",
             width: 100
         }
