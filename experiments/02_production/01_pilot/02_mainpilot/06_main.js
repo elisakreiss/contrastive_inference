@@ -22,8 +22,8 @@ $("document").ready(function() {
             // socketURL: "wss://magpie-demo.herokuapp.com/socket",
             // socketURL: "wss://mcmpact.ikw.uni-osnabrueck.de/babe/socket",
             socketURL: "wss://magpie-backend.gigalixirapp.com/socket",
-            deployMethod: "MTurkSandbox",
-            // deployMethod: "MTurk",
+            // deployMethod: "MTurkSandbox",
+            deployMethod: "MTurk",
             // deployMethod: "debug",
             contact_email: "ekreiss@stanford.edu",
             prolificURL:
