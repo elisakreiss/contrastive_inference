@@ -216,11 +216,14 @@ const color_ref_views = {
                         // The problem is that the CT cannot be properly obtained from the arguments because this view is not the actual game view.
                         magpie.trial_counter += 1;
 
+                        var first_click = true;
+
                         for (let div of color_divs) {
                             div.onclick = (e) => {
                                 // Note that we can only record the reaction time of the guy who actively ended this round. Other interactive experiments might have different requirements though.
                                 // proceed only if at least one message has been sent by the speaker
-                                if (magpie.speaker_chat.length >= 1) {
+                                if (magpie.speaker_chat.length >= 1 & first_click) {
+                                    first_click = false;
                                     if (div.dataset.type === images.intended_target) {
                                         div.classList.add("pos-feedback");
                                     } else {
