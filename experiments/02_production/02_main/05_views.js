@@ -38,7 +38,7 @@ const instructions = magpieViews.view_generator("instructions", {
     <br>
     <br>
 
-    You can now enter the lobby to wait for a partner. The matching procedure should be fairly quick, so please pay attention and don't let your partner wait. If you let your partner wait for too long (more than 2 minutes), the HIT will time out and end for you.`,
+    You can now enter the lobby to wait for a partner. The matching procedure should be fairly quick, so please pay attention and don't let your partner wait. If you let your partner wait for too long (more than 5 minutes), the HIT will time out and end for you.`,
     buttonText: "To the Lobby"
 });
 
