@@ -1,0 +1,220 @@
+---
+title: "CI: production pilot analysis"
+# output: html_document
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r data import, include=FALSE}
+library(cowplot)
+library(plyr)
+library(tidyverse)
+library(here)
+
+df_import = read_csv(here("data","02_production","01_pilot","02_mainpilot","data.csv")) %>%
+  # exclude test
+  # weird filter property will exclude NAs
+  filter(is.na(comments) | !str_detect(comments,"TEST"))
+```
+
+# Subject pool
+
+5 participant pairs were recruited.
+
+```{r responses to postquestionnaire, eval=FALSE, fig.height=1.5, fig.width=4, include=FALSE}
+
+# languages
+unique(df_import$languages)
+
+# comments
+unique(df_import$comments)
+```
+
+## Exclusions
+
+We excluded participants who indicated that they did the Hit incorrectly or were confused (7), who indicated that they had a native language other than English (4), who gave more then 20% erroneous responses (2) and who did the Hit multiple times (1). Overall, we excluded 14 people. 33 participants per condition, i.e., 66 in total, remain.
+
+```{r participant exclusion, message=FALSE, include=FALSE}
+
+# to identify multiple submissions
+table(df_import$anon_worker_id)
+# popular spellings of "english"
+engl_spellings = c("english", "englis", "eng", "engilsh", "englsh", "en")
+
+# Exclusions
+df_clean = df_import %>% 
+  # if native language is not english
+  mutate_at(vars(languages), funs(str_to_lower(.))) %>% 
+  mutate_at(vars(languages), funs(ifelse(. %in% engl_spellings, "english", .))) %>%
+  filter(languages=="english") %>% 
+  filter(!anon_worker_id=="826983419727052")
+
+# number of participants before exclusion (10)
+length(unique(df_import$anon_worker_id))
+# number of participants after exclusion (8)
+length(unique(df_clean$anon_worker_id))
+```
+
+```{r create main df, message=FALSE, include=FALSE}
+# create main df
+df = df_clean
+```
+
+
+## About the participants (after exclusion)
+
+There are no apparent anomalies in the age and gender distributions of our participants and the general feedback was neutral to positive.
+We expected that it would take participants approximately 7 minutes to complete, which seems to be reflected in the time they spent on it.
+
+```{r subj, echo=FALSE, fig.height=6, fig.width=8, message=FALSE, warning=FALSE}
+
+df_subj = df %>% 
+  select(age,gender,timeSpent,anon_worker_id) %>% 
+  distinct() %>% 
+  mutate_at(vars(age), funs(as.integer(.)))
+
+mean_age = round(mean(df_subj$age),digits = 1)
+p_age = ggplot(df_subj,aes(x=age)) +
+  geom_bar(width = .5,
+           fill = "orange",
+           color = "black") +
+  geom_vline(xintercept= mean_age) +
+  scale_x_continuous(breaks=c(20,30,50,60,70,mean_age))
+
+p_gen = ggplot(df_subj,aes(x=gender)) +
+  geom_bar(width = .5,
+           fill = "orange",
+           color = "black")
+
+mean_time = round(mean(df_subj$timeSpent), digits = 1)
+median_time = round(median(df_subj$timeSpent), digits = 1)
+p_time = ggplot(df_subj,aes(x=timeSpent)) +
+  geom_histogram(fill = "orange",
+           color = "black") +
+  geom_vline(xintercept=mean_time) +
+  geom_vline(xintercept=median_time,linetype="dashed") +
+  scale_x_continuous(breaks=c(median_time,mean_time,floor(5),floor(15),floor(20))) +
+  xlab("time spent") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+plot_grid(p_age, p_gen, p_time, labels = "AUTO", ncol = 2, align = 'v')
+
+```
+
+
+# Main Trials
+
+## Recap: Typicality ratings for stimuli
+
+These are the stimuli used as targets and distractors in the study. They were normed according to their nameability and typicality in previous norming studies. We refer to objects with typicality ratings above 50 as *typical*ly colored and below 50 as *atypical*ly colored objects. The colors of the objects between the two categories are counterbalanced, i.e., there as many typical red things as there are atypical red things.
+
+```{r import typicality data, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+typ_data = read_csv(here("data","01_norming","02_main","typicality_data.csv")) %>% 
+  filter(!(col_type=="green_corn" | col_type=="white_carrot" | type=="snowman")) %>% 
+  mutate(bin_typ=ifelse(typicality>50,"typical","atypical"))
+
+ggplot(typ_data, aes(x=reorder(col_type,typicality), y=typicality, fill=color)) +
+  geom_point(size=4,
+             color="black",
+             shape=23) +
+  scale_fill_identity() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  xlab("Item") +
+  ylab("Typicality\natypical ------------------ typical")
+
+typ_data_short = typ_data %>% 
+  select(col_type, typicality)
+```
+
+```{r}
+df %>% 
+  filter(intended_target == "thirdDistractor", 
+         # str_detect(condition, "p"),
+         anon_worker_id == "772581272006273") %>%
+  nrow()
+
+df_time = df %>% 
+  mutate(time = endTime - startTime) %>% 
+  mutate_at(vars(time), funs(./60)) %>% 
+  mutate_at(vars(time), funs(./60)) %>% 
+  filter(time <= 4) %>% 
+  select(speaker_chat)
+
+```
+
+
+```{r}
+color = c("yellow|red|orange|white|green|::y |::r |::o |::w |::g|\\|r ")
+```
+
+
+```{r}
+
+# TODO: Be careful with order effects
+
+df_target = df %>% 
+  filter(intended_target=="target",
+         glb_variant==1) %>%
+  select(condition, speaker_chat, trial_number, anon_worker_id) %>% 
+  mutate(refexp = str_c("::",speaker_chat,"::")) %>% 
+  mutate_at(vars(refexp), funs(str_to_lower(.))) %>% 
+  mutate(ColorMention = ifelse(str_detect(refexp,color), 1, 0)) %>% 
+  filter(!str_detect(refexp,"object")) %>% 
+  filter(!str_detect(refexp,"normal|regular")) %>% 
+  mutate(trial_half = ifelse(trial_number <= 30, 1, 2))
+```
+
+```{r}
+ggplot(df_target, aes(x=reorder(condition, -ColorMention), y=ColorMention)) +
+  facet_wrap(~trial_half) +
+  # mean
+  stat_summary(fun.y = "mean",
+               geom = "bar",
+               position = position_dodge(width = 0.9)) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey",
+               position = position_dodge(width = 0.9))
+```
+
+```{r}
+# 7 utterances don't have color term: 6 are for a typical target, three of which have the modifier "normal" or "regular" instead
+df_target %>% 
+  filter(str_detect(condition, "p") & !ColorMention)
+
+df_target %>% 
+  filter(str_detect(condition, "p") & ColorMention)
+```
+
+
+```{r}
+df_comp = df %>% 
+  filter(intended_target=="firstDistractor",
+         glb_variant==1) %>%
+  select(condition, speaker_chat, trial_number, anon_worker_id) %>% 
+  mutate(refexp = str_c("::",speaker_chat,"::")) %>% 
+  mutate_at(vars(refexp), funs(str_to_lower(.))) %>% 
+  mutate(ColorMention = ifelse(str_detect(refexp,color), 1, 0)) %>% 
+  filter(!str_detect(refexp,"object")) %>% 
+  filter(!str_detect(refexp,"normal|regular")) %>% 
+  mutate(trial_half = ifelse(trial_number <= 30, 1, 2))
+```
+
+```{r}
+ggplot(df_comp, aes(x=reorder(condition, -ColorMention), y=ColorMention)) +
+  facet_wrap(~trial_half) +
+  # mean
+  stat_summary(fun.y = "mean",
+               geom = "bar",
+               position = position_dodge(width = 0.9)) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey",
+               position = position_dodge(width = 0.9))
+```

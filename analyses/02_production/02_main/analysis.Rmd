@@ -1,0 +1,1447 @@
+---
+title: "CI: production pilot analysis"
+# output: html_document
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r data import, include=FALSE}
+library(cowplot)
+library(plyr)
+library(tidyverse)
+library(here)
+
+df_import1 = read_csv(here::here("data","02_production","02_main","data1.csv")) %>%
+  # exclude test
+  # weird filter property will exclude NAs
+  filter(is.na(comments) | !str_detect(comments,"TEST")) %>%
+  filter(!str_detect(conversation, "elisakreiss"))
+
+df_import = read_csv(here::here("data","02_production","02_main","data2.csv")) %>%
+  # exclude test
+  # weird filter property will exclude NAs
+  filter(is.na(comments) | !str_detect(comments,"TEST")) %>% 
+  filter(!str_detect(conversation, "elisakreiss")) %>% 
+  bind_rows(df_import1)
+```
+
+# Subject pool
+
+5 participant pairs were recruited.
+
+```{r responses to postquestionnaire, eval=FALSE, fig.height=1.5, fig.width=4, include=FALSE}
+
+# languages
+unique(df_import$languages)
+
+# comments
+unique(df_import$comments)
+```
+
+## Exclusions
+
+We excluded participants who indicated that they did the Hit incorrectly or were confused (7), who indicated that they had a native language other than English (4), who gave more then 20% erroneous responses (2) and who did the Hit multiple times (1). Overall, we excluded 14 people. 33 participants per condition, i.e., 66 in total, remain.
+
+```{r participant exclusion, message=FALSE, include=FALSE}
+
+# to identify multiple submissions
+table(df_import$anon_worker_id)
+# popular spellings of "english"
+engl_spellings = c("english", "englis", "eng", "engilsh", "englsh", "en", "emglish")
+
+# Exclusions
+# glb_variant 1 => speaker
+df_preclean = df_import %>% 
+  # multiple submissions
+  group_by(anon_worker_id) %>% 
+  # mutate(blub = n()) %>% 
+  filter(!(n() > 60)) %>% 
+  ungroup() %>% 
+  # if native language is not english
+  mutate_at(vars(languages), funs(str_to_lower(.))) %>% 
+  mutate_at(vars(languages), funs(ifelse(. %in% engl_spellings, "english", .))) %>%
+  filter(glb_variant == 1 & str_detect(languages, "english")) 
+
+position_encoder = df_preclean %>% 
+  filter(str_detect(conversation, "top|bottom|left|right|1|2|3|4")) %>% 
+  select(anon_worker_id, conversation) %>% 
+  group_by(anon_worker_id) %>% 
+  summarize(all_trials = n()) %>% 
+  ungroup() %>% 
+  filter(all_trials > 5)
+
+posenc_list = as.list(position_encoder['anon_worker_id'])$anon_worker_id
+
+taboo_player = df_preclean %>% 
+  filter(str_detect(conversation, "thing|monkey|vegetable|swimmer|comes from chicken|halloween|make a salad with it|normally|oval|love bird|leaves|on one end|round|long")) %>%
+  select(anon_worker_id, conversation) %>%
+  group_by(anon_worker_id) %>% 
+  mutate(all_trials = n()) %>% 
+  ungroup() %>% 
+  filter(all_trials > 6)
+
+taboo_player_list = as.list(taboo_player['anon_worker_id'])$anon_worker_id
+
+df_clean = df_preclean %>% 
+  filter(!(anon_worker_id %in% posenc_list)) %>% 
+  filter(!(anon_worker_id %in% taboo_player_list))
+
+# number of participants before exclusion (68; 34)
+length(unique(df_import$anon_worker_id))
+# number of participants after exclusion (29)
+length(unique(df_clean$anon_worker_id))
+```
+
+```{r create main df, message=FALSE, include=FALSE}
+# create main df
+df = df_clean
+```
+
+
+## About the participants (after exclusion)
+
+There are no apparent anomalies in the age and gender distributions of our participants and the general feedback was neutral to positive.
+We expected that it would take participants approximately 7 minutes to complete, which seems to be reflected in the time they spent on it.
+
+```{r subj, echo=FALSE, fig.height=6, fig.width=8, message=FALSE, warning=FALSE}
+
+df_subj = df %>% 
+  select(age,gender,timeSpent,anon_worker_id) %>% 
+  distinct() %>% 
+  mutate_at(vars(age), funs(as.integer(.)))
+
+mean_age = round(mean(df_subj$age),digits = 1)
+p_age = ggplot(df_subj,aes(x=age)) +
+  geom_bar(width = .5,
+           fill = "orange",
+           color = "black") +
+  geom_vline(xintercept= mean_age) +
+  scale_x_continuous(breaks=c(20,30,50,60,70,mean_age))
+
+p_gen = ggplot(df_subj,aes(x=gender)) +
+  geom_bar(width = .5,
+           fill = "orange",
+           color = "black")
+
+# mean_time = round(mean(df_subj$timeSpent), digits = 1)
+# median_time = round(median(df_subj$timeSpent), digits = 1)
+# p_time = ggplot(df_subj,aes(x=timeSpent)) +
+#   geom_histogram(fill = "orange",
+#            color = "black") +
+#   geom_vline(xintercept=mean_time) +
+#   geom_vline(xintercept=median_time,linetype="dashed") +
+#   scale_x_continuous(breaks=c(median_time,mean_time,floor(5),floor(15),floor(20))) +
+#   xlab("time spent") +
+#   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+plot_grid(p_age, p_gen, labels = "AUTO", ncol = 2, align = 'v')
+
+```
+
+
+# Main Trials
+
+## Recap: Typicality ratings for stimuli
+
+These are the stimuli used as targets and distractors in the study. They were normed according to their nameability and typicality in previous norming studies. We refer to objects with typicality ratings above 50 as *typical*ly colored and below 50 as *atypical*ly colored objects. The colors of the objects between the two categories are counterbalanced, i.e., there as many typical red things as there are atypical red things.
+
+```{r import typicality data, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+typ_data = read_csv(here::here("data","01_norming","02_main","typicality_data.csv")) %>% 
+  filter(!(col_type=="green_corn" | col_type=="white_carrot" | type=="snowman")) %>% 
+  mutate(bin_typ=ifelse(typicality>50,"typical","atypical"))
+
+ggplot(typ_data, aes(x=reorder(col_type,typicality), y=typicality, fill=color)) +
+  geom_point(size=4,
+             color="black",
+             shape=23) +
+  scale_fill_identity() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  xlab("Item") +
+  ylab("Typicality\natypical ------------------ typical")
+
+typ_data_short = typ_data %>% 
+  select(col_type, typicality)
+```
+
+```{r}
+df_time = df %>% 
+  mutate(time = endTime - startTime) %>% 
+  mutate_at(vars(time), funs(./60)) %>% 
+  mutate_at(vars(time), funs(./60)) %>% 
+  filter(time <= 4) %>% 
+  select(speaker_chat)
+
+```
+
+
+```{r}
+
+# TODO: get rid of taboo stuff
+
+color = c("yellow|yell|red|ref|orange|orng|ornage|orang|orane|oragne|white|whtie|green")
+
+```
+
+
+
+
+
+
+# Data annotation
+
+
+
+
+
+
+```{r}
+# most conservative split
+cons_type = c("banana|banaa|bananna|nana|banan|bannaa|ban|broccoli|broc|carrot|carro|carot|cararot|c arrot|corn|tomato|tom|tamayo|egg|strawberry|straw|str|berry|lettuce|letc|cabbage|cabb|cabage|swan|goose|duck|pumpkin|pump|punmkn|pum")
+# type_null = c("thing|one")
+cons_other_types = c("lemon|bird|vegetable|fruit|ruit|cauliflower|califlower|cauli|caul|circle|tree|onion|animal")
+# cons_type = c("banana|banaa|bananna|nana|banan|bannaa|ban|broccoli|broc|carrot|carro|carot|corn|tomato|tom|tamayo|egg|strawberry|straw|str|berry|lettuce|letc|swan|goose|pumpkin|pump|punmkn|pum")
+# cons_other_types = c("lemon|cabbage|cabb|cabage|bird|vegetable|thing|one|fruit|ruit|cauliflower|cauli|caul|circle|tree|onion|animal")
+cons_other_mod = c("original|normal|natural|natural color|un-natural|with color|no color|without color|with the correct color|off color|original color|regular|weird|not red|seasick|dyed|small|round|supposed to be|big|ugly|different color|different colour|no banana|not")
+
+df_main = df %>% 
+  mutate(target_item = str_c(targetcompColor, targetType, sep="_")) %>% 
+  mutate(comp_item = str_c(targetcompColor, compType, sep="_")) %>% 
+  select(intended_target, condition, speaker_chat, trial_number, anon_worker_id, target_item, targetType, comp_item, selected_image) %>% 
+  # filter everything with longer conversations (corrections) on speaker side
+  filter(!str_detect(speaker_chat, "\\|\\|\\|")) %>% 
+  # mutate(refexp = str_c("::",speaker_chat,"::")) %>% 
+  mutate(refexp = speaker_chat) %>% 
+  # TODO: filter out all \n
+  mutate_at(vars(refexp), funs(str_to_lower(.))) %>% 
+  filter(!str_detect(refexp,"bottom")) %>% 
+  # categorization
+  mutate(ColorMention = ifelse(str_detect(refexp,color), 1, 0)) %>% 
+  mutate(OtherModMention = ifelse(str_detect(refexp,cons_other_mod), 1, 0)) %>% 
+  mutate(TypeMention = ifelse(str_detect(refexp,cons_type), 1, 0)) %>% 
+  mutate(OtherTypeMention = ifelse(str_detect(refexp,cons_other_types), 1, 0)) %>% 
+  
+  mutate(UtteranceCat = case_when(
+    (OtherModMention == 1) | (OtherTypeMention == 1) ~ "other",
+    (ColorMention == 1) & (TypeMention == 1) ~ "colorType",
+    (ColorMention == 1) ~ "colorOnly",
+    (TypeMention == 1) ~ "typeOnly",
+    TRUE ~ "whatisthis?"
+  ))
+
+# df_main %>%
+#   select(anon_worker_id, refexp, UtteranceCat, condition) %>%
+#   filter(condition == "tap",
+#          UtteranceCat == "typeOnly") %>%
+#   view()
+
+# "other" utterances are mainly expressions that include: 
+# cauliflower, lemon, (un)natural, regular, original color, off color (bird, with/out color, fruit, vegetable)
+# df_main %>% 
+#   filter(UtteranceCat == "other") %>% 
+#   view()
+```
+
+```{r target intended target}
+df_plot_target = df_main %>% 
+  select(intended_target, condition, refexp, UtteranceCat, trial_number, anon_worker_id, selected_image, target_item) %>% 
+  filter(intended_target == "target") %>% 
+  mutate(wrong_selection = !str_detect(selected_image, target_item)) %>% 
+  filter(!wrong_selection) %>% 
+  slice(rep(1:n(), each = 4)) %>%
+  mutate(possible_utterance = rep_len(c("colorType", "colorOnly", "typeOnly", "other"), 
+                                  length.out=n())) %>% 
+  mutate(uttered = ifelse(UtteranceCat==possible_utterance,1,0)) %>% 
+  mutate_at(vars(possible_utterance),
+            funs(factor(., levels=c("typeOnly", "colorType", "colorOnly", "other")))) %>%
+  mutate_at(vars(condition),
+            funs(factor(., levels=c("atp", "aap", "ttp", "tap", "atn", "aan", "ttn", "tan"))))
+
+ggplot(df_plot_target, aes(x=possible_utterance, y=uttered, fill=possible_utterance)) +
+  facet_wrap(~condition, nrow=2) +
+  # mean
+  stat_summary(fun.y = "mean",
+               geom = "bar",
+               position = position_dodge(width = 0.9)) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey",
+               position = position_dodge(width = 0.9)) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none")
+  
+
+df_plot_target %>% 
+  filter(trial_number <= 30) %>% 
+  ggplot(., aes(x=possible_utterance, y=uttered, fill=possible_utterance)) +
+    facet_wrap(~condition, nrow=2) +
+    # mean
+    stat_summary(fun.y = "mean",
+                 geom = "bar",
+                 position = position_dodge(width = 0.9)) +
+    # error bars 
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "linerange",
+                 color = "darkgrey",
+                 position = position_dodge(width = 0.9)) +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+    theme(legend.position = "none")
+
+df_plot_target %>% 
+  filter(trial_number > 30) %>% 
+  ggplot(., aes(x=possible_utterance, y=uttered, fill=possible_utterance)) +
+    facet_wrap(~condition, nrow=2) +
+    # mean
+    stat_summary(fun.y = "mean",
+                 geom = "bar",
+                 position = position_dodge(width = 0.9)) +
+    # error bars 
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "linerange",
+                 color = "darkgrey",
+                 position = position_dodge(width = 0.9)) +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+    theme(legend.position = "none")
+
+# First half vs second half: ColorType utterances reduce in atn and aan condition in second trial half; "other" utterances reduce in second trial half
+```
+
+```{r comp intended target}
+df_plot_comp = df_main %>% 
+  select(intended_target, condition, refexp, UtteranceCat, trial_number, anon_worker_id, selected_image, comp_item) %>% 
+  filter(intended_target == "firstDistractor") %>% 
+  mutate(wrong_selection = !str_detect(selected_image, comp_item)) %>% 
+  filter(!wrong_selection) %>% 
+  slice(rep(1:n(), each = 4)) %>%
+  mutate(possible_utterance = rep_len(c("colorType", "colorOnly", "typeOnly", "other"), 
+                                  length.out=n())) %>% 
+  mutate(uttered = ifelse(UtteranceCat==possible_utterance,1,0)) %>% 
+  mutate_at(vars(possible_utterance),
+            funs(factor(., levels=c("typeOnly", "colorType", "colorOnly", "other")))) %>%
+  mutate_at(vars(condition),
+            funs(factor(., levels=c("atp", "aap", "ttp", "tap", "atn", "aan", "ttn", "tan"))))
+
+ggplot(df_plot_comp, aes(x=possible_utterance, y=uttered, fill=possible_utterance)) +
+  facet_wrap(~condition, nrow=2) +
+  # mean
+  stat_summary(fun.y = "mean",
+               geom = "bar",
+               position = position_dodge(width = 0.9)) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey",
+               position = position_dodge(width = 0.9)) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none")
+  
+
+df_plot_comp %>% 
+  filter(trial_number <= 30) %>% 
+  ggplot(., aes(x=possible_utterance, y=uttered, fill=possible_utterance)) +
+    facet_wrap(~condition, nrow=2) +
+    # mean
+    stat_summary(fun.y = "mean",
+                 geom = "bar",
+                 position = position_dodge(width = 0.9)) +
+    # error bars 
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "linerange",
+                 color = "darkgrey",
+                 position = position_dodge(width = 0.9)) +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+    theme(legend.position = "none")
+
+df_plot_comp %>% 
+  filter(trial_number > 30) %>% 
+  ggplot(., aes(x=possible_utterance, y=uttered, fill=possible_utterance)) +
+    facet_wrap(~condition, nrow=2) +
+    # mean
+    stat_summary(fun.y = "mean",
+                 geom = "bar",
+                 position = position_dodge(width = 0.9)) +
+    # error bars 
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "linerange",
+                 color = "darkgrey",
+                 position = position_dodge(width = 0.9)) +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+    theme(legend.position = "none")
+
+# First half vs second half: ColorType utterances reduce in atn and aan condition in second trial half; "other" utterances reduce in second trial half
+```
+
+```{r}
+
+nocontrast_comp = df_main %>% 
+  mutate(contrast_present = ifelse(str_detect(condition, "p"), 1, 0)) %>% 
+  filter((intended_target == "target") & (contrast_present == 0)) %>%
+  mutate(wrong_selection = !str_detect(selected_image, target_item)) %>% 
+  filter(!wrong_selection) %>% 
+  filter(UtteranceCat=="colorType" | UtteranceCat=="typeOnly") %>% 
+  mutate(ColMentioned = ifelse(UtteranceCat=="colorType", 1, 0)) %>%  
+  mutate_at(vars(intended_target), funs(ifelse(. == "target", "firstDistractor", "FIRE"))) %>% 
+  mutate(target_typ = ifelse(str_sub(condition,2,2) == "t", 0, 1)) %>% 
+  mutate(comp_typ = ifelse(str_sub(condition,1,1) == "t", 0, 1))
+
+cuny_plot = df_main %>% 
+  filter(intended_target == "firstDistractor" | intended_target == "target") %>%
+  mutate(wrong_selection = case_when(
+    (intended_target == "firstDistractor") ~ !str_detect(selected_image, comp_item),
+    (intended_target == "target") ~ !str_detect(selected_image, target_item),
+    TRUE ~ TRUE)) %>% 
+  filter(!wrong_selection) %>% 
+  filter(UtteranceCat=="colorType" | UtteranceCat=="typeOnly") %>% 
+  mutate(ColMentioned = ifelse(UtteranceCat=="colorType", 1, 0)) %>%  
+  mutate(contrast_present = ifelse(str_detect(condition, "p"), 1, 0)) %>% 
+  mutate(target_typ = case_when(
+    (intended_target == "target") & (str_sub(condition,1,1) == "t") ~ 0,
+    (intended_target == "target") & (str_sub(condition,1,1) == "a") ~ 1,
+    (intended_target == "firstDistractor") & (str_sub(condition,1,1) == "t") ~ 0,
+    TRUE ~ 1
+  )) %>% 
+  mutate(comp_typ = case_when(
+    (intended_target == "target") & (str_sub(condition,2,2) == "t") ~ 0,
+    (intended_target == "target") & (str_sub(condition,2,2) == "a") ~ 1,
+    (intended_target == "firstDistractor") & (str_sub(condition,2,2) == "t") ~ 0,
+    TRUE ~ 1
+  )) %>% 
+  bind_rows(nocontrast_comp) %>% 
+  mutate_at(vars(intended_target), funs(ifelse(. == "firstDistractor", "competitor", .))) %>% 
+  mutate_at(vars(intended_target),
+            funs(factor(., levels=c("target", "competitor")))) %>% 
+  mutate_at(vars(comp_typ), funs(ifelse(. == 0, "typical", "atypical"))) %>% 
+  mutate_at(vars(comp_typ),
+            funs(factor(., levels=c("typical", "atypical")))) %>% 
+  mutate_at(vars(contrast_present), funs(ifelse(. == 0, "no contrast", "contrast")))
+  # mutate_at(vars(comp_typ),
+  #           funs(factor(., levels=c("typical", "atypical"))))
+
+
+# glimpse(cuny_plot)
+typical_color = "#cc79a7" # purple
+atypical_color = "#0071b2" # blue
+
+ggplot(cuny_plot, aes(x=intended_target, y=ColMentioned, group=comp_typ, fill=comp_typ)) +
+  # facet_wrap(~contrast_present) +
+  # mean
+  stat_summary(fun.y = "mean",
+               geom = "bar",
+               position = position_dodge(width = 0.9)) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey",
+               position = position_dodge(width = 0.9)) +
+  xlab("Item that is being referred to") +
+  ylab("Probability of modifier use") +
+  labs(fill='Competitor typicality') +
+  scale_fill_manual(values=c(typical_color, atypical_color)) +
+  # theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "top")
+
+ggsave("cuny_prod.png", width = 5, height = 3)
+
+# Judith's plots
+
+target_color = "#d55e00" # red
+comp_color = "#009e74"
+
+ggplot(cuny_plot, aes(x=comp_typ, y=ColMentioned, group=intended_target, fill=intended_target)) +
+  # facet_wrap(~contrast_present) +
+  # mean
+  stat_summary(fun.y = "mean",
+               geom = "bar",
+               width = 0.6,
+               position = position_dodge(width = 0.6)) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               size = .3,
+               width = 0.3,
+               position = position_dodge(width = 0.6)) +
+  xlab("Competitor typicality") +
+  ylab("Probability of modifier use") +
+  labs(fill='Item that is\nbeing referred to') +
+  scale_fill_manual(values=c(target_color, comp_color)) +
+  # theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "top")
+
+ggsave("cuny_prod_judith1.png", width = 5, height = 3)
+
+ggplot(cuny_plot, aes(x=contrast_present, y=ColMentioned, group=intended_target, fill=intended_target)) +
+  # facet_wrap(~contrast_present) +
+  # mean
+  stat_summary(fun.y = "mean",
+               geom = "bar",
+               width = 0.6,
+               position = position_dodge(width = 0.6)) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               size = .3,
+               width = 0.3,
+               position = position_dodge(width = 0.6)) +
+  xlab("Contrast presence") +
+  ylab("Probability of modifier use") +
+  labs(fill='Item that is\nbeing referred to') +
+  scale_fill_manual(values=c(target_color, comp_color)) +
+  # theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "top")
+
+ggsave("cuny_prod_judith2.png", width = 5, height = 3)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+```{r by item}
+
+df_plot_byitem = df_main %>% 
+  select(intended_target, condition, refexp, UtteranceCat, trial_number, target_item, targetType, selected_image) %>% 
+  filter(intended_target == "target") %>%
+  mutate(wrong_selection = !str_detect(selected_image, target_item)) %>% 
+  filter(!wrong_selection) %>% 
+  filter(UtteranceCat=="colorType" | UtteranceCat=="typeOnly") %>%
+  mutate(ColMentioned = ifelse(UtteranceCat=="colorType", 1, 0)) %>% 
+  mutate(coll_cond = case_when(
+    str_detect(condition, "p") & str_sub(condition,1,1) == "t" ~ "contrast_typ",
+    str_detect(condition, "p") & str_sub(condition,1,1) == "a" ~ "contrast_atyp",
+    str_sub(condition,1,1) == "a" ~ "atyp",
+    str_sub(condition,1,1) == "t" ~ "typ",
+    TRUE ~ "FIRE"
+  )) %>% 
+  mutate_at(vars(coll_cond),
+            funs(factor(., levels=c("contrast_atyp", "contrast_typ", "atyp", "typ"))))
+
+ggplot(df_plot_byitem, aes(x=coll_cond, y=ColMentioned)) +
+  facet_wrap(~targetType, nrow=2) +
+  # mean
+  stat_summary(fun.y = "mean",
+               geom = "bar",
+               position = position_dodge(width = 0.9)) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey",
+               position = position_dodge(width = 0.9)) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none")
+
+table(df_plot_byitem$targetType, df_plot_byitem$coll_cond)
+
+```
+
+
+```{r target intended target workers}
+df_plot_target = df_main %>% 
+  select(intended_target, condition, refexp, UtteranceCat, trial_number, target_item, targetType, selected_image, anon_worker_id) %>% 
+  filter(intended_target == "target") %>%
+  mutate(wrong_selection = !str_detect(selected_image, target_item)) %>% 
+  filter(!wrong_selection) %>% 
+  filter(UtteranceCat=="colorType" | UtteranceCat=="typeOnly") %>% 
+  mutate(ColMentioned = ifelse(UtteranceCat=="colorType", 1, 0)) %>% 
+  mutate(coll_cond = case_when(
+    str_detect(condition, "p") ~ "contrast",
+    str_sub(condition,1,1) == "a" ~ "atyp",
+    str_sub(condition,1,1) == "t" ~ "typ",
+    TRUE ~ "FIRE"
+  )) %>% 
+  mutate_at(vars(coll_cond),
+            funs(factor(., levels=c("contrast", "atyp", "typ"))))
+
+ggplot(df_plot_target, aes(x=coll_cond, y=ColMentioned)) +
+  facet_wrap(~anon_worker_id, nrow=2) +
+  # mean
+  stat_summary(fun.y = "mean",
+               geom = "bar",
+               position = position_dodge(width = 0.9)) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey",
+               position = position_dodge(width = 0.9)) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none")
+
+# participant 462219836317466 always used "off color" and "original color" utterances
+table(df_plot_target$anon_worker_id, df_plot_target$ColMentioned)
+
+# df_main %>% 
+  # filter(anon_worker_id == "462219836317466") %>% 
+  # select(refexp, condition, target_item, selected_image) %>% 
+  # view()
+  
+```
+
+```{r}
+# df_check = df_model_prereg %>%
+#   group_by(target_item,comp_item,contrast) %>%
+#   summarize(n = n()) %>%
+#   view()
+# 
+# df_check
+
+# all uttProbs if target is the target (for all conditions)
+df_rsa_target = df_model_prereg %>%
+  group_by(condition) %>%
+  summarize(uttProb = mean(ColMentioned)) %>%
+  ungroup() %>%
+  mutate(intended_target = "target") %>%
+  select(uttProb, condition, intended_target)
+
+# uttProbs if comp is the target (for contrast-present conditions)
+df_rsa_comp_prep = df_main %>%
+  filter(intended_target == "firstDistractor") %>%
+  mutate(wrong_selection = !str_detect(selected_image, comp_item)) %>%
+  filter(!wrong_selection) %>%
+  filter(UtteranceCat=="colorType" | UtteranceCat=="typeOnly") %>%
+  mutate(ColMentioned = ifelse(UtteranceCat=="colorType", 1, 0)) %>%
+  group_by(condition) %>%
+  summarize(uttProb = mean(ColMentioned)) %>%
+  ungroup() %>%
+  select(uttProb, condition)
+
+
+df_rsa_comp = df_model_prereg %>%
+  group_by(condition) %>%
+  summarize(uttProb = mean(ColMentioned)) %>%
+  ungroup() %>%
+  filter(!str_detect(condition, "p")) %>%
+  mutate_at(vars(condition), funs(case_when(
+    .=="atn" ~ "tan",
+    .=="tan" ~ "atn",
+    TRUE ~ .
+  ))) %>%
+  select(uttProb, condition) %>%
+  bind_rows(df_rsa_comp_prep) %>%
+  mutate(intended_target = "comp")
+
+df_rsa = df_rsa_target %>%
+  bind_rows(df_rsa_comp)
+
+df_rsa
+
+write_csv(df_rsa, "df_rsa.csv")
+
+table(df_main$target_item,df_main$comp_item)
+```
+
+
+
+```{r stat analysis load libraries, eval=FALSE, include=FALSE}
+library(brms)
+options(mc.cores = parallel::detectCores())
+library(HDInterval)
+
+library(tidybayes)
+library(GGally)
+
+library(lme4)
+library(lmerTest)
+```
+
+
+```{r stat analysis preregistered, eval=FALSE, include=FALSE}
+
+df_main_typ = df_main %>% 
+  left_join(typ_data_short, by=c("target_item" = "col_type")) %>% 
+  rename(target_typ = typicality) %>% 
+  left_join(typ_data_short, by=c("comp_item" = "col_type")) %>% 
+  rename(comp_typ = typicality) %>% 
+  mutate_at(vars(target_typ, comp_typ), funs(./100))
+
+df_model_prereg = df_main_typ %>% 
+  # TODO: figure out what's up with this guy
+  filter(anon_worker_id != "674689641002867") %>% 
+  filter(intended_target == "target") %>%
+  mutate(wrong_selection = !str_detect(selected_image, target_item)) %>% 
+  filter(!wrong_selection) %>% 
+  filter(UtteranceCat=="colorType" | UtteranceCat=="typeOnly") %>% 
+  mutate(ColMentioned = ifelse(UtteranceCat=="colorType", 1, 0)) %>%  
+  mutate(contrast_present = ifelse(str_detect(condition, "p"), 1, 0)) %>% 
+  mutate(target_typ_bin = ifelse(str_sub(condition,1,1) == "t", 0, 1)) %>% 
+  mutate(comp_typ_bin = ifelse(str_sub(condition,2,2) == "t", 0, 1)) %>% 
+  mutate(c_target_typ = target_typ-mean(target_typ)) %>%
+  mutate(c_comp_typ = comp_typ-mean(comp_typ)) %>%
+  mutate(c_target_typ_bin = target_typ_bin-mean(target_typ_bin)) %>%
+  mutate(c_comp_typ_bin = comp_typ_bin-mean(comp_typ_bin)) %>%
+  mutate(c_contrast = contrast_present-mean(contrast_present)) %>% 
+  mutate(trial_half = ifelse(trial_number<=15, 0, 1)) %>% 
+  mutate(c_trial_half = trial_half-mean(trial_half)) %>% 
+  # mutate_at(vars(target_typ_bin, comp_typ_bin, contrast_present, ColMentioned, anon_worker_id), funs(as.factor(.))) %>% 
+  rename(contrast = contrast_present)
+```
+
+```{r models}
+# modifier mention ~ contrast presence*typicality of target*typicality of competitor + (1+contrast presence*typicality of target|participant) + (1+contrast presence*typicality of target*typicality of competitor|item)
+f_prereg = ColMentioned ~ contrast_present*c_target_typ*c_comp_typ + (1+contrast_present+c_target_typ+c_comp_typ|anon_worker_id) + (1+contrast_present+c_target_typ+c_comp_typ|targetType)
+
+# 1 NO RANDOM EFFECTS
+# 1.1 Binned typicality
+# 1.1.1 Centered typicality & contrast
+
+m = glm(ColMentioned ~ c_contrast+c_target_typ_bin+c_comp_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ c_contrast+c_target_typ_bin+c_comp_typ_bin+c_contrast:c_target_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ c_contrast+c_target_typ_bin+c_comp_typ_bin+c_contrast:c_comp_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ c_contrast+c_target_typ_bin+c_comp_typ_bin+c_comp_typ_bin:c_target_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ c_contrast*c_target_typ_bin*c_comp_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+# 1.1.2 Centered typicality & non-centered contrast
+
+m = glm(ColMentioned ~ contrast+c_target_typ_bin+c_comp_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ contrast+c_target_typ_bin+c_comp_typ_bin+contrast:c_target_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ contrast+c_target_typ_bin+c_comp_typ_bin+contrast:c_comp_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ contrast+c_target_typ_bin+c_comp_typ+c_comp_typ_bin:c_target_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ contrast*c_target_typ_bin*c_comp_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+# 1.1.3 Non-centered typicality & centered contrast
+
+m = glm(ColMentioned ~ c_contrast+target_typ_bin+comp_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ c_contrast+target_typ_bin+comp_typ_bin+c_contrast:target_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ c_contrast+target_typ_bin+comp_typ_bin+c_contrast:comp_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ c_contrast+target_typ_bin+comp_typ_bin+comp_typ_bin:target_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ c_contrast*target_typ_bin*comp_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+# 1.1.4 Non-centered typicality & contrast
+
+m = glm(ColMentioned ~ contrast+target_typ_bin+comp_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ contrast+target_typ_bin+comp_typ_bin+contrast:target_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ contrast+target_typ_bin+comp_typ_bin+contrast:comp_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ contrast+target_typ_bin+comp_typ_bin+comp_typ_bin:target_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ contrast*target_typ_bin*comp_typ_bin, data = df_model_prereg, family = "binomial")
+summary(m)
+
+# 1.2 Continuous typicality
+# 1.2.1 Centered typicality & contrast
+
+m = glm(ColMentioned ~ c_contrast+c_target_typ+c_comp_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ c_contrast+c_target_typ+c_comp_typ+c_contrast:c_target_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ c_contrast+c_target_typ+c_comp_typ+c_contrast:c_comp_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ c_contrast+c_target_typ+c_comp_typ+c_comp_typ:c_target_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ c_contrast*c_target_typ*c_comp_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+# 1.2.2 Centered typicality & non-centered contrast
+
+m = glm(ColMentioned ~ contrast+c_target_typ+c_comp_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ contrast+c_target_typ+c_comp_typ+contrast:c_target_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ contrast+c_target_typ+c_comp_typ+contrast:c_comp_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ contrast+c_target_typ+c_comp_typ+c_comp_typ:c_target_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ contrast*c_target_typ*c_comp_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+# 1.2.3 Non-centered typicality & centered contrast
+
+m = glm(ColMentioned ~ c_contrast+target_typ+comp_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ c_contrast+target_typ+comp_typ+c_contrast:target_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ c_contrast+target_typ+comp_typ+c_contrast:comp_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ c_contrast+target_typ+comp_typ+comp_typ:target_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ c_contrast*target_typ*comp_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+# 1.2.4 Non-centered typicality & contrast
+
+m = glm(ColMentioned ~ contrast+target_typ+comp_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ contrast+target_typ+comp_typ+c_contrast:target_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ contrast+target_typ+comp_typ+c_contrast:comp_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ contrast+target_typ+comp_typ+comp_typ:target_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glm(ColMentioned ~ contrast*target_typ*comp_typ, data = df_model_prereg, family = "binomial")
+summary(m)
+
+
+# 2 RANDOM EFFECTS
+# 2.1 Binned typicality
+# 2.1.1 Centered typicality & contrast
+
+m = glmer(ColMentioned ~ c_contrast+c_target_typ_bin+c_comp_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ c_contrast+c_target_typ_bin+c_comp_typ_bin+c_contrast:c_target_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ c_contrast+c_target_typ_bin+c_comp_typ_bin+c_contrast:c_comp_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ c_contrast+c_target_typ_bin+c_comp_typ_bin+c_comp_typ_bin:c_target_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+# 2.1.2 Centered typicality & non-centered contrast
+
+m = glmer(ColMentioned ~ contrast+c_target_typ_bin+c_comp_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ contrast+c_target_typ_bin+c_comp_typ_bin+contrast:c_target_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ contrast+c_target_typ_bin+c_comp_typ_bin+contrast:c_comp_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ contrast+c_target_typ_bin+c_comp_typ+c_comp_typ_bin:c_target_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ contrast*c_target_typ_bin*c_comp_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+# 2.1.3 Non-centered typicality & centered contrast
+
+m = glmer(ColMentioned ~ c_contrast+target_typ_bin+comp_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ c_contrast+target_typ_bin+comp_typ_bin+c_contrast:target_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ c_contrast+target_typ_bin+comp_typ_bin+c_contrast:comp_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ c_contrast+target_typ_bin+comp_typ_bin+comp_typ_bin:target_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ c_contrast*target_typ_bin*comp_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+# 2.1.4 Non-centered typicality & contrast
+
+m = glmer(ColMentioned ~ contrast+target_typ_bin+comp_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ contrast+target_typ_bin+comp_typ_bin+contrast:target_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ contrast+target_typ_bin+comp_typ_bin+contrast:comp_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ contrast+target_typ_bin+comp_typ_bin+comp_typ_bin:target_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ contrast*target_typ_bin*comp_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+# 2.2 Continuous typicality
+# 2.2.1 Centered typicality & contrast
+
+m = glmer(ColMentioned ~ c_contrast+c_target_typ+c_comp_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ c_contrast+c_target_typ+c_comp_typ+c_contrast:c_target_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ c_contrast+c_target_typ+c_comp_typ+c_contrast:c_comp_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ c_contrast+c_target_typ+c_comp_typ+c_comp_typ:c_target_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ c_contrast*c_target_typ*c_comp_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+# 2.2.2 Centered typicality & non-centered contrast
+
+m = glmer(ColMentioned ~ contrast+c_target_typ+c_comp_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ contrast+c_target_typ+c_comp_typ+contrast:c_target_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ contrast+c_target_typ+c_comp_typ+contrast:c_comp_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ contrast+c_target_typ+c_comp_typ+c_comp_typ:c_target_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ contrast*c_target_typ*c_comp_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+# 2.2.3 Non-centered typicality & centered contrast
+
+m = glmer(ColMentioned ~ c_contrast+target_typ+comp_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ c_contrast+target_typ+comp_typ+c_contrast:target_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ c_contrast+target_typ+comp_typ+c_contrast:comp_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ c_contrast+target_typ+comp_typ+comp_typ:target_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ c_contrast*target_typ*comp_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+# 2.2.4 Non-centered typicality & contrast
+
+m = glmer(ColMentioned ~ contrast+target_typ+comp_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ contrast+target_typ+comp_typ+c_contrast:target_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ contrast+target_typ+comp_typ+c_contrast:comp_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ contrast+target_typ+comp_typ+comp_typ:target_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+m = glmer(ColMentioned ~ contrast*target_typ*comp_typ + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# f_notprereg = ColMentioned ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1|anon_worker_id) + (1|target_item)
+m.1 = glmer(f_prereg, data = df_model_prereg, family = "binomial")
+summary(m.1)
+
+m.2 = glm(ColMentioned ~ c_contrast+c_target_typ+c_comp_typ, data = df_model_prereg, family = "binomial")
+summary(m.2)
+
+m = glm(ColMentioned ~ c_contrast+c_target_typ*c_comp_typ,data=df_model_prereg,family="binomial")
+summary(m)
+
+m.3 = glmer(ColMentioned ~ c_contrast+c_target_typ+c_comp_typ + (1+c_target_typ|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m.3)
+
+m.4 = glmer(ColMentioned ~ c_contrast+c_target_typ*c_comp_typ + (1+c_target_typ|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m.4)
+
+m.5 = glmer(ColMentioned ~ contrast_present*target_typ_bin+comp_typ_bin  + (1+target_typ_bin|anon_worker_id) + (1|targetType), data = df_model_prereg, family = "binomial")
+summary(m.5)
+
+plot = df_model_prereg %>% ggplot(aes(x=c_target_typ, fill=ColMentioned)) + geom_histogram(stat="count")
+plot = df_model_prereg %>% ggplot(aes(x=target_typ_bin, fill=ColMentioned)) + geom_histogram(stat="count")
+
+plot
+
+model_prereg = brm(
+  formula = ColMentioned ~ contrast_present*target_typ_bin+comp_typ_bin  + (1+target_typ_bin|anon_worker_id) + (1|targetType),
+  data = df_model_prereg,
+  seed = 1702,
+  family = 'bernoulli' # or bernoulli?
+)
+
+summary(model_prereg)
+
+bayes_R2(model_prereg)
+
+plot_model_prereg = 
+  model_prereg %>% 
+  as_tibble() %>% 
+  select("b_Intercept", "b_contrast_present1", "b_target_typ_bin1", "b_comp_typ_bin1", "b_contrast_present1.target_typ_bin1") %>% 
+  gather(key = "parameter", value = "posterior") %>% 
+  mutate_at(vars(parameter), funs(str_replace_all(.,"b_",""))) %>%
+  mutate_at(vars(parameter), funs(str_replace_all(.,"\\.",":"))) %>%
+  mutate(parameter = as.factor(parameter)) %>%
+  mutate(parameter = factor(parameter, levels = c("Intercept", "contrast_present1", "target_typ_bin1", "comp_typ_bin1", "contrast_present1:target_typ_bin1"))) %>%
+  ggplot(aes(x = posterior)) + 
+    geom_density(fill = "grey") +
+    facet_wrap(~ parameter, scales = "free") +
+  ylab("density\n") +
+  xlab("\nparameter value") +
+  theme_classic() +
+  theme(legend.position = "right",
+        legend.key.height = unit(2,"line"),
+        legend.title = element_text(size = 18, face = "bold"),
+        legend.text = element_text(size = 16),
+        legend.background = element_rect(fill = "transparent"),
+        strip.background = element_blank(),
+        strip.text = element_text(size = 18, face = "bold"),
+        axis.line = element_blank(),
+        panel.spacing = unit(2, "lines"),
+        plot.background = element_rect(fill = "transparent", colour = NA),
+        panel.background = element_rect(fill = "transparent"),
+        axis.text = element_text(size = 16),
+        axis.title = element_text(size = 18, face = "bold"),
+        plot.title = element_text(size = 18, face = "bold"),
+        plot.margin = unit(c(0.2,0.1,0.2,0.1),"cm")) +
+  geom_vline(xintercept = 0) +
+  geom_segment(
+    mapping = aes(y = 0, yend = 0, x = low, xend = high),
+    color = "firebrick",
+    size = 3,
+    data = fixef(model_prereg) %>% as_tibble() %>%
+      mutate(parameter = c("Intercept", "contrast_present1", "target_typ_bin1", "comp_typ_bin1", "contrast_present1:target_typ_bin1")) %>%
+      mutate(parameter = as.factor(parameter)) %>%
+      mutate(parameter = factor(parameter, levels = c("Intercept", "contrast_present1", "target_typ_bin1", "comp_typ_bin1", "contrast_present1:target_typ_bin1"))) %>%
+      rename(low = Q2.5, high = Q97.5))
+
+plot_model_prereg = 
+  model_prereg %>% 
+  as_tibble() %>% 
+  select("b_Intercept", "b_c_contrast", "b_c_target_typ", "b_c_comp_typ", "b_c_target_typ.c_comp_typ") %>% 
+  gather(key = "parameter", value = "posterior") %>% 
+  mutate_at(vars(parameter), funs(str_replace_all(.,"b_",""))) %>%
+  mutate_at(vars(parameter), funs(str_replace_all(.,"\\.",":"))) %>%
+  mutate(parameter = as.factor(parameter)) %>%
+  mutate(parameter = factor(parameter, levels = c("Intercept", "c_contrast", "c_target_typ", "c_comp_typ", "c_target_typ:c_comp_typ"))) %>%
+  ggplot(aes(x = posterior)) + 
+    geom_density(fill = "grey") +
+    facet_wrap(~ parameter, scales = "free") +
+  ylab("density\n") +
+  xlab("\nparameter value") +
+  theme_classic() +
+  theme(legend.position = "right",
+        legend.key.height = unit(2,"line"),
+        legend.title = element_text(size = 18, face = "bold"),
+        legend.text = element_text(size = 16),
+        legend.background = element_rect(fill = "transparent"),
+        strip.background = element_blank(),
+        strip.text = element_text(size = 18, face = "bold"),
+        axis.line = element_blank(),
+        panel.spacing = unit(2, "lines"),
+        plot.background = element_rect(fill = "transparent", colour = NA),
+        panel.background = element_rect(fill = "transparent"),
+        axis.text = element_text(size = 16),
+        axis.title = element_text(size = 18, face = "bold"),
+        plot.title = element_text(size = 18, face = "bold"),
+        plot.margin = unit(c(0.2,0.1,0.2,0.1),"cm")) +
+  geom_vline(xintercept = 0) +
+  geom_segment(
+    mapping = aes(y = 0, yend = 0, x = low, xend = high),
+    color = "firebrick",
+    size = 3,
+    data = fixef(model_prereg) %>% as_tibble() %>%
+      mutate(parameter = c("Intercept", "c_contrast", "c_target_typ", "c_comp_typ", "c_target_typ:c_comp_typ")) %>%
+      mutate(parameter = as.factor(parameter)) %>%
+      mutate(parameter = factor(parameter, levels = c("Intercept", "c_contrast", "c_target_typ", "c_comp_typ", "c_target_typ:c_comp_typ"))) %>%
+      rename(low = Q2.5, high = Q97.5))
+
+plot_model_prereg
+
+ggsave(plot = plot_model_prereg, filename = "graphs/posterior_density_prereg.png",
+       width = 15, height = 10)
+
+```
+
+```{r stat analysis preregistered comp, eval=FALSE, include=FALSE}
+
+df_model_prereg = df_main %>% 
+  filter(intended_target == "firstDistractor" | 
+           (intended_target == "target" & str_detect(condition, "n"))) %>%
+  mutate(wrong_selection = case_when(
+    (intended_target == "firstDistractor") ~ !str_detect(selected_image, comp_item),
+    (intended_target == "target") ~ !str_detect(selected_image, target_item),
+    TRUE ~ TRUE)) %>% 
+  filter(!wrong_selection) %>% 
+  filter(UtteranceCat=="colorType" | UtteranceCat=="typeOnly") %>% 
+  mutate(ColMentioned = ifelse(UtteranceCat=="colorType", 1, 0)) %>%  
+  mutate(contrast_present = ifelse(str_detect(condition, "p"), 1, 0)) %>% 
+  mutate(target_typ_bin = case_when(
+    (intended_target == "target") & (str_sub(condition,1,1) == "t") ~ 0,
+    (intended_target == "target") & (str_sub(condition,1,1) == "a") ~ 1,
+    (intended_target == "firstDistractor") & (str_sub(condition,2,2) == "t") ~ 0,
+    TRUE ~ 1
+  )) %>% 
+  mutate(comp_typ_bin = case_when(
+    (intended_target == "target") & (str_sub(condition,2,2) == "t") ~ 0,
+    (intended_target == "target") & (str_sub(condition,2,2) == "a") ~ 1,
+    (intended_target == "firstDistractor") & (str_sub(condition,1,1) == "t") ~ 0,
+    TRUE ~ 1
+  )) %>% 
+  # mutate(target_typ = ifelse((str_sub(condition,2,2) == "t"), 0, 1)) %>% 
+  # mutate(comp_typ = ifelse(str_sub(condition,1,1) == "t", 0, 1)) %>% 
+  mutate(c_target_typ_bin = target_typ-mean(target_typ)) %>%
+  mutate(c_comp_typ_bin = comp_typ-mean(comp_typ)) %>%
+  mutate(c_contrast = contrast_present-mean(contrast_present)) %>% 
+  mutate(trial_half = ifelse(trial_number<=15, 0, 1)) %>% 
+  mutate(c_trial_half = trial_half-mean(trial_half))
+  
+# modifier mention ~ contrast presence*typicality of target*typicality of competitor + (1+contrast presence*typicality of target|participant) + (1+contrast presence*typicality of target*typicality of competitor|item)
+df_model_prereg$FColMentioned = as.factor(as.character(df_model_prereg$ColMentioned))
+f_prereg = ColMentioned ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast+c_target_typ_bin+c_comp_typ_bin|anon_worker_id) + (1+c_contrast+c_target_typ_bin+c_comp_typ_bin|targetType)
+
+# f_prereg = FColMentioned ~ c_contrast+c_target_typ_bin+c_comp_typ_bin + (1+c_target_typ_bin|anon_worker_id) + (1|target_item)
+
+library(lmerTest)
+library(lme4)
+m.1 = glmer(f_prereg, data = df_model_prereg, family = "binomial",optimizer="bobyqa")
+summary(m.1)
+
+m = glm(FColMentioned ~ c_contrast*c_target_typ_bin*c_comp_typ_bin,data=df_model_prereg,family="binomial")
+summary(m)
+
+
+
+model_prereg = brm(
+  formula = ColMentioned ~ c_contrast+c_target_typ_bin*c_comp_typ_bin + (1+c_target_typ_bin|anon_worker_id),
+  data = df_model_prereg,
+  seed = 1702,
+  family = 'bernoulli' # or bernoulli?
+)
+
+summary(model_prereg)
+
+bayes_R2(model_prereg)
+
+plot_model_prereg = 
+  model_prereg %>% 
+  as_tibble() %>% 
+  select("b_Intercept", "b_c_contrast", "b_c_target_typ_bin", "b_c_comp_typ_bin", "b_c_contrast.c_target_typ_bin", "b_c_contrast.c_comp_typ_bin", "b_c_target_typ_bin.c_comp_typ_bin", "b_c_contrast.c_target_typ_bin.c_comp_typ_bin") %>% 
+  gather(key = "parameter", value = "posterior") %>% 
+  mutate_at(vars(parameter), funs(str_replace_all(.,"b_",""))) %>%
+  mutate_at(vars(parameter), funs(str_replace_all(.,"\\.",":"))) %>%
+  mutate(parameter = as.factor(parameter)) %>%
+  mutate(parameter = factor(parameter, levels = c("Intercept", "c_contrast", "c_target_typ_bin", "c_comp_typ_bin", "c_contrast:c_target_typ_bin", "c_contrast:c_comp_typ_bin", "c_target_typ_bin:c_comp_typ_bin", "c_contrast:c_target_typ_bin:c_comp_typ_bin"))) %>%
+  ggplot(aes(x = posterior)) + 
+    geom_density(fill = "grey") +
+    facet_wrap(~ parameter, scales = "free") +
+  ylab("density\n") +
+  xlab("\nparameter value") +
+  theme_classic() +
+  theme(legend.position = "right",
+        legend.key.height = unit(2,"line"),
+        legend.title = element_text(size = 18, face = "bold"),
+        legend.text = element_text(size = 16),
+        legend.background = element_rect(fill = "transparent"),
+        strip.background = element_blank(),
+        strip.text = element_text(size = 18, face = "bold"),
+        axis.line = element_blank(),
+        panel.spacing = unit(2, "lines"),
+        plot.background = element_rect(fill = "transparent", colour = NA),
+        panel.background = element_rect(fill = "transparent"),
+        axis.text = element_text(size = 16),
+        axis.title = element_text(size = 18, face = "bold"),
+        plot.title = element_text(size = 18, face = "bold"),
+        plot.margin = unit(c(0.2,0.1,0.2,0.1),"cm")) +
+  geom_vline(xintercept = 0) +
+  geom_segment(
+    mapping = aes(y = 0, yend = 0, x = low, xend = high),
+    color = "firebrick",
+    size = 3,
+    data = fixef(model_prereg) %>% as_tibble() %>%
+      mutate(parameter = c("Intercept", "c_contrast", "c_target_typ_bin", "c_comp_typ_bin", "c_contrast:c_target_typ_bin", "c_contrast:c_comp_typ_bin", "c_target_typ_bin:c_comp_typ_bin", "c_contrast:c_target_typ_bin:c_comp_typ_bin")) %>%
+      mutate(parameter = as.factor(parameter)) %>%
+      mutate(parameter = factor(parameter, levels = c("Intercept", "c_contrast", "c_target_typ_bin", "c_comp_typ_bin", "c_contrast:c_target_typ_bin", "c_contrast:c_comp_typ_bin", "c_target_typ_bin:c_comp_typ_bin", "c_contrast:c_target_typ_bin:c_comp_typ_bin"))) %>%
+      rename(low = Q2.5, high = Q97.5))
+
+plot_model_prereg
+
+ggsave(plot = plot_model_prereg, filename = "graphs/posterior_density_prereg.png",
+       width = 15, height = 10)
+
+```
+
+
+
+```{r}
+
+df_model_prereg %>% 
+  ggplot(., aes(x=contrast_present, y=ColMentioned, group=c_target_typ_bin, fill=c_target_typ_bin)) +
+    facet_wrap(~c_comp_typ_bin) +
+    # mean
+    stat_summary(fun.y = "mean",
+                 geom = "bar",
+                 position = position_dodge(width = 0.9)) +
+    # error bars 
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "linerange",
+                 color = "darkgrey",
+                 position = position_dodge(width = 0.9)) +
+    geom_point(position=position_jitterdodge(jitter.width = 0.3, jitter.height = 0.1,
+  dodge.width = 0.9, seed = NA), alpha=0.5) +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1))
+    # theme(legend.position = "none")
+
+```
+
+
+```{r}
+# library(corrplot)
+# library(PerformanceAnalytics)
+# 
+# df_corr = df_model_prereg %>% 
+#   mutate(id=str_c(anon_worker_id, "_", trial_number)) %>%
+#   select(condition,ColMentioned,id) %>%
+#   # tibble::rowid_to_column() %>%
+#   spread(condition,ColMentioned) %>% 
+#   as.data.frame()
+# 
+# rownames(df_corr) = df_corr$id
+# 
+# df_corr = select(df_corr,-id)
+# 
+# chart.Correlation(df_corr, histogram=TRUE, pch=19)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Less conservative data annotation
+
+```{r}
+type = c("banana|banaa|bananna|nana|banan|bannaa|ban|broccoli|broc|carrot|carro|carot|corn|tomato|tom|tamayo|egg|strawberry|straw|str|berry|lettuce|letc|cabbage|cabb|cabage|swan|goose|pumpkin|pump|punmkn|pum")
+# type_null = c("thing|one")
+other_types = c("lemon|bird|vegetable|fruit|ruit|cauliflower|cauli|caul|circle|tree|onion|animal")
+other_mod_typ = c("original|normal|natural|natural color|with the correct color|original color|regular")
+other_mod_atyp = c("un-natural|off color|weird|seasick|dyed")
+other_mod = c("with color|no color|without color|not red|small|round")
+
+
+df_main_lesscons = df %>% 
+  mutate(target_item = str_c(targetcompColor, targetType, sep="_")) %>% 
+  select(intended_target, condition, speaker_chat, trial_number, anon_worker_id, target_item, targetType) %>% 
+  # filter everything with longer conversations (corrections) on speaker side
+  filter(!str_detect(speaker_chat, "\\|\\|\\|")) %>% 
+  # mutate(refexp = str_c("::",speaker_chat,"::")) %>% 
+  mutate(refexp = speaker_chat) %>% 
+  # TODO: filter out all \n
+  mutate_at(vars(refexp), funs(str_to_lower(.))) %>% 
+  # categorization
+  mutate(TypeMention = ifelse(str_detect(refexp,type), 1, 0)) %>% 
+  # mutate(TypeNullMention = ifelse(str_detect(refexp,type_null), 1, 0)) %>% 
+  mutate(OtherTypeMention = ifelse(str_detect(refexp,other_types), 1, 0)) %>%
+  mutate(ColorMention = ifelse(str_detect(refexp,color), 1, 0)) %>% 
+  mutate(OtherModMention_typ = ifelse(str_detect(refexp,other_mod_typ), 1, 0)) %>% 
+  mutate(OtherModMention_atyp = ifelse(str_detect(refexp,other_mod_atyp), 1, 0)) %>%
+  mutate(OtherModMention = ifelse(str_detect(refexp,other_mod), 1, 0)) %>%
+   
+  mutate(UtteranceCat = case_when(
+    (ColorMention == 1) & (TypeMention == 1) ~ "colorType",
+    (OtherModMention == 1) | (OtherTypeMention == 1) ~ "other",
+    OtherModMention_typ == 1 ~ "other_typmod",
+    OtherModMention_atyp == 1 ~ "other_atypmod",
+    (ColorMention == 1) ~ "colorOnly",
+    (TypeMention == 1) ~ "typeOnly",
+    TRUE ~ "whatisthis?"
+  ))
+
+# "other" utterances are mainly expressions that include: 
+# cauliflower and lemon (and bird, with/out color, fruit, vegetable)
+df_main_lesscons %>% 
+  filter(UtteranceCat == "other") %>% 
+  view()
+```
+
+```{r target intended target}
+df_plot_target = df_main_lesscons %>% 
+  select(intended_target, condition, refexp, UtteranceCat, trial_number, anon_worker_id) %>% 
+  filter(intended_target == "target") %>% 
+  slice(rep(1:n(), each = 4)) %>%
+  mutate(possible_utterance = rep_len(c("colorType", "colorOnly", "typeOnly", "other_typmod", "other_atypmod", "other"), 
+                                  length.out=n())) %>% 
+  mutate(uttered = ifelse(UtteranceCat==possible_utterance,1,0)) %>% 
+  mutate_at(vars(possible_utterance),
+            funs(factor(., levels=c("colorType", "colorOnly", "typeOnly", "other_typmod", "other_atypmod", "other")))) %>%
+  mutate_at(vars(condition),
+            funs(factor(., levels=c("atp", "aap", "ttp", "tap", "atn", "aan", "ttn", "tan"))))
+
+ggplot(df_plot_target, aes(x=possible_utterance, y=uttered, fill=possible_utterance)) +
+  facet_wrap(~condition, nrow=2) +
+  # mean
+  stat_summary(fun.y = "mean",
+               geom = "bar",
+               position = position_dodge(width = 0.9)) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey",
+               position = position_dodge(width = 0.9)) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none")
+  
+
+df_plot_target %>% 
+  filter(trial_number <= 30) %>% 
+  ggplot(., aes(x=possible_utterance, y=uttered, fill=possible_utterance)) +
+    facet_wrap(~condition, nrow=2) +
+    # mean
+    stat_summary(fun.y = "mean",
+                 geom = "bar",
+                 position = position_dodge(width = 0.9)) +
+    # error bars 
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "linerange",
+                 color = "darkgrey",
+                 position = position_dodge(width = 0.9)) +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+    theme(legend.position = "none")
+
+df_plot_target %>% 
+  filter(trial_number > 30) %>% 
+  ggplot(., aes(x=possible_utterance, y=uttered, fill=possible_utterance)) +
+    facet_wrap(~condition, nrow=2) +
+    # mean
+    stat_summary(fun.y = "mean",
+                 geom = "bar",
+                 position = position_dodge(width = 0.9)) +
+    # error bars 
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "linerange",
+                 color = "darkgrey",
+                 position = position_dodge(width = 0.9)) +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+    theme(legend.position = "none")
+
+# First half vs second half: ColorType utterances reduce in atn and aan condition in second trial half; "other" utterances reduce in second trial half
+```
+
+```{r comp intended target}
+df_plot_comp = df_main_lesscons %>% 
+  select(intended_target, condition, refexp, UtteranceCat, trial_number, anon_worker_id) %>% 
+  filter(intended_target == "firstDistractor") %>% 
+  slice(rep(1:n(), each = 4)) %>%
+  mutate(possible_utterance = rep_len(c("colorType", "colorOnly", "typeOnly", "other_typmod", "other_atypmod", "other"), 
+                                  length.out=n())) %>% 
+  mutate(uttered = ifelse(UtteranceCat==possible_utterance,1,0)) %>% 
+  mutate_at(vars(possible_utterance),
+            funs(factor(., levels=c("colorType", "colorOnly", "typeOnly", "other_typmod", "other_atypmod", "other")))) %>%
+  mutate_at(vars(condition),
+            funs(factor(., levels=c("atp", "aap", "ttp", "tap", "atn", "aan", "ttn", "tan"))))
+
+ggplot(df_plot_comp, aes(x=possible_utterance, y=uttered, fill=possible_utterance)) +
+  facet_wrap(~condition, nrow=2) +
+  # mean
+  stat_summary(fun.y = "mean",
+               geom = "bar",
+               position = position_dodge(width = 0.9)) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey",
+               position = position_dodge(width = 0.9)) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none")
+  
+
+df_plot_comp %>% 
+  filter(trial_number <= 30) %>% 
+  ggplot(., aes(x=possible_utterance, y=uttered, fill=possible_utterance)) +
+    facet_wrap(~condition, nrow=2) +
+    # mean
+    stat_summary(fun.y = "mean",
+                 geom = "bar",
+                 position = position_dodge(width = 0.9)) +
+    # error bars 
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "linerange",
+                 color = "darkgrey",
+                 position = position_dodge(width = 0.9)) +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+    theme(legend.position = "none")
+
+df_plot_comp %>% 
+  filter(trial_number > 30) %>% 
+  ggplot(., aes(x=possible_utterance, y=uttered, fill=possible_utterance)) +
+    facet_wrap(~condition, nrow=2) +
+    # mean
+    stat_summary(fun.y = "mean",
+                 geom = "bar",
+                 position = position_dodge(width = 0.9)) +
+    # error bars 
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "linerange",
+                 color = "darkgrey",
+                 position = position_dodge(width = 0.9)) +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+    theme(legend.position = "none")
+
+# First half vs second half: ColorType utterances reduce in atn and aan condition in second trial half; "other" utterances reduce in second trial half
+```
+
