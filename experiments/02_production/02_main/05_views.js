@@ -51,8 +51,9 @@ const lobby = color_ref_views.interactiveExperimentLobby({
 
 const game = color_ref_views.game({
     name: "game",
-    trials: color_ref_utils.sampleImages().length,
-    // trials: 3,
+    // trials: color_ref_utils.sampleImages().length-1,
+    // trials: main_trials.color_ref.length,
+    trials: 3,
     title: "Color Reference Game",
     data: main_trials.color_ref
 });
