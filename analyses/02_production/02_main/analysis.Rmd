@@ -210,7 +210,7 @@ cons_other_mod = c("original|normal|natural|natural color|un-natural|with color|
 df_main = df %>% 
   mutate(target_item = str_c(targetcompColor, targetType, sep="_")) %>% 
   mutate(comp_item = str_c(targetcompColor, compType, sep="_")) %>% 
-  select(intended_target, condition, speaker_chat, trial_number, anon_worker_id, target_item, targetType, comp_item, selected_image) %>% 
+  select(intended_target, condition, speaker_chat, trial_number, anon_worker_id, target_item, targetType, comp_item, compType, selected_image) %>% 
   # filter everything with longer conversations (corrections) on speaker side
   filter(!str_detect(speaker_chat, "\\|\\|\\|")) %>% 
   # mutate(refexp = str_c("::",speaker_chat,"::")) %>% 
@@ -386,7 +386,12 @@ nocontrast_comp = df_main %>%
   mutate(ColMentioned = ifelse(UtteranceCat=="colorType", 1, 0)) %>%  
   mutate_at(vars(intended_target), funs(ifelse(. == "target", "firstDistractor", "FIRE"))) %>% 
   mutate(target_typ = ifelse(str_sub(condition,2,2) == "t", 0, 1)) %>% 
-  mutate(comp_typ = ifelse(str_sub(condition,1,1) == "t", 0, 1))
+  mutate(comp_typ = ifelse(str_sub(condition,1,1) == "t", 0, 1)) %>% 
+  mutate_at(vars(condition), funs(case_when(
+    .=="atn" ~ "tan",
+    .=="tan" ~ "atn",
+    TRUE ~ .
+  )))
 
 cuny_plot = df_main %>% 
   filter(intended_target == "firstDistractor" | intended_target == "target") %>%
@@ -417,6 +422,9 @@ cuny_plot = df_main %>%
   mutate_at(vars(comp_typ), funs(ifelse(. == 0, "typical", "atypical"))) %>% 
   mutate_at(vars(comp_typ),
             funs(factor(., levels=c("typical", "atypical")))) %>% 
+  mutate_at(vars(target_typ), funs(ifelse(. == 0, "typical", "atypical"))) %>% 
+  mutate_at(vars(target_typ),
+            funs(factor(., levels=c("typical", "atypical")))) %>%
   mutate_at(vars(contrast_present), funs(ifelse(. == 0, "no contrast", "contrast")))
   # mutate_at(vars(comp_typ),
   #           funs(factor(., levels=c("typical", "atypical"))))
@@ -445,6 +453,26 @@ ggplot(cuny_plot, aes(x=intended_target, y=ColMentioned, group=comp_typ, fill=co
   theme(legend.position = "top")
 
 ggsave("cuny_prod.png", width = 5, height = 3)
+
+ggplot(cuny_plot, aes(x=intended_target, y=ColMentioned, group=target_typ, fill=target_typ)) +
+  facet_wrap(~contrast_present) +
+  # mean
+  stat_summary(fun.y = "mean",
+               geom = "bar",
+               position = position_dodge(width = 0.9)) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey",
+               position = position_dodge(width = 0.9)) +
+  xlab("Item that is being referred to") +
+  ylab("Probability of modifier use") +
+  # labs(fill='Competitor typicality') +
+  scale_fill_manual(values=c(typical_color, atypical_color)) +
+  # theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "top")
+
+ggsave("cuny_prod_targettyp.png", width = 5, height = 3)
 
 # Judith's plots
 
@@ -499,6 +527,41 @@ ggsave("cuny_prod_judith2.png", width = 5, height = 3)
 
 ```
 
+```{r}
+by_condition = cuny_plot %>% 
+  mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "aan", "ttn", "tan"))))
+  # group_by(intended_target, condition) %>% 
+  # summarize(mean_res = mean(ColMentioned)) %>% 
+  # ungroup() %>% 
+  # group_by(condition) %>% 
+  # summarize(diff = diff(mean_res)) %>% 
+  # ungroup() %>% 
+  # arrange(diff)
+  
+target_color = "#d55e00" # red
+comp_color = "#009e74"
+
+ggplot(by_condition, aes(x=intended_target, y=ColMentioned, fill=intended_target)) +
+  facet_wrap(~condition, nrow = 2) +
+  # mean
+  stat_summary(fun.y = "mean",
+               geom = "bar",
+               width = 0.6,
+               position = position_dodge(width = 0.6)) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               size = .3,
+               width = 0.3,
+               position = position_dodge(width = 0.6)) +
+  xlab("Item that is being referred to") +
+  ylab("Probability of modifier use") +
+  labs(fill='Proportion of color mention') +
+  scale_fill_manual(values=c(target_color, comp_color)) +
+  # theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none")
+```
 
 
 
@@ -597,48 +660,50 @@ table(df_plot_target$anon_worker_id, df_plot_target$ColMentioned)
 # df_check
 
 # all uttProbs if target is the target (for all conditions)
-df_rsa_target = df_model_prereg %>%
-  group_by(condition) %>%
-  summarize(uttProb = mean(ColMentioned)) %>%
-  ungroup() %>%
-  mutate(intended_target = "target") %>%
-  select(uttProb, condition, intended_target)
-
-# uttProbs if comp is the target (for contrast-present conditions)
-df_rsa_comp_prep = df_main %>%
-  filter(intended_target == "firstDistractor") %>%
-  mutate(wrong_selection = !str_detect(selected_image, comp_item)) %>%
-  filter(!wrong_selection) %>%
-  filter(UtteranceCat=="colorType" | UtteranceCat=="typeOnly") %>%
-  mutate(ColMentioned = ifelse(UtteranceCat=="colorType", 1, 0)) %>%
-  group_by(condition) %>%
-  summarize(uttProb = mean(ColMentioned)) %>%
-  ungroup() %>%
-  select(uttProb, condition)
-
-
-df_rsa_comp = df_model_prereg %>%
-  group_by(condition) %>%
-  summarize(uttProb = mean(ColMentioned)) %>%
-  ungroup() %>%
-  filter(!str_detect(condition, "p")) %>%
-  mutate_at(vars(condition), funs(case_when(
-    .=="atn" ~ "tan",
-    .=="tan" ~ "atn",
-    TRUE ~ .
-  ))) %>%
-  select(uttProb, condition) %>%
-  bind_rows(df_rsa_comp_prep) %>%
-  mutate(intended_target = "comp")
-
-df_rsa = df_rsa_target %>%
-  bind_rows(df_rsa_comp)
-
-df_rsa
-
-write_csv(df_rsa, "df_rsa.csv")
-
-table(df_main$target_item,df_main$comp_item)
+# df_rsa_target = df_model_prereg %>%
+#   group_by(condition,targetType) %>%
+#   summarize(uttProb = mean(ColMentioned)) %>%
+#   ungroup() %>%
+#   mutate(intended_target = "target") %>%
+#   select(uttProb, condition, intended_target, targetType)
+# 
+# # uttProbs if comp is the target (for contrast-present conditions)
+# df_rsa_comp_prep = df_main %>%
+#   filter(intended_target == "firstDistractor") %>%
+#   mutate(wrong_selection = !str_detect(selected_image, comp_item)) %>%
+#   filter(!wrong_selection) %>%
+#   filter(UtteranceCat=="colorType" | UtteranceCat=="typeOnly") %>%
+#   mutate(ColMentioned = ifelse(UtteranceCat=="colorType", 1, 0)) %>%
+#   group_by(condition) %>%
+#   summarize(uttProb = mean(ColMentioned)) %>%
+#   ungroup() %>%
+#   select(uttProb, condition)
+# 
+# 
+# df_rsa_comp = df_model_prereg %>%
+#   group_by(condition) %>%
+#   summarize(uttProb = mean(ColMentioned)) %>%
+#   ungroup() %>%
+#   filter(!str_detect(condition, "p")) %>%
+#   mutate_at(vars(condition), funs(case_when(
+#     .=="atn" ~ "tan",
+#     .=="tan" ~ "atn",
+#     TRUE ~ .
+#   ))) %>%
+#   select(uttProb, condition) %>%
+#   bind_rows(df_rsa_comp_prep) %>%
+#   mutate(intended_target = "comp")
+# 
+# df_rsa = df_rsa_target %>%
+#   bind_rows(df_rsa_comp)
+# 
+# df_rsa
+# 
+# write_csv(df_rsa, "df_rsa_bytarget.csv")
+# 
+# write_csv(df_main, here("models","02_prodInfRSA","data","emp_production_data.csv"))
+# 
+# table(df_main$target_item,df_main$comp_item)
 ```
 
 
