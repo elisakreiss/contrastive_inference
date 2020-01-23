@@ -173,6 +173,7 @@ const color_ref_views = {
 
                     if (type == intended_target && magpie.variant == 1) {
                         div.classList.add("speaker-target");
+                        console.log("I'm the speaker")
                     }
 
                     div.innerHTML = `<img class=color-img src=images/${image}>`;
