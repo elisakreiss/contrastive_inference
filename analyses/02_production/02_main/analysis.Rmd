@@ -10,7 +10,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r data import, include=FALSE}
 library(cowplot)
-library(plyr)
 library(tidyverse)
 library(here)
 
@@ -732,7 +731,7 @@ df_main_typ = df_main %>%
 
 df_model_prereg = df_main_typ %>% 
   # TODO: figure out what's up with this guy
-  filter(anon_worker_id != "674689641002867") %>% 
+  filter(anon_worker_id != "674689641002867") %>%
   filter(intended_target == "target") %>%
   mutate(wrong_selection = !str_detect(selected_image, target_item)) %>% 
   filter(!wrong_selection) %>% 
@@ -752,9 +751,41 @@ df_model_prereg = df_main_typ %>%
   rename(contrast = contrast_present)
 ```
 
+Understand the structure of the data.
+```{r}
+df_model_prereg = df_model_prereg %>%
+  mutate(Contrast = fct_recode(contrast, "present"="1","absent"="0"), TargetTyp = fct_recode(target_typ_bin, "typical t"="1","atypical t"="0"), CompTyp = fct_recode(comp_typ_bin, "typical c"="1","atypical c"="0"), ColorMentioned = fct_recode(ColMentioned,"mentioned"="1","not mentioned"="0"))
+
+#about half the time, color is mentioned
+table(df_model_prereg$ColorMentioned)
+
+# there is only a contrast one third of the time, but when there is, color is almost always mentioned (90%), whereas when there's not, bias is towards NOT mentioning color (35% color mentions)
+table(df_model_prereg$Contrast)
+prop.table(table(df_model_prereg$Contrast,df_model_prereg$ColorMentioned),mar=c(1))
+
+# almost perfectly crossed target and competitor typicality
+table(df_model_prereg$TargetTyp,df_model_prereg$CompTyp)
+
+# within each level of the imbalanced contrast presence variable, almost perfectly balanced occurrences of typical and atypical targets/compettitors
+table(df_model_prereg$TargetTyp,df_model_prereg$CompTyp,df_model_prereg$Contrast)
+
+# if we split the data further by whether or not color was mentioned, we see that color is never not mentioned when a contrast is present and the target is typical -- this is likely to create problems for the model
+table(df_model_prereg$TargetTyp,df_model_prereg$CompTyp,df_model_prereg$Contrast,df_model_prereg$ColorMentioned)
+
+```
+
+
 ```{r models}
 # modifier mention ~ contrast presence*typicality of target*typicality of competitor + (1+contrast presence*typicality of target|participant) + (1+contrast presence*typicality of target*typicality of competitor|item)
-f_prereg = ColMentioned ~ contrast_present*c_target_typ*c_comp_typ + (1+contrast_present+c_target_typ+c_comp_typ|anon_worker_id) + (1+contrast_present+c_target_typ+c_comp_typ|targetType)
+f_prereg = ColMentioned ~ c_contrast_present*c_target_typ*c_comp_typ + (1+contrast_present+c_target_typ+c_comp_typ|anon_worker_id) + (1+contrast_present+c_target_typ+c_comp_typ|targetType)
+
+# JD model code
+df_model_prereg$targetType = as.factor(df_model_prereg$targetType)
+
+# ok, here's why the production model won't converge: it's because in the contrast present/typical target condition, everybody always mentions color. this means that there is no variability that the model can use to estimate the variance for the interaction of contrast presence and target typicality. which is why any model that included the two-way interaction between contrast presence and target typicality wouldn't converge (or rather, if you look at the summaries of those models' output, you'll see that the SE estimates for any interaction predictor involving both contrast presence and target typicality are through the roof). so here's the model that DOES converge because it doesn't include the problematic interaction terms
+m = glmer(ColMentioned ~ c_contrast + c_target_typ_bin + c_comp_typ_bin + c_contrast:c_comp_typ_bin + c_target_typ_bin:c_comp_typ_bin + (1|anon_worker_id) + (1|targetType), data = df_model_prereg, family = "binomial")
+summary(m)
+
 
 # 1 NO RANDOM EFFECTS
 # 1.1 Binned typicality
