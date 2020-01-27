@@ -13,18 +13,25 @@ library(cowplot)
 library(tidyverse)
 library(here)
 
-df_import1 = read_csv(here::here("data","02_production","02_main","data1.csv")) %>%
+df_import1 = read_csv(here::here("data","02_production","02_main","01_refgame","data1.csv")) %>%
   # exclude test
   # weird filter property will exclude NAs
   filter(is.na(comments) | !str_detect(comments,"TEST")) %>%
   filter(!str_detect(conversation, "elisakreiss"))
 
-df_import = read_csv(here::here("data","02_production","02_main","data2.csv")) %>%
+df_import2 = read_csv(here::here("data","02_production","02_main","02_refgame_followup","data.csv")) %>%
+  # exclude test
+  # weird filter property will exclude NAs
+  filter(is.na(comments) | !str_detect(comments,"TEST")) %>%
+  filter(!str_detect(conversation, "elisakreiss"))
+
+df_import = read_csv(here::here("data","02_production","02_main","01_refgame","data2.csv")) %>%
   # exclude test
   # weird filter property will exclude NAs
   filter(is.na(comments) | !str_detect(comments,"TEST")) %>% 
   filter(!str_detect(conversation, "elisakreiss")) %>% 
-  bind_rows(df_import1)
+  bind_rows(df_import1) %>% 
+  bind_rows(df_import2)
 ```
 
 # Subject pool
@@ -53,46 +60,64 @@ engl_spellings = c("english", "englis", "eng", "engilsh", "englsh", "en", "emgli
 
 # Exclusions
 # glb_variant 1 => speaker
-df_preclean = df_import %>% 
+df_preclean = df_import %>%
   # multiple submissions
   group_by(anon_worker_id) %>% 
   # mutate(blub = n()) %>% 
   filter(!(n() > 60)) %>% 
   ungroup() %>% 
+  filter(glb_variant == 1)  %>% 
+  # filter(str_detect(languages, "english"))  %>% 
   # if native language is not english
   mutate_at(vars(languages), funs(str_to_lower(.))) %>% 
-  mutate_at(vars(languages), funs(ifelse(. %in% engl_spellings, "english", .))) %>%
-  filter(glb_variant == 1 & str_detect(languages, "english")) 
+  mutate_at(vars(languages), funs(ifelse(. %in% engl_spellings, "english", .)))
 
-position_encoder = df_preclean %>% 
-  filter(str_detect(conversation, "top|bottom|left|right|1|2|3|4")) %>% 
-  select(anon_worker_id, conversation) %>% 
-  group_by(anon_worker_id) %>% 
-  summarize(all_trials = n()) %>% 
-  ungroup() %>% 
-  filter(all_trials > 5)
 
-posenc_list = as.list(position_encoder['anon_worker_id'])$anon_worker_id
+```
 
-taboo_player = df_preclean %>% 
-  filter(str_detect(conversation, "thing|monkey|vegetable|swimmer|comes from chicken|halloween|make a salad with it|normally|oval|love bird|leaves|on one end|round|long")) %>%
-  select(anon_worker_id, conversation) %>%
-  group_by(anon_worker_id) %>% 
-  mutate(all_trials = n()) %>% 
-  ungroup() %>% 
-  filter(all_trials > 6)
+
+## Data cleaning
+
+
+```{r}
+
+types = c("banana|banaa|bananna|nana|banan|bannaa|ban|broccoli|broc|carrot|carro|carot|cararot|c arrot|corn|tomato|tom|tamayo|egg|strawberry|straw|str|berry|lettuce|letc|cabbage|cabb|cabage|swan|goose|duck|pumpkin|pump|punmkn|pum")
+
+df_cleanedutts = df_preclean %>% 
+  mutate(target_item = str_c(targetcompColor, targetType, sep="_")) %>% 
+  mutate(comp_item = str_c(targetcompColor, compType, sep="_")) %>% 
+  select(intended_target, condition, speaker_chat, trial_number, anon_worker_id, target_item, targetType, comp_item, compType, selected_image) %>% 
+  # filter everything with longer conversations (corrections) on speaker side
+  filter(!str_detect(speaker_chat, "\\|\\|\\|")) %>% 
+  # mutate(refexp = str_c("::",speaker_chat,"::")) %>% 
+  mutate(refexp = speaker_chat) %>% 
+  # TODO: filter out all \n
+  mutate_at(vars(refexp), funs(str_to_lower(.)))
+
+```
+
+
+```{r}
+taboo_player = df_cleanedutts %>% 
+  filter(!str_detect(refexp, types)) %>%
+  select(anon_worker_id, refexp) %>%
+  group_by(anon_worker_id) %>%
+  mutate(all_trials = n()) %>%
+  ungroup() %>%
+  filter(all_trials >= 30)
 
 taboo_player_list = as.list(taboo_player['anon_worker_id'])$anon_worker_id
 
-df_clean = df_preclean %>% 
-  filter(!(anon_worker_id %in% posenc_list)) %>% 
+df_clean = df_cleanedutts %>%
   filter(!(anon_worker_id %in% taboo_player_list))
 
-# number of participants before exclusion (68; 34)
+# number of participants before exclusion (282; 141)
 length(unique(df_import$anon_worker_id))
-# number of participants after exclusion (29)
+# number of participants after exclusion (112)
 length(unique(df_clean$anon_worker_id))
+
 ```
+
 
 ```{r create main df, message=FALSE, include=FALSE}
 # create main df
@@ -167,61 +192,18 @@ typ_data_short = typ_data %>%
 ```
 
 ```{r}
-df_time = df %>% 
-  mutate(time = endTime - startTime) %>% 
-  mutate_at(vars(time), funs(./60)) %>% 
-  mutate_at(vars(time), funs(./60)) %>% 
-  filter(time <= 4) %>% 
-  select(speaker_chat)
-
-```
-
-
-```{r}
-
-# TODO: get rid of taboo stuff
-
-color = c("yellow|yell|red|ref|orange|orng|ornage|orang|orane|oragne|white|whtie|green")
-
-```
-
-
-
-
-
-
-# Data annotation
-
-
-
-
-
-
-```{r}
-# most conservative split
-cons_type = c("banana|banaa|bananna|nana|banan|bannaa|ban|broccoli|broc|carrot|carro|carot|cararot|c arrot|corn|tomato|tom|tamayo|egg|strawberry|straw|str|berry|lettuce|letc|cabbage|cabb|cabage|swan|goose|duck|pumpkin|pump|punmkn|pum")
+color = c("yellow|yrllow|yell|^y |red|^res |ref|pink|^or |orange|orng|ornage|orang|orane|oragne|white|whtie|green|gree|grn|grnee|gr |greeen|gold")
+types = c("banana|banaa|bananna|nana|banan|bannaa|ban|broccoli|broc|brcolli|carrot|carro|carot|cararot|c arrot|carraot|carr|corb|con|maize|corn|korn|tomato|tamato|tom|tamayo|egg|e gg|strawberry|straw|str|star|berry|lettuce|letc|lettus|let|lett|lectuce|lecture|cabbage|cabb|cabage|cababage|swan|goose|duck|pumpkin|pump|punmkn|pum|starw")
 # type_null = c("thing|one")
-cons_other_types = c("lemon|bird|vegetable|fruit|ruit|cauliflower|califlower|cauli|caul|circle|tree|onion|animal")
-# cons_type = c("banana|banaa|bananna|nana|banan|bannaa|ban|broccoli|broc|carrot|carro|carot|corn|tomato|tom|tamayo|egg|strawberry|straw|str|berry|lettuce|letc|swan|goose|pumpkin|pump|punmkn|pum")
-# cons_other_types = c("lemon|cabbage|cabb|cabage|bird|vegetable|thing|one|fruit|ruit|cauliflower|cauli|caul|circle|tree|onion|animal")
-cons_other_mod = c("original|normal|natural|natural color|un-natural|with color|no color|without color|with the correct color|off color|original color|regular|weird|not red|seasick|dyed|small|round|supposed to be|big|ugly|different color|different colour|no banana|not")
+other_types = c("lemon|bird|brid|bercol|brecol|vegetable|fruit|ruit|cauliflower|califlower|cauli|caul|circle|tree|onion|animal|halloween|mushroom|mater|veg|bugs bunny|apple|squash|mango|salad|clipart|swims in|cheese|geese|sphere|patty|garlic|wap c|^matoe|^hi$|same as before|breakfast")
+other_mods = c("original|normal|natural|natural color|un-natural|with color|no color|without color|with the correct color|off color|original color|regular|weird|not red|seasick|dyed|small|round|supposed to be|big|ugly|different color|different colour|no banana|not|fourth of july|tundra|reg|you can make salad with it|green leafs at the end|oblong|shaped like|bottom right|bottom left|botom left|botom right|top left|top right|left top|rabbits eat them|geese|inside being yellow with outside green|albino|marijuana")
 
 df_main = df %>% 
-  mutate(target_item = str_c(targetcompColor, targetType, sep="_")) %>% 
-  mutate(comp_item = str_c(targetcompColor, compType, sep="_")) %>% 
-  select(intended_target, condition, speaker_chat, trial_number, anon_worker_id, target_item, targetType, comp_item, compType, selected_image) %>% 
-  # filter everything with longer conversations (corrections) on speaker side
-  filter(!str_detect(speaker_chat, "\\|\\|\\|")) %>% 
-  # mutate(refexp = str_c("::",speaker_chat,"::")) %>% 
-  mutate(refexp = speaker_chat) %>% 
-  # TODO: filter out all \n
-  mutate_at(vars(refexp), funs(str_to_lower(.))) %>% 
-  filter(!str_detect(refexp,"bottom")) %>% 
-  # categorization
+  filter((refexp != "bottom right") & (refexp != "botom left") & (refexp != "bottom left")) %>% 
   mutate(ColorMention = ifelse(str_detect(refexp,color), 1, 0)) %>% 
-  mutate(OtherModMention = ifelse(str_detect(refexp,cons_other_mod), 1, 0)) %>% 
-  mutate(TypeMention = ifelse(str_detect(refexp,cons_type), 1, 0)) %>% 
-  mutate(OtherTypeMention = ifelse(str_detect(refexp,cons_other_types), 1, 0)) %>% 
+  mutate(OtherModMention = ifelse(str_detect(refexp,other_mods), 1, 0)) %>% 
+  mutate(TypeMention = ifelse(str_detect(refexp,types), 1, 0)) %>% 
+  mutate(OtherTypeMention = ifelse(str_detect(refexp,other_types), 1, 0)) %>% 
   
   mutate(UtteranceCat = case_when(
     (OtherModMention == 1) | (OtherTypeMention == 1) ~ "other",
@@ -231,11 +213,17 @@ df_main = df %>%
     TRUE ~ "whatisthis?"
   ))
 
-# df_main %>%
-#   select(anon_worker_id, refexp, UtteranceCat, condition) %>%
-#   filter(condition == "tap",
-#          UtteranceCat == "typeOnly") %>%
-#   view()
+df_main %>%
+  select(anon_worker_id, refexp, UtteranceCat, condition) %>%
+  filter(UtteranceCat == "typeOnly") %>%
+  view()
+
+df_main %>% 
+  filter(UtteranceCat == "other") %>% 
+  group_by(anon_worker_id) %>% 
+  mutate(n = n()) %>% 
+  ungroup() %>% 
+  view()
 
 # "other" utterances are mainly expressions that include: 
 # cauliflower, lemon, (un)natural, regular, original color, off color (bird, with/out color, fruit, vegetable)
@@ -243,6 +231,8 @@ df_main = df %>%
 #   filter(UtteranceCat == "other") %>% 
 #   view()
 ```
+
+
 
 ```{r target intended target}
 df_plot_target = df_main %>% 
@@ -451,7 +441,7 @@ ggplot(cuny_plot, aes(x=intended_target, y=ColMentioned, group=comp_typ, fill=co
   # theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
   theme(legend.position = "top")
 
-ggsave("cuny_prod.png", width = 5, height = 3)
+# ggsave("cuny_prod.png", width = 5, height = 3)
 
 ggplot(cuny_plot, aes(x=intended_target, y=ColMentioned, group=target_typ, fill=target_typ)) +
   facet_wrap(~contrast_present) +
@@ -471,7 +461,7 @@ ggplot(cuny_plot, aes(x=intended_target, y=ColMentioned, group=target_typ, fill=
   # theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
   theme(legend.position = "top")
 
-ggsave("cuny_prod_targettyp.png", width = 5, height = 3)
+# ggsave("cuny_prod_targettyp.png", width = 5, height = 3)
 
 # Judith's plots
 
@@ -499,7 +489,7 @@ ggplot(cuny_plot, aes(x=comp_typ, y=ColMentioned, group=intended_target, fill=in
   # theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
   theme(legend.position = "top")
 
-ggsave("cuny_prod_judith1.png", width = 5, height = 3)
+# ggsave("cuny_prod_judith1.png", width = 5, height = 3)
 
 ggplot(cuny_plot, aes(x=contrast_present, y=ColMentioned, group=intended_target, fill=intended_target)) +
   # facet_wrap(~contrast_present) +
@@ -522,13 +512,15 @@ ggplot(cuny_plot, aes(x=contrast_present, y=ColMentioned, group=intended_target,
   # theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
   theme(legend.position = "top")
 
-ggsave("cuny_prod_judith2.png", width = 5, height = 3)
+# ggsave("cuny_prod_judith2.png", width = 5, height = 3)
 
 ```
 
+# CogSci plot
+
 ```{r}
 by_condition = cuny_plot %>% 
-  mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "aan", "ttn", "tan"))))
+  mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan"))))
   # group_by(intended_target, condition) %>% 
   # summarize(mean_res = mean(ColMentioned)) %>% 
   # ungroup() %>% 
@@ -540,7 +532,9 @@ by_condition = cuny_plot %>%
 target_color = "#d55e00" # red
 comp_color = "#009e74"
 
-ggplot(by_condition, aes(x=intended_target, y=ColMentioned, fill=intended_target)) +
+by_condition %>% 
+  # filter(str_detect(condition, "p")) %>% 
+ggplot(., aes(x=intended_target, y=ColMentioned, fill=intended_target)) +
   facet_wrap(~condition, nrow = 2) +
   # mean
   stat_summary(fun.y = "mean",
@@ -558,8 +552,55 @@ ggplot(by_condition, aes(x=intended_target, y=ColMentioned, fill=intended_target
   ylab("Probability of modifier use") +
   labs(fill='Proportion of color mention') +
   scale_fill_manual(values=c(target_color, comp_color)) +
-  # theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
-  theme(legend.position = "none")
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"))
+        )
+
+by_condition %>% 
+  filter(str_detect(condition, "p")) %>%
+  mutate_at(vars(condition), funs(case_when(
+    str_detect(.,"at") ~ "atypical target\ntypical competitor",
+    str_detect(.,"ta") ~ "typical target\natypical competitor",
+    str_detect(.,"aa") ~ "atypical target\natypical competitor",
+    str_detect(.,"tt") ~ "typical target\ntypical competitor",
+    TRUE ~ "FIRE!"
+  ))) %>% 
+  mutate_at(vars(condition), funs(factor(., levels=c("atypical target\ntypical competitor", "typical target\ntypical competitor", "atypical target\natypical competitor", "typical target\natypical competitor")))) %>% 
+ggplot(., aes(x=intended_target, y=ColMentioned, fill=intended_target)) +
+  facet_wrap(~condition, nrow = 1) +
+  # mean
+  stat_summary(fun.y = "mean",
+               geom = "bar",
+               width = 0.6,
+               position = position_dodge(width = 0.6)) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               size = .3,
+               width = 0.3,
+               position = position_dodge(width = 0.6)) +
+  xlab("Item that is being referred to") +
+  ylab("Probability of modifier use") +
+  labs(fill='Proportion of color mention') +
+  scale_fill_manual(values=c(target_color, comp_color)) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1, size=14)) +
+  theme(axis.title = element_text(size=16)) +
+  theme(legend.position = "none") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
+        ) +
+  ylim(0,1)
+
+ggsave(here("writing", "2020_CogSci", "paper", "graphs", "prod-bycondition-contrast.pdf"), width = 8, height = 4)
 ```
 
 
@@ -700,7 +741,7 @@ table(df_plot_target$anon_worker_id, df_plot_target$ColMentioned)
 # 
 # write_csv(df_rsa, "df_rsa_bytarget.csv")
 # 
-# write_csv(df_main, here("models","02_prodInfRSA","data","emp_production_data.csv"))
+write_csv(df_main, here("models","02_prodInfRSA","data","emp_production_data.csv"))
 # 
 # table(df_main$target_item,df_main$comp_item)
 ```
@@ -730,8 +771,6 @@ df_main_typ = df_main %>%
   mutate_at(vars(target_typ, comp_typ), funs(./100))
 
 df_model_prereg = df_main_typ %>% 
-  # TODO: figure out what's up with this guy
-  filter(anon_worker_id != "674689641002867") %>%
   filter(intended_target == "target") %>%
   mutate(wrong_selection = !str_detect(selected_image, target_item)) %>% 
   filter(!wrong_selection) %>% 
