@@ -35,7 +35,8 @@
 \usepackage{float} % Roger Levy added this and changed figure/table
                    % placement to [H] for conformity to Word template,
                    % though floating tables and figures to top is
-                   % still generally recommended!
+				   % still generally recommended!
+\usepackage{amsmath}
 
 %\usepackage[none]{hyphenat} % Sometimes it can be useful to turn off
 %hyphenation for purposes such as spell checking of the resulting
@@ -58,11 +59,11 @@
 \title{Production Expectations Modulate Contrastive Inference}
  
 \author{{\large \bf Elisa Kreiss (ekreiss@stanford.edu)} \\
-  Department of Linguistics, 1202 W. Johnson Street \\
-  Madison, WI 53706 USA
+  Department of Linguistics, 460 Jane Stanford Way \\
+  Stanford, CA 94305 USA
   \AND {\large \bf Judith Degen (jdegen@stanford.edu)} \\
-  Department of Linguistics, 1025 W. Johnson Street \\
-  Madison, WI 53706 USA}
+  Department of Linguistics, 460 Jane Stanford Way \\
+  Stanford, CA 94305 USA}
 
 
 \begin{document}
@@ -142,7 +143,7 @@ The estimated time for completion was 10 to 12 minutes and each participant was 
 Exclusions were performed on the 141 speakers, since they provided the utterances. Participants were excluded when they participated multiple times in the experiment (1 participant; 139 pairs remaining) and when they did not use a noun from the display in at least half of the cases (27 participants; 112 pairs remaining). These participants clearly misunderstood the task, using expressions such as \textit{yellow monkey} instead of \textit{yellow banana}, or \textit{should be yellow, must have teeth to eat} for \textit{corn}. All speakers indicated that their native language was English.
 
 
-\subsection{Material}
+\subsection{Material} \label{Material}
 Each context included four items, as displayed in \ek{Figure}. The pool of items consisted of 10 types (banana, broccoli, carrot, corn, egg, lettuce, pumpkin, strawberry, swan, tomato), each of which could occur in a typical or atypical color. For example, the broccoli could occur in its typical color green or in the atypical color red. The resulting pool contains 20 items, 10 of which are atypically colored. The number of colors is carefully counterbalanced such as each color occurs twice as a typical and twice as an atypical instance. All items were carefully normed for color-diagnosticity \ek{Tanaka Presnell}, typicality and nameability.
 
 
@@ -153,9 +154,9 @@ Overall, each participant saw 60 different contexts (32 critical trials) in a co
 
 
 \subsection{Procedure}
-Participants were randomly paired up and each was randomly assigned either to the role of a speaker or listener. They could communicate freely through a real-time multi-player interface similar to \ek{Hawkins (2015)}. The speaker was instructed to communicate a target object out of a four-object context to the listener. The target could be identified by a green border surrounding it. The speaker and the listener saw the same set of objects but in a randomized order to avoid trivial position-based references such as “the left one”. After the listener clicked on the presumed target, both the speaker and listener received feedback about whether the right object had been selected.
+Participants were randomly paired up and each was randomly assigned either to the role of a speaker or listener. They could communicate freely through a real-time multi-player interface similar to \ek{Hawkins (2015)}. The speaker was instructed to communicate a target object out of a four-object context to the listener. The target could be identified by a green border surrounding it. The speaker and the listener saw the same set of objects but in a randomized order to avoid trivial position-based references such as ``the left one''. After the listener clicked on the presumed target, both the speaker and listener received feedback about whether the right object had been selected.
 
-\begin{figure}[H]
+\begin{figure}
 	\begin{center}
 		\includegraphics[width=.475\textwidth]{graphs/prod-design.pdf}
 	\end{center}
@@ -168,7 +169,7 @@ Participants were randomly paired up and each was randomly assigned either to th
 \ek{only selected items with correct selection}
 Figure~\ref{prod-results} shows the probability of color modifier mention for the target and competitor in each condition\footnote{Note that some data is duplicated in the conditions where the contrast is absent (\ek{see section...for explanation}). In the conditions where target and competitor are both (a)typical, the modifier probabilities are created by the same data. The underlying data is also identical in the two conditions where one of the items is (a)typical.}. 
 
-\begin{figure}[H]
+\begin{figure}
 	\begin{center}
 		\includegraphics[width=.45\textwidth]{graphs/prod-bycond-paper.pdf}
 	\end{center}
@@ -186,35 +187,39 @@ The results of this production experiment show that the probability of a speaker
 
 
 \section{Comprehension Experiment: An Incremental Decision Task}
-To investigate which objects listeners consider to be the most likely target after observing the color adjective, we conducted an incremental decision task. 
+To investigate which objects listeners consider to be the most likely target after observing the color adjective, we conducted an incremental decision task. \ek{...}
 
 
 \subsection{Participants}
 We recruited 239 participants over Amazon's Mechanical Turk, 121 of which saw atypical color competitors and 118 saw typical color competitors in the critical trials. The study took on average 7 minutes and each of them were paid \$1.80 for their participation. We restricted participation to workers with IP addresses in the US and an approval rate of previous work above 97\%.
 
-We excluded participants who did the Hit multiple times (1) who indicated that they did the Hit incorrectly or were confused (13), who indicated that they had a native language other than English (6) and who gave more then 20\% erroneous responses (7). An erroneous response is defined as a click to a non-target object after observing the fully disambiguating noun, i.e., participants are excluded who selected the wrong final object more than 11 times. Overall, we excluded 27 people, which is 11\% of the subjects. 211 participants remain, 108 of which were in the atypical competitor and 103 were in the typical competitor condition. 
+We excluded participants who did the Hit multiple times (1) who indicated that they did the Hit incorrectly or were confused (13), who indicated that they had a native language other than English (6), and who gave more then 20\% erroneous responses (7). An erroneous response is defined as a click to a non-target object after observing the fully disambiguating noun, i.e., participants are excluded who selected the wrong final object more than 11 times. Overall, we excluded 27 people, which is 11\% of the subjects. 211 participants remain, 108 of which were in the atypical competitor and 103 were in the typical competitor condition. 
 
 
 \subsection{Material}
-The item pool is the same as described in the production study \ek{Section..}.
+The item pool is the same as described in the production study.
 
 
 \subsection{Design}
-\ek{add choice of contexts (i.e., one per color,...); clarify what is within and between-subject manipulation with rationale}
+\ek{clarify what is within and between-subject manipulation with rationale}
 
-\begin{figure}[H]
+Participants completed 55 trials in total, 20 of which were critical trials and 35 were fillers. The contexts varied for each participant with respect to the presence of a contrast and the target's color typicality (within-subject manipulation). Participants were randomly assigned to see either typical or atypical competitors on critical trials (between-subject manipulation). All critical trials included color modified utterances. To avoid that participants learn that the color modifier is always part of the referring expression, we need filler trials with unmodified referring expression. Another confound could be that participants can derive the target already from the context without seeing a referring expression, since the target is the only object that shares its color and type features with other objects in the display. The filler trials therefore needed to introduce primarily unmodified referring expressions that target other objects in the display. The exact trial structure is summarized in table \ref{tab:trialstructure}.
+
+
+\subsection{Procedure}
+This experiment is a one-player adaptation of the production study explained above and follows the design of an incremental decision task \ek{cite Qing}. 
+
+\begin{figure}
 	\begin{center}
-		\includegraphics[width=.475\textwidth]{graphs/IDT-design.pdf}
+		\includegraphics[width=.4\textwidth]{graphs/IDT-design.pdf}
 	\end{center}
 \caption{This is a figure.} 
 \label{prod-results}
 \end{figure}
 
+All participant were assigned the role of the listener, which means that they needed to identify which object was the target given a referring expression placed above the context. Crucially, the referring expression was only gradually revealed and participants had to choose an object each time. The choices had to be made prior any information about the target (i.e, after observing "Click on the"), after observing an adjective ("Click on the yellow") and after observing the full referring expression with the disambiguating noun ("Click on the yellow banana!"). The selections a listener makes before receiving any information about the target, inform us about potential priors they might have. The critical selections are the clicks after observing the adjective but before the disambiguating noun, since they will inform us about the inferences participants seem to draw from observing the adjective. We also collected the clicks after the fully disambiguating noun was presented, which functioned as attention checks in the analysis. 
 
-\subsection{Procedure}
-This experiment is a one-player adaptation of the production study explained in \ek{ref to section} and follows the design of an incremental decision task \ek{cite Qing}. participants were put into the listener role of the reference game. That means, they needed to identify which object was the target given a referring expression placed above the grid. Crucially, they do not observe the complete referring expression at once, but instead the utterance is gradually revealed. After new information is revealed, participants are required to make their best guess onto which object is the most likely target. The choices had to be made prior any disambiguating information (after observing "Click on the"), after observing an adjective ("Click on the yellow") and after observing the fully disambiguating noun ("Click on the yellow banana!"). The clicks before information are observed are useful to determine whether there are already strong priors in item selections, even before any information were observed. The clicks after revealing the adjective are the critical clicks that will affect our interpretation of inferences drawn from the adjective. After observing the noun there is only one possible referent left. These clicks are used as attention checks.
-
-Participants completed 55 trials in total, 20 of which were critical trials and 35 were fillers. The filler trials were supposed to ensure that participants perceive the referring expressions as being generated by a natural speaker. Firstly, all target trials are color modified utterances. To avoid that participants learn that the color modifier is always part of the referring expression, we need utterances that only have the bare noun. Second of all, we need to make sure that targets are not logically derivable. In a context such as \ek{Fig ref!}, the target can be determined by reasoning about the distractor choice. The target is the only object that shares the type (i.e., banana) with a distractor and its color (i.e., yellow) with another distractor. One can then derive that the object that is being distracted from will be the target. This regularity could also be learnt over the time course of the experiment. The filler trials therefore need to introduce primarily unmodified referring expressions that target other objects in the display. The exact trial structure is summarized in table \ref{tab:trialstructure}.
+To center the position of the mouse after each selection, a button appeared in the center of the grid which had to be clicked to reveal the next word or to advance to the next trial. 
 
 \begin{table}[]
 	\begin{tabular}{llll}
@@ -230,13 +235,52 @@ Participants completed 55 trials in total, 20 of which were critical trials and 
 	\label{tab:trialstructure}
 \end{table}
 
-Before participants proceeded to the main trials, they had to complete four practice trials constructed from the speaker perspective. In the speaker role, they saw a grid of four non-color diagnostic objects, one of which was marked as the target by a green border surrounding it. They were then asked to refer to the object such that a second player could identify it. The practice trials were introduced to familiarize the participants with the task.
+Before participants proceeded to the main trials, they had to complete four practice trials constructed from the speaker perspective. In the speaker role, they saw contexts with four non-color diagnostic objects, one of which was marked as the target by a green border surrounding it. They were then asked to refer to the object such that a second player could identify it. The practice trials were introduced to familiarize the participants with the task.
 
-The main trials were randomized with one restriction: Trials in which we expect a color modifier to be superfluous or even misleading only occurred after the 15th trial. These were contexts where there was no contrast and either both target and color competitor typical objects, or the target typical while the color competitor was atypical. This measure should minimize the risk that participants perceive the "utterance generator" as unnatural.
+The main trials were randomized with one restriction: Trials in which a speaker's color modifier use to refer to the target is very unlikely only occurred after the 15th trial. These were contexts where there was no contrast and either both target and color competitor were typical objects, or the target was typical while the color competitor was atypical. We introduced this restriction to minimize the risk that participants perceive the ``utterance generator'' (speaker) as unnatural.
 
 % \subsection{Data Preprocessing and exclusion}
 
 \subsection{Results}
+Figure~\ref{compr-results} shows the proportion of clicks on the objects in the display prior observing the adjective (lighter colors) and after the adjective (darker colors), grouped by context condition. Before an adjective is observed, all items should appear equally likely to be the target, which is supported by the generally uniform distribution in all conditions. After the adjective is observed (darker colors), only the target and competitor are legible options and we predict that the presence of the contrast and the typicality of the objects will affect the listeners' object choices.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=.475\textwidth]{graphs/compr-bycond-paper.pdf}
+	\end{center}
+\caption{This is a figure. \ek{make bars and text bigger}} 
+\label{compr-results}
+\end{figure}
+
+When the contrast is present (upper row in Figure~\ref{compr-results}), there is a general preference for target selection over competitor selection. This preference is biggest for the case when the target is atypical and the competitor is typical and disappears for when the target is typical and the competitor is atypical. 
+
+When the contrast is absent (lower row in Figure~\ref{compr-results}) and target and competitor differ in typicality, there is a preference for the item with the atypical color. When the two items share their typicality, the selection are approximately at the same rate. 
+
+These results clearly show that the color typicality of the objects in the display affect the inference listeners draw about the target. We will turn to how these results correspond to the production data by considering the RSA model predictions.
+
+\section{Model evaluation}
+
+To assess the relationship between the modifier production probabilities and the comprehension data in the simplest way, we start by assuming a flat prior over all objects in the display. The probabilities to choose the target over the competitor are then simply the normalized modifier production probabilities, where $r$ in equation \ek{eq} is the possible referent, $u$ the utterance and $C$ the specific context.
+
+\begin{equation}
+	P_{L_1}(r|u,C) = \frac{P_{S_0}(u|r,C)}{P_{S_0}(u|r_{target},C) + P_{S_0}(u|r_{comp},C)}
+\end{equation}
+
+Figure~\ref{model-results-flatprior} shows the model predictions (in blue) and the empirical results (in purple) for target and competitor selection after observing the adjective. 
+
+The model predicts...
+
+The model qualitatively predicts the patterns for the different context conditions. However, it generally predicts a stronger inference than borne out in the empirical data.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=.475\textwidth]{graphs/model-bycond-paper.pdf}
+	\end{center}
+\caption{This is a figure.} 
+\label{model-results-flatprior}
+\end{figure}
+
+
 
 \section{Discussion}
 
