@@ -13,10 +13,11 @@
 *.success
 *.Rhistory
 *.DS_Store*
-*node_modules*
 *dump.rdb
 raw*
 *submiterator*
 *object_stroop_corpus/
 *0_old/
 *venv3
+*writing/QP1*
+*node_modules*
