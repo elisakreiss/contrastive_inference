@@ -14,10 +14,16 @@ library(plyr)
 library(tidyverse)
 library(here)
 
-df_import = read_csv(here("data","03_comprehension","02_main","01_IDT","data.csv")) %>%
+df_import1 = read_csv(here("data","03_comprehension","02_main","01_IDT","data.csv")) %>%
   # exclude test
   # weird filter property will exclude NAs
   filter(is.na(comments) | !str_detect(comments,"TEST"))
+
+df_import = read_csv(here("data","03_comprehension","02_main","02_IDTfollowup","data.csv")) %>%
+  # exclude test
+  # weird filter property will exclude NAs
+  filter(is.na(comments) | !str_detect(comments,"TEST")) %>% 
+  bind_rows(df_import1)
 ```
 
 ```{r botresponse, include=FALSE}
@@ -74,17 +80,19 @@ df_clean = df_import %>%
   # 3) if comments suggest that the hit was done incorrectly
   # 4) if too many erroneous responses
   filter(anon_worker_id!="688591774563327" & anon_worker_id!="841129639930929") %>%
+  filter(anon_worker_id!="456140787085838" & anon_worker_id!="486034687892865" & anon_worker_id!="586594222010457" & anon_worker_id!="846666432419341" & anon_worker_id!="935528864670490") %>% 
   # 67, 4012
   # 5) if hit was done multiple times by a worker
   filter(anon_worker_id!="886492649205797")
   # 66, 3894
 
-# number of participants before exclusion (80)
+# number of participants before exclusion (238)
 length(unique(df_import$anon_worker_id))
-# number of participants after exclusion (66)
+# number of participants after exclusion (211)
 length(unique(df_clean$anon_worker_id))
 
-# 33 participants per condition remain
+# atypical: 108 participants
+# typical: 103 participants
 table(df_clean$betwsubj)/59
 ```
 
@@ -980,7 +988,7 @@ We see a target boost/competitor reduction though in all conditions. However, if
 
 ```{r after adj overall selection patterns, echo=FALSE, fig.height=4, fig.width=7, message=FALSE, warning=FALSE, paged.print=FALSE}
 
-cond_plot = df_prior_vs_adj %>%
+df_prior_vs_adj %>%
   mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan")))) %>%  
   ggplot(., aes(x=obj_in_display_diff, 
                             y=clicked, 
@@ -1738,20 +1746,28 @@ df_model_prereg = df_adj_unique %>%
   filter(clickedType == "target" | clickedType == "comp") %>%
   mutate(click_to_target = ifelse(clickedType == "target", 1, 0)) %>%
   select(click_to_target, target_typ, comp_typ, target_typ_bin, comp_typ_bin, contrast_present,
-         anon_worker_id, target) %>%
+         anon_worker_id, target, comp) %>%
   mutate_at(vars(target_typ_bin, comp_typ_bin), funs(ifelse(. == "typical", 0, 1))) %>%
   mutate(c_target_typ_bin = target_typ_bin-mean(target_typ_bin)) %>%
   mutate(c_comp_typ_bin = comp_typ_bin-mean(comp_typ_bin)) %>%
   # continuous typicality values
   # mutate(c_target_typ = target_typ_bin-mean(target_typ)) %>%
   # mutate(c_comp_typ = comp_typ_bin-mean(comp_typ)) %>%
-  mutate(c_contrast = contrast_present-mean(contrast_present))
+  mutate(c_contrast = contrast_present-mean(contrast_present)) %>% 
+  separate(target, c(NA, "targetType"), sep="_", remove = FALSE) %>%
+  separate(comp, c(NA, "compType"), sep="_", remove = FALSE) %>% 
+  mutate(tar_comp = str_c(targetType, compType, sep="_"))
+
+# 1 divergent transition:
+# effect of contrast and comp typ
+f_prereg = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_target_typ_bin*c_comp_typ_bin|targetType)
 
 # for bernoulli
-f_prereg = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_target_typ_bin*c_comp_typ_bin|target)
+# effect of contrast and comp typicality
+f_new1 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_comp_typ_bin|target) + (1+c_contrast*c_target_typ_bin|comp)
 
-# for binomial
-# f_prereg = click_to_target | trials(ntrials) ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_target_typ_bin*c_comp_typ_bin|target)
+# effect of contrast, target typ, comp typ
+f_new2 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast|tar_comp)
 
 model_prereg = brm(
   formula = f_prereg,
@@ -1840,6 +1856,148 @@ pp_check(model_prereg, nsamples = 100)
 
 # marginal_effects(model_prereg)
 ```
+
+#### After adjective: prev click
+
+```{r}
+df_model_prevclick =  df %>% 
+  # select main trials
+  filter(trial_type == "critical") %>% 
+  # select columns relevant for main trials
+  select(target,comp,contrast,distractor,selectedItem_prior,selectedItem1,
+         anon_worker_id,trial_number,condition,pos1,pos2,pos3,pos4) %>% 
+  # encode which contexts have a contrast
+  mutate(contrast_present = str_detect(condition,"p")) %>%
+  # import typicality
+  left_join(typ_data, by=c("target"="col_type")) %>% 
+  rename(target_typ=typicality, target_typ_bin=bin_typ) %>%
+  left_join(typ_data, by=c("comp"="col_type")) %>% 
+  rename(comp_typ=typicality, comp_typ_bin=bin_typ) %>%
+  # if there were multiple selections (which are separated by commas),
+  # select the last one
+  mutate(lastSelectedItem_prior = sapply(str_split(selectedItem_prior,","),tail,1)) %>% 
+  mutate(lastSelectedItem_adj = sapply(str_split(selectedItem1,","),tail,1)) %>% 
+  # encode the clicked type of the object
+  mutate(clickedType_prior = case_when(
+    lastSelectedItem_prior == target ~ "target",
+    TRUE ~ "other"
+  )) %>% 
+  mutate(clickedType_adj = case_when(
+    lastSelectedItem_adj == target ~ "target",
+    lastSelectedItem_adj == comp ~ "comp",
+    TRUE ~ "other"
+  )) %>% 
+  filter(clickedType_adj=="target" | clickedType_adj=="comp") %>% 
+  mutate(click_to_target = ifelse(clickedType_adj == "target", 1, 0)) %>%
+  mutate(prev_click = ifelse(clickedType_prior == "target", 1, 0)) %>%
+  mutate(c_prev_click = prev_click-mean(prev_click)) %>%
+  # typicalities
+  mutate_at(vars(target_typ_bin, comp_typ_bin), funs(ifelse(. == "typical", 0, 1))) %>%
+  mutate(c_target_typ_bin = target_typ_bin-mean(target_typ_bin)) %>%
+  mutate(c_comp_typ_bin = comp_typ_bin-mean(comp_typ_bin)) %>%
+  mutate(c_contrast = contrast_present-mean(contrast_present)) %>%
+  # item types
+  separate(target, c(NA, "targetType"), sep="_", remove = FALSE) %>%
+  separate(comp, c(NA, "compType"), sep="_", remove = FALSE) %>% 
+  mutate(tar_comp = str_c(targetType, compType, sep="_")) %>% 
+  # position constellation
+  mutate(pos_target = ifelse(pos1 == "target" | pos2 == "target", T, F)) %>%
+  mutate(pos_comp = ifelse(pos1 == "comp" | pos2 == "comp", T, F)) %>%
+  mutate(pos = case_when(
+    (pos_target & pos_comp) | (!pos_target & !pos_comp) ~ "equal",
+    pos_target ~ "target_pref",
+    TRUE ~ "comp_pref"
+  ))
+
+# significant contrast, comp typicality, prev_click, pos(target pref), pos(equal pos), prev_click:pos(equal), prev_click:pos(target_pref)
+f_prevclick = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + c_prev_click*pos + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_target_typ_bin*c_comp_typ_bin|targetType)
+
+# significant contrast, comp typicality, prev_click, pos(target pref), pos(equal pos), prev_click:pos(equal), prev_click:pos(target_pref)
+f_prevclick2 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + c_prev_click*pos + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_comp_typ_bin|target) + (1+c_contrast*c_target_typ_bin|comp)
+
+f_prevclick3 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast|tar_comp)
+
+model_prevclick = brm(
+  formula = f_prevclick,
+  data = df_model_prevclick,
+  seed = 1702,
+  family = 'bernoulli' # or bernoulli?
+)
+
+summary(model_prevclick)
+
+
+  
+
+```
+
+#### RSA: prev click
+
+```{r}
+
+df_rsa_flatprior = read_csv(here("analyses","03_comprehension","02_main","0102_summary","df_rsa_flatprior.csv"))
+
+df_model_rsa =  df %>% 
+  # select main trials
+  filter(trial_type == "critical") %>% 
+  # select columns relevant for main trials
+  select(target,comp,contrast,distractor,selectedItem_prior,selectedItem1,
+         anon_worker_id,trial_number,condition,pos1,pos2,pos3,pos4) %>% 
+  # if there were multiple selections (which are separated by commas),
+  # select the last one
+  mutate(lastSelectedItem_prior = sapply(str_split(selectedItem_prior,","),tail,1)) %>% 
+  mutate(lastSelectedItem_adj = sapply(str_split(selectedItem1,","),tail,1)) %>% 
+  # encode the clicked type of the object
+  mutate(clickedType_prior = case_when(
+    lastSelectedItem_prior == target ~ "target",
+    TRUE ~ "other"
+  )) %>% 
+  mutate(clickedType_adj = case_when(
+    lastSelectedItem_adj == target ~ "target",
+    lastSelectedItem_adj == comp ~ "comp",
+    TRUE ~ "other"
+  )) %>% 
+  filter(clickedType_adj=="target" | clickedType_adj=="comp") %>% 
+  mutate(click_to_target = ifelse(clickedType_adj == "target", 1, 0)) %>%
+  mutate(prev_click = ifelse(clickedType_prior == "target", 1, 0)) %>%
+  mutate(c_prev_click = prev_click-mean(prev_click)) %>%
+  # item types
+  separate(target, c(NA, "targetType"), sep="_", remove = FALSE) %>%
+  separate(comp, c(NA, "compType"), sep="_", remove = FALSE) %>% 
+  mutate(tar_comp = str_c(targetType, compType, sep="_")) %>% 
+  # position constellation
+  mutate(pos_target = ifelse(pos1 == "target" | pos2 == "target", T, F)) %>%
+  mutate(pos_comp = ifelse(pos1 == "comp" | pos2 == "comp", T, F)) %>%
+  mutate(pos = case_when(
+    (pos_target & pos_comp) | (!pos_target & !pos_comp) ~ "equal",
+    pos_target ~ "target_pref",
+    TRUE ~ "comp_pref"
+  )) %>% 
+  select(c_prev_click, pos, condition, targetType, compType, click_to_target, anon_worker_id) %>% 
+  left_join(df_rsa_flatprior)
+
+# significant 
+# Probability, c_prev_click, c_prev_click:postarget_pref
+f_rsa = click_to_target ~ Probability*c_prev_click*pos + (1+c_prev_click|anon_worker_id)
+
+f_rsa2 = click_to_target ~ Probability*c_prev_click + (1+Probability*c_prev_click|anon_worker_id)
+
+f_rsa3 = click_to_target ~ Probability + (1+Probability|anon_worker_id)
+
+model_rsa = brm(
+  formula = f_rsa,
+  data = df_model_rsa,
+  seed = 1702,
+  family = 'bernoulli' # or bernoulli?
+)
+
+summary(model_rsa)
+
+
+  
+
+```
+
 
 #### After adjective: with prior click predictor
 

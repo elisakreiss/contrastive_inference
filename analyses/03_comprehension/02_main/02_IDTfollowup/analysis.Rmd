@@ -14,7 +14,7 @@ library(plyr)
 library(tidyverse)
 library(here)
 
-df_import = read_csv(here("data","03_comprehension","02_main","01_IDT","data.csv")) %>%
+df_import = read_csv(here("data","03_comprehension","02_main","02_IDTfollowup","data.csv")) %>%
   # exclude test
   # weird filter property will exclude NAs
   filter(is.na(comments) | !str_detect(comments,"TEST"))
@@ -73,18 +73,19 @@ df_clean = df_import %>%
   # 69, 4130
   # 3) if comments suggest that the hit was done incorrectly
   # 4) if too many erroneous responses
-  filter(anon_worker_id!="688591774563327" & anon_worker_id!="841129639930929") %>%
+  filter(anon_worker_id!="221402122691845" & anon_worker_id!="883798243080367" & anon_worker_id!="894525647067310" & anon_worker_id!="785587200485586" & anon_worker_id!="730874762120224")
   # 67, 4012
   # 5) if hit was done multiple times by a worker
-  filter(anon_worker_id!="886492649205797")
+  # filter(anon_worker_id!="886492649205797")
   # 66, 3894
 
-# number of participants before exclusion (80)
+# number of participants before exclusion (156)
 length(unique(df_import$anon_worker_id))
-# number of participants after exclusion (66)
+# number of participants after exclusion (148)
 length(unique(df_clean$anon_worker_id))
 
-# 33 participants per condition remain
+# 74 participant for atypical condition remain
+# 69 participant for atypical condition remain
 table(df_clean$betwsubj)/59
 ```
 
@@ -478,7 +479,7 @@ plot=ggplot(df_prior_wf_contrast[df_prior_wf_contrast$contrast_present=="contras
   ylab("Proportion of clicks")
   # ggtitle("Prior distribution by trial half")
 
-ggsave(plot, file="by_id.pdf", width=25, height=25)
+# ggsave(plot, file="by_id.pdf", width=25, height=25)
 ```
 
 #### Atypicality bias
@@ -1013,6 +1014,8 @@ cond_plot = df_prior_vs_adj %>%
   xlab("Item function") +
   ylab("Proportion of clicks")
 
+cond_plot
+
 # CAMP plot
 # atp, ttp, tan
 # On left: atypical target, contrast, typical competitor (most conducive to contrastive inference). Middle: typical target, contrast, typical competitor (“standard” context),  On right: typical target, no contrast, atypical competitor (least conducive).
@@ -1223,7 +1226,7 @@ df_prior_vs_adj %>%
   xlab("Item function") +
   ylab("Proportion of clicks")
 
-ggsave(file="contrast.pdf", width=5, height=3)
+# ggsave(file="contrast.pdf", width=5, height=3)
 
 df_prior_vs_adj %>% 
   mutate_at(vars(comp_typ_bin), funs(ifelse(.=="typical", "typical competitor", "atypical competitor"))) %>%
@@ -1257,7 +1260,7 @@ df_prior_vs_adj %>%
   xlab("Item function") +
   ylab("Proportion of clicks")
 
-ggsave(file="comptyp.pdf", width=5, height=3)
+# ggsave(file="comptyp.pdf", width=5, height=3)
 
 df_prior_vs_adj %>% 
   # mutate_at(vars(obj_in_display_diff), funs(case_when(
@@ -1296,7 +1299,7 @@ df_prior_vs_adj %>%
   xlab("Item function") +
   ylab("Proportion of clicks")
 
-ggsave(file="targettyp.png", width=5, height=3)
+# ggsave(file="targettyp.png", width=5, height=3)
 
 ```
 
@@ -1470,145 +1473,6 @@ ggplot(df_allpostinfel, aes(x=obj_in_display,
 
 ```
 
-#### RSA
-
-```{r rsa}
-
-df_rsa = read_csv("df_rsa.csv") %>% 
-  # group_by(condition) %>% 
-  # mutate(summed_uttProb = sum(uttProb)) %>% 
-  # ungroup() %>% 
-  # mutate(normalizedProb = uttProb / summed_uttProb) %>% 
-  rename(emp_obj = intended_target) %>% 
-  select(uttProb, condition, emp_obj)
-
-# ggplot(df_rsa, aes(x=intended_target, y=normalizedProb)) +
-#   facet_wrap(~condition, nrow = 2) +
-#   geom_bar(stat = "identity")
-
-df_emp = df_prior_vs_adj %>% 
-  group_by(obj_in_display_diff, timeStep_selec, condition) %>% 
-  summarize(propClicks = mean(clicked)) %>% 
-  ungroup() %>% 
-  filter(obj_in_display_diff == "target" | obj_in_display_diff == "comp") %>% 
-  rename(emp_obj = obj_in_display_diff) %>% 
-  spread(timeStep_selec, propClicks)
-
-df_emp_rsa = df_emp %>%
-  left_join(df_rsa) %>% 
-  group_by(condition) %>% 
-  mutate(summed_uttProb = sum(uttProb)) %>% 
-  mutate(summed_uttProb_wprior = sum(uttProb*selectedItem_prior)) %>% 
-  ungroup() %>% 
-  mutate(normedProb = uttProb / summed_uttProb) %>% 
-  mutate(normedProb_wprior = (uttProb * selectedItem_prior) / summed_uttProb_wprior) %>% 
-  select(emp_obj, condition, selectedItem_prior, selectedItem1, normedProb, normedProb_wprior) %>% 
-  gather(Measure, Value, -emp_obj, -condition) %>% 
-  mutate_at(vars(emp_obj),
-            funs(factor(., levels=c("target", "comp")))) %>% 
-  mutate_at(vars(Measure),
-            funs(factor(., levels=c("selectedItem_prior", "selectedItem1", "normedProb", "normedProb_wprior"))))
-
-df_emp_rsa %>% 
-  filter(Measure == "selectedItem1" | Measure == "normedProb") %>% 
-  ggplot(., aes(x=emp_obj, y=Value, fill=Measure)) +
-    facet_wrap(~condition, nrow=2) +
-    geom_bar(stat = "identity", width=0.8, position=position_dodge(width=0.9)) +
-    theme(legend.position = "top")
-
-df_emp_rsa %>% 
-  filter(Measure == "selectedItem1" | Measure == "normedProb_wprior") %>% 
-  ggplot(., aes(x=emp_obj, y=Value, fill=Measure)) +
-    facet_wrap(~condition, nrow=2) +
-    geom_bar(stat = "identity", width=0.8, position=position_dodge(width=0.9)) +
-    theme(legend.position = "top")
-
-```
-
-```{r rsa}
-
-df_rsa_target = read_csv("df_rsa_bytarget.csv") %>% 
-  filter(intended_target == "target") %>% 
-  rename(emp_obj = "intended_target") %>% 
-  rename(uttProb_target = "uttProb") %>% 
-  select(uttProb_target, condition, emp_obj, targetType)
-
-df_rsa_comp = read_csv("df_rsa_bytarget.csv") %>% 
-  filter(intended_target == "comp") %>% 
-  rename(emp_obj = intended_target) %>% 
-  rename(uttProb_comp = "uttProb") %>% 
-  select(uttProb_comp, condition)
-
-# ggplot(df_rsa, aes(x=intended_target, y=normalizedProb)) +
-#   facet_wrap(~condition, nrow = 2) +
-#   geom_bar(stat = "identity")
-
-df_emp_target = df_prior_vs_adj %>% 
-  filter(obj_in_display_diff == "target") %>% 
-  separate(target, c(NA, "targetType")) %>% 
-  # mutate(new_cond = str_c(condition,targetType)) %>% 
-  group_by(timeStep_selec, condition, targetType) %>% 
-  summarize(propClicks = mean(clicked)) %>% 
-  ungroup() %>% 
-  # rename(emp_obj = obj_in_display_diff) %>% 
-  spread(timeStep_selec, propClicks)
-
-# df_emp = df_prior_vs_adj %>% 
-#   filter(obj_in_display_diff == "comp") %>%  
-#   group_by(obj_in_display_diff, timeStep_selec, condition) %>% 
-#   summarize(propClicks = mean(clicked)) %>% 
-#   ungroup() %>% 
-#   rename(emp_obj = obj_in_display_diff) %>% 
-#   spread(timeStep_selec, propClicks) %>% 
-#   rename(selectedItem_prior_comp = "selectedItem_prior") %>% 
-#   rename(selectedItem1_comp = "selectedItem1") %>% 
-#   select(-emp_obj) %>% 
-#   left_join(df_emp_target, by="condition")
-
-df_emp_rsa = df_emp_target %>%
-  left_join(df_rsa_target) %>%
-  left_join(df_rsa_comp) %>%
-  mutate(summed_uttProb = uttProb_target+uttProb_comp) %>% 
-  mutate(normedProb = uttProb_target / summed_uttProb) %>% 
-  # mutate(summed_uttProb_wprior = uttProb_target+uttProb_comp) %>% 
-  # mutate(normedProb = uttProb_target / summed_uttProb) %>% 
-  select(condition, targetType, selectedItem1, normedProb)
-  
-  # group_by(condition, targetType) %>% 
-  # mutate(summed_uttProb = sum(uttProb)) %>% 
-  # mutate(summed_uttProb_wprior = sum(uttProb*selectedItem_prior)) %>% 
-  # ungroup() %>% 
-  # mutate(normedProb = uttProb / summed_uttProb) %>% 
-  # mutate(normedProb_wprior = (uttProb * selectedItem_prior) / summed_uttProb_wprior) %>% 
-  # select(emp_obj, condition, targetType, selectedItem_prior, selectedItem1, normedProb, normedProb_wprior) %>% 
-  # gather(Measure, Value, -emp_obj, -condition) %>% 
-  # mutate_at(vars(emp_obj),
-  #           funs(factor(., levels=c("target", "comp")))) %>% 
-  # mutate_at(vars(Measure),
-  #           funs(factor(., levels=c("selectedItem_prior", "selectedItem1", "normedProb", "normedProb_wprior"))))
-
-df_emp_rsa %>% 
-  ggplot(., aes(x=normedProb, y=selectedItem1, color=condition)) +
-    geom_point()
-    # theme(legend.position = "top")
-
-df_emp_rsa %>% 
-  filter(Measure == "selectedItem1" | Measure == "normedProb_wprior") %>% 
-  ggplot(., aes(x=emp_obj, y=Value, fill=Measure)) +
-    facet_wrap(~condition, nrow=2) +
-    geom_bar(stat = "identity", width=0.8, position=position_dodge(width=0.9)) +
-    theme(legend.position = "top")
-
-# TODO: put prediction on x axis
-# TODO: rerun production study (double size)
-
-view(df_emp_rsa)
-
-write_csv(df_prior_vs_adj, here("models","02_prodInfRSA","data","emp_comprehension_data.csv"))
-
-```
-
-
 ## After noun -- all information available
 
 We will only look at the critical trials.
@@ -1645,16 +1509,18 @@ df_rt = df_noun %>%
   mutate_at(vars(rt_shortened), funs(as.integer(.)))
   # filter(condition == "atp" | condition == "tan")
 
-ggplot(df_rt, aes(x=condition, y=rt_shortened)) + 
-  geom_point(alpha=0.5, position="jitter") +
+ggplot(df_rt, aes(x=reorder(condition,rt_shortened), y=rt_shortened)) + 
+  # geom_point(alpha=0.5, position="jitter") +
   ylim(0,4000) +
   stat_summary(fun.y = "mean", 
                geom = "point", 
                colour = "red", 
-               size = 1) +
+               size = 3) +
   stat_summary(fun.data = "mean_cl_boot", 
-               colour = "red", 
-               size = 1) +
+               geom = "errorbar",
+               colour = "black", 
+               size = 0.5,
+               width = 0.2) +
   theme(axis.ticks.x = element_blank()) +
   ylab("Reaction time") +
   xlab("Condition")
@@ -1738,20 +1604,28 @@ df_model_prereg = df_adj_unique %>%
   filter(clickedType == "target" | clickedType == "comp") %>%
   mutate(click_to_target = ifelse(clickedType == "target", 1, 0)) %>%
   select(click_to_target, target_typ, comp_typ, target_typ_bin, comp_typ_bin, contrast_present,
-         anon_worker_id, target) %>%
+         anon_worker_id, target, comp) %>%
   mutate_at(vars(target_typ_bin, comp_typ_bin), funs(ifelse(. == "typical", 0, 1))) %>%
   mutate(c_target_typ_bin = target_typ_bin-mean(target_typ_bin)) %>%
   mutate(c_comp_typ_bin = comp_typ_bin-mean(comp_typ_bin)) %>%
   # continuous typicality values
   # mutate(c_target_typ = target_typ_bin-mean(target_typ)) %>%
   # mutate(c_comp_typ = comp_typ_bin-mean(comp_typ)) %>%
-  mutate(c_contrast = contrast_present-mean(contrast_present))
+  mutate(c_contrast = contrast_present-mean(contrast_present)) %>% 
+  separate(target, c(NA, "targetType"), sep="_", remove = FALSE) %>%
+  separate(comp, c(NA, "compType"), sep="_", remove = FALSE) %>% 
+  mutate(tar_comp = str_c(targetType, compType, sep="_"))
+
+# 1 divergent transition:
+# effect of comp typ
+f_prereg = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_target_typ_bin*c_comp_typ_bin|targetType)
 
 # for bernoulli
-f_prereg = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_target_typ_bin*c_comp_typ_bin|target)
+# effect of comp typicality
+f_new1 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_comp_typ_bin|target) + (1+c_contrast*c_target_typ_bin|comp)
 
-# for binomial
-# f_prereg = click_to_target | trials(ntrials) ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_target_typ_bin*c_comp_typ_bin|target)
+# effect of target typ, comp typ
+f_new2 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast|tar_comp)
 
 model_prereg = brm(
   formula = f_prereg,
@@ -1839,6 +1713,83 @@ predictor_correlations
 pp_check(model_prereg, nsamples = 100)
 
 # marginal_effects(model_prereg)
+```
+
+#### After adjective: prev click
+
+```{r}
+df_model_prevclick =  df %>% 
+  # select main trials
+  filter(trial_type == "critical") %>% 
+  # select columns relevant for main trials
+  select(target,comp,contrast,distractor,selectedItem_prior,selectedItem1,
+         anon_worker_id,trial_number,condition,pos1,pos2,pos3,pos4) %>% 
+  # encode which contexts have a contrast
+  mutate(contrast_present = str_detect(condition,"p")) %>%
+  # import typicality
+  left_join(typ_data, by=c("target"="col_type")) %>% 
+  rename(target_typ=typicality, target_typ_bin=bin_typ) %>%
+  left_join(typ_data, by=c("comp"="col_type")) %>% 
+  rename(comp_typ=typicality, comp_typ_bin=bin_typ) %>%
+  # if there were multiple selections (which are separated by commas),
+  # select the last one
+  mutate(lastSelectedItem_prior = sapply(str_split(selectedItem_prior,","),tail,1)) %>% 
+  mutate(lastSelectedItem_adj = sapply(str_split(selectedItem1,","),tail,1)) %>% 
+  # encode the clicked type of the object
+  mutate(clickedType_prior = case_when(
+    lastSelectedItem_prior == target ~ "target",
+    TRUE ~ "other"
+  )) %>% 
+  mutate(clickedType_adj = case_when(
+    lastSelectedItem_adj == target ~ "target",
+    lastSelectedItem_adj == comp ~ "comp",
+    TRUE ~ "other"
+  )) %>% 
+  filter(clickedType_adj=="target" | clickedType_adj=="comp") %>% 
+  mutate(click_to_target = ifelse(clickedType_adj == "target", 1, 0)) %>%
+  mutate(prev_click = ifelse(clickedType_prior == "target", 1, 0)) %>%
+  mutate(c_prev_click = prev_click-mean(prev_click)) %>%
+  # typicalities
+  mutate_at(vars(target_typ_bin, comp_typ_bin), funs(ifelse(. == "typical", 0, 1))) %>%
+  mutate(c_target_typ_bin = target_typ_bin-mean(target_typ_bin)) %>%
+  mutate(c_comp_typ_bin = comp_typ_bin-mean(comp_typ_bin)) %>%
+  mutate(c_contrast = contrast_present-mean(contrast_present)) %>%
+  # item types
+  separate(target, c(NA, "targetType"), sep="_", remove = FALSE) %>%
+  separate(comp, c(NA, "compType"), sep="_", remove = FALSE) %>% 
+  mutate(tar_comp = str_c(targetType, compType, sep="_")) %>% 
+  # position constellation
+  mutate(pos_target = ifelse(pos1 == "target" | pos2 == "target", T, F)) %>%
+  mutate(pos_comp = ifelse(pos1 == "comp" | pos2 == "comp", T, F)) %>%
+  mutate(pos = case_when(
+    (pos_target & pos_comp) | (!pos_target & !pos_comp) ~ "equal",
+    pos_target ~ "target_pref",
+    TRUE ~ "comp_pref"
+  ))
+
+# significant comp typicality, prev_click, pos(target pref), pos(equal pos), prev_click:pos(target_pref)
+f_prevclick = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + c_prev_click*pos + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_target_typ_bin*c_comp_typ_bin|targetType)
+
+# significant comp typicality, prev_click, pos(target pref), pos(equal pos), prev_click:pos(target_pref)
+f_prevclick2 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + c_prev_click*pos + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_comp_typ_bin|target) + (1+c_contrast*c_target_typ_bin|comp)
+
+# significant comp typicality, prev_click, pos(target pref), pos(equal pos), prev_click:pos(target_pref)
+f_prevclick2 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin*c_prev_click*pos + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_comp_typ_bin|target) + (1+c_contrast*c_target_typ_bin|comp)
+
+f_prevclick3 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast|tar_comp)
+
+model_prevclick = brm(
+  formula = f_prevclick2,
+  data = df_model_prevclick,
+  seed = 1702,
+  family = 'bernoulli' # or bernoulli?
+)
+
+summary(model_prevclick)
+
+
+  
+
 ```
 
 #### After adjective: with prior click predictor
