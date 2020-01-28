@@ -1,0 +1,959 @@
+---
+title: "RSA simple"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(cowplot)
+library(plyr)
+library(tidyverse)
+library(here)
+library(boot)
+
+source(here("models","02_prodInfRSA","data","helpers.r"))
+
+df_comprehension = read_csv(here("models","02_prodInfRSA","data","emp_comprehension_data.csv")) %>% 
+  select(condition, timeStep_selec, clickedType, obj_in_display, clicked, target, comp) %>% 
+  filter(clickedType == "target" | clickedType == "comp") %>% 
+  filter(obj_in_display == "target" | obj_in_display == "comp") %>% 
+  separate(target, c(NA, "targetType"), sep="_") %>% 
+  separate(comp, c(NA, "compType"), sep="_")
+
+df_production = read_csv(here("models","02_prodInfRSA","data","emp_production_data.csv")) %>% 
+  filter(UtteranceCat == "typeOnly" | UtteranceCat == "colorType") %>% 
+  filter(intended_target == "target" | intended_target == "firstDistractor") %>% 
+  mutate(wrong_selection = ifelse(intended_target == "target", !str_detect(selected_image, target_item), !str_detect(selected_image, comp_item))) %>% 
+  filter(!wrong_selection) %>% 
+  select(intended_target, condition, targetType, compType, ColorMention) %>% 
+  mutate_at(vars(intended_target), funs(ifelse(.=="firstDistractor", "comp", .)))
+  
+```
+
+## RSA: flat prior correlation
+
+```{r}
+
+df_prodcomp = df_production %>% 
+  filter(str_detect(condition, "n")) %>% 
+  mutate(intended_target = "comp") %>% 
+  mutate_at(vars(condition), funs(case_when(
+    .=="atn" ~ "tan",
+    .=="tan" ~ "atn",
+    TRUE ~ .
+  ))) %>% 
+  mutate(targetType_rev = compType) %>% 
+  mutate(compType_rev = targetType) %>% 
+  select(-targetType, -compType) %>% 
+  rename(targetType = "targetType_rev",
+         compType = "compType_rev")
+
+df_prodprob = df_production %>% 
+  bind_rows(df_prodcomp) %>% 
+  group_by(condition, intended_target, targetType, compType) %>% 
+  summarize(PropColMention = mean(ColorMention),
+            PropColMentionCI_low = ci.low(ColorMention),
+            PropColMentionCI_high = ci.high(ColorMention),
+            nProd = n()) %>% 
+  ungroup()
+
+df_prodprob
+
+df_rsa_flatprior = df_prodprob %>% 
+  group_by(condition, targetType, compType) %>% 
+  mutate(norm = sum(PropColMention)) %>% 
+  ungroup() %>% 
+  mutate(Probability = PropColMention / norm) %>% 
+  filter(intended_target == "target") %>% 
+  select(condition, Probability, targetType, compType, nProd)
+
+df_rsa_flatprior
+
+```
+
+```{r}
+
+df_selprob = df_comprehension %>% 
+  filter(timeStep_selec == "selectedItem1") %>% 
+  group_by(condition, obj_in_display, targetType, compType) %>% 
+  summarize(PropClicks = mean(clicked),
+            PropClicksCI_low = ci.low(clicked),
+            PropClicksCI_high = ci.high(clicked),
+            nClicks = n()) %>% 
+  ungroup() %>% 
+  filter(obj_in_display == "target") %>% 
+  select(condition, PropClicks, targetType, compType, nClicks)
+
+df_selprob
+```
+
+
+```{r}
+
+df_cor = df_selprob %>% 
+  left_join(df_rsa_flatprior, by=(c("condition","targetType","compType")))
+
+df_cor
+
+ggplot(df_cor, aes(x=Probability, y=PropClicks, color=condition)) +
+  geom_abline(intercept = 0, slope = 1) +
+  geom_point() +
+  xlim(0,1) +
+  ylim(0,1)
+
+cor(df_cor$Probability,df_cor$PropClicks)
+
+df_rsa_flatprior = df_cor %>% 
+  select(condition, Probability, targetType, compType)
+
+# write_csv(df_rsa_flatprior, here("analyses", "03_comprehension", "02_main", "0102_summary", "df_rsa_flatprior.csv"))
+```
+
+## RSA: flat prior by cond plot
+
+```{r}
+
+df_prodcomp = df_production %>% 
+  filter(str_detect(condition, "n")) %>% 
+  mutate(intended_target = "comp") %>% 
+  mutate_at(vars(condition), funs(case_when(
+    .=="atn" ~ "tan",
+    .=="tan" ~ "atn",
+    TRUE ~ .
+  ))) %>% 
+  mutate(targetType_rev = compType) %>% 
+  mutate(compType_rev = targetType) %>% 
+  select(-targetType, -compType) %>% 
+  rename(targetType = "targetType_rev",
+         compType = "compType_rev")
+
+df_prodprob = df_production %>% 
+  bind_rows(df_prodcomp) %>% 
+  group_by(condition, intended_target, targetType, compType) %>% 
+  summarize(PropColMention = mean(ColorMention),
+            PropColMentionCI_low = ci.low(ColorMention),
+            PropColMentionCI_high = ci.high(ColorMention),
+            nProd = n()) %>% 
+  ungroup()
+
+df_prodprob
+
+df_rsa_flatprior = df_prodprob %>% 
+  group_by(condition, targetType, compType) %>% 
+  mutate(norm = sum(PropColMention)) %>% 
+  ungroup() %>% 
+  mutate(Probability = PropColMention / norm) %>% 
+  filter(intended_target == "target" | intended_target == "comp") %>% 
+  select(condition, Probability, targetType, compType, nProd, intended_target)
+
+df_rsa_flatprior
+
+```
+
+```{r}
+
+df_selprob = df_comprehension %>% 
+  filter(timeStep_selec == "selectedItem1") %>% 
+  group_by(condition, obj_in_display, targetType, compType) %>% 
+  summarize(PropClicks = mean(clicked),
+            PropClicksCI_low = ci.low(clicked),
+            PropClicksCI_high = ci.high(clicked),
+            nClicks = n()) %>% 
+  ungroup() %>% 
+  filter(obj_in_display == "target" | obj_in_display == "comp") %>% 
+  select(condition, PropClicks, targetType, compType, nClicks, obj_in_display) %>% 
+  rename(intended_target = "obj_in_display")
+
+df_selprob
+```
+
+
+```{r}
+
+target_color = "#d55e00" # red
+comp_color = "#009e74"
+
+model_color = "#cc79a7" # purple
+emp_color = "#0071b2" # blue
+
+df_full = df_selprob %>% 
+  left_join(df_rsa_flatprior, by=(c("condition","targetType","compType", "intended_target"))) %>% 
+  gather(Measure, Value, PropClicks, Probability) %>% 
+  mutate_at(vars(Measure), funs(ifelse(.=="PropClicks", "Empirical data", "Model predictions")))
+
+df_full %>%
+  # mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan")))) %>%  
+  filter(!str_detect(condition, "p")) %>%
+  mutate_at(vars(condition), funs(case_when(
+    str_detect(.,"at") ~ "atypical target\ntypical competitor",
+    str_detect(.,"ta") ~ "typical target\natypical competitor",
+    str_detect(.,"aa") ~ "atypical target\natypical competitor",
+    str_detect(.,"tt") ~ "typical target\ntypical competitor",
+    TRUE ~ "FIRE!"
+  ))) %>% 
+  mutate_at(vars(condition), funs(factor(., levels=c("atypical target\ntypical competitor", "typical target\ntypical competitor", "atypical target\natypical competitor", "typical target\natypical competitor")))) %>%
+  mutate_at(vars(intended_target), funs(factor(., levels=c("target", "comp")))) %>%
+  ggplot(., aes(x=intended_target, 
+                y=Value, 
+                fill=Measure
+                # color=intended_target
+                )) +
+  facet_wrap(~condition, scales = "free_x", nrow=1) +
+  stat_summary(fun.y = "mean", 
+               geom = "bar",
+               position = position_dodge(width = 0.8),
+               width = 0.8) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               position = position_dodge(width = 0.8),
+               size = .3,
+               width = 0.3) +
+  theme(legend.position = "top") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
+        ) +
+  scale_alpha_manual(values=c(0.5, 1)) +
+  scale_color_manual(values=c(target_color, comp_color)) +
+  scale_fill_manual(values=c(model_color, emp_color)) +
+  scale_x_discrete(labels=c("comp"="competitor")) +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
+        ) +
+  coord_cartesian(ylim = c(0,0.9)) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1,size=14)) +
+  theme(axis.title = element_text(size=16)) +
+  xlab("Item") +
+  ylab("Proportion of (predicted) selections")
+
+ggsave(here("writing", "2020_CogSci", "paper", "graphs", "model-bycondition-nocontrast.pdf"), width = 8, height = 4.5)
+```
+
+
+## RSA: flat prior prev click
+
+```{r}
+
+df_prodcomp = df_production %>% 
+  filter(str_detect(condition, "n")) %>% 
+  mutate(intended_target = "comp") %>% 
+  mutate_at(vars(condition), funs(case_when(
+    .=="atn" ~ "tan",
+    .=="tan" ~ "atn",
+    TRUE ~ .
+  ))) %>% 
+  mutate(targetType_rev = compType) %>% 
+  mutate(compType_rev = targetType) %>% 
+  select(-targetType, -compType) %>% 
+  rename(targetType = "targetType_rev",
+         compType = "compType_rev")
+
+df_prodprob = df_production %>% 
+  bind_rows(df_prodcomp) %>% 
+  group_by(condition, intended_target, targetType, compType) %>% 
+  summarize(PropColMention = mean(ColorMention),
+            PropColMentionCI_low = ci.low(ColorMention),
+            PropColMentionCI_high = ci.high(ColorMention),
+            nProd = n()) %>% 
+  ungroup()
+
+# df_prodprob
+
+df_rsa_flatprior = df_prodprob %>% 
+  group_by(condition, targetType, compType) %>% 
+  mutate(norm = sum(PropColMention)) %>% 
+  ungroup() %>% 
+  mutate(Probability = PropColMention / norm) %>% 
+  # filter(intended_target == "target" | intended_target == "comp") %>% 
+  filter(intended_target == "target") %>% 
+  select(condition, Probability, targetType, compType, nProd, intended_target)
+
+# df_rsa_flatprior
+
+```
+
+```{r}
+
+df_comprehension = read_csv(here("models","02_prodInfRSA","data","emp_comprehension_data.csv")) %>% 
+  # select(condition, timeStep_selec, clickedType, obj_in_display, clicked, target, comp) %>% 
+  separate(target, c(NA, "targetType"), sep="_") %>% 
+  separate(comp, c(NA, "compType"), sep="_")
+
+# df_prevClick = df_comprehension %>% 
+#   filter(timeStep_selec == "selectedItem_prior") %>% 
+#   group_by(condition, obj_in_display, targetType, compType) %>% 
+#   summarize(PropClicks_prior = mean(clicked),
+#             n = n()) %>% 
+#   ungroup()
+
+df_prevClick = df_comprehension %>% 
+  select(timeStep_selec, condition, clickedType, clicked, targetType, compType, 
+        pos1, pos2, pos3, pos4, anon_worker_id, trial_number) %>% 
+  filter(timeStep_selec == "selectedItem_prior") %>%
+  filter(clicked == 1) %>%
+  rename(prevClickedType = "clickedType") %>% 
+  select(-timeStep_selec, -clicked)
+
+df_targetClick = df_comprehension %>%
+  select(timeStep_selec, condition, clickedType, obj_in_display, clicked, targetType, compType,
+        pos1, pos2, pos3, pos4, anon_worker_id, trial_number) %>%
+  filter(timeStep_selec == "selectedItem1") %>%
+  # filter(clicked == 1) %>%
+  select(-timeStep_selec)
+
+df_all = df_prevClick %>% 
+  left_join(df_targetClick, by=c("condition", "targetType", "compType", 
+        "pos1", "pos2", "pos3", "pos4", "anon_worker_id", "trial_number")) %>% 
+  mutate_at(vars(prevClickedType), funs(ifelse(. == "contrast/distractor" | . == "distractor", "other", .))) %>% 
+  mutate(pos_target = ifelse(pos1 == "target" | pos2 == "target", T, F)) %>%
+  mutate(pos_comp = ifelse(pos1 == "comp" | pos2 == "comp", T, F)) %>%
+  mutate(pos = case_when(
+    (pos_target & pos_comp) | (!pos_target & !pos_comp) ~ "equal",
+    pos_target ~ "target_pref",
+    TRUE ~ "comp_pref"
+  )) %>% 
+  filter(clickedType == "target" | clickedType == "comp") %>% 
+  filter(obj_in_display == "target" | obj_in_display == "comp") %>% 
+  mutate_at(vars(obj_in_display), funs(factor(., levels=c("target", "comp")))) %>% 
+  mutate_at(vars(prevClickedType), funs(factor(., levels=c("target", "comp", "other"))))
+
+df_selprob = df_all %>% 
+  filter(prevClickedType == "comp") %>% 
+  group_by(condition, obj_in_display, targetType, compType) %>% 
+  summarize(PropClicks = mean(clicked),
+            PropClicksCI_low = ci.low(clicked),
+            PropClicksCI_high = ci.high(clicked),
+            nClicks = n()) %>% 
+  ungroup() %>% 
+  # filter(obj_in_display == "target" | obj_in_display == "comp") %>% 
+  filter(obj_in_display == "target") %>% 
+  select(condition, PropClicks, targetType, compType, nClicks, obj_in_display) %>% 
+  rename(intended_target = "obj_in_display")
+
+# df_selprob
+```
+
+```{r}
+library(lme4)
+library(lmerTest)
+
+model = df_all %>% 
+  filter(obj_in_display == "target") %>% 
+  left_join(df_rsa_flatprior, by=(c("condition","targetType","compType"))) %>% 
+  select(clicked, Probability, prevClickedType, anon_worker_id, targetType, compType, pos)
+
+m1 = glmer(clicked ~ Probability+prevClickedType+pos + (1+Probability|anon_worker_id), data=model, family="binomial")
+summary(m1)
+
+m4 = glmer(clicked ~ Probability+pos + (1+Probability|anon_worker_id), data=model, family="binomial")
+summary(m4)
+
+m3 = glmer(clicked ~ Probability+prevClickedType + (1+Probability|anon_worker_id), data=model, family="binomial")
+summary(m3)
+
+m2 = glmer(clicked ~ Probability + (1+Probability|anon_worker_id), data=model, family="binomial")
+summary(m2)
+
+anova(m4, m1)
+```
+
+
+```{r}
+
+df_cor = df_selprob %>% 
+  left_join(df_rsa_flatprior, by=(c("condition","targetType","compType")))
+
+df_cor
+
+ggplot(df_cor, aes(x=Probability, y=PropClicks, color=condition)) +
+  geom_abline(intercept = 0, slope = 1) +
+  geom_point() +
+  xlim(0,1) +
+  ylim(0,1)
+
+cor(df_cor$Probability,df_cor$PropClicks,use="complete.obs")
+
+df_rsa_flatprior = df_cor %>% 
+  select(condition, Probability, targetType, compType)
+
+# write_csv(df_rsa_flatprior, here("analyses", "03_comprehension", "02_main", "0102_summary", "df_rsa_flatprior.csv"))
+```
+
+```{r}
+
+target_color = "#d55e00" # red
+comp_color = "#009e74"
+
+model_color = "#cc79a7" # purple
+emp_color = "#0071b2" # blue
+
+df_full = df_selprob %>% 
+  left_join(df_rsa_flatprior, by=(c("condition","targetType","compType", "intended_target"))) %>% 
+  gather(Measure, Value, PropClicks, Probability) %>% 
+  mutate_at(vars(Measure), funs(ifelse(.=="PropClicks", "Empirical data", "Model predictions")))
+
+df_full %>%
+  mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan")))) %>%
+  # filter(!str_detect(condition, "p")) %>%
+  # mutate_at(vars(condition), funs(case_when(
+  #   str_detect(.,"at") ~ "atypical target\ntypical competitor",
+  #   str_detect(.,"ta") ~ "typical target\natypical competitor",
+  #   str_detect(.,"aa") ~ "atypical target\natypical competitor",
+  #   str_detect(.,"tt") ~ "typical target\ntypical competitor",
+  #   TRUE ~ "FIRE!"
+  # ))) %>% 
+  # mutate_at(vars(condition), funs(factor(., levels=c("atypical target\ntypical competitor", "typical target\ntypical competitor", "atypical target\natypical competitor", "typical target\natypical competitor")))) %>%
+  mutate_at(vars(intended_target), funs(factor(., levels=c("target", "comp")))) %>%
+  ggplot(., aes(x=intended_target, 
+                y=Value, 
+                fill=Measure
+                # color=intended_target
+                )) +
+  facet_wrap(~condition, scales = "free_x", nrow=2) +
+  stat_summary(fun.y = "mean", 
+               geom = "bar",
+               position = position_dodge(width = 0.8),
+               width = 0.8) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               position = position_dodge(width = 0.8),
+               size = .3,
+               width = 0.3) +
+  theme(legend.position = "top") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
+        ) +
+  scale_alpha_manual(values=c(0.5, 1)) +
+  scale_color_manual(values=c(target_color, comp_color)) +
+  scale_fill_manual(values=c(model_color, emp_color)) +
+  scale_x_discrete(labels=c("comp"="competitor")) +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
+        ) +
+  coord_cartesian(ylim = c(0,0.9)) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1,size=14)) +
+  theme(axis.title = element_text(size=16)) +
+  xlab("Item") +
+  ylab("Proportion of (predicted) selections")
+
+# ggsave(here("writing", "2020_CogSci", "paper", "graphs", "model-bycondition-nocontrast.pdf"), width = 8, height = 4.5)
+```
+
+## RSA: flat prior corr prev click
+
+```{r}
+
+df_prodcomp = df_production %>% 
+  filter(str_detect(condition, "n")) %>% 
+  mutate(intended_target = "comp") %>% 
+  mutate_at(vars(condition), funs(case_when(
+    .=="atn" ~ "tan",
+    .=="tan" ~ "atn",
+    TRUE ~ .
+  ))) %>% 
+  mutate(targetType_rev = compType) %>% 
+  mutate(compType_rev = targetType) %>% 
+  select(-targetType, -compType) %>% 
+  rename(targetType = "targetType_rev",
+         compType = "compType_rev")
+
+df_prodprob = df_production %>% 
+  bind_rows(df_prodcomp) %>% 
+  group_by(condition, intended_target, targetType, compType) %>% 
+  summarize(PropColMention = mean(ColorMention),
+            # PropColMentionCI_low = ci.low(ColorMention),
+            # PropColMentionCI_high = ci.high(ColorMention),
+            nProd = n()) %>% 
+  ungroup()
+
+# df_prodprob
+
+df_rsa_flatprior = df_prodprob %>% 
+  group_by(condition, targetType, compType) %>% 
+  mutate(norm = sum(PropColMention)) %>% 
+  ungroup() %>% 
+  mutate(Probability = PropColMention / norm) %>% 
+  # filter(intended_target == "target" | intended_target == "comp") %>% 
+  filter(intended_target == "target") %>% 
+  select(condition, Probability, nProd, intended_target, targetType, compType)
+
+# df_rsa_flatprior
+
+```
+
+```{r}
+
+df_comprehension = read_csv(here("models","02_prodInfRSA","data","emp_comprehension_data.csv")) %>% 
+  # select(condition, timeStep_selec, clickedType, obj_in_display, clicked, target, comp) %>% 
+  separate(target, c(NA, "targetType"), sep="_") %>% 
+  separate(comp, c(NA, "compType"), sep="_")
+
+# df_prevClick = df_comprehension %>% 
+#   filter(timeStep_selec == "selectedItem_prior") %>% 
+#   group_by(condition, obj_in_display, targetType, compType) %>% 
+#   summarize(PropClicks_prior = mean(clicked),
+#             n = n()) %>% 
+#   ungroup()
+
+df_prevClick = df_comprehension %>% 
+  select(timeStep_selec, condition, clickedType, clicked, targetType, compType, 
+        pos1, pos2, pos3, pos4, anon_worker_id, trial_number) %>% 
+  filter(timeStep_selec == "selectedItem_prior") %>%
+  filter(clicked == 1) %>%
+  rename(prevClickedType = "clickedType") %>% 
+  select(-timeStep_selec, -clicked)
+
+df_targetClick = df_comprehension %>%
+  select(timeStep_selec, condition, clickedType, obj_in_display, clicked, targetType, compType,
+        pos1, pos2, pos3, pos4, anon_worker_id, trial_number) %>%
+  filter(timeStep_selec == "selectedItem1") %>%
+  # filter(clicked == 1) %>%
+  select(-timeStep_selec)
+
+df_all = df_prevClick %>% 
+  left_join(df_targetClick, by=c("condition", "targetType", "compType", 
+        "pos1", "pos2", "pos3", "pos4", "anon_worker_id", "trial_number")) %>% 
+  mutate_at(vars(prevClickedType), funs(ifelse(. == "contrast/distractor" | . == "distractor", "other", .))) %>% 
+  mutate(pos_target = ifelse(pos1 == "target" | pos2 == "target", T, F)) %>%
+  mutate(pos_comp = ifelse(pos1 == "comp" | pos2 == "comp", T, F)) %>%
+  mutate(pos = case_when(
+    (pos_target & pos_comp) | (!pos_target & !pos_comp) ~ "equal",
+    pos_target ~ "target_pref",
+    TRUE ~ "comp_pref"
+  )) %>% 
+  filter(clickedType == "target" | clickedType == "comp") %>% 
+  filter(obj_in_display == "target" | obj_in_display == "comp") %>% 
+  mutate_at(vars(obj_in_display), funs(factor(., levels=c("target", "comp")))) %>% 
+  mutate_at(vars(prevClickedType), funs(factor(., levels=c("target", "comp", "other"))))
+
+df_selprob = df_all %>% 
+  # filter(prevClickedType == "comp") %>% 
+  group_by(condition, obj_in_display, pos, prevClickedType, targetType, compType) %>% 
+  summarize(PropClicks = mean(clicked),
+            # PropClicksCI_low = ci.low(clicked),
+            # PropClicksCI_high = ci.high(clicked),
+            nClicks = n()) %>% 
+  ungroup() %>% 
+  # filter(obj_in_display == "target" | obj_in_display == "comp") %>% 
+  filter(obj_in_display == "target") %>% 
+  select(condition, PropClicks, pos, prevClickedType, nClicks, obj_in_display, targetType, compType) %>% 
+  rename(intended_target = "obj_in_display")
+
+# df_selprob
+```
+
+```{r}
+df_cor = df_selprob %>% 
+  left_join(df_rsa_flatprior) %>% 
+  filter(nClicks > 5)
+
+df_cor
+
+ggplot(df_cor, aes(x=Probability, y=PropClicks, color=pos)) +
+  facet_wrap(~prevClickedType) +
+  geom_abline(intercept = 0, slope = 1) +
+  geom_point() +
+  xlim(0,1) +
+  ylim(0,1)
+
+cor(df_cor$Probability,df_cor$PropClicks,use="complete.obs")
+
+# write_csv(df_rsa_flatprior, here("analyses", "03_comprehension", "02_main", "0102_summary", "df_rsa_flatprior.csv"))
+```
+
+
+
+
+## RSA: informative prior
+
+```{r}
+
+df_prodcomp = df_production %>% 
+  filter(str_detect(condition, "n")) %>% 
+  mutate(intended_target = "comp") %>% 
+  mutate_at(vars(condition), funs(case_when(
+    .=="atn" ~ "tan",
+    .=="tan" ~ "atn",
+    TRUE ~ .
+  ))) %>% 
+  mutate(targetType_rev = compType) %>% 
+  mutate(compType_rev = targetType) %>% 
+  select(-targetType, -compType) %>% 
+  rename(targetType = "targetType_rev",
+         compType = "compType_rev")
+
+df_prodprob = df_production %>% 
+  bind_rows(df_prodcomp) %>% 
+  group_by(condition, intended_target, targetType, compType) %>% 
+  summarize(PropColMention = mean(ColorMention),
+            PropColMentionCI_low = ci.low(ColorMention),
+            PropColMentionCI_high = ci.high(ColorMention),
+            nProd = n()) %>% 
+  ungroup()
+
+# df_prodprob
+
+df_prior = df_comprehension %>% 
+  filter(timeStep_selec == "selectedItem_prior") %>% 
+  mutate(pos_target = ifelse(pos1 == "target" | pos2 == "target", T, F)) %>%
+  mutate(pos_comp = ifelse(pos1 == "comp" | pos2 == "comp", T, F)) %>%
+  mutate(pos = case_when(
+    (pos_target & pos_comp) | (!pos_target & !pos_comp) ~ "equal",
+    pos_target ~ "target_pref",
+    TRUE ~ "comp_pref"
+  )) %>% 
+  group_by(condition, obj_in_display, targetType, compType) %>% 
+  summarize(PropClicks_prior = mean(clicked),
+            n = n()) %>% 
+  ungroup() %>% 
+  rename(intended_target = "obj_in_display")
+
+df_rsa_prior = df_prodprob %>% 
+  left_join(df_prior) %>% 
+  mutate(weightedPropColMention = PropColMention * PropClicks_prior) %>% 
+  group_by(condition, targetType, compType) %>% 
+  mutate(norm = sum(weightedPropColMention)) %>% 
+  ungroup() %>% 
+  mutate(Probability = (PropColMention * PropClicks_prior) / norm) %>% 
+  filter(intended_target == "target") %>% 
+  select(condition, Probability, PropClicks_prior, targetType, compType, nProd)
+
+# df_rsa_prior
+
+```
+
+```{r}
+
+# Bootstrap 95% CI for R-Squared
+# library(boot)
+# function to obtain R-Squared from the data
+# get_mean_score = function(data, indices) {
+#   return(mean(data[indices,]$clicked))
+# }
+# 
+# bootstrap_results = boot(df_comprehension, get_mean_score, R=5000)
+# bootstrap_CIs = boot.ci(bootstrap_results)
+# bootstrap_CIs
+
+df_selprob = df_comprehension %>% 
+  filter(timeStep_selec == "selectedItem1") %>% 
+  group_by(condition, obj_in_display, targetType, compType) %>% 
+  summarize(PropClicks = mean(clicked),
+            PropClicksCI_low = ci.low(clicked),
+            PropClicksCI_high = ci.high(clicked),
+            nClicks = n()) %>% 
+  ungroup() %>% 
+  filter(obj_in_display == "target") %>% 
+  select(condition, PropClicks, PropClicksCI_low, PropClicksCI_high, nClicks, targetType, compType)
+
+df_selprob
+```
+
+```{r}
+
+df_cor = df_selprob %>% 
+  left_join(df_rsa_prior, by=(c("condition", "targetType", "compType")))
+
+df_cor
+
+ggplot(df_cor, aes(x=Probability, y=PropClicks, color=condition)) +
+  geom_abline(intercept = 0, slope = 1) +
+  geom_point() +
+  # geom_errorbar(aes(x=Probability, ymin=PropClicksCI_low, ymax=PropClicksCI_high)) +
+  xlim(0,1) +
+  ylim(0,1)
+
+cor(df_cor$Probability,df_cor$PropClicks, use = "complete.obs")
+
+df_rsa_infprior = df_cor %>% 
+  select(condition, Probability, targetType, compType)
+
+write_csv(df_rsa_infprior, here("analyses", "03_comprehension", "02_main", "0102_summary", "df_rsa_infprior.csv"))
+```
+
+## RSA: informative prior by cond plot
+
+```{r}
+
+df_prodcomp = df_production %>% 
+  filter(str_detect(condition, "n")) %>% 
+  mutate(intended_target = "comp") %>% 
+  mutate_at(vars(condition), funs(case_when(
+    .=="atn" ~ "tan",
+    .=="tan" ~ "atn",
+    TRUE ~ .
+  ))) %>% 
+  mutate(targetType_rev = compType) %>% 
+  mutate(compType_rev = targetType) %>% 
+  select(-targetType, -compType) %>% 
+  rename(targetType = "targetType_rev",
+         compType = "compType_rev")
+
+df_prodprob = df_production %>% 
+  bind_rows(df_prodcomp) %>% 
+  group_by(condition, intended_target, targetType, compType) %>% 
+  summarize(PropColMention = mean(ColorMention),
+            PropColMentionCI_low = ci.low(ColorMention),
+            PropColMentionCI_high = ci.high(ColorMention),
+            nProd = n()) %>% 
+  ungroup()
+
+# df_prodprob
+
+df_prior = df_comprehension %>% 
+  filter(timeStep_selec == "selectedItem_prior") %>% 
+  group_by(condition, obj_in_display, targetType, compType) %>% 
+  summarize(PropClicks_prior = mean(clicked),
+            n = n()) %>% 
+  ungroup() %>% 
+  rename(intended_target = "obj_in_display")
+
+df_rsa_prior = df_prodprob %>% 
+  left_join(df_prior) %>% 
+  mutate(weightedPropColMention = PropColMention * PropClicks_prior) %>% 
+  group_by(condition, targetType, compType) %>% 
+  mutate(norm = sum(weightedPropColMention)) %>% 
+  ungroup() %>% 
+  mutate(Probability = (PropColMention * PropClicks_prior) / norm) %>% 
+  filter(intended_target == "target" | intended_target == "comp") %>% 
+  select(condition, Probability, PropClicks_prior, targetType, compType, nProd, intended_target)
+
+# df_rsa_prior
+
+```
+```{r}
+df_selprob = df_comprehension %>% 
+  filter(timeStep_selec == "selectedItem1") %>% 
+  group_by(condition, obj_in_display, targetType, compType) %>% 
+  summarize(PropClicks = mean(clicked),
+            PropClicksCI_low = ci.low(clicked),
+            PropClicksCI_high = ci.high(clicked),
+            nClicks = n()) %>% 
+  ungroup() %>% 
+  filter(obj_in_display == "target" | obj_in_display == "comp") %>% 
+  select(condition, PropClicks, PropClicksCI_low, PropClicksCI_high, nClicks, targetType, compType, obj_in_display) %>% 
+  rename(intended_target = "obj_in_display")
+```
+
+
+```{r}
+
+target_color = "#d55e00" # red
+comp_color = "#009e74"
+
+model_color = "#cc79a7" # purple
+emp_color = "#0071b2" # blue
+
+df_full = df_selprob %>% 
+  left_join(df_rsa_prior, by=(c("condition","targetType","compType", "intended_target"))) %>% 
+  gather(Measure, Value, PropClicks, Probability) %>% 
+  mutate_at(vars(Measure), funs(ifelse(.=="PropClicks", "Empirical data", "Model predictions")))
+
+df_full %>%
+  mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan")))) %>%
+  # filter(str_detect(condition, "p")) %>%
+  # mutate_at(vars(condition), funs(case_when(
+  #   str_detect(.,"at") ~ "atypical target\ntypical competitor",
+  #   str_detect(.,"ta") ~ "typical target\natypical competitor",
+  #   str_detect(.,"aa") ~ "atypical target\natypical competitor",
+  #   str_detect(.,"tt") ~ "typical target\ntypical competitor",
+  #   TRUE ~ "FIRE!"
+  # ))) %>% 
+  # mutate_at(vars(condition), funs(factor(., levels=c("atypical target\ntypical competitor", "typical target\ntypical competitor", "atypical target\natypical competitor", "typical target\natypical competitor")))) %>%
+  mutate_at(vars(intended_target), funs(factor(., levels=c("target", "comp")))) %>%
+  ggplot(., aes(x=intended_target, 
+                y=Value, 
+                fill=Measure
+                # color=intended_target
+                )) +
+  facet_wrap(~condition, scales = "free_x", nrow=2) +
+  stat_summary(fun.y = "mean", 
+               geom = "bar",
+               position = position_dodge(width = 0.8),
+               width = 0.8) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               position = position_dodge(width = 0.8),
+               size = .3,
+               width = 0.3) +
+  theme(legend.position = "top") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
+        ) +
+  scale_alpha_manual(values=c(0.5, 1)) +
+  scale_color_manual(values=c(target_color, comp_color)) +
+  scale_fill_manual(values=c(model_color, emp_color)) +
+  scale_x_discrete(labels=c("comp"="competitor")) +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
+        ) +
+  coord_cartesian(ylim = c(0,0.9)) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1,size=14)) +
+  theme(axis.title = element_text(size=16)) +
+  xlab("Item") +
+  ylab("Proportion of (predicted) selections")
+
+# ggsave(here("writing", "2020_CogSci", "paper", "graphs", "modelprior-bycondition.pdf"), width = 8, height = 4.5)
+```
+
+
+# Plots
+
+```{r}
+df_comprehension = read_csv(here("models","02_prodInfRSA","data","emp_comprehension_data.csv")) %>% 
+  # select(condition, timeStep_selec, clickedType, obj_in_display, clicked, target, comp) %>% 
+  separate(target, c(NA, "targetType"), sep="_") %>% 
+  separate(comp, c(NA, "compType"), sep="_")
+
+# df_prevClick = df_comprehension %>% 
+#   filter(timeStep_selec == "selectedItem_prior") %>% 
+#   group_by(condition, obj_in_display, targetType, compType) %>% 
+#   summarize(PropClicks_prior = mean(clicked),
+#             n = n()) %>% 
+#   ungroup()
+
+df_prevClick = df_comprehension %>% 
+  select(timeStep_selec, condition, clickedType, clicked, targetType, compType, 
+        pos1, pos2, pos3, pos4, anon_worker_id, trial_number) %>% 
+  filter(timeStep_selec == "selectedItem_prior") %>%
+  filter(clicked == 1) %>%
+  rename(prevClickedType = "clickedType") %>% 
+  select(-timeStep_selec, -clicked)
+
+df_targetClick = df_comprehension %>%
+  select(timeStep_selec, condition, clickedType, obj_in_display, clicked, targetType, compType,
+        pos1, pos2, pos3, pos4, anon_worker_id, trial_number) %>%
+  filter(timeStep_selec == "selectedItem1") %>%
+  # filter(clicked == 1) %>%
+  select(-timeStep_selec)
+
+df_all = df_prevClick %>% 
+  left_join(df_targetClick, by=c("condition", "targetType", "compType", 
+        "pos1", "pos2", "pos3", "pos4", "anon_worker_id", "trial_number")) %>% 
+  mutate_at(vars(prevClickedType), funs(ifelse(. == "contrast/distractor" | . == "distractor", "other", .))) %>% 
+  mutate(pos_target = ifelse(pos1 == "target" | pos2 == "target", T, F)) %>%
+  mutate(pos_comp = ifelse(pos1 == "comp" | pos2 == "comp", T, F)) %>%
+  mutate(pos = case_when(
+    (pos_target & pos_comp) | (!pos_target & !pos_comp) ~ "equal",
+    pos_target ~ "target_pref",
+    TRUE ~ "comp_pref"
+  )) %>% 
+  filter(clickedType == "target" | clickedType == "comp") %>% 
+  filter(obj_in_display == "target" | obj_in_display == "comp") %>% 
+  mutate_at(vars(obj_in_display), funs(factor(., levels=c("target", "comp")))) %>% 
+  mutate_at(vars(prevClickedType), funs(factor(., levels=c("target", "comp", "other"))))
+
+ggplot(df_all, aes(x=obj_in_display, y=clicked, group=condition, color=condition)) +
+  facet_wrap(~prevClickedType) +
+  # geom_point(alpha=0.3) +
+  stat_summary(fun.y = "mean",
+               geom = "point",
+               size = 3) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               size = .3,
+               width = 0.3)
+
+df_all %>% 
+  filter(pos == "equal") %>% 
+ggplot(., aes(x=obj_in_display, y=clicked, group=condition, color=condition)) +
+  facet_wrap(~prevClickedType) +
+  # geom_point(alpha=0.3) +
+  stat_summary(fun.y = "mean",
+               geom = "point",
+               size = 3) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               size = .3,
+               width = 0.3)
+
+df_all %>% 
+  filter(pos == "target_pref") %>% 
+ggplot(., aes(x=obj_in_display, y=clicked, group=condition, color=condition)) +
+  facet_wrap(~prevClickedType) +
+  # geom_point(alpha=0.3) +
+  stat_summary(fun.y = "mean",
+               geom = "point",
+               size = 3) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               size = .3,
+               width = 0.3)
+
+df_all %>% 
+  filter(pos == "comp_pref") %>% 
+ggplot(., aes(x=obj_in_display, y=clicked, group=condition, color=condition)) +
+  facet_wrap(~prevClickedType) +
+  # geom_point(alpha=0.3) +
+  stat_summary(fun.y = "mean",
+               geom = "point",
+               size = 3) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               size = .3,
+               width = 0.3)
+```
+
+```{r}
+# glimpse(df_all)
+# glimpse(df_rsa_flatprior)
+
+df_emp = df_all %>% 
+  group_by(condition, targetType, compType, prevClickedType, pos, obj_in_display) %>% 
+  summarize(emp_mean = mean(clicked)) %>% 
+  ungroup() %>% 
+  filter(obj_in_display == "target") %>% 
+  select(condition, targetType, compType, prevClickedType, pos, emp_mean)
+
+df_cor = df_emp %>% 
+  left_join(df_rsa_flatprior, by=(c("condition","targetType","compType")))
+
+df_cor %>% 
+  ggplot(., aes(x=Probability, y=emp_mean, color=pos)) +
+    facet_wrap(~prevClickedType) +
+    geom_abline(intercept = 0, slope = 1) +
+    geom_point(alpha=0.5) +
+    geom_smooth(method="lm")
+
+df_cor = df_emp %>% 
+  left_join(df_rsa_prior, by=(c("condition","targetType","compType")))
+
+df_cor %>% 
+  ggplot(., aes(x=Probability, y=emp_mean, color=pos)) +
+    facet_wrap(~prevClickedType) +
+    geom_abline(intercept = 0, slope = 1) +
+    geom_point(alpha=0.5) +
+    geom_smooth(method="lm")
+```
+
+
+
+
+
