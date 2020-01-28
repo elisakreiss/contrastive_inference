@@ -331,6 +331,7 @@ INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/public/lm/lmbsy10.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/public/lm/lmbsy10.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/public/lm/lmbsy7.tfm
 OUTPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/QP1/QP1.toc
+INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/public/lm/ec-lmri12.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/public/lm/ec-lmbxi10.tfm
 INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/QP1/QP1.bbl
 INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/QP1/QP1.bbl
@@ -344,3 +345,4 @@ INPUT /usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/type1/public/lm/lmbx12.pfb
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/type1/public/lm/lmr12.pfb
+INPUT /usr/local/texlive/2018/texmf-dist/fonts/type1/public/lm/lmri12.pfb
