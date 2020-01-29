@@ -264,8 +264,9 @@ INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writi
 INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/model-bycond-paper.pdf
 INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/model-bycond-paper.pdf
 INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/model-bycond-paper.pdf
-INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.bbl
-INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.bbl
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/corr-modelflat-bycondition.pdf
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/corr-modelflat-bycondition.pdf
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/corr-modelflat-bycondition.pdf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/zptmcmrm.vf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/zptmcmrm.vf
@@ -279,6 +280,14 @@ INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmr10.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/zptmcmr.vf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/zpzccmry.vf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/zapfchan/pzcmi8r.tfm
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/modelflat-bycondition-targetprevClick.pdf
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/modelflat-bycondition-targetprevClick.pdf
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/modelflat-bycondition-targetprevClick.pdf
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/switching-bycond.pdf
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/switching-bycond.pdf
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/switching-bycond.pdf
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.bbl
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.bbl
 INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.aux
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/base/8r.enc
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb

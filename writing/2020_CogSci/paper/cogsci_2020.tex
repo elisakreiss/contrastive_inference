@@ -270,7 +270,7 @@ Figure~\ref{model-results-flatprior} shows the model predictions (in blue) and t
 
 The model predicts...
 
-The model qualitatively predicts the patterns for the different context conditions. However, it generally predicts a stronger inference than borne out in the empirical data.
+The model qualitatively predicts the patterns for the different context conditions. However, it generally predicts a stronger inference than borne out in the empirical data. \ek{which is why the correlation is so low}
 
 \begin{figure}
 	\begin{center}
@@ -278,6 +278,32 @@ The model qualitatively predicts the patterns for the different context conditio
 	\end{center}
 \caption{This is a figure.} 
 \label{model-results-flatprior}
+\end{figure}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=.475\textwidth]{graphs/corr-modelflat-bycondition.pdf}
+	\end{center}
+\caption{This is a figure.\ek{fix condition naming}} 
+\label{model-results-corr-flatprior}
+\end{figure}
+
+\ek{the rsa model is a significant predictor for the comprehension data; however there are also biases: position and non-switching (see figure); in fact if we add these predictors to the model, they also become significant. In the new plots, we can see that (when the position is equal), whatever was previously clicked highly affects the outcome. Now the model underpredicts the target clicks in most conditions. The reverse is true if the competitor was clicked previously. This is something where the eyetracking data will provide more information since the switching cost might be lower.}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=.475\textwidth]{graphs/modelflat-bycondition-targetprevClick.pdf}
+	\end{center}
+\caption{This is a figure.\ek{fix a lot}} 
+\label{model-results-flatprior-targetprev}
+\end{figure}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=.475\textwidth]{graphs/switching-bycond.pdf}
+	\end{center}
+\caption{This is a figure.\ek{fix a lot}} 
+\label{switching}
 \end{figure}
 
 
