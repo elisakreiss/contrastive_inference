@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex cogsci_2020"] 1580280707 "cogsci_2020.aux" "cogsci_2020.bbl" "cogsci_2020" 1580280757
+["bibtex cogsci_2020"] 1580333133 "cogsci_2020.aux" "cogsci_2020.bbl" "cogsci_2020" 1580336628
   "./apacite.bst" 1575926124 146015 a52e2433e0975b0c119e79a54ea43b01 ""
   "CogSci_Template.bib" 1575926124 2677 c983e889441f4c837f1b07cc5648abd5 ""
-  "cogsci_2020.aux" 1580280757 421 961f39fc67c3d46452e6da26e6f33690 ""
+  "cogsci_2020.aux" 1580336627 488 518473f4d1d33b5cc546d5bf374f2e6f ""
   (generated)
   "cogsci_2020.bbl"
   "cogsci_2020.blg"
-["pdflatex"] 1580280755 "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.tex" "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.pdf" "cogsci_2020" 1580280757
-  "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.aux" 1580280757 421 961f39fc67c3d46452e6da26e6f33690 ""
-  "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.tex" 1580280755 37164 92dc0bb71788eb34b38db8b27cf1621c ""
+["pdflatex"] 1580336625 "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.tex" "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.pdf" "cogsci_2020" 1580336628
+  "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.aux" 1580336627 488 518473f4d1d33b5cc546d5bf374f2e6f ""
+  "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.tex" 1580336625 38343 859cd975cb1eb8dc3e20348c937b13a8 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/base/8r.enc" 1480098666 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2018/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1480098689 1408 5937f58aa508ea2cea4901c07d10f5fe ""
@@ -146,20 +146,21 @@
   "/usr/local/texlive/2018/texmf.cnf" 1523934483 577 0b39adfd7c93507ff20c9c14c2f1a33f ""
   "apacite.sty" 1575926124 71011 f7b6fc32941ffbb47169c897680b6a45 ""
   "cogsci.sty" 1575926124 7259 8d3f47e880b42b2301f8ecd37fd02605 ""
-  "cogsci_2020.aux" 1580280757 421 961f39fc67c3d46452e6da26e6f33690 ""
-  "cogsci_2020.bbl" 1580280708 49 0eba253fc001332e731e8aba3f23127b "bibtex cogsci_2020"
-  "cogsci_2020.tex" 1580280755 37164 92dc0bb71788eb34b38db8b27cf1621c ""
+  "cogsci_2020.aux" 1580336627 488 518473f4d1d33b5cc546d5bf374f2e6f ""
+  "cogsci_2020.bbl" 1580333134 49 0eba253fc001332e731e8aba3f23127b "bibtex cogsci_2020"
+  "cogsci_2020.tex" 1580336625 38343 859cd975cb1eb8dc3e20348c937b13a8 ""
   "graphs/IDT-design.pdf" 1580162239 155467 086efb37e9f3f85d6fe7cfda1a27e35c ""
   "graphs/compr-bycond-paper.pdf" 1580163833 149869 9e9bb3387fee6a58fcdbdb550e910e0a ""
   "graphs/corr-modelflat-bycondition.pdf" 1580277619 6320 e6b4719bb171499044f3b3129ba00e3d ""
+  "graphs/example-context.pdf" 1580328749 251669 1c42661dc3b7ef893c9240590ee4f038 ""
   "graphs/model-bycond-paper.pdf" 1580172498 174365 910d361dc70dc4d5746a7f3315dcad32 ""
   "graphs/modelflat-bycondition-targetprevClick.pdf" 1580279366 6390 a20ab6c0ecea7ee5622a3e6bf2ed5cc4 ""
   "graphs/prod-bycond-paper.pdf" 1580114101 167106 3ab49cdbec83a501de44b9174e23474f ""
   "graphs/prod-design.pdf" 1580113139 653811 8daed9ba1221c8a4f30c0101924e72e7 ""
   "graphs/switching-bycond.pdf" 1580280624 6272 e5e88f8434f6befc29948be82c3c793b ""
   (generated)
-  "cogsci_2020.pdf"
-  "cogsci_2020.aux"
-  "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.log"
   "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.pdf"
+  "cogsci_2020.aux"
   "cogsci_2020.log"
+  "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.log"
+  "cogsci_2020.pdf"
