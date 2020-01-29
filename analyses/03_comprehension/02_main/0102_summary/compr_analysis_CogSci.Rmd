@@ -813,12 +813,59 @@ df_switch %>%
   spread(switch_ct, used_combo, fill=0) %>%
   gather(targcomp_combo, selected_combo, 
          target_target, target_comp, comp_comp, comp_target) %>% 
-  mutate_at(vars(targcomp_combo), funs(factor(., levels=c("target_target", "target_comp", 
-                                     "comp_comp", "comp_target")))) %>% 
+  mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan")))) %>%
+  mutate_at(vars(targcomp_combo), funs(factor(., levels=c("target_target", "comp_comp", "comp_target", "target_comp")))) %>% 
   mutate(adap_switch = ifelse(targcomp_combo=="target_comp" | 
                                 targcomp_combo=="comp_target", T, F)) %>% 
   ggplot(., aes(x=targcomp_combo, y=selected_combo, fill=adap_switch)) +
-    facet_wrap(~condition_lvl, nrow=2) +
+    facet_wrap(~condition, nrow=2) +
+    stat_summary(fun.y = "mean", 
+                 geom = "bar") +
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "errorbar",
+                 color = "black",
+                 size = .3,
+                 width = 0.3) +
+    theme(axis.text.x = element_text(angle=40, hjust=1)) +
+    theme(legend.position = "none") +
+    theme(strip.background = element_rect(color="black", 
+                                          fill="white", 
+                                          size=1.5,
+                                          linetype="solid"),
+          strip.text.x = element_text(margin = margin(3,0,3,0, "pt"))
+          ) +
+    scale_fill_manual(values = c("#009292", "#db4900")) +
+    xlab("Click combination") +
+    ylab("Number of occurrences")
+
+ggsave(here("writing", "2020_CogSci", "paper", "graphs", "switching-bycond.pdf"), width = 8, height = 6)
+```
+
+```{r switch, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+df_switch_away = df_main_prop %>% 
+  filter(trial_type == "critical",
+         !mult_selec,
+         timeStep_selec == "selectedItem_prior" | timeStep_selec == "selectedItem1") %>% 
+  select(clickedType, timeStep_selec, anon_worker_id, trial_number, target, comp, 
+         condition, condition_lvl) %>% 
+  distinct() %>% 
+  spread(timeStep_selec, clickedType) %>% 
+  filter((str_detect(selectedItem_prior, "distractor")) & 
+           (selectedItem1 == "target" | selectedItem1 == "comp"))
+
+anti_switch_away = df_switch_away %>% 
+  # select(anon_worker_id, trial_number, selectedItem1) %>% 
+  mutate(selected = 0) %>% 
+  mutate_at(vars(selectedItem1), funs(ifelse(. == "target", "comp", "target")))
+
+df_switch_away %>%  
+  mutate(selected = 1) %>%
+  bind_rows(anti_switch_away) %>% 
+  mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan")))) %>%
+  mutate_at(vars(selectedItem1), funs(factor(., levels=c("target", "comp")))) %>%
+  ggplot(., aes(x=selectedItem1, y=selected)) +
+    facet_wrap(~condition, nrow=2) +
     stat_summary(fun.y = "mean", 
                  geom = "bar") +
     stat_summary(fun.data = "mean_cl_boot",
@@ -839,6 +886,7 @@ df_switch %>%
     ylab("Number of occurrences")
 
 ```
+
 
 #### RSA
 
