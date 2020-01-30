@@ -207,10 +207,10 @@ INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmr7t.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmr7t.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm
-INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/example-context.pdf
-INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/example-context.pdf
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/Sedivy2003-contexts.pdf
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/Sedivy2003-contexts.pdf
 OUTPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.pdf
-INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/example-context.pdf
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/Sedivy2003-contexts.pdf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm
 INPUT /usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map
