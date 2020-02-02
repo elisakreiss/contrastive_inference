@@ -77,55 +77,47 @@
 \maketitle
 
 \begin{abstract}
-\jd{insert}
-Include no author information in the initial submission, to facilitate
-blind review.  The abstract should be one paragraph, indented 1/8~inch on both sides,
-in 9~point font with single spacing. The heading ``{\bf Abstract}''
-should be 10~point, bold, centered, with one line of space below
-it. This one-paragraph abstract section is required only for standard
-six page proceedings papers. Following the abstract should be a blank
-line, followed by the header ``{\bf Keywords:}'' and a list of
-descriptive keywords separated by semicolons, all in 9~point font, as
-shown below.
+Listeners have the ability to rapidly infer what a speaker intends to communicate, often making use of the vast amount of information provided in the environment. One pragmatic inference that has been investigated to better understand the underlying processes of comprehension is the \emph{contrastive inference}. A contrastive inference arises when a speaker uses an adjective as in \textit{the yellow banana} and a listener infers from the use of the adjective that the speaker contrasts it with a differently colored banana. We argue for a highly pragmatic account of comprehension where the adjective production probabilities a listener expects for the objects in a given context drives the listener's (contrastive) inferences. This shifts the focus away from specific cognitive and linguistic factors investigated in previous literature that influence contrastive inference onto listener's production expectations (and their prior beliefs). Using the Rational-Speech Act model, we make new quantitative predictions about what \emph{should} affect contrastive inference and find that these new predictions are supported by our empirical results, providing further evidence for a speaker-centric view of comprehension. 
 
 \textbf{Keywords:} 
-add your choice of indexing terms or keywords; kindly use a
-semicolon; between each term
+contrastive inference; RSA; typicality; incremental processing
 \end{abstract}
 
 \section{Introduction}
 
-One of the most interesting features of language is its flexibility. In referring to an object, speakers must choose one of an indefinite number of possible referring expressions. \textit{The banana}, \textit{the yellow banana}, \textit{the yellow, curvy fruit-thingy} for example are all utterances that can refer to the same object. At the same time, the same utterance -- e.g., \emph{banana} -- can be used to refer to different kinds of objects. This flexibility poses a challenge for a listener, who needs to pragmatically infer a speaker's intended referent. Consequently, trying to understand how a listener processes these utterances and what affects their interpretation has become a central question in psycholinguistic research. \jd{last sentence too vague but maybe ok for first paragraph}
+One of the most interesting features of language is its flexibility. In referring to an object, speakers must choose one of an indefinite number of possible referring expressions. \textit{The banana}, \textit{the yellow banana}, \textit{the yellow, curvy fruit-thingy} for example are all utterances that can refer to the same object. At the same time, the same utterance -- e.g., \textit{banana} -- can be used to refer to different kinds of objects. This flexibility poses a challenge for a listener, who needs to pragmatically infer a speaker's intended referent. Consequently, trying to understand how a listener processes these utterances and what affects their interpretation has become a central question in psycholinguistic research. \jd{last sentence too vague but maybe ok for first paragraph}
 % In comprehension all of these utterances still need to be interpreted as describing this same object in this particular context in Figure~\ref{example-context}. Consequently, trying to understand how a listener processes these utterances and what affects their interpretation has become a central question in psycholinguistic research. \jd{too nitty-gritty. get rid of the figure (or replace it with a version of fig 4 that just has the display, without the audio stim and time window info), just say "are all possible utterances that can be used for the same object. At the same time, the same utterance -- e.g., \emph{banana} -- can be used to refer to different kinds of objects". Raise the issues independently of the figures: this flexibility poses a challenge for listeners, who need to pragmatically infer the speaker's intention.}
 
-A basic fact about language is that listeners process utterances incrementally, i.e., new information is incorporated into the interpretation of the utterance as soon as it becomes available \cite{Eberhard:1995}. For instance, eye-tracking experiments have shown that if a listener hears the incomplete utterance \textit{the yellow} in a display like Figure~\ref{example-context}a, they fixate on the yellow objects in the display even before they hear the disambiguating noun \textit{banana} and \ek{arrive at} the final referent \ek{cite}.
+A basic fact about language is that listeners process utterances incrementally, i.e., new information is incorporated into the interpretation of the utterance as soon as it becomes available \cite{Eberhard:1995}. For instance, eye-tracking experiments have shown that if a listener hears the incomplete utterance \textit{the yellow} in a display like Figure~\ref{example-context}a, they fixate on the yellow objects in the display even before they hear the disambiguating noun \textit{banana} and \ek{arrive at} the final referent.
 
-But listeners go beyond the information contained in the signal itself in processing language; they also take into account contextual information -- including the nature of other possible referents  -- to draw rapid pragmatic inferences about a speaker's intention \ek{cite}. One such inference that has received much attention in recent years is the so-called \emph{contrastive inference} \cite{Sedivy:1999}\jd{include other references for studies on contrastive inferences}. Consider the context in Figure~\ref{example-context}b that shows a yellow and orange banana, a yellow corncob and some other distractor item. When a listener is asked to \textit{pick out the yellow...}, there are two eligible objects to choose from: the yellow banana and the yellow corncob. Rather than considering both yellow objects equally likely target referents, listeners often exhibit a preference, evidenced in increased looks, for the yellow object that has a contrast member of the same type but of a different color in the display (i.e., the banana) \cite{Sedivy:1999, Sedivy:2003}. When the contrast is absent, as in \figref{example-context}a, listeners have no such preference. The effect of seeing a target preference over the competitor that is elicited by the presence of a contrast (i.e., the orange banana) is called the contrastive inference. 
+But listeners go beyond the information contained in the signal itself in processing language; they also take into account contextual information -- including the nature of other possible referents  -- to draw rapid pragmatic inferences about a speaker's intended referent \ek{cite}. One such inference that has received much attention in recent years is the so-called \emph{contrastive inference} \cite{Sedivy:1999}\jd{include other references for studies on contrastive inferences}. Consider the context in Figure~\ref{example-context}b that shows a yellow and orange banana, a yellow corncob and some other distractor item. When a listener is asked to \textit{pick out the yellow...}, there are two eligible objects to choose from: the yellow banana and the yellow corncob. Rather than considering both yellow objects equally likely target referents, listeners often exhibit a preference, evidenced in increased looks, for the yellow object that has a contrast member of the same type but of a different color in the display (i.e., the banana) \cite{Sedivy:1999, Sedivy:2003}. When the contrast is absent, as in Figure~\ref{example-context}a, listeners have no such preference. The effect of seeing an increased target preference over the competitor that is elicited by the presence of a contrast (i.e., the orange banana) is called the contrastive inference. 
 
-Broadly speaking, a contrastive inference arises because a listener expects a cooperative speaker to only produce the color modifier if it's contextually necessary for establishing reference \ek{Grice}. Observing the adjective suggests that the speaker was forced to produce it by the presence of a contrast object.
+% Broadly speaking, a contrastive inference arises because a listener expects a cooperative speaker to only produce the color modifier if it's contextually necessary for establishing reference \ek{Grice}. Observing the adjective suggests that the speaker was forced to produce it by the presence of a contrast object.
 
-This simple Gricean account that only takes into consideration the contrastive function of the adjective predicts that contrastive inferences should arise wherever and whenever the target object occurs in the presence of a contrast object. It is surprising, then, that contrastive inferences have been found to vary substantially: While it has been replicated reliably in the size adjective domain \ek{cite}, the effect seems to be less stable with color adjectives \cite{Sedivy:2003}. \citeA{Sedivy:2003} report that the contrastive inference arises in contexts where the target object has a ``predictable'' color (such as the yellow banana in Figure~\ref{example-context}a) but not when it is replaced by an object with an ``unpredictable'' color like a cup, which comes in all sorts of colors.
-They suggest that these objects differ in how likely a speaker is to produce the color modifier for the object in isolation, i.e., in the absence of a contrast, a yellow banana is usually just called \textit{a banana} while a yellow cup is often called \textit{a yellow cup}. \citeA{Sedivy:2003} suggest that the contrastive inference arises with objects that do not have the adjective in their \emph{default description}, which makes the observation of the adjective surprising and the listener interprets the adjective contrastively. 
+Broadly speaking, a contrastive inference arises because a listener expects a cooperative speaker to not be more informative than required by the context \cite{Grice:1975}. The presence of a contrast object makes it contextually necessary to include the adjective for establishing a unique referent. Therefore a listener should be able to infer the presence of a contrast when hearing the adjective.
+
+This simple Gricean account that only takes into consideration the contrastive function of the adjective predicts that contrastive inferences should arise wherever and whenever the target object occurs in the presence of a contrast object. It is surprising, then, that contrastive inferences have been found to vary substantially: While it has been replicated reliably in the size adjective domain \cite{Aparicio:2016,Aparicio:2018,Grodner:2011,Ryskin:2019,Sedivy:1999}, the effect seems to be less stable with color adjectives \cite{Sedivy:2003}. 
+\citeA{Sedivy:2003} report that the contrastive inference arises in contexts where the target object has a predictable color (such as the yellow banana in Figure~\ref{example-context}) but not when it is replaced by an object with an unpredictable color like a cup, which comes in all sorts of colors.
+They suggest that these objects differ in how likely a speaker is to produce the color modifier for the object in isolation, i.e., in the absence of a contrast, a yellow banana is usually just called \textit{a banana} while a yellow cup is often called \textit{a yellow cup}. \citeA{Sedivy:2003} call these references the \emph{default descriptions} of the objects. They suggest that the contrastive inference only arises with objects that do not have the adjective in their default description, since this makes the observation of the adjective surprising and a listener then interprets the adjective contrastively. 
 % When the color is unpredictable, the adjective is part of the default description and observing the adjective will not elicit the contrastive interpretation.
 
 \begin{figure}
 	\begin{center}
 		\includegraphics[width=.475\textwidth]{graphs/example-context.pdf}
 	\end{center}
-\caption{This is a figure. \ek{label with A and B}} 
+\caption{Three contexts, each with a yellow banana as the intended target and another yellow object as its color competitor. The competitor can be typical (in A and B) or atypical (in C), and a contrast can be absent (in A) or present (in B and C).\ek{label with A and B (and C) -- possibly remove the atypical comp context}} 
 \label{example-context}
 \end{figure}
 
 
-In the interim, contrastive inferences have been shown to be modulated by multiple factors. First of all, its occurrence seems to be dependent on the expectations of informativity \ek{elaborate} \cite{Aparicio:2016, Aparicio:2018, Sedivy:2003}. However informativity alone cannot account for \ek{...}. Other studies indicate that adjective semantics also matter, such that the contrastive inference arises with color adjectives, relative adjectives and maximum standard absolute
-adjectives, but not with minimum standard absolute adjectives \cite{Aparicio:2018}. Furthermore the effect only arises when the listener considers the speaker as a reliable speaker who does not violate communicative norms \cite{Grodner:2011}.
+In the interim, contrastive inference has been shown to be modulated by multiple factors. First of all, its occurrence seems to be dependent on the expectations of informativity, such as the presence of a contrast that makes mentioning the adjective contextually necessary \cite{Aparicio:2016, Aparicio:2018, Sedivy:2003}. However, adjective semantics also seem to matter, such that a contrastive inference can arise with color adjectives, relative adjectives and maximum standard absolute adjectives, but not with minimum standard absolute adjectives \cite{Aparicio:2018}. Furthermore the effect only arises when the listener considers the speaker as a reliable speaker who does not violate communicative norms \cite{Grodner:2011,Ryskin:2019}.
 
-In this paper, we provide a novel account of contrastive inference that has the potential to unify the above properties by reducing them to listeners' expectations about the speaker's contextual probability of producing the pre-nominal adjective.\jd{nice, just clean up the sentence a little} In so doing, we follow recent research highlighting the importance of listeners' generative model of the speaker in generating pragmatic inferences \cite{Degen:2019}\ek{cite more}\jd{eg Hawkins et al under review but also some of the more cogsci-y papers in domains other than semprag, eg kleinschmidt?}. We propose to formalize the relevant listener-side reasoning within the Rational-Speech Act (RSA) framework \cite{Frank:2012, Goodman:2016}, a state-of-the-art computational framework that models pragmatic inference as the result of listeners performing Bayesian inference on their speaker model and their prior beliefs about likely meanings, thereby giving the speaker model a central role in the inference. It provides a way to quantitatively assess the probability that a listener with prior beliefs and expectations about the speaker assigns to possible referents after observing partial sentences of the form \emph{Click on the yellow}. This shifts the focus away from specific cognitive and linguistic factors that influence contrastive inference onto listener's production expectations (and their prior beliefs). 
+In this paper, we provide a novel account of contrastive inference that has the potential to unify the above properties by reducing them to listeners' expectations about the speaker's contextual probability of producing the pre-nominal adjective. In so doing, we follow recent research highlighting the importance of listeners' generative model of the speaker in generating pragmatic inferences \cite{Degen:2019,Kleinschmidt:2011}\ek{jd: which Hawkins paper do you mean?}. We propose to formalize the relevant listener-side reasoning within the Rational-Speech Act (RSA) framework \cite{Frank:2012, Goodman:2016}, a state-of-the-art computational framework that models pragmatic inference as the result of listeners performing Bayesian inference on their speaker model and their prior beliefs about likely meanings, thereby giving the speaker model a central role in the inference. It provides a way to quantitatively assess the probability that a listener with prior beliefs and expectations about the speaker assigns to possible referents after observing partial sentences of the form \emph{Click on the yellow}. This shifts the focus away from specific cognitive and linguistic factors that influence contrastive inference onto listener's production expectations (and their prior beliefs). 
 
-For this investigation it is important to distinguish between two concepts: \emph{contrastive inference} and \emph{target preference}. The target preference quantifies to what extend the listener prefers the target over the competitor interpretation in any given context. For example, if they consider both to be equally likely referents, the target preference would be 50\%. Even though a contrastive inference can lead to a preference of the target over the competitor, this does not need to be the case. A contrastive inference occurs when the presence of the contrast increases the target preference. That means there can be a contrastive inference even if there is no target preference in the contrast condition, simply because there was a target dispreference in the contrast-absent condition.
+For this investigation it is important to distinguish between two concepts: \emph{contrastive inference} and \emph{target preference}. The target preference quantifies to what extent a listener prefers the target over the competitor interpretation in any given context. For example, if they consider both to be equally likely referents, the probability for target preference would be 50\%. Even though a contrastive inference can lead to a preference of the target over the competitor, this does not need to be the case. A contrastive inference occurs when the presence of the contrast increases the target preference probability over a context where the contrast is absent. That means there can be a contrastive inference even if there is no target preference in the contrast-present condition, simply because there was a target dispreference in the contrast-absent condition.
 
-In this paper we will first show how the RSA account can make the same predictions about the basic contrast effect as for instance the default description \cite{Sedivy:2003} \jd{somewhat clumsy sentence}. But the RSA account also makes new predictions about the context that \emph{should} affect contrastive inference and final target preference. We report a free production study we conducted to elicit modifier probability estimates. For the quantitative evaluation of the model's inference predictions, we compare it to empirical data which we elicited using an incremental decision task.
-% (which will also serve as a proof of concept that contrastive inferences can be elicited in offline tasks) -- but Ciyang has done that, right?
+In this paper we will first show how the RSA account can make the same predictions about the basic contrast effect as for instance the default description account \cite{Sedivy:2003}. Furthermore we derive new predictions about the contexts that \emph{should} affect contrastive inference and target preference. We report a free production study we conducted to elicit modifier probability estimates, which will be used to determine quantitative model predictions. For the evaluation of those predictions, we compare them to empirical comprehension data which we elicited using an incremental decision task.
+% replication of the general paradigm working
 
 
 \section{Accounts of contrastive inference \ek{Model section}}
@@ -134,7 +126,7 @@ In this paper we will first show how the RSA account can make the same predictio
 
 In the literature, different factors have been considered to give rise to contrastive inference which indirectly put more or less relevance onto the speaker. 
 
-\citeA{Sedivy:1999} for instance only considers a very limited speaker model. As mentioned above, a contrastive inference only arises when the modifier is not a component of the object's \textit{default description}. It therefore only assumes speaker considerations as to the creation of the default descriptions for objects and is completely independent of the context the target is presented in. 
+\citeA{Sedivy:1999} for instance only considers a very limited speaker model. As mentioned above, a contrastive inference only arises when the modifier is not a component of the object's \emph{default description}. It therefore only assumes speaker considerations as to the creation of the default descriptions for objects and is completely independent of the context the target is presented in. 
 Other research has extended this account and found that the size of the contrastive inference can vary \cite{Aparicio:2018}\ek{Rubio-Fernandez}. \ek{Figure out how much they really consider the speaker here... actually not much}
 
 % In \citeA{Aparicio:2018}, the speaker receives a more a more central role. In this account, the production probabilities of this more involved speaker directly affect the size of the contrastive inference. It therefore predicts that contrastive inference is not binary, but can occur in different strengths. While this account considers listeners' reasoning not only about the target but also about the competitor, the speaker model is still restricted to target considerations only. \ek{write this better}
@@ -146,7 +138,7 @@ A Rational-Speech Act account gives the speaker a central role in the prediction
 \label{eq-prior}
 \end{equation}
 
-For now we will make the simplifying assumption that listeners have a uniform prior $P(r|C)$ over all objects in the display. Then the RSA model predicts a direct relationship between the production probabilities $P_{S_0}$ and the listener's distribution over possible referents $P_{L_1}$. 
+To simplify the following example, we will assume that listeners have a uniform prior $P(r|C)$ over all objects in the display. Then the RSA model predicts a direct relationship between the production probabilities $P_{S_0}$ and the listener's distribution over possible referents $P_{L_1}$. 
 
 \begin{equation}
 	P_{L_1}(r|u,C) \propto P_{S_1}(u|r,C)
@@ -155,21 +147,23 @@ For now we will make the simplifying assumption that listeners have a uniform pr
 
 However so far in the literature, RSA has been mainly applied to the analysis of full utterances \ek{Reuben}. To receive RSA predictions for an incomplete reference such as \textit{the yellow...}, we take $P_{S_0}$ to simply be the underlying probability of color mention for each referent in the display. Now we can turn to the qualitative predictions this account makes.
 
-First, we consider the context in Figure~\ref{example-context}a. Upon hearing the modifier \textit{yellow}, the pragmatic listener $P_{L_1}$ will consider how likely a speaker is to include this modifier in their referring expression \textbf{for each object in the display}. Since only the target (yellow banana) and the competitor (corncob) are yellow, we will assume that the production probabilities of \textit{yellow} for the other objects in the display are 0. This only leaves the target and the competitor as potential referents.\footnote{All of the following modifier production probabilities for the target and competitor are the ones obtained in the production study explained below.}
+Consider the example contexts in Figure~\ref{target-pref}. Upon hearing the modifier \textit{yellow}, the pragmatic listener $P_{L_1}$ will consider how likely a speaker is to include this modifier in their referring expression \textbf{for each object in the display}. Since only the target (yellow banana) and the competitor (corncob) are yellow, we will assume that the production probabilities of \textit{yellow} for the other objects in the display are 0. This only leaves the target and the competitor as potential referents. The hypothetical modifier production probabilities are written under each item in Figure~\ref{target-pref}.\footnote{All of the following modifier production probabilities for the target and competitor are hypothetical and the empirically elicited probabilities.}
 
-If the contrasting banana is absent, speakers are unlikely to include the color modifier when referring to the target banana \ek{number, 11\%} and they are equally unlikely to do so for its competitor, the corncob \ek{number, 13\%}. The pragmatic listener will therefore not be able to prefer one potential referent over the other.
+If the contrasting banana is absent (Figure~\ref{target-pref})a, speakers are equally unlikely to include the color modifier when referring to the banana (10\%) and its competitor, the corncob (10\%). For the pragmatic listener predictions, these probabilities are simply normalized, resulting in the target preference probability of 50\% (i.e., chance). It therefore predicts that a listener will not be able to prefer one potential referent over the other.
 
 \begin{figure}
 	\begin{center}
-		\includegraphics[width=.475\textwidth]{graphs/target-pref.pdf}
+		\includegraphics[width=.475\textwidth]{graphs/rsa-example.pdf}
 	\end{center}
-\caption{This is a figure. \ek{very preliminary so far, but I think we need a figure with the example numbers, otherwise it gets to confusing. And it might be too much info for the first figure; But there is probably a way to make it more efficient -- ideas?}} 
+\caption{The three contexts from Figure 1 with expected modifier production probabilities for each of the object (the number labels in the cells) and the corresponding model predictions for the intended target after hearing \textit{Click on the yellow...} (bar plots). \ek{still not great... any ideas?}} 
 \label{target-pref}
 \end{figure}
 
-The presence of the orange banana will not affect the listener's expectations about modifier production for the competitor (corncob). However, since the modifier is now necessary for a unique identification, the speaker is much more likely to use the modifier \ek{number, 75\%}. Here, the pragmatic listener then predicts the yellow banana to be the more likely target over the competitor \ek{75\% (target modifier production probability) vs 13\% (competitor modifier production probability); normalized 85\% target preference}, resulting in a target preference. Compared against the contrast absent context \ek{11\% vs 13\%: normalized 46\% target preference}, there is a clear increase in target preference which corresponds to the generally reported case of contrastive inference.
+The presence of the orange banana (Figure~\ref{target-pref}b) will not affect the listener's expectations about modifier production for the competitor (corncob). However, the presence of another banana (i.e., a contrast) makes the inclusion of the modifier now contextually necessary for a unique identification (90\%). After renormalizing the production probabilities, the model predicts a target preference probability of 90\%. This is a clear increase in target preference compared to the 50\% in the contrast-absent context in Figure~\ref{target-pref}a. This predicts the generally reported case of contrastive inference.
 
-In contrast to previous accounts of contrastive inference, the modifier production probabilities are expected to drive the contrastive inference and target preference. Since the contrastive inference is the difference in target preference between conditions and the target preference depends on the modifier production probabilities of the target and the competitor, the competitor takes on a central role. This raises the question what happens if we change the modifier production probabilities for the competitor. \ek{Westerbeek} showed that speakers are more likely to include the color modifier for objects in isolation when they appear in an atypical than in a typical color \ek{see also RF 2016}. For example the yellow strawberry in Figure~\ref{example-context}b receives a higher modifier production probability \ek{number, 50\%} than the corncob competitor in Figure~\ref{example-context}a. The target preference in this context is only now \ek{60\%}. This predicts a change in the size of the contrastive inference, dependent on the nature of the color competitor used in the display.
+In contrast to previous accounts of contrastive inference, the modifier production probabilities are expected to directly drive the contrastive inference and target preference. Since the contrastive inference is the difference in target preference between contrast conditions and the target preference depends on the modifier production probabilities of the target and the competitor, the competitor takes on a central role in these predictions. This raises the question of what happens if we change the modifier production probabilities for the competitor. It has been established that speakers are more likely to include the color modifier for objects in isolation when they appear in an atypical than in a typical color \cite{Rubio-Fernandez:2016,Westerbeek:2015}. Therefore the yellow strawberry in Figure~\ref{target-pref}c receives a higher modifier production probability (60\%) than the corncob competitor in Figure~\ref{target-pref}a (10\%). With the atypical competitor, this contrast-present context shows a much smaller increase in target preference probability to the contrast-absent context. In other words, there is a smaller contrastive inference than in the context with the typical competitor (corncob). This predicts that the size of the contrastive inference can change, dependent not only on the target in the display, but crucially also the color competitor. 
+
+\ek{mention somewhere that it differs from default description account because it considers production probabilities which are not reduced to a binary elicitation}
 
 % This strong integration of the context makes it also to a highly pragmatic account. 
 % Equation (explain incrementality), table of production probabilities, explain how the two figure predictions differ
@@ -184,29 +178,29 @@ In contrast to previous accounts of contrastive inference, the modifier producti
 % example predictions;
 % talk about Westerbeek study}
 
-To investigate when a listener with a generative speaker model should draw a contrastive inference, we need to manipulate and elicit how likely a listener can expect a modified over an unmodified referring expression for each object in the display. To evaluate the performance of the model and to gain information about the prior of the objects, we need comprehension data that informs us which object is considered the most likely target referent.
+To investigate when a listener with a generative speaker model \textbf{should} draw a contrastive inference, we need to manipulate and elicit how likely a listener can expect a modified over an unmodified referring expression for each object in the display. To evaluate the performance of the model and to gain information about the prior of the objects, we also need comprehension data that informs us which object is considered the most likely target referent.
 
 
 \section{Experiment 1: Modifier Production in an Interactive Reference Game}
 
-Experiment 1 was aimed at obtaining modifier production probabilities for all the displays ultimately used in the contrastive inference experiment (Experiment 2). We elicited these probabilities in a free production interactive reference game. We expect that the typicality of a color for an object will affect these modifier production probabilities, i.e., presented in isolation, we expect the speaker to call a yellow banana simply \textit{the banana}, but an orange banana \textit{the orange banana}. We take these results as the modifier production probabilities a listener can expect for each object.
+Experiment 1 was aimed at obtaining modifier production probabilities for all the displays ultimately used in the contrastive inference experiment (Experiment 2). We elicited these probabilities in a free production interactive reference game. We expect that the typicality of a color for an object will affect these modifier production probabilities, i.e., we expect speakers to call a yellow banana simply \textit{the banana}, but an orange banana \textit{the orange banana}. We take the results as the modifier production probabilities a listener can expect for each object.
 
 \subsection{Participants}
-We recruited 282 participants over Amazon Mechanical Turk, who were randomly matched to form one listener-speaker chat pair (i.e., 141 pairs in total). 
-Each participant was paid \$2.30 (approximately \$11-\$14/hr). We restricted participation to workers with IP addresses in the US and an approval rate of previous work above 97\%.
-We excluded 29 participant pairs because of multiple participation and for using primarily using unnatural descriptions such as \textit{should be yellow, must have teeth to eat} for \textit{red corn}.
+We recruited 282 participants over Amazon's Mechanical Turk, who were randomly matched to form listener-speaker chat pairs (i.e., 141 pairs in total). 
+Each participant was paid \$2.30 (approximately \$11-\$14/hr)\footnote{The experiment was preregistered on \ek{id}. Originally, we recruited 68 participants and then ran a follow-up with 214 more to get enough data for the evaluation of the RSA model. The results from the first 68 participants do not differ from the full data set, which is why we present them collapsed.}. We restricted participation to workers with IP addresses in the US and an approval rate of previous work above 97\%.
+We excluded 29 participant pairs because of multiple participation and for primarily using unnatural descriptions such as \textit{should be yellow, must have teeth to eat} for \textit{red corn}.
 
 % Exclusions were performed on the 141 speakers, since they provided the utterances. Participants were excluded when they participated multiple times in the experiment (1 participant; 139 pairs remaining) and when they did not use a noun from the display in at least half of the cases (27 participants; 112 pairs remaining). These participants clearly misunderstood the task, using expressions such as \textit{yellow monkey} instead of \textit{yellow banana}, or \textit{should be yellow, must have teeth to eat} for \textit{corn}. All speakers indicated that their native language was English.
 
 
 \subsection{Material} \label{Material}
-Each context included four items, as displayed in Figure~\ref{prod-design}. The pool of items consisted of 10 types (banana, broccoli, carrot, corn, egg, lettuce, pumpkin, strawberry, swan, tomato), each of which could occur in a typical and atypical color. For example, the broccoli could occur in its typical color green or in the atypical color red. The resulting pool contains 20 items, 10 of which are atypically colored. The number of colors is counterbalanced such as each color occurs twice as a typical and twice as an atypical instance. All items were carefully normed for color-diagnosticity \cite{Tanaka:1999}, typicality and nameability.
+Each context included four items, as displayed in Figure~\ref{prod-design}. The pool of items consisted of 10 types (banana, broccoli, carrot, corn, egg, lettuce, pumpkin, strawberry, swan, tomato), each of which could occur in a typical and atypical color. For example, the broccoli could occur in its typical color green or in the atypical color red. The resulting pool contained 20 items, 10 of which were atypically colored. The number of colors were counterbalanced such as each color occurred twice as a typical and twice as an atypical instance. All items were carefully normed for color-diagnosticity \cite{Tanaka:1999}, typicality and nameability.
 
 
 \subsection{Design}
 The contexts varied in the typicality of the target, the typicality of the competitor and the presence of a contrast, resulting in eight conditions. 
 % For the critical trials, each participant saw four randomly created contexts from each of these eight conditions. 
-We needed to elicit the modifier production probabilities for the target and the competitor. In contexts where the contrast is absent, this distinction is irrelevant. For example, when target and competitor are both (a)typical, it is irrelevant, which is underlyingly coded as the target. Similarly, the modifier production probability for a typical target with an atypical competitor is the same as the probability for a typical competitor in a context with an atypical target. In contrast-present contexts, the target-competitor distinction matters, which is why half of the trials had the competitor to be communicated and half of them the target.
+We needed to elicit the modifier production probabilities for the target and the competitor. In contexts where the contrast was absent, this distinction is irrelevant. For example, when target and competitor are both (a)typical, either could be underlyingly coded as the target. Similarly, the modifier production probability for a typical target with an atypical competitor is the same as the probability for a typical competitor in a context with an atypical target. In contrast-present contexts, the target-competitor distinction matters, which is why speakers had to communicate the competitor half of the trials and the target in the other half.
 
 The fillers were eight randomly created contexts where the contrast or the distractor had to be communicated.
 Overall, each participant saw 60 different contexts (32 critical trials) in a completely randomized order.
@@ -219,7 +213,7 @@ Participants were randomly paired up and each was randomly assigned either to th
 	\begin{center}
 		\includegraphics[width=.475\textwidth]{graphs/prod-design.pdf}
 	\end{center}
-\caption{This is a figure. \ek{make text bigger in figure}} 
+\caption{Example display for the interactive reference game (Experiment 1). Both, the speaker (here \textit{Director}) and listener (\textit{Matcher}) see the same four objects but in a scrambled order. Additionally, the speaker sees a green border around one of the objects, marking the intended target which the listener needs to select.} 
 \label{prod-design}
 \end{figure}
 
@@ -232,13 +226,13 @@ Figure~\ref{prod-results} shows the probability of color modifier mention for th
 	\begin{center}
 		\includegraphics[width=.45\textwidth]{graphs/prod-bycond-paper.pdf}
 	\end{center}
-\caption{This is a figure. \ek{make text bigger in figure}} 
+\caption{Results of the production study, showing the probability of modifier use for the target and competitor in each condition. Error bars are 95\% bootstrapped confidence intervals.} 
 \label{prod-results}
 \end{figure}
 
-When a contrast to the target is present (e.g., another banana), a speaker needs to include the color modifier to fully disambiguate the two items (see the upper row in Figure~\ref{prod-results}). When the target is atypical, speakers always used the color modifier, whereas they sometimes still used only the bare noun when the target was typical.
+When a contrast to the target is present (e.g., another banana), a speaker needs to include the color modifier to fully disambiguate the two items (see the upper row in Figure~\ref{prod-results}). When the target was atypical, speakers always used the color modifier, while this was not always the case for a typical target.
 
-When the contrast was absent (see the lower row in Figure~\ref{prod-results}), speakers were more likely to include a color modifier when referring to an atypical target than a typical one \ek{stats?}.
+When the contrast was absent (see the lower row in Figure~\ref{prod-results}), speakers were more likely to include a color modifier when referring to an atypical target than a typical one.
 
 Independent of contrast, speakers were more likely to include the color modifier for an atypical color competitor over a typical one \ek{stats?}.
 
@@ -250,8 +244,8 @@ To investigate which objects listeners consider to be the most likely referent a
 
 
 \subsection{Participants}
-We recruited 239 participants over Amazon's Mechanical Turk, 121 of which saw atypical color competitors and 118 saw typical color competitors in the critical trials. Each of them was paid \$1.80 for their participation (10\$-16\$/hr). We restricted participation to workers with IP addresses in the US and an approval rate of previous work above 97\%. 
-27 participants were excluded because they indicated that they did the experiment incorrectly, English was not their native language, or they gave more than 20\% erroneous responses\footnote{An erroneous response is defined as a click to a non-target object after observing the fully disambiguating noun.}. 211 participants remain, 108 of which were in the atypical competitor and 103 were in the typical competitor condition. 
+We recruited 239 participants over Amazon's Mechanical Turk, 121 of which saw atypical color competitors and 118 saw typical color competitors in the critical trials\footnote{The experiment was preregistered on \ek{id}. Originally, we recruited 80 participants and then ran a follow-up with 140 more to get enough data for the evaluation of the RSA model. The results from the first 80 participants do not differ from the full data set, which is why we present them collapsed.}. Each of them were paid \$1.80 for their participation (10\$-16\$/hr). We restricted participation to workers with IP addresses in the US and an approval rate of previous work above 97\%. 
+27 participants were excluded because they indicated that they did the experiment incorrectly, English was not their native language, or they gave more than 20\% erroneous responses\footnote{An erroneous response is defined as a selection of a non-target object after observing the fully disambiguating noun.}. 211 participants remain, 108 of which were in the atypical competitor and 103 were in the typical competitor condition. 
 
 % We excluded participants who did the Hit multiple times (1) who indicated that they did the Hit incorrectly or were confused (13), who indicated that they had a native language other than English (6), and who gave more then 20\% erroneous responses (7). An erroneous response is defined as a click to a non-target object after observing the fully disambiguating noun, i.e., participants are excluded who selected the wrong final object more than 11 times. Overall, we excluded 27 people, which is 11\% of the subjects. 211 participants remain, 108 of which were in the atypical competitor and 103 were in the typical competitor condition. 
 
@@ -263,7 +257,8 @@ The item pool is the same as in the production study (Experiment 1).
 \subsection{Design}
 
 Participants completed 55 trials in total, 20 of which were critical trials and 35 were fillers. The contexts varied for each participant with respect to the presence of a contrast and the target's color typicality (within-subject manipulation). Participants were randomly assigned to see either typical or atypical competitors on critical trials (between-subject manipulation). All critical trials included color modified utterances. 
-To avoid learning effects, we included filler trials with unmodified referring expressions and with referents other than the targets of the critical trials. The trial structure is summarized in table \ref{tab:trialstructure}.
+To avoid learning effects, we included filler trials with unmodified referring expressions and with referents other than the targets of the critical trials. 
+% The trial structure is summarized in table \ref{tab:trialstructure}.
 
 % To avoid that participants learn that the color modifier is always part of the referring expression, we need filler trials with unmodified referring expression. Another confound could be that participants can derive the target already from the context without seeing a referring expression, since the target is the only object that shares its color and type features with other objects in the display. The filler trials therefore needed to introduce primarily unmodified referring expressions that target other objects in the display. 
 
@@ -273,52 +268,53 @@ This experiment is a one-player adaptation of the production study explained abo
 
 \begin{figure}
 	\begin{center}
-		\includegraphics[width=.4\textwidth]{graphs/IDT-design.pdf}
+		\includegraphics[width=.35\textwidth]{graphs/IDT-design.pdf}
 	\end{center}
-\caption{This is a figure.} 
+\caption{Design of the incremental decision task. The referring expression was placed above the grid and was gradually revealed to the participant. After each new word, the participants had to make a selection, indicating their best guess about the intended target.} 
 \label{prod-results}
 \end{figure}
 
-All participant were assigned the role of the listener, which means that they needed to identify which object was the target given a referring expression placed above the context. Crucially, the referring expression was only gradually revealed and participants had to choose an object each time before the trial continued. Per trial, three choices had to be made: (1) before receiving any information about the referent (i.e, after observing ``Click on the''), (2) after receiving the adjective (``Click on the yellow'') and (3) after receiving the full referring expression with the disambiguating noun (``Click on the yellow banana!''). 
+All participant were assigned the role of the listener, which means that they needed to identify which object was the target given a referring expression placed above the context. Crucially, the referring expression was only gradually revealed and participants had to choose an object each time before the trial continued. In each critical trial, three choices had to be made: (1) before receiving any information about the referent (i.e, after observing ``Click on the''), (2) after receiving the adjective (``Click on the yellow'') and (3) after receiving the full referring expression with the disambiguating noun (``Click on the yellow banana!''). 
 % The selections before receiving any information about the target, inform us about potential priors participants might have. 
-The critical selections are the clicks after observing the adjective but before the disambiguating noun, since they will inform us about the inferences participants seem to draw from observing the adjective. 
+% The critical selections are the clicks after observing the adjective but before the disambiguating noun, since they will inform us about the inferences participants seem to draw from observing the adjective. 
 % We also collected the clicks after the fully disambiguating noun was presented, which functioned as attention checks in the analysis. 
 
 To center the position of the mouse after each selection, a button appeared in the center of the grid which had to be clicked to reveal the next word or to advance to the next trial. 
 
-\begin{table}
-	\begin{center} 
-	\caption{Overview of the trial structure for the comprehension study.} 
-	\label{tab:trialstructure}
-	\vskip 0.12in
-	\begin{tabular}{llll} 
-	\hline
-	\textbf{trial type} & \textbf{number} & \textbf{utterance} & \textbf{referent} \\
-	\hline
-	critical  & 20     & modified       & target                \\
-	filler    & 5      & unmodified     & competitor (typical)  \\
-	filler    & 5      & modified       & competitor (atypical) \\
-	filler    & 5      & modified       & contrast              \\
-	filler    & 20     & unmodified     & distractor (typical)  \\
-	\hline
-	\end{tabular} 
-	\end{center} 
-	\end{table}
+% \begin{table}
+% 	\begin{center} 
+% 	\caption{Overview of the trial structure for the comprehension study.} 
+% 	\label{tab:trialstructure}
+% 	\vskip 0.12in
+% 	\begin{tabular}{llll} 
+% 	\hline
+% 	\textbf{trial type} & \textbf{number} & \textbf{utterance} & \textbf{referent} \\
+% 	\hline
+% 	critical  & 20     & modified       & target                \\
+% 	filler    & 5      & unmodified     & competitor (typical)  \\
+% 	filler    & 5      & modified       & competitor (atypical) \\
+% 	filler    & 5      & modified       & contrast              \\
+% 	filler    & 20     & unmodified     & distractor (typical)  \\
+% 	\hline
+% 	\end{tabular} 
+% 	\end{center} 
+% 	\end{table}
 
-The trials were randomized with one restriction: contexts in which a speaker's color modifier use to refer to the target is very unlikely only occurred after the 15th trial. These were contexts where there was no contrast and either both target and color competitor were typical objects, or the target was typical while the color competitor was atypical. We introduced this restriction to minimize the risk that participants perceive the ``utterance generator'' (speaker) as unnatural.
+Trials were randomized with the only restriction that modified utterances that referred to a typical object with no contrast only appeared after the 15th trial to minimize the risk that the speaker was perceived as unreliable \cite{Grodner:2011}.
+% The trials were randomized with one restriction: contexts in which a speaker's color modifier use to refer to the target is very unlikely only occurred after the 15th trial. These were contexts where there was no contrast and either both target and color competitor were typical objects, or the target was typical while the color competitor was atypical. We introduced this restriction to minimize the risk that participants perceive the ``utterance generator'' (speaker) as unnatural.
 
 Before participants proceeded to the main trials, they had to complete four practice trials constructed from the speaker perspective, which were introduced to familiarize the participants with the task.
 
 % \subsection{Data Preprocessing and exclusion}
 
 \subsection{Results}
-Figure~\ref{compr-results} shows the proportion of object selections before reading the adjective (lighter colors) and after the adjective (darker colors), grouped by context condition. Before an adjective is observed, all items should appear equally likely to be the target, which is supported by the generally uniform distribution in all conditions. After the adjective is revealed (darker colors), only the target and competitor are legible options and we predict that the presence of the contrast and the typicality of the objects will affect the listeners' object choices.
+Figure~\ref{compr-results} shows the proportion of object selections before reading the adjective (lighter colors) and after the adjective (darker colors), grouped by context condition. Before an adjective is observed, all items should appear equally likely to be the target, which is supported by the generally uniform distribution in all conditions. After the adjective is revealed (darker colors), only the target and competitor are legible options and we predicted that the presence of the contrast and the typicality of the objects will affect the listeners' object choices.
 
 \begin{figure}
 	\begin{center}
-		\includegraphics[width=.475\textwidth]{graphs/compr-bycond-paper.pdf}
+		\includegraphics[width=.475\textwidth]{graphs/compr-results.pdf}
 	\end{center}
-\caption{This is a figure. \ek{make bars and text bigger}} 
+\caption{Results for the comprehension study, showing the proportion of selections for each item in the display and each condition. The bars in lighter colors indicate the selections before, the darker bars are the selections after the adjective was observed. Error bars are 95\% bootstrapped confidence intervals. \ek{make bars and text bigger}} 
 \label{compr-results}
 \end{figure}
 
@@ -326,11 +322,22 @@ When the contrast is present (upper row in Figure~\ref{compr-results}), there is
 
 When the contrast is absent (lower row in Figure~\ref{compr-results}) and target and competitor differ in typicality, there is a preference for the item with the atypical color. When the two items share their typicality, the selection are approximately at the same rate. 
 
-These results clearly show that the color typicality of the objects in the display affect the inference listeners draw about the intended referent. An atypical competitor alone can promote the competitor over the target when the contrast is absent and even make the target preference disappear when a contrast is present. Choosing an atypical target makes the contrast-present and contrast-absent condition selections more similar, suggesting a smaller contrastive inference. 
+% \begin{figure}
+% 	\begin{center}
+% 		\includegraphics[width=.475\textwidth]{graphs/switching-bycond.pdf}
+% 	\end{center}
+% \caption{This is a figure.\ek{makes this to a collapsed plot without condition grouping? Maybe even get rid of the plot, but it makes it harder to describe.}} 
+% \label{switching}
+% \end{figure}
+
+Qualitative post-hoc analyses revealed that the selections after reading the adjective were also affected by the participant's previous selection. A participant who previously selected the competitor was more likely to select the competitor again than switch to the target (and vice versa). But since the object selections before the adjective occurred are uniformly distributed, any patterns that appear after the adjective cannot be an artifact of the reselection bias.
+
+These results clearly show that the color typicality of the objects in the display affect the inference listeners draw about the intended referent. An atypical competitor alone can promote the competitor over the target when the contrast is absent and can even make the target preference disappear when a contrast is present. It is therefore highly relevant to control for the quality of the competitor when assessing contrastive inferences. 
+Choosing an atypical target makes the contrast-present and contrast-absent conditions more similar, suggesting a smaller contrastive inference. This replicates the finding that the contrastive inference did not appear with items of unpredictable colors \cite{Sedivy:2003}.
 
 \section{Model evaluation}
 
-To assess the relationship between the modifier production probabilities and the comprehension data in the simplest way, we will assume a flat prior over all objects in the display. The probabilities to choose the target over the competitor are then simply the normalized modifier production probabilities as shown in Equation~(\ref{eq-flatprior}), where $r$ is the possible referent, $u$ the utterance and $C$ the specific context.
+To assess the relationship between the modifier production probabilities and the comprehension data in the simplest way, we will assume a flat prior over all objects in the display. This choice is further justified by the uniform distribution over all objects before receiving any information about the target in the comprehension experiment. The probabilities to choose the target over the competitor are then the normalized modifier production probabilities as shown in Equation~(\ref{eq-flatprior}), where $r$ is the possible referent, $u$ the utterance and $C$ the specific context.
 
 \begin{equation}
 	P_{L_1}(r|u,C) = \frac{P_{S_0}(u|r,C)}{P_{S_0}(u|r_{target},C) + P_{S_0}(u|r_{comp},C)}
@@ -339,9 +346,9 @@ To assess the relationship between the modifier production probabilities and the
 
 Figure~\ref{model-results-flatprior} shows the model predictions (in blue) and the empirical results (in purple) for target and competitor selection after observing the adjective. 
 
-The model predicts...
+Using the modifier production probabilities obtained in Experiment 1, the model qualitatively predicts the patterns for the different context conditions. 
 
-The model qualitatively predicts the patterns for the different context conditions. However, it generally predicts a stronger inference than borne out in the empirical data. \ek{which is why the correlation is so low}
+Quantitatively the RSA model is a significant predictor for the empirically elicited comprehension data \ek{stats} and its predictions highly correlate with the empirical results (\ek{stats: r=}). However, it generally predicts stronger inferences than borne out in the empirical data, as shown in Figure~\ref{model-results-corr-flatprior}. The model overpredicts target selection for high target preference conditions and underpredicts the target selection in low target preference conditions. 
 
 \begin{figure}
 	\begin{center}
@@ -353,39 +360,38 @@ The model qualitatively predicts the patterns for the different context conditio
 
 \begin{figure}
 	\begin{center}
-		\includegraphics[width=.475\textwidth]{graphs/corr-modelflat-bycondition.pdf}
+		\includegraphics[width=.475\textwidth]{graphs/corr-plot.pdf}
 	\end{center}
-\caption{This is a figure.\ek{fix condition naming}\jd{don't say "clicks to the target" but instead "target selection" on the y-axis and throughout the paper. clicks sounds clumsy. maybe also highlight the ttp and tap conditions visually if you use them as the motivating example at the beginning of the paper}} 
+\caption{This is a figure.\ek{put contrast-present up}} 
 \label{model-results-corr-flatprior}
 \end{figure}
 
-\ek{the rsa model is a significant predictor for the comprehension data; however there are also biases: position and non-switching (see figure); in fact if we add these predictors to the model, they also become significant. In the new plots, we can see that (when the position is equal), whatever was previously clicked highly affects the outcome. Now the model underpredicts the target clicks in most conditions. The reverse is true if the competitor was clicked previously. This is something where the eyetracking data will provide more information since we expect the switching cost to be lower.}
+One possible explanation is that the inferences appear smaller in the comprehension study, especially because of the bias to reselect the previously selected object (as described in the results of Experiment 2). If a participant receives an adjective that is supposed to elicit a contrastive inference, but the participant has clicked the competitor before, the non-switching bias will counteract the contrastive inference choice. This can explain why the preference of the target over the competitor is flatter than expected and might be an artifact of the offline incremental decision task. Since an online eye-tracking experiment does not rely on incremental selections, we expect this bias to decrease and therefore the inferences to become stronger.
 
-\begin{figure}
-	\begin{center}
-		\includegraphics[width=.475\textwidth]{graphs/modelflat-bycondition-targetprevClick.pdf}
-	\end{center}
-\caption{This is a figure.\ek{fix a lot}} 
-\label{model-results-flatprior-targetprev}
-\end{figure}
+% \begin{figure}
+% 	\begin{center}
+% 		\includegraphics[width=.475\textwidth]{graphs/modelflat-bycondition-targetprevClick.pdf}
+% 	\end{center}
+% \caption{This is a figure.\ek{fix a lot}} 
+% \label{model-results-flatprior-targetprev}
+% \end{figure}
 
-\begin{figure}
-	\begin{center}
-		\includegraphics[width=.475\textwidth]{graphs/switching-bycond.pdf}
-	\end{center}
-\caption{This is a figure.\ek{fix a lot}} 
-\label{switching}
-\end{figure}
-
+Overall, these results suggest a strong interconnection between referring expression interpretation and production. Only using the probability of encountering the utterance itself, the RSA model can qualitatively and quantitatively predict the empirically elicited comprehension data. Although we replicate that the contrastive inference can be elicited in an offline incremental decision task, the model results suggest that the selection biases in the paradigm might reduce the size of the inferences. We expect this bias to reduce in an eye-tracking paradigm, which is an immediate future direction for this work.
 
 
 \section{Discussion}
 
-\jd{somewhere make clear that it's not just color-diagnosticity of the target (as sedivy suggests) that matters -- instead, it's that, and the color-diagnosticity of the other distractors, and their relative typicality, etc etc, which are all ultimately captured variable modifier production expectations, and \emph{that's} the explanatory quantity}
+In this paper, we provided a novel account of contrastive inference in which we argue for a speaker-centric model of comprehension. We use the Rational-Speech Act (RSA) framework to make quantitative predictions about the behavior a pragmatic listener \textit{should} exhibit when provided with different contexts. This account shifts the focus away from specific cognitive and linguistic factors that have been discussed to affect contrastive inference in the literature onto listener's production expectations (and their prior beliefs). We show that this speaker-centric model cannot only account for the general case of contrastive inference, but makes further predictions onto why contrastive inference appears to be less stable with color adjectives. 
 
-\ek{random thought: if target is typical and contrast present -- does the typicality of the contrast affect modifier production for the target? It should. So far we see that modifier mention for the typical target + contrast contexts is not at ceiling, because (maybe) "banana" is still a better description of the target than the contrast. This would probably change if the contrast was brown.}
+In contrast to previous accounts, it is not simply the production probability of the target that matters (as suggested in a default description account \cite{Sedivy:2003}), but instead the relative modifier production probability of \emph{all} objects in the display, which are then evaluated against each other. In this particular case this means that it assigns a central role to the color competitor in the display. The empirical results confirm that the choice of the competitor affects the interpretation of the utterance, providing evidence for this highly pragmatic account of comprehension.
 
-% There is not just a contrastive function on each adjective, but when a listener hears an adjective, it can be for multiple reasons, only one of which is contrastive. other reasons might be typicality, scene variation,... If we consider this to be true and the listener considers all objects in the display as potential targets, a lot of things need to be going alright for the target and competitor for the contrastive inference to happen. This also explains the difference between size and color adjectives, since size adjectives are not mentioned overinformatively.
+We assessed the model predictions by collecting object selections in an incremental decision task \cite{Qing:2018}, replicating that it generally can elicit the contrastive inference. Crucially the results show high variation between context conditions dependent on the typicality of the target and competitor. In other words, by varying the modifier production probabilities, we can make the contrastive inference appear strong and almost make it disappear. This range provides a challenge for accounts that argue for a uniform quality about adjective semantics that affect contrastive inference. A speaker-centric account predicts instead that the general differences observed between different types of adjectives is in fact mediated by how likely a listener expects the modifier to be produced and an interesting new avenue for future investigations.
+
+
+
+
+
+% \ek{random thought: if target is typical and contrast present -- does the typicality of the contrast affect modifier production for the target? It should. So far we see that modifier mention for the typical target + contrast contexts is not at ceiling, because (maybe) "banana" is still a better description of the target than the contrast. This would probably change if the contrast was brown.}
 
 % You can't take the results wrt presence/size of the contrastive inference effect and draw conclusions about the nature of adjective types. We can take color adjectives and make the contrastive inference (dis-)appear, i.e., we can make them look like size or material adjectives.
 
