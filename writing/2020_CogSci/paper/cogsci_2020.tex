@@ -340,7 +340,7 @@ Figure~\ref{model-results-flatprior} shows the model predictions (in blue) and t
 
 Using the modifier production probabilities obtained in Experiment 1, the model qualitatively predicts the patterns for the different context conditions. 
 
-Quantitatively the RSA model is a significant predictor for the empirically elicited comprehension data ($E=1.46, CI=[1.01, 1.91]$)\footnote{Results of a Bayesian mixed effects regression model $target\_selection \sim RSA\_prediction + previous\_selection + (1+RSA\_prediction|participant)$.} and its predictions highly correlate with the empirical results ($r=0.91$). However, it generally predicts stronger inferences than borne out in the empirical data, as shown in Figure~\ref{model-results-corr-flatprior}. The model overpredicts target selection for high target preference conditions and underpredicts the target selection in low target preference conditions. 
+Quantitatively the RSA model is a significant predictor for the empirically elicited comprehension data ($E=1.46, CI=[1.01, 1.91]$)\footnote{Results of a Bayesian mixed effects regression model $target\_selection \sim RSA\_prediction + previous\_selection + (1+RSA\_prediction|participant)$.} and its predictions highly correlate with the empirical results ($r=0.91$). However, it generally predicts more extreme probabilities than are borne out in the empirical data, as shown in Figure~\ref{model-results-corr-flatprior}. The model overpredicts target selections in high target preference conditions and underpredicts target selections in low target preference conditions. 
 
 \begin{figure}
 	\begin{center}
@@ -358,7 +358,7 @@ Quantitatively the RSA model is a significant predictor for the empirically elic
 \label{model-results-corr-flatprior}
 \end{figure}
 
-One possible explanation is that the inferences appear smaller in the comprehension study, especially because of the bias to reselect the previously selected object (as described in the results of Experiment 2). If a participant receives an adjective that is supposed to elicit a contrastive inference, but the participant has clicked the competitor before, the non-switching bias will counteract the contrastive inference choice. This can explain why the preference of the target over the competitor is flatter than expected and might be an artifact of the offline incremental decision task. Since an online eye-tracking experiment does not rely on incremental selections, we expect this bias to decrease and therefore the inferences to become stronger.
+One possible explanation is that the inferences appear smaller in the comprehension study because of the bias to reselect the previously selected object (as described in the results of Exp.~2). If a participant observes an adjective that could elicit a contrastive inference but the participant selected the competitor in the prior window, the non-switching bias counteracts the contrastive inference. This can explain why the range of empirical target selection proportions is compressed towards chance. Whether this is indeed an artifact of the incremental decision task could be investigated by re-running the experiment without a prior window selection. Similarly, in an eye-tracking version of the experiment, where participants do not make explicit looking decisions, the non-switching bias is likely to be weaker.\jd{i'm actually not entirely sure this is true, given that the best predictor of fixation at time point t0 is fixation at time point t-1, but we can let it stand}
 
 % \begin{figure}
 % 	\begin{center}
@@ -368,7 +368,7 @@ One possible explanation is that the inferences appear smaller in the comprehens
 % \label{model-results-flatprior-targetprev}
 % \end{figure}
 
-Overall, these results suggest a strong interconnection between referring expression interpretation and production. Only using the probability of encountering the utterance itself, the RSA model can qualitatively and quantitatively predict the empirically elicited comprehension data. Although we replicate that the contrastive inference can be elicited in an offline incremental decision task, the model results suggest that the selection biases in the paradigm might reduce the size of the inferences. We expect this bias to reduce in an eye-tracking paradigm, which is an immediate future direction for this work.
+Overall, these results suggest a strong connection between referring expression interpretation and production. Only using the probability of encountering the observed adjective, the RSA model can qualitatively and quantitatively predict the empirically elicited comprehension data. Although we replicate that the contrastive inference can be elicited in an offline incremental decision task, the model results suggest that the selection biases in the paradigm might reduce the size of the inferences. We expect this bias to reduce in an eye-tracking paradigm, which is an immediate future direction for this work.
 
 
 \section{Discussion}
