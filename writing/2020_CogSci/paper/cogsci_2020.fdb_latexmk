@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex cogsci_2020"] 1580760982 "cogsci_2020.aux" "cogsci_2020.bbl" "cogsci_2020" 1580761703
+["bibtex cogsci_2020"] 1580766514 "cogsci_2020.aux" "cogsci_2020.bbl" "cogsci_2020" 1580767182
   "./apacite.bst" 1575926124 146015 a52e2433e0975b0c119e79a54ea43b01 ""
-  "CogSci_Template.bib" 1580758249 29018 8401fd2e9eb4da88871af1b62176d8a8 ""
-  "cogsci_2020.aux" 1580761702 7941 f898c3d67ceb2a31f33f2e7b24740830 ""
+  "CogSci_Template.bib" 1580766303 29411 4bd300506b0ff1ae0b8cb52f985c5e3d ""
+  "cogsci_2020.aux" 1580767182 8204 48e46a8798860f0ca7419ab8a7ded72d ""
   (generated)
   "cogsci_2020.bbl"
   "cogsci_2020.blg"
-["pdflatex"] 1580761696 "cogsci_2020.tex" "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.pdf" "cogsci_2020" 1580761703
-  "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.aux" 1580761702 7941 f898c3d67ceb2a31f33f2e7b24740830 ""
+["pdflatex"] 1580767178 "cogsci_2020.tex" "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.pdf" "cogsci_2020" 1580767182
+  "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.aux" 1580767182 8204 48e46a8798860f0ca7419ab8a7ded72d ""
   "/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/base/8r.enc" 1480098666 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2018/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1480098689 1408 5937f58aa508ea2cea4901c07d10f5fe ""
@@ -151,20 +151,20 @@
   "/usr/local/texlive/2018/texmf.cnf" 1523934483 577 0b39adfd7c93507ff20c9c14c2f1a33f ""
   "apacite.sty" 1575926124 71011 f7b6fc32941ffbb47169c897680b6a45 ""
   "cogsci.sty" 1575926124 7259 8d3f47e880b42b2301f8ecd37fd02605 ""
-  "cogsci_2020.aux" 1580761702 7941 f898c3d67ceb2a31f33f2e7b24740830 ""
-  "cogsci_2020.bbl" 1580760982 18478 65b6b9190010c99ba1d3f60b1ac817d7 "bibtex cogsci_2020"
-  "cogsci_2020.tex" 1580761696 56869 0ac82992f660f53cb314bc203b45295c ""
-  "graphs/IDT-design.pdf" 1580162239 155467 086efb37e9f3f85d6fe7cfda1a27e35c ""
+  "cogsci_2020.aux" 1580767182 8204 48e46a8798860f0ca7419ab8a7ded72d ""
+  "cogsci_2020.bbl" 1580766515 19146 0948efbac20f7b47e436781d09a3abc9 "bibtex cogsci_2020"
+  "cogsci_2020.tex" 1580767177 56829 8bb8b67e3af67c4fcdf8874ac9c28a5a ""
+  "graphs/IDT-design.pdf" 1580767038 593708 81cd281898af9d615a4f9b94708dee13 ""
   "graphs/compr-results.pdf" 1580759192 315178 5c811ce4eaf6b3a777f0d01b45797d79 ""
   "graphs/corr-plot.pdf" 1580758033 499445 b20921b16db8ed2d46c032e26e2faa04 ""
   "graphs/example-context.pdf" 1580701267 769488 a834044282dd6b69aacfbf6140853252 ""
   "graphs/model-bycond-paper.pdf" 1580757287 374238 3fedece61fb7cf7a22ec6e2d7b4ce379 ""
-  "graphs/prod-bycond-paper.pdf" 1580114101 167106 3ab49cdbec83a501de44b9174e23474f ""
+  "graphs/prod-bycond-paper.pdf" 1580765489 335799 9cb552fdd1408ec59d1b59628d23faad ""
   "graphs/prod-design.pdf" 1580113139 653811 8daed9ba1221c8a4f30c0101924e72e7 ""
   (generated)
-  "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.log"
-  "cogsci_2020.log"
   "cogsci_2020.aux"
-  "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.aux"
+  "cogsci_2020.log"
+  "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.log"
   "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.pdf"
+  "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.aux"
   "cogsci_2020.pdf"
