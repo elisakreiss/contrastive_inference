@@ -237,16 +237,16 @@ To avoid learning effects, we included filler trials with unmodified referring e
 
 \subsection{Procedure}
 
-\begin{figure}
-	\begin{center}
-		\includegraphics[width=.325\textwidth]{graphs/IDT-design.pdf}
-	\end{center}
-\caption{Design of the incremental decision task. The referring expression was placed above the grid and revealed gradually. After each new word participants made a selection indicating their best guess about the intended target.} 
-\label{IDT-design}
-\end{figure}
+% \begin{figure}
+% 	\begin{center}
+% 		\includegraphics[width=.325\textwidth]{graphs/IDT-design.pdf}
+% 	\end{center}
+% \caption{Design of the incremental decision task. The referring expression was placed above the grid and revealed gradually. After each new word participants made a selection indicating their best guess about the intended target.} 
+% \label{IDT-design}
+% \end{figure}
 
 This experiment is a one-player adaptation of the production study explained above and follows the design of an incremental decision task \cite{Qing:2018}. 
-Participants were given a referring expression and asked to identify the corresponding object in the display (see Figure~\ref{IDT-design}). Crucially, the utterance was only gradually revealed and each time participants had to choose an object before the trial continued. In critical trials, three choices had to be made: (1) before receiving any information about the referent (i.e, after observing ``Click on the''), (2) after receiving the adjective (``Click on the yellow'') and (3) after receiving the full referring expression with the disambiguating noun (``Click on the yellow banana!''). 
+Participants were given a referring expression and asked to identify the corresponding object in the display. Crucially, the utterance was only gradually revealed and each time participants had to choose an object before the trial continued. In critical trials, three choices had to be made: (1) before receiving any information about the referent (i.e, after observing ``Click on the''), (2) after receiving the adjective (``Click on the yellow'') and (3) after receiving the full referring expression with the disambiguating noun (``Click on the yellow banana!''). 
 
 To center the position of the mouse after each selection, a button appeared in the center of the grid which had to be clicked to reveal the next word or to advance to the next trial. 
 
@@ -261,21 +261,31 @@ Before participants proceeded to the main trials, they had to complete four prac
 % Before participants proceeded to the main trials, they had to complete four practice trials constructed from the speaker perspective, which were introduced to familiarize the participants with the task.
 
 \subsection{Results}
-Figure~\ref{compr-results} shows the proportion of object selections before reading the adjective (lighter colors) and after the adjective (darker colors), grouped by context condition. Before an adjective is observed, all items should appear equally likely to be the target, which is supported by the generally uniform distribution in all conditions. After the adjective is revealed (darker colors), only the target and competitor are legible options and we predicted that the presence of the contrast and the typicality of the objects will affect the listeners' object choices.
+Figure~\ref{modelcompr-results} shows the proportion of object selections after reading the adjective (lighter colors) and the RSA model predictions (darker colors), grouped by context condition. First, we focus on the empirical results where we predicted that the presence of the contrast and the typicality of the objects will affect the listeners' object choices. 
+
+% Before an adjective is observed, all items should appear equally likely to be the target, which is supported by the generally uniform distribution in all conditions. After the adjective is revealed (darker colors), only the target and competitor are legible options and we predicted that the presence of the contrast and the typicality of the objects will affect the listeners' object choices.
+
+% \begin{figure}
+% 	\begin{center}
+% 		\includegraphics[width=.475\textwidth]{graphs/compr-results.pdf}
+% 	\end{center}
+% \caption{Results for the comprehension study, showing the proportion of selections for each item in the display and each condition. The bars in lighter colors indicate the selections before, the darker bars are the selections after the adjective was observed. Error bars are 95\% bootstrapped confidence intervals.} 
+% \label{compr-results}
+% \end{figure}
 
 \begin{figure}
 	\begin{center}
-		\includegraphics[width=.475\textwidth]{graphs/compr-results.pdf}
+		\includegraphics[width=.475\textwidth]{graphs/model-bycond-paper.pdf}
 	\end{center}
-\caption{Results for the comprehension study, showing the proportion of selections for each item in the display and each condition. The bars in lighter colors indicate the selections before, the darker bars are the selections after the adjective was observed. Error bars are 95\% bootstrapped confidence intervals.} 
-\label{compr-results}
+\caption{Proportion of object selections as empirically elicited (in lighter colors) and as predicted by the model (in darker colors) for each condition. Error bars are 95\% bootstrapped confidence intervals for each target-competitor item combination.} 
+\label{modelcompr-results}
 \end{figure}
 
-When the contrast is present (upper row in Figure~\ref{compr-results}), there is a general preference for target over competitor selections. This preference is biggest for the case when the target is atypical and the competitor is typical and disappears for when the target is typical and the competitor is atypical. 
+When the contrast is present (upper row in Figure~\ref{modelcompr-results}), there is a general preference for target over competitor selections. This preference is biggest for the case when the target is atypical and the competitor is typical and disappears for when the target is typical and the competitor is atypical. 
 
-When the contrast is absent (lower row in Figure~\ref{compr-results}) and target and competitor differ in typicality, there is a preference for the item with the atypical color. When the two items share their typicality, the selection are approximately at the same rate. 
+When the contrast is absent (lower row in Figure~\ref{modelcompr-results}) and target and competitor differ in typicality, there is a preference for the item with the atypical color. When the two items share their typicality, the selection are approximately at the same rate. 
 
-Qualitative post-hoc analyses revealed that the selections after reading the adjective were also affected by the participant's previous selection. A participant who previously selected the competitor was more likely to select the competitor again than switch to the target (and vice versa). But since the object selections before the adjective occurred are uniformly distributed, any patterns that appear after the adjective cannot be an artifact of the reselection bias.
+Post-hoc analyses revealed that object selections before an adjective was observed were approximately at random. However the selections after reading the adjective were affected by the participant's previous selection, such that a participant who previously selected the competitor was more likely to select the competitor again than switch to the target (and vice versa). But since the object selections before the adjective occurred are uniformly distributed, any patterns that appear after the adjective cannot be an artifact of the reselection bias.
 
 These results clearly show that the color typicality of the objects in the display affect the inference listeners draw about the intended referent. An atypical competitor alone can promote the competitor over the target when the contrast is absent and can even make the target preference disappear when a contrast is present. It is therefore highly relevant to control for the quality of the competitor when assessing contrastive inferences. 
 Choosing an atypical target makes the contrast-present and contrast-absent conditions more similar, suggesting a smaller contrastive inference. This replicates the finding that the contrastive inference did not appear with items of unpredictable colors \cite{Sedivy:2003}.
@@ -289,7 +299,7 @@ To assess the relationship between the modifier production probabilities and the
 \label{eq-flatprior}
 \end{equation}
 
-Figure~\ref{model-results-flatprior} shows the model predictions (in blue) and the empirical results (in purple) for target and competitor selection after observing the adjective. Using the modifier production probabilities obtained in Experiment 1, the model predicts the patterns for the different context conditions. 
+Figure~\ref{modelcompr-results} shows the model predictions (in blue) and the empirical results (in purple) for target and competitor selection after observing the adjective. Using the modifier production probabilities obtained in Experiment 1, the model predicts the patterns for the different context conditions. 
 
 Quantitatively the RSA model predictions are a significant predictor for the empirically elicited comprehension data ($E=1.46, CI=[1.01, 1.91]$)
 \footnote{Results of a Bayesian mixed effects regression model $target\_selection \sim RSA\_prediction + previous\_selection + (1+RSA\_prediction|participant)$.} 
@@ -297,17 +307,9 @@ and its predictions highly correlate with the empirical results ($r=0.91$). Howe
 
 \begin{figure}
 	\begin{center}
-		\includegraphics[width=.475\textwidth]{graphs/model-bycond-paper.pdf}
-	\end{center}
-\caption{Proportion of object selections as empirically elicited (in lighter colors) and as predicted by the model (in darker colors) for each condition. Error bars are 95\% bootstrapped confidence intervals for each target-competitor item combination.} 
-\label{model-results-flatprior}
-\end{figure}
-
-\begin{figure}
-	\begin{center}
 		\includegraphics[width=.475\textwidth]{graphs/corr-plot.pdf}
 	\end{center}
-\caption{Correlation of RSA model predictions (x axis) and the empirically elicited proportion of target selections. Data points are color coded according to the conditions in Figure~\ref{model-results-flatprior}.} 
+\caption{Correlation of RSA model predictions (x axis) and the empirically elicited proportion of target selections. Data points are color coded according to the conditions in Figure~\ref{modelcompr-results}.} 
 \label{model-results-corr-flatprior}
 \end{figure}
 
