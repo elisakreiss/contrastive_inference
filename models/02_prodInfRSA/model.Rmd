@@ -229,28 +229,79 @@ df_cor_flatprior = df_afteradj_propTarget %>%
             se_prob=sd(Probability)/sqrt(n()),
             prob_CI_low=meanProb-1.96*se_prob,
             prob_CI_high=meanProb+1.96*se_prob) %>% 
-  ungroup()
+  ungroup() %>% 
+  mutate(contrast = ifelse(str_detect(condition, "p"), "contrast present", "contrast absent")) %>% 
+  mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan"))))
 
-df_cor_flatprior
+# df_cor_flatprior
 
-ggplot(df_cor_flatprior, aes(x=meanProb, y=meanPropClicks, group=condition, color=condition)) +
+ggplot(df_cor_flatprior, aes(x=meanProb, y=meanPropClicks, color=condition)) +
   geom_abline(intercept = 0, slope = 1) +
+  geom_vline(xintercept = 0.5, linetype="dashed", color = "lightgrey") +
+  geom_hline(yintercept = 0.5, linetype="dashed", color = "lightgrey") +
   geom_errorbar(aes(ymin = prop_CI_low, ymax = prop_CI_high)) + 
   geom_errorbarh(aes(xmin = prob_CI_low, xmax = prob_CI_high)) +
-  geom_point() +
+  geom_point(size = 3.5) +
   # xlim(0,1) +
   # ylim(0,1) +
   coord_cartesian(xlim = c(0.2,0.9), ylim = c(0.2,0.9)) +
+  # scale_color_manual(values=c("#edc951", "#c9df8a", "#eb6841", "#77ab59", "#cc2a36", "#36802d", "#cc2a87", "#234d20")) +
+  scale_color_manual(values=c("#c9df8a", "#77ab59", "#36802d", "#234d20", "#edc951", "#eb6841", "#cc2a36", "#cc2a87")) +
   xlab("Model prediction") +
-  ylab("Empirical proportion of\nclicks to the target")
+  ylab("Empirical proportion of\ntarget selections")
 
 cor(df_cor_flatprior$meanProb,df_cor_flatprior$meanPropClicks)
 
-# df_rsa_flatpriorTarget = df_cor %>% 
-#   select(condition, Probability, targetType, compType)
-# write_csv(df_rsa_flatpriorTarget, here("analyses", "03_comprehension", "02_main", "0102_summary", "df_rsa_flatprior.csv"))
+df_rsa_flatpriorTarget %>%
+  select(condition, Probability, targetType, compType) %>% 
+  write_csv(., here("analyses", "03_comprehension", "02_main", "0102_summary", "df_rsa_flatprior.csv"))
 
-ggsave(here("writing", "2020_CogSci", "paper", "graphs", "corr_modelflat-bycondition.pdf"), width = 6, height = 4)
+ggsave(here("writing", "2020_CogSci", "paper", "graphs", "corr-modelflat-bycondition.pdf"), width = 6, height = 3.5)
+
+```
+
+### Flat prior + prev click & pos
+
+```{r}
+
+df_cor_prevposflat = df_prevpos_propTarget %>% 
+  left_join(df_rsa_flatpriorTarget)  %>% 
+  group_by(condition, pos, prevClickedType) %>% 
+  summarize(meanPropClicks = mean(PropClicks),
+            se_prop=sd(PropClicks)/sqrt(n()),
+            prop_CI_low=meanPropClicks-1.96*se_prop,
+            prop_CI_high=meanPropClicks+1.96*se_prop,
+            meanProb = mean(Probability),
+            se_prob=sd(Probability)/sqrt(n()),
+            prob_CI_low=meanProb-1.96*se_prob,
+            prob_CI_high=meanProb+1.96*se_prob) %>% 
+  ungroup()
+
+# view(df_cor_prevposflat)
+
+df_cor_prevposflat %>% 
+  # filter(n_compr > 4) %>% 
+  filter(pos == "equal") %>%
+  # filter(prevClickedType == "other") %>%
+ggplot(., aes(x=meanProb, y=meanPropClicks, color=condition)) +
+  facet_wrap(~prevClickedType, nrow=3) +
+  # facet_wrap(~pos) +
+  geom_errorbar(aes(ymin = prop_CI_low, ymax = prop_CI_high)) + 
+  geom_errorbarh(aes(xmin = prob_CI_low, xmax = prob_CI_high)) +
+  geom_abline(intercept = 0, slope = 1) +
+  geom_point() +
+  xlim(0,1) +
+  ylim(0,1)
+
+df_corcalc = df_cor_prevposflat %>% 
+  filter(pos == "equal") %>%
+  filter(prevClickedType == "other")
+
+cor(df_corcalc$meanProb,df_corcalc$meanPropClicks)
+
+# df_rsa_flatprior = df_cor %>% 
+#   select(condition, Probability, targetType, compType)
+# write_csv(df_rsa_flatprior, here("analyses", "03_comprehension", "02_main", "0102_summary", "df_rsa_flatprior.csv"))
 
 ```
 
@@ -349,6 +400,132 @@ df_full = df_afteradj_prop %>%
   filter(intended_target == "target" | intended_target == "comp")
 
 df_full %>%
+  # mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan")))) %>%
+  filter(str_detect(condition, "p")) %>%
+  mutate_at(vars(condition), funs(case_when(
+    str_detect(.,"at") ~ "atypical target\ntypical competitor",
+    str_detect(.,"ta") ~ "typical target\natypical competitor",
+    str_detect(.,"aa") ~ "atypical target\natypical competitor",
+    str_detect(.,"tt") ~ "typical target\ntypical competitor",
+    TRUE ~ "FIRE!"
+  ))) %>%
+  mutate_at(vars(condition), funs(factor(., levels=c("atypical target\ntypical competitor", "typical target\ntypical competitor", "atypical target\natypical competitor", "typical target\natypical competitor")))) %>%
+  mutate_at(vars(intended_target), funs(factor(., levels=c("target", "comp")))) %>%
+  ggplot(., aes(x=intended_target, 
+                y=Value, 
+                fill=condition,
+                alpha=Measure
+                )) +
+  facet_wrap(~condition, scales = "free_x", nrow=1) +
+  stat_summary(fun.y = "mean", 
+               geom = "bar",
+               position = position_dodge(width = 0.8),
+               width = 0.8) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               position = position_dodge(width = 0.8),
+               size = .3,
+               width = 0.3) +
+  geom_hline(yintercept = 0.5, linetype="dashed", color = "lightgrey") +
+  theme(legend.position = "none") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
+        ) +
+  scale_alpha_manual(values=c(0.5, 1)) +
+  # scale_color_manual(values=c(target_color, comp_color)) +
+  # scale_fill_manual(values=c("#edc951", "#eb6841", "#cc2a36", "#cc2a87")) +
+  scale_fill_manual(values=c("#c9df8a", "#77ab59", "#36802d", "#234d20")) +
+  scale_x_discrete(labels=c("comp"="competitor")) +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
+        ) +
+  coord_cartesian(ylim = c(0,0.9)) +
+  # theme(axis.text.x = element_text(angle = 30, hjust = 1,size=14)) +
+  theme(axis.text.x = element_text(size=14)) +
+  theme(axis.title = element_text(size=16)) +
+  xlab("Item") +
+  ylab("Proportion of (predicted) selections")
+
+ggsave(here("writing", "2020_CogSci", "paper", "graphs", "modelflat-bycondition-contrast.pdf"), width = 8, height = 3)
+
+df_full %>%
+  # mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan")))) %>%
+  filter(!str_detect(condition, "p")) %>%
+  mutate_at(vars(condition), funs(case_when(
+    str_detect(.,"at") ~ "atypical target\ntypical competitor",
+    str_detect(.,"ta") ~ "typical target\natypical competitor",
+    str_detect(.,"aa") ~ "atypical target\natypical competitor",
+    str_detect(.,"tt") ~ "typical target\ntypical competitor",
+    TRUE ~ "FIRE!"
+  ))) %>%
+  mutate_at(vars(condition), funs(factor(., levels=c("atypical target\ntypical competitor", "typical target\ntypical competitor", "atypical target\natypical competitor", "typical target\natypical competitor")))) %>%
+  mutate_at(vars(intended_target), funs(factor(., levels=c("target", "comp")))) %>%
+  ggplot(., aes(x=intended_target, 
+                y=Value, 
+                fill=condition,
+                alpha=Measure
+                )) +
+  facet_wrap(~condition, scales = "free_x", nrow=1) +
+  stat_summary(fun.y = "mean", 
+               geom = "bar",
+               position = position_dodge(width = 0.8),
+               width = 0.8) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               position = position_dodge(width = 0.8),
+               size = .3,
+               width = 0.3) +
+  geom_hline(yintercept = 0.5, linetype="dashed", color = "lightgrey") +
+  theme(legend.position = "none") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
+        ) +
+  scale_alpha_manual(values=c(0.5, 1)) +
+  # scale_color_manual(values=c(target_color, comp_color)) +
+  scale_fill_manual(values=c("#edc951", "#eb6841", "#cc2a36", "#cc2a87")) +
+  # scale_fill_manual(values=c("#c9df8a", "#77ab59", "#36802d", "#234d20")) +
+  scale_x_discrete(labels=c("comp"="competitor")) +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
+        ) +
+  coord_cartesian(ylim = c(0,0.9)) +
+  # theme(axis.text.x = element_text(angle = 30, hjust = 1,size=14)) +
+  theme(axis.text.x = element_text(size=14)) +
+  theme(axis.title = element_text(size=16)) +
+  xlab("Item") +
+  ylab("Proportion of (predicted) selections")
+
+ggsave(here("writing", "2020_CogSci", "paper", "graphs", "modelflat-bycondition-nocontrast.pdf"), width = 8, height = 3)
+```
+
+### Flat prior + prev click & pos
+
+```{r}
+
+df_full = df_prevpostClick %>% 
+  rename(intended_target = "obj_in_display") %>% 
+  left_join(df_rsa_flatprior)  %>% 
+  gather(Measure, Value, PropClicks, Probability) %>% 
+  mutate_at(vars(Measure), funs(ifelse(.=="PropClicks", "Empirical data", "Model predictions"))) %>% 
+  filter(intended_target == "target" | intended_target == "comp")
+
+df_full %>%
+  filter(pos == "equal") %>%
+  filter(prevClickedType == "other") %>% 
   mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan")))) %>%
   # filter(!str_detect(condition, "p")) %>%
   # mutate_at(vars(condition), funs(case_when(
@@ -399,9 +576,9 @@ df_full %>%
   xlab("Item") +
   ylab("Proportion of (predicted) selections")
 
-ggsave(here("writing", "2020_CogSci", "paper", "graphs", "modelflat-bycondition.pdf"), width = 8, height = 6)
-```
+# ggsave(here("writing", "2020_CogSci", "paper", "graphs", "modelflat-bycondition-targetprevClick.pdf"), width = 8, height = 6)
 
+```
 
 ### Simple prior
 
