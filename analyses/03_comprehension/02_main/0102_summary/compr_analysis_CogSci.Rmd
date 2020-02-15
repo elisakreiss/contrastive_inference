@@ -501,12 +501,12 @@ df_prior_vs_adj %>%
   facet_wrap(~condition, scales = "free_x", nrow=2) +
   stat_summary(fun.y = "mean", 
                geom = "bar",
-               width = 0.7,
-               position = position_dodge(width = 0.65)) +
+               width = 0.8,
+               position = position_dodge(width = 0.8)) +
   stat_summary(fun.data = "mean_cl_boot",
                geom = "errorbar",
                color = "black",
-               position = position_dodge(width = 0.65),
+               position = position_dodge(width = 0.8),
                size = .3,
                width = 0.3) +
   theme(legend.position = "none") +
@@ -530,6 +530,59 @@ df_prior_vs_adj %>%
 ```{r after adj cogsci paper cond, echo=FALSE, fig.height=4, fig.width=7, message=FALSE, warning=FALSE, paged.print=FALSE}
 
 df_prior_vs_adj %>% 
+  filter(str_detect(condition, "p")) %>%
+  mutate_at(vars(condition), funs(case_when(
+    str_detect(.,"at") ~ "atypical target\ntypical competitor",
+    str_detect(.,"ta") ~ "typical target\natypical competitor",
+    str_detect(.,"aa") ~ "atypical target\natypical competitor",
+    str_detect(.,"tt") ~ "typical target\ntypical competitor",
+    TRUE ~ "FIRE!"
+  ))) %>% 
+  mutate_at(vars(condition), funs(factor(., levels=c("atypical target\ntypical competitor", "typical target\ntypical competitor", "atypical target\natypical competitor", "typical target\natypical competitor")))) %>% 
+ggplot(., aes(x=obj_in_display_diff, 
+                            y=clicked, 
+                            fill=obj_in_display_diff, 
+                            alpha=timeStep_selec)) +
+  facet_wrap(~condition, scales = "free_x", nrow=1) +
+  stat_summary(fun.y = "mean", 
+               geom = "bar",
+               width = 0.9,
+               position = position_dodge(width = 0.9)) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               position = position_dodge(width = 0.9),
+               size = .3,
+               width = 0.3) +
+  theme(legend.position = "none") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
+        ) +
+  scale_alpha_manual(values=c(0.5, 1)) +
+  scale_fill_manual(values=c(target_color, comp_color,
+                               contrast_color, distractor_1_color,
+                               distractor_2_color, distractor_2_color)) +
+  # scale_fill_manual(values=c(target_color, comp_color, distractor_1_color, 
+  #                              distractor_2_color, distractor_2_color)) +
+  scale_x_discrete(labels=c("comp"="competitor")) +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
+        ) +
+  coord_cartesian(ylim = c(0,0.7)) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(axis.title = element_text(size=16)) +
+  xlab("Item") +
+  ylab("Proportion of selections")
+
+ggsave(here("writing", "2020_CogSci", "paper", "graphs", "compr-bycondition-contrast.pdf"), width = 8, height = 3)
+
+df_prior_vs_adj %>% 
   filter(!str_detect(condition, "p")) %>%
   mutate_at(vars(condition), funs(case_when(
     str_detect(.,"at") ~ "atypical target\ntypical competitor",
@@ -546,12 +599,12 @@ ggplot(., aes(x=obj_in_display_diff,
   facet_wrap(~condition, scales = "free_x", nrow=1) +
   stat_summary(fun.y = "mean", 
                geom = "bar",
-               width = 0.7,
-               position = position_dodge(width = 0.65)) +
+               width = 0.9,
+               position = position_dodge(width = 0.9)) +
   stat_summary(fun.data = "mean_cl_boot",
                geom = "errorbar",
                color = "black",
-               position = position_dodge(width = 0.65),
+               position = position_dodge(width = 0.9),
                size = .3,
                width = 0.3) +
   theme(legend.position = "none") +
@@ -562,10 +615,10 @@ ggplot(., aes(x=obj_in_display_diff,
         strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
         ) +
   scale_alpha_manual(values=c(0.5, 1)) +
-  # scale_fill_manual(values=c(target_color, comp_color, 
-  #                              contrast_color, distractor_1_color, 
+  # scale_fill_manual(values=c(target_color, comp_color,
+  #                              contrast_color, distractor_1_color,
   #                              distractor_2_color, distractor_2_color)) +
-  scale_fill_manual(values=c(target_color, comp_color, distractor_1_color, 
+  scale_fill_manual(values=c(target_color, comp_color, distractor_1_color,
                                distractor_2_color, distractor_2_color)) +
   scale_x_discrete(labels=c("comp"="competitor")) +
   theme(strip.background = element_rect(color="black", 
@@ -578,9 +631,9 @@ ggplot(., aes(x=obj_in_display_diff,
   theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
   theme(axis.title = element_text(size=16)) +
   xlab("Item") +
-  ylab("Proportion of clicks")
+  ylab("Proportion of selections")
 
-ggsave(here("writing", "2020_CogSci", "paper", "graphs", "compr-bycondition-nocontrast.pdf"), width = 8, height = 4)
+ggsave(here("writing", "2020_CogSci", "paper", "graphs", "compr-bycondition-nocontrast.pdf"), width = 8, height = 3)
 
 ```
 
@@ -1009,13 +1062,16 @@ f_prereg = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_c
 
 # for bernoulli
 # effect of contrast and comp typicality
+# COGSCI PAPER
 f_new1 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_comp_typ_bin|target) + (1+c_contrast*c_target_typ_bin|comp)
+
+m = glmer(f_new1, data = df_model_prereg, family = "binomial")
 
 # effect of contrast, target typ, comp typ
 f_new2 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast|tar_comp)
 
 model_prereg = brm(
-  formula = f_prereg,
+  formula = f_new1,
   data = df_model_prereg,
   seed = 1702,
   family = 'bernoulli' # or bernoulli?
@@ -1154,6 +1210,8 @@ df_model_prevclick =  df %>%
     TRUE ~ "comp_pref"
   ))
 
+f_new1 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + c_prev_click + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_comp_typ_bin|target) + (1+c_contrast*c_target_typ_bin|comp)
+
 # significant contrast, comp typicality, prev_click, pos(target pref), pos(equal pos), prev_click:pos(equal), prev_click:pos(target_pref)
 f_prevclick = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + c_prev_click*pos + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_target_typ_bin*c_comp_typ_bin|targetType)
 
@@ -1163,7 +1221,7 @@ f_prevclick2 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + c_
 f_prevclick3 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast|tar_comp)
 
 model_prevclick = brm(
-  formula = f_prevclick,
+  formula = f_new1,
   data = df_model_prevclick,
   seed = 1702,
   family = 'bernoulli' # or bernoulli?
@@ -1253,15 +1311,22 @@ f_rsa2 = click_to_target ~ RSA_pred*clickedType_prior + (1+RSA_pred+clickedType_
 # significant Intercept and RSA_pred
 f_rsa3 = click_to_target ~ RSA_pred + (1+RSA_pred|anon_worker_id)
 
-model_rsa = brm(
-  formula = f_rsa2,
+# divergent
+f_rsanew = click_to_target ~ RSA_pred + clickedType_prior + (1+RSA_pred|anon_worker_id)
+
+# glmer()
+
+model_rsanew = brm(
+  formula = f_rsanew,
   data = df_model_rsa,
   seed = 1702,
-  family = 'bernoulli' # or bernoulli?
+  family = 'bernoulli',
+  save_all_pars = TRUE
 )
 
-summary(model_rsa)
+summary(model_rsanew)
 
+bayes_factor(model_rsa, model_rsanew)
 
   
 

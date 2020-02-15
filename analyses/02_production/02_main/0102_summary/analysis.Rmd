@@ -132,23 +132,23 @@ We expected that it would take participants approximately 7 minutes to complete,
 
 ```{r subj, echo=FALSE, fig.height=6, fig.width=8, message=FALSE, warning=FALSE}
 
-df_subj = df %>% 
-  select(age,gender,timeSpent,anon_worker_id) %>% 
-  distinct() %>% 
-  mutate_at(vars(age), funs(as.integer(.)))
-
-mean_age = round(mean(df_subj$age),digits = 1)
-p_age = ggplot(df_subj,aes(x=age)) +
-  geom_bar(width = .5,
-           fill = "orange",
-           color = "black") +
-  geom_vline(xintercept= mean_age) +
-  scale_x_continuous(breaks=c(20,30,50,60,70,mean_age))
-
-p_gen = ggplot(df_subj,aes(x=gender)) +
-  geom_bar(width = .5,
-           fill = "orange",
-           color = "black")
+# df_subj = df %>% 
+#   select(age,gender,timeSpent,anon_worker_id) %>% 
+#   distinct() %>% 
+#   mutate_at(vars(age), funs(as.integer(.)))
+# 
+# mean_age = round(mean(df_subj$age),digits = 1)
+# p_age = ggplot(df_subj,aes(x=age)) +
+#   geom_bar(width = .5,
+#            fill = "orange",
+#            color = "black") +
+#   geom_vline(xintercept= mean_age) +
+#   scale_x_continuous(breaks=c(20,30,50,60,70,mean_age))
+# 
+# p_gen = ggplot(df_subj,aes(x=gender)) +
+#   geom_bar(width = .5,
+#            fill = "orange",
+#            color = "black")
 
 # mean_time = round(mean(df_subj$timeSpent), digits = 1)
 # median_time = round(median(df_subj$timeSpent), digits = 1)
@@ -161,7 +161,7 @@ p_gen = ggplot(df_subj,aes(x=gender)) +
 #   xlab("time spent") +
 #   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-plot_grid(p_age, p_gen, labels = "AUTO", ncol = 2, align = 'v')
+# plot_grid(p_age, p_gen, labels = "AUTO", ncol = 2, align = 'v')
 
 ```
 
@@ -213,17 +213,17 @@ df_main = df %>%
     TRUE ~ "whatisthis?"
   ))
 
-df_main %>%
-  select(anon_worker_id, refexp, UtteranceCat, condition) %>%
-  filter(UtteranceCat == "typeOnly") %>%
-  view()
-
-df_main %>% 
-  filter(UtteranceCat == "other") %>% 
-  group_by(anon_worker_id) %>% 
-  mutate(n = n()) %>% 
-  ungroup() %>% 
-  view()
+# df_main %>%
+#   select(anon_worker_id, refexp, UtteranceCat, condition) %>%
+#   filter(UtteranceCat == "typeOnly") %>%
+#   view()
+# 
+# df_main %>% 
+#   filter(UtteranceCat == "other") %>% 
+#   group_by(anon_worker_id) %>% 
+#   mutate(n = n()) %>% 
+#   ungroup() %>% 
+#   view()
 
 # "other" utterances are mainly expressions that include: 
 # cauliflower, lemon, (un)natural, regular, original color, off color (bird, with/out color, fruit, vegetable)
@@ -533,7 +533,7 @@ target_color = "#d55e00" # red
 comp_color = "#009e74"
 
 by_condition %>% 
-  # filter(str_detect(condition, "p")) %>% 
+  filter(str_detect(condition, "p")) %>%
 ggplot(., aes(x=intended_target, y=ColMentioned, fill=intended_target)) +
   facet_wrap(~condition, nrow = 2) +
   # mean
@@ -589,7 +589,8 @@ ggplot(., aes(x=intended_target, y=ColMentioned, fill=intended_target)) +
   ylab("Probability of modifier use") +
   labs(fill='Proportion of color mention') +
   scale_fill_manual(values=c(target_color, comp_color)) +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1, size=14)) +
+  # theme(axis.text.x = element_text(angle = 30, hjust = 1, size=14)) +
+  theme(axis.text.x = element_text(size=14)) +
   theme(axis.title = element_text(size=16)) +
   theme(legend.position = "none") +
   theme(strip.background = element_rect(color="black", 
@@ -600,7 +601,7 @@ ggplot(., aes(x=intended_target, y=ColMentioned, fill=intended_target)) +
         ) +
   ylim(0,1)
 
-ggsave(here("writing", "2020_CogSci", "paper", "graphs", "prod-bycondition-contrast.pdf"), width = 8, height = 4)
+ggsave(here("writing", "2020_CogSci", "paper", "graphs", "prod-bycondition-contrast.pdf"), width = 8, height = 3)
 ```
 
 
@@ -813,6 +814,7 @@ table(df_model_prereg$TargetTyp,df_model_prereg$CompTyp,df_model_prereg$Contrast
 
 ```
 
+# MODEL
 
 ```{r models}
 # modifier mention ~ contrast presence*typicality of target*typicality of competitor + (1+contrast presence*typicality of target|participant) + (1+contrast presence*typicality of target*typicality of competitor|item)
@@ -825,6 +827,34 @@ df_model_prereg$targetType = as.factor(df_model_prereg$targetType)
 m = glmer(ColMentioned ~ c_contrast + c_target_typ_bin + c_comp_typ_bin + c_contrast:c_comp_typ_bin + c_target_typ_bin:c_comp_typ_bin + (1|anon_worker_id) + (1|targetType), data = df_model_prereg, family = "binomial")
 summary(m)
 
+# prereg
+# modifier mention ~ contrast presence*typicality of target*typicality of competitor + (1+contrast presence*typicality of target|participant) + (1+contrast presence*typicality of target*typicality of competitor|item)
+# without target typ and contrast interaction:
+# modifier mention ~ contrast presence*typicality of competitor + typicality of competitor*typicality of target + (1+contrast presence+typicality of target|participant) + (1+contrast presence*typicality of competitor + typicality of competitor*typicality of target|item)
+
+m = glmer(ColMentioned ~ c_contrast*c_comp_typ_bin + c_comp_typ_bin*c_target_typ_bin + (1+c_contrast+c_target_typ_bin|anon_worker_id)  + (1+c_contrast*c_comp_typ_bin + c_comp_typ_bin*c_target_typ_bin|targetType), data = df_model_prereg, family = "binomial")
+
+
+m = glmer(ColMentioned ~ c_contrast*c_comp_typ_bin + c_comp_typ_bin*c_target_typ_bin + (1|anon_worker_id), data = df_model_prereg, family = "binomial")
+summary(m)
+
+# Very similar to Cogsci paper results but intercept Rhat is 1.01
+model_prereg = brm(
+  formula = ColMentioned ~ c_contrast*c_comp_typ_bin + c_comp_typ_bin*c_target_typ_bin + (1|anon_worker_id) + (1|targetType),
+  data = df_model_prereg,
+  seed = 1702,
+  family = 'bernoulli' # or bernoulli?
+)
+
+# REPORTED IN COGSCI PAPER
+model_prereg = brm(
+  formula = ColMentioned ~ c_contrast*c_comp_typ_bin + c_comp_typ_bin*c_target_typ_bin + (1|anon_worker_id),
+  data = df_model_prereg,
+  seed = 1702,
+  family = 'bernoulli' # or bernoulli?
+)
+
+summary(model_prereg)
 
 # 1 NO RANDOM EFFECTS
 # 1.1 Binned typicality
