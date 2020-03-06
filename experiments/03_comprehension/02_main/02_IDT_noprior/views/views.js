@@ -535,8 +535,8 @@ var main = {
     // record trial starting time
     var initialStartingTime = Date.now();
   },
-  // trials: 55
-  trials: 10
+  trials: 55
+  // trials: 10
 };
 
 // eslint-disable-next-line no-unused-vars
