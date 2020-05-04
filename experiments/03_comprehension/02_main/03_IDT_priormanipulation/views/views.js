@@ -166,6 +166,7 @@ var practiceIntro = {
     $('#img').css('visibility', 'hidden');
     $('#more_info').css('visibility', 'hidden');
     $('#text2').css('visibility', 'hidden');
+    $('#text3').css('visibility', 'hidden');
     $('#next').css('visibility', 'hidden');
 
     $('#show_pic').on('click', function () {
@@ -179,6 +180,7 @@ var practiceIntro = {
 
     $('#more_info').on('click', function () {
       $('#text2').css('visibility', 'visible');
+      $('#text3').css('visibility', 'visible');
       $('#next').css('visibility', 'visible');
       $('#more_info').css('display', 'none');
       $([document.documentElement, document.body]).animate({
@@ -345,7 +347,7 @@ var mainIntro = {
 // eslint-disable-next-line no-unused-vars
 var priorManipulation = {
   name: 'priorManipulation',
-  title: 'Meet your partner Jamie!',
+  title: 'Play a game with Jamie!',
   buttonText: 'Start the game!',
   render: function () {
     var viewTemplate = $('#priorManipulation-view').html();
@@ -353,6 +355,8 @@ var priorManipulation = {
     var text1 = 'Jamie is organizing a garden party with the theme "prude meets freaky". She still needs some last things from the store and it is your task to get them.';
 
     var text2 = 'You know that <strong>she likes NORMAL things</strong> and she generally prefers them over weird things whenever possible. But since it\'s a "prude and freaky" theme, she will sometimes also ask you to get some weird things.';
+
+    var text3 = 'Note that <strong>you won\'t see everything she says at once</strong>. After each word following "Pick the ...", you\'ll be asked for your best guess on the object Jamie wants you to pick.';
 
     options = _.shuffle(["weird", "normal", "wooden", "round"]);
 
@@ -363,6 +367,7 @@ var priorManipulation = {
         title: this.title,
         text1: text1,
         text2: text2,
+        text3: text3,
         img: 'images/jamie.png',
         opt_1: options[0],
         opt_2: options[1],
@@ -382,6 +387,7 @@ var priorManipulation = {
     $('#clarif_button').on('click', function () {
       $('#introjamie1').hide();
       $('#introjamie2').hide();
+      $('#introjamie3').hide();
       $('#img').hide();
       $('#clarif_button').hide();
       $('#error3').hide();
@@ -393,6 +399,7 @@ var priorManipulation = {
     $('#show_jamieintro').on('click', function () {
       $('#introjamie1').show();
       $('#introjamie2').show();
+      $('#introjamie3').show();
       $('#img').show();
       $('#clarif_button').show();
 
@@ -427,6 +434,7 @@ var priorManipulation = {
         $("#error3").show();
         $('#introjamie1').show();
         $('#introjamie2').show();
+        $('#introjamie3').show();
         $('#img').show();
         $('#clarif_button').show();
 
@@ -438,8 +446,8 @@ var priorManipulation = {
         failed_question = true;
 
       } else {
-          exp.findNextView();
-          exp.global_data.failed_question = failed_question;
+        exp.global_data.failed_question = failed_question;
+        exp.findNextView();
       };
     });
   },

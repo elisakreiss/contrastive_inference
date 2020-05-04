@@ -5,11 +5,11 @@ exp.customize = function () {
   this.global_data.startTime = Date.now();
   // specify view order
   this.views_seq = [
-    // botcaptcha,
+    botcaptcha,
     intro,
-    practiceIntro,
-    practice,
-    mainIntro,
+    // practiceIntro,
+    // practice,
+    // mainIntro,
     priorManipulation,
     main,
     debriefing,
@@ -21,18 +21,31 @@ exp.customize = function () {
   // randomize main trial order, but keep practice trial order fixed
 
   // have no incongruent trials among the first 15 trials of the experiment
+  // & have no prior manipulation incongruent trials among the first 15 trials
   var shuffled_main_trials = _.shuffle(main_trials);
   var i = 0;
   while (i < 15) {
     var context = shuffled_main_trials[i];
-    if (context.trial_type === 'critical' & (context.condition === 'tan' | context.condition === 'ttn')) {
+    
+    if ((context.trial_type === 'critical' & (context.condition === 'tan' | context.condition === 'ttn')) |
+        (context.refObject == 'target' & context.targetTypicality == 'atypical') |
+        (context.refObject == 'comp' & context.compTypicality == 'atypical') |
+        // if target is typical, contrast must be atypical; distractor is always typical
+        (context.refObject == 'contrast' & context.targetTypicality == 'typical')) {
+
       shuffled_main_trials.splice(i, 1);
       var new_pos = _.random(15,shuffled_main_trials.length);
       shuffled_main_trials.splice(new_pos, 0, context);
+
     } else {
       i += 1;
     }
   }
+
+  console.log("shuffled_main_trials")
+  console.log(shuffled_main_trials)
+
+
 
   this.trial_info.main_trials = shuffled_main_trials;
   this.trial_info.practice_trials = _.shuffle(practice_trials);
