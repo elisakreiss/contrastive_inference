@@ -1,0 +1,459 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+
+        <title>browser-based experiments</title>
+
+        <!-- fonts from Google fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700|Noto+Serif:400,700|Playfair+Display:700" rel="stylesheet">
+
+        <!-- css -->
+        <link rel="stylesheet" type="text/css" href="styles/styles.css">
+
+        <!-- js dependencies -->
+        <script src="libraries/mustache/mustache.min.js"></script>
+        <script src="libraries/jquery/dist/jquery.min.js"></script>
+        <!-- This doesn't seem to be there on cloudflare -->
+        <script src="libraries/csv-js/csv.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.5/lodash.js"></script>
+
+        <!-- config -->
+        <script src="config/config_deploy.js"></script>
+
+        <script type="text/javascript">
+            var COMPETITOR_TYPICALITY = "atypical";
+        </script>
+
+        <!-- local js files -->
+        <script src="scripts/main.js"></script>
+        <script src="scripts/experiment.js"></script>
+        <script src="scripts/helpers.js"></script>
+        <script src="scripts/utils.js"></script>
+        <script src="scripts/submit_to_server.js"></script>
+
+        <!-- local trial_info files -->
+        <script src="trial_info/main_trials.js"></script>
+        <script src="trial_info/practice_trials.js"></script>
+
+        <!-- views -->
+        <script src="views/views.js"></script>
+
+        <script src="//uniqueturker.myleott.com/lib.js" type="text/javascript"></script>
+        <script type="text/javascript">
+          $(document).ready(function(){
+            var ut_id = "ade4c31b5bf10b46d9129b9b4408a799";
+            if (UTWorkerLimitReached(ut_id)) {
+                $(".slide").hide();
+                $("body").html("You have already completed the maximum number of HITs allowed by this requester. Please click 'Return HIT' to avoid any impact on your approval rating.");
+            }
+          });
+        </script>
+    </head>
+
+    <body>
+        <noscript>This task requires JavaScript. Please enable JavaScript in your browser and reload the page. For more information on how to do that, please refer to
+            <a href='https://enable-javascript.com' target='_blank'>enable-javascript.com</a>
+        </noscript>
+
+        <!-- views are inserted in main -->
+        <main id='main'>
+            Loading...
+        </main>
+
+        <!-- Mustache templates below. Each template is a view with a separate HTML structure. -->
+        <script id="botcaptcha-view" type="text/html">
+            <div class='view'>
+
+                {{# title }}
+                <h1>{{ title }}</h1>
+                {{/ title }}
+                <br>
+                {{{# text }}}
+                <section class="text-container">
+                    <p class="text">{{{ text }}}</p>
+                </section>
+                {{{/ text }}}
+                <br>
+                {{{# question }}}
+                <section class="text-container">
+                    <p class="text" id="quest-response">
+                        {{{ question }}}
+                        <textarea rows="1" cols="15" id="listener-response"></textarea>
+                    </p>
+                </section>
+                {{{/ question }}}
+                <br>
+                {{# button }}
+                <button id="next">{{ button }}</button>
+                {{/ button }}
+                {{^ button }}
+                <button id="next">Next</button>
+                {{/ button }}
+                <section class="answer-container">
+                    <p class="text" id="error_incorrect" style="color: #7CB637">This is incorrect.</p>
+                    <p class="text" id="error_2more" style="color: #7CB637">You have 2 more trials.</p>
+                    <p class="text" id="error_1more" style="color: #7CB637">You have 1 more trial.</p>
+                    <p class="text" id="error" style="color: #7CB637">Error: You failed to enter the correct response.</p>
+                </section>
+
+            </div>
+        </script>
+        
+        <!-- Introduction view -->
+        <script id="intro-view" type="text/html">
+            <div class='view'>
+                <div class="picture">
+                <img src={{ picture }} alt="a picture" height="180">
+                </div>
+                <!-- {{# title }}
+                <h1 class="title">{{ title }}</h1>
+                {{/ title }} -->
+                {{# text }}
+                <section class="text-container">
+                    <p class="text">{{{ text }}}</p>
+                </section>
+                {{/ text }}
+                {{# button }}
+                <button id="next" class="nodisplay">{{ button }}</button>
+                {{/ button }}
+                {{^ button }}
+                <button id="next">Next</button>
+                {{/ button }}
+                <br>
+                {{# legal_info }}
+                <section class="text-container">
+                    <hr>
+                    <br>
+                    <p class="legal-text">{{{ legal_info }}}</p>
+                </section>
+                {{/ legal_info }}
+                <p id="prolific-id-form">
+                    <label for="prolific-id">Please, enter your Prolific ID</label>
+                    <input type="text" id="prolific-id" />
+                </p>
+            </div>
+        </script>
+
+        <!-- Practice Introduction view -->
+        <script id="practiceIntro-view" type="text/html">
+            <div class='view'>
+                {{# title }}
+                <h1 class="title">{{ title }}</h1>
+                {{/ title }}
+                {{# text1 }}
+                <section class="text-container">
+                    <p class="text">{{{ text1 }}}</p>
+                </section>
+                {{/ text1 }}
+                <br>
+                <button id="show_pic">Show me an example!</button>
+                <div class="picture">
+                    <img id="img" src={{ img }} alt="a picture" height="400" border="1">
+                </div>
+                <button id="more_info">More info!</button>
+                <br>
+                {{# text2 }}
+                <section class="text-container">
+                    <p class="text" id="text2">{{{ text2 }}}</p>
+                </section>
+                {{/ text2 }}
+                {{# button }}
+                <button id="next">{{ button }}</button>
+                {{/ button }}
+                {{^ button }}
+                <button id="next">Next</button>
+                {{/ button }}
+            </div>
+        </script>
+
+        <!-- practice view (buttons response) -->
+        <script id="practice-view" type="text/html">
+            <div class="view">
+                <!-- {{# title }}
+                <h1 class="title">{{ title }}</h1>
+                {{/ title }} -->
+    
+                {{# question }}
+                <p class="question">
+                {{{ question }}} <input type="text" id="refexp" placeholder="..." style="font-size:25px;"> !
+                </p>
+                {{/ question }}
+    
+                <section class="answer-container">
+                    <div class="grid-container">
+                        <div class="grid-item" id="grid_pos1"><img id="pos1" src={{ item1 }} style="width:110px;"></div>
+                        <div class="grid-item" id="grid_posa"></div>
+                        <div class="grid-item" id="grid_pos2"><img id="pos2" src={{ item2 }} style="width:110px;"></div>
+                        <div class="grid-item" id="grid_posb"></div>
+                        <div class="grid-item" id="grid_posc">
+                            <button id="next_context">Continue!</button>
+                        </div>
+                        <div class="grid-item" id="grid_posd"></div>
+                        <div class="grid-item" id="grid_pos3"><img id="pos3" src={{ item3 }} style="width:110px;"></div>
+                        <div class="grid-item" id="grid_pose"></div>
+                        <div class="grid-item" id="grid_pos4"><img id="pos4" src={{ item4 }} style="width:110px;"></div>
+                    </div>
+                </section>
+                <br>
+                <section class="answer-container">
+                    <p class="text" id="error" style="color: #7CB637">Please enter into the text field what the other person should click on.</p>
+                </section>
+            </div>
+        </script>
+
+        <!-- Main Introduction view -->
+        <script id="mainIntro-view" type="text/html">
+            <div class='view'>
+                {{# title }}
+                <h1 class="title">{{ title }}</h1>
+                {{/ title }}
+                {{# text1 }}
+                <section class="text-container">
+                    <p class="text">{{{ text1 }}}</p>
+                </section>
+                {{/ text1 }}
+                <br>
+                <!-- <button id="show_pic">Show me the example again!</button>
+                <div class="picture">
+                    <img id="img" src={{ img }} alt="a picture" height="400" border="1">
+                </div>
+                <button id="more_info">More info!</button> -->
+                <!-- <br> -->
+                {{# text2 }}
+                <section class="text-container">
+                    <p class="text" id="text2">{{{ text2 }}}</p>
+                </section>
+                {{/ text2 }}
+                {{# button }}
+                <button id="next">{{ button }}</button>
+                {{/ button }}
+                {{^ button }}
+                <button id="next">Next</button>
+                {{/ button }}
+            </div>
+        </script>
+
+        <!-- Prior Manipulation view -->
+        <script id="priorManipulation-view" type="text/html">
+            <div class='view'>
+                {{# title }}
+                <h1 class="title">{{ title }}</h1>
+                {{/ title }}
+                <section class="answer-container">
+                    <p class="text" id="error3" style="color: #7CB637">Your response was incorrect. Please review the instructions and try again.<br><br></p>
+                </section>
+                {{# text1 }}
+                <section class="text-container" id="introjamie1">
+                    <p class="text">{{{ text1 }}}</p>
+                    <br>
+                </section>
+                {{/ text1 }}
+                {{# text2 }}
+                <section class="text-container" id="introjamie2">
+                    <p class="text" id="text2">{{{ text2 }}}</p>
+                    <br>
+                </section>
+                {{/ text2 }}
+                <div class="picture">
+                    <img id="img" src={{ img }} alt="a picture" height="300" border="1">
+                </div>
+                <br>
+                {{# text3 }}
+                <section class="text-container" id="introjamie3">
+                    <p class="text" id="text2">{{{ text3 }}}</p>
+                    <br>
+                </section>
+                {{/ text3 }}
+                <button id="clarif_button">Got it!</button>
+                <p class="answer-container multchoice" id="clarification" style="text-align: left; color: #383838">
+                    Based on what you've just read, please select what best describes Jamie.<br><br>Jamie likes things that are ...
+                    <br>
+                    {{# opt_1 }}
+                    <input type="radio" name="opt" id="opt-1">{{ opt_1 }}<br>
+                    {{/ opt_1 }}
+                    {{# opt_2 }}
+                    <input type="radio" name="opt" id="opt-2">{{ opt_2 }}<br>
+                    {{/ opt_2 }}
+                    {{# opt_3 }}
+                    <input type="radio" name="opt" id="opt-3">{{ opt_3 }}<br>
+                    {{/ opt_3 }}
+                    {{# opt_4 }}
+                    <input type="radio" name="opt" id="opt-4">{{ opt_4 }}<br>
+                    {{/ opt_4 }}
+                    <br>
+                </p>
+                <section class="answer-container">
+                    <p class="text" id="error" style="color: #7CB637">You haven't responded yet. Please indicate what you think Jamie likes by clicking on any of the check boxes. Your answer should be based on the text you just read.</p>
+                </section>
+                {{# button }}
+                <button id="next">{{ button }}</button>
+                {{/ button }}
+                {{^ button }}
+                <button id="next">Next</button>
+                {{/ button }}
+                <br>
+                <br>
+                <br>
+                <br>
+                <section class="answer-container">
+                    <p class="text" id="error2" style="color: #7CB637">If you don't know the answer, you can reread the text by clicking on the green button below.</p>
+                </section>
+                <button id="show_jamieintro" style="background-color: #acdb76;">Show me the text again!</button>
+            </div>
+        </script>
+
+        <!-- main view (buttons response) -->
+        <script id="main-view" type="text/html">
+        <div class="view">
+            <!-- {{# title }}
+            <h1 class="title">{{ title }}</h1>
+            {{/ title }} -->
+
+            {{# question }}
+            <p class="question">
+            {{{ question }}}
+            </p>
+            {{/ question }}
+            <!-- <button id="next_word">Done -- NEXT WORD, please!</button> -->
+
+            <section class="answer-container">
+                <div class="grid-container">
+                  <div class="grid-item" id="grid_pos1"><img id="pos1" src={{ item1 }} style="width:110px;"></div>
+                  <div class="grid-item" id="grid_posa"></div>
+                  <div class="grid-item" id="grid_pos2"><img id="pos2" src={{ item2 }} style="width:110px;"></div>
+                  <div class="grid-item" id="grid_posb"></div>
+                  <div class="grid-item" id="grid_posc">
+                    <button id="next_word">Next word!</button>
+                    <button id="next_context">Continue!</button>
+                  </div>
+                  <div class="grid-item" id="grid_posd"></div>
+                  <div class="grid-item" id="grid_pos3"><img id="pos3" src={{ item3 }} style="width:110px;"></div>
+                  <div class="grid-item" id="grid_pose"></div>
+                  <div class="grid-item" id="grid_pos4"><img id="pos4" src={{ item4 }} style="width:110px;"></div>
+                </div>
+            </section>
+            <button id="help">Help</button>
+            <div id="helpText">
+                <p style="font-size:13px;">
+                    In the display you can see a grid of 4 objects. Above the grid of objects there is an expression that starts with "Pick the". Make your best guess which of the 4 objects could be the goal object. Don't worry if you're not sure. Simply make a guess. Indicate your response by clicking on the object.
+                </p>
+            </div>
+            <section class="answer-container">
+                <p class="text" id="error" style="color: #7CB637">Please select an object before you continue.</p>
+            </section>
+        </div>
+        </script>
+
+        <!-- post test view -->
+        <script id="post-test-view" type="text/html">
+        <div class="view post-test-templ">
+            {{# title }}
+            <h1>{{ title }}</h1>
+            {{/ title }}
+            {{# text }}
+            <section class="text-container">
+                <p class="text">{{ text }}</p>
+            </section>
+            {{/ text }}
+            <form>
+            <p>
+                <label for="HitCorrect">Did you read the instructions and do you think you did the HIT correctly?</label>
+                <select id="HitCorrect" name="HitCorrect">
+                    <option></option>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                    <option value="404">I was confused</option>
+                </select>
+            </p>
+            <p>
+                <label for="age">Age:</label>
+                <input type="number" name="age" min="18" max="110" id="age" />
+            </p>
+            <p>
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender">
+                    <option></option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </p>
+            <!-- <p>
+                <label for="education">Level of Education:</label>
+                <select id="education" name="education">
+                    <option></option>
+                    <option value="some_high_school">Some High School</option>
+                    <option value="graduated_high_school">Graduated High School</option>
+                    <option value="some_college">Some College</option>
+                    <option value="graduated_college">Graduated College</option>
+                    <option value="higher_degree">Hold a Higher Degree</option>
+                </select>
+            </p> -->
+            <p>
+                <label for="languages" name="languages">Native Languages: <br /><span>(i.e. the language(s) spoken at home when you were a child)</</span></label>
+                <input type="text" id="languages"/>
+            </p>
+            <p>
+                <label for="enjoyment">Enjoyment:</label>
+                <select id="enjoyment" name="enjoyment">
+                    <option></option>
+                    <option value="0">Worse than the Average Hit</option>
+                    <option value="1">Average Hit</option>
+                    <option value="2">Better than the Average Hit</option>
+                </select>
+            </p>
+            <p class="comment-sect">
+                <label for="comments">Further Comments:</label>
+                <textarea name="comments" id="comments"
+                rows="6" cols="40"></textarea>
+            </p>
+            {{# buttonText }}
+            <button id="next">{{ buttonText }}</button>
+            {{/ buttonText }}
+            {{^ buttonText }}
+            <button id="next">Next</button>
+            {{/ buttonText }}
+            </form>
+            </div>
+        </script>
+
+        <!-- debriefing view -->
+        <script id="debriefing-view" type="text/html">
+            <div class="view">
+                {{# title }}
+                <h1>{{ title }}</h1>
+                {{/ title }}
+                {{# text }}
+                <section class="text-container">
+                    <p class="text">{{{ text }}}</p>
+                </section>
+                {{/ text }}
+                {{# button }}
+                <button id="next">{{ button }}</button>
+                {{/ button }}
+                {{^ button }}
+                <button id="next">Got it!</button>
+                {{/ button }}
+            </div>
+        </script>
+
+        <!-- Thanks View -->
+        <script id="thanks-view" type="x-tmpl-mustache">
+        <div class="view thanks-templ">
+            <h4 class="warning-message">submitting the data
+                <div class="loader"></div>
+            </h4>
+            {{# thanksMessage }}
+            <h1 class="thanks-message nodisplay">{{ thanksMessage }}</h1>
+            {{/ thanksMessage }}
+            {{^ thanksMessage }}
+            <h1 class="thanks-message nodisplay">Thank you for taking part in this experiment!</h1>
+            {{/ thanksMessage }}
+            {{# extraMessage }}
+            <h2 class="extra-message nodisplay">{{{ extraMessage }}}</h2>
+            {{/ extraMessage }}
+        </div>
+        </script>
+    </body>
+</html>
