@@ -5,7 +5,7 @@
 var participantCond = COMPETITOR_TYPICALITY;
 // console.log("color competitor typicality: ", participantCond)
 
-function createRandomDistractor (colors, types, typicality = 'random') {
+function createRandomDistractor (colors, types, set_typicality = 'random') {
   // I think this 'do' is vacuous
   do {
     // choose color that doesn't occur in the context yet
@@ -15,7 +15,7 @@ function createRandomDistractor (colors, types, typicality = 'random') {
     } while (colors.includes(distColor));
 
     // select objects in this color/typicality
-    var distTypicality = typicality === 'random' ? _.shuffle(["typical", "atypical"])[0] : typicality;
+    var distTypicality = set_typicality === 'random' ? _.shuffle(["typical", "atypical"])[0] : set_typicality;
     var possibleType = shuffledLexicon[0][distTypicality];
     var distType = _.shuffle(possibleType)[0];
   } while (types.includes(distType));
@@ -35,17 +35,18 @@ function findContrastColor (targetColor, type) {
 }
 
 function completeContext (targetcompColor, targetType, compType, contrast, targetTypicality, compTypicality) {
+  var contrastTypicality = targetTypicality == "typical" ? "atypical" : "typical";
   // in the case of a present contrast, find the contrast object
   if (contrast === 'present') {
     var contrastType = targetType;
     var contrastColor = findContrastColor(targetcompColor, contrastType);
     // if there is no contrast present, choose random distractor
   } else {
-    var [contrastColor, contrastType] = createRandomDistractor([targetcompColor], [targetType, compType]);
+    var [contrastColor, contrastType, contrastTypicality] = createRandomDistractor([targetcompColor], [targetType, compType], set_typicality=contrastTypicality);
   }
 
   // create a fourth random distractor
-  var [distractorColor, distractorType, distractorTypicality] = createRandomDistractor([targetcompColor, contrastColor], [targetType, compType, contrastType]);
+  var [distractorColor, distractorType, distractorTypicality] = createRandomDistractor([targetcompColor, contrastColor], [targetType, compType, contrastType], set_typicality=targetTypicality);
 
   // define condition and unique context name
   var condition = targetTypicality[0] +
@@ -67,6 +68,7 @@ function completeContext (targetcompColor, targetType, compType, contrast, targe
     contrast: contrast,
     contrastType: contrastType,
     contrastColor: contrastColor,
+    contrastTypicality: contrastTypicality,
     distractorColor: distractorColor,
     distractorType: distractorType,
     distractorTypicality: distractorTypicality,
@@ -177,7 +179,7 @@ function createFillers (allContexts) {
 
   c = 0;
   while (fillers.length < 10) {
-    // 5x utterance: unmodified; target: color competitor
+    // 5x utterance: unmodified; target: typical color competitor
     // to avoid priming, exclude contexts where comp is atypical
     if (contexts[c].compTypicality === 'typical') {
       var new_context = updateFillerinfo(contexts[c], refObject='comp', utterance='unmodified');
@@ -190,7 +192,7 @@ function createFillers (allContexts) {
 
   c = 0;
   while (fillers.length < 15) {
-    // 5x utterance: modified; target: color competitor
+    // 5x utterance: modified; target: atypical scolor competitor
     // to avoid priming, exclude contexts where comp is typical and where the target has a contrast
     if (contexts[c].compTypicality === 'atypical' & contexts[c].contrast === 'not_present') {
       var new_context = updateFillerinfo(contexts[c], refObject='comp', utterance='modified');
@@ -201,17 +203,54 @@ function createFillers (allContexts) {
     }
   }
 
-  while (fillers.length < 35) {
-    // 20x utterance: unmodified; target: random distractor
-    // since the utterance is unmodified, only use typical distractors
-    var new_context = updateFillerinfo(contexts[0], refObject='distractor', utterance='unmodified');
-    // if distractor is atypical, create typical distractor for the context
-    if (new_context.distractorTypicality === 'atypical') {
-      [new_context.distractorColor,new_context.distractorType,new_context.distractorTypicality] = createRandomDistractor([new_context.targetcompColor,new_context.contrastColor],[new_context.targetType,new_context.compType,new_context.contrastType],typicality='typical');
+  c = 0;
+  while (fillers.length < 25) {
+    // 10x utterance: unmodified; target: typical distractor
+    if (contexts[c].distractorTypicality === 'typical') {
+      var new_context = updateFillerinfo(contexts[c], refObject='distractor', utterance='unmodified');
+      fillers.push(new_context);
+      contexts.splice(c, 1);
+    } else {
+      c += 1;
     }
-    fillers.push(new_context);
-    contexts.splice(0, 1);
   }
+
+  c = 0;
+  while (fillers.length < 35) {
+    // 10x utterance: modified; target: atypical distractor
+    if (contexts[c].distractorTypicality === 'atypical') {
+      var new_context = updateFillerinfo(contexts[c], refObject='distractor', utterance='modified');
+      fillers.push(new_context);
+      contexts.splice(c, 1);
+    } else {
+      c += 1;
+    }
+  }
+
+  // c = 0;
+  // while (fillers.length < 35) {
+  //   // 20x utterance: modified & unmodified; target: random distractor
+  //   // use typical and atypical distractors now to have equal number of instances
+  //   // if distractor is typical, use it
+  //   if (contexts[c].distractorTypicality === 'typical') {
+  //     var new_context = updateFillerinfo(contexts[c], refObject='distractor', utterance='unmodified');
+  //     fillers.push(new_context);
+  //     contexts.splice(c, 1);
+  //     console.log("typ");
+  //   // // if there is no contrast and this contrast-distractor is typical, use it
+  //   // } else if (contexts[c].contrast === 'not_present' & contexts[c].contrastTypicality === 'typical') {
+  //   //   var new_context = updateFillerinfo(contexts[c], refObject='contrast_as_distractor', utterance='unmodified');
+  //   //   fillers.push(new_context);
+  //   //   contexts.splice(c, 1);
+  //   // } else {
+  //   //   c += 1;
+  //   // }
+  //   } else {
+  //     var new_context = updateFillerinfo(contexts[c], refObject='distractor', utterance='modified');
+  //     fillers.push(new_context);
+  //     contexts.splice(c, 1);
+  //   }
+  // }
                             
   return (fillers)
 }

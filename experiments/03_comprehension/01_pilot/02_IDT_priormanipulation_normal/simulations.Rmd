@@ -1,0 +1,358 @@
+---
+title: "Prior manipulation"
+output: pdf_document
+---
+
+# Import data and libraries
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(cowplot)
+library(plyr)
+library(tidyverse)
+library(here)
+library(boot)
+
+target_color = "#d55e00" # red
+comp_color = "#009e74"
+
+model_color = "#cc79a7" # purple
+emp_color = "#0071b2" # blue
+  
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+
+# imports comprehension data (already only critical trials)
+df_compr_priorclicks_import = read_csv(here("models","02_prodInfRSA","data","emp_comprehension_data.csv"))
+df_compr_nopriorclicks_import = read_csv(here("models","02_prodInfRSA","data","emp_compr_noprior_data.csv"))
+
+format_compr_data <- function(df){
+  formatted_df = df %>% 
+    select(condition, timeStep_selec, clickedType, obj_in_display, clicked, target, comp, pos1, pos2, pos3, pos4, anon_worker_id, trial_number) %>% 
+    # exclude trials with wrong selection after adj
+    filter(!(timeStep_selec == "selectedItem1" & !(clickedType == "target" | clickedType == "comp"))) %>%
+    # filter(clickedType == "target" | clickedType == "comp") %>% 
+    # filter(obj_in_display == "target" | obj_in_display == "comp") %>% 
+    separate(target, c(NA, "targetType"), sep="_") %>% 
+    separate(comp, c(NA, "compType"), sep="_") %>% 
+    # encode position of target and competitor
+    mutate(pos_target = ifelse(pos1 == "target" | pos2 == "target", T, F)) %>%
+    mutate(pos_comp = ifelse(pos1 == "comp" | pos2 == "comp", T, F)) %>%
+    mutate(pos = case_when(
+      (pos_target & pos_comp) | (!pos_target & !pos_comp) ~ "equal",
+      pos_target ~ "target_pref",
+      TRUE ~ "comp_pref"
+    )) %>% 
+    select(-pos1, -pos2, -pos3, -pos4, -pos_target, -pos_comp)
+  return(formatted_df)
+}
+
+df_compr_priorclicks = df_compr_priorclicks_import %>% 
+  format_compr_data(.)
+
+df_compr_nopriorclicks = df_compr_nopriorclicks_import %>% 
+  format_compr_data(.)
+
+# imports production data
+df_production_import = read_csv(here("models","02_prodInfRSA","data","emp_production_data.csv")) 
+
+df_production = df_production_import %>% 
+  # only has typeOnly and colorType utterances
+  filter(UtteranceCat == "typeOnly" | UtteranceCat == "colorType") %>% 
+  # only has the critical trials where the speaker refers to target or comp
+  filter(intended_target == "target" | intended_target == "firstDistractor") %>% 
+  # exclude trials where the listener clicked the wrong object (unsuccessful utterance)
+  mutate(wrong_selection = ifelse(intended_target == "target", !str_detect(selected_image, target_item), !str_detect(selected_image, comp_item))) %>% 
+  filter(!wrong_selection) %>% 
+  # because we filtered for typeOnly and colorType utterances, 
+  # ColorMention is only 1 for colorType utterances
+  select(intended_target, condition, targetType, compType, ColorMention) %>% 
+  # rename firstDistractor to "comp"
+  mutate_at(vars(intended_target), funs(ifelse(.=="firstDistractor", "comp", .)))
+```
+
+
+# Comprehension data
+
+```{r with prior click}
+
+df_afteradj_selections_prior = df_compr_priorclicks %>% 
+  # after adj trials only
+  filter(timeStep_selec == "selectedItem1") 
+  # filter out incorrect selections
+  # filter(clickedType == "target" | clickedType == "comp") %>% 
+  # TODO: NECESSARY? target and comp remain the only relevant objects
+  # filter(obj_in_display == "target" | obj_in_display == "comp")
+
+# target and comp prob add up to 1, since they were the only options
+df_afteradj_prop_prior = df_afteradj_selections_prior %>% 
+  group_by(condition, obj_in_display, targetType, compType) %>% 
+  summarize(PropClicks = mean(clicked)) %>% 
+  ungroup() %>% 
+  select(condition, PropClicks, targetType, compType, obj_in_display)
+
+df_afteradj_propTarget_prior = df_afteradj_prop_prior %>% 
+  filter(obj_in_display == "target") %>% 
+  select(condition, PropClicks, targetType, compType)
+
+```
+
+```{r without prior click}
+
+df_afteradj_selections_noprior = df_compr_nopriorclicks %>% 
+  # after adj trials only
+  filter(timeStep_selec == "selectedItem1") 
+  # filter out incorrect selections
+  # filter(clickedType == "target" | clickedType == "comp") %>% 
+  # TODO: NECESSARY? target and comp remain the only relevant objects
+  # filter(obj_in_display == "target" | obj_in_display == "comp")
+
+# target and comp prob add up to 1, since they were the only options
+df_afteradj_prop_noprior = df_afteradj_selections_noprior %>% 
+  group_by(condition, obj_in_display, targetType, compType) %>% 
+  summarize(PropClicks = mean(clicked)) %>% 
+  ungroup() %>% 
+  select(condition, PropClicks, targetType, compType, obj_in_display)
+
+df_afteradj_propTarget_noprior = df_afteradj_prop_noprior %>% 
+  filter(obj_in_display == "target") %>% 
+  select(condition, PropClicks, targetType, compType)
+
+```
+
+# Production data
+
+```{r}
+
+# deal with data that needs to be duplicated for no contrast contexts
+df_prodcompetitor = df_production %>% 
+  filter(str_detect(condition, "n")) %>% 
+  mutate(intended_target = "comp") %>% 
+  mutate_at(vars(condition), funs(case_when(
+    .=="atn" ~ "tan",
+    .=="tan" ~ "atn",
+    TRUE ~ .
+  ))) %>% 
+  mutate(targetType_rev = compType) %>% 
+  mutate(compType_rev = targetType) %>% 
+  select(-targetType, -compType) %>% 
+  rename(targetType = "targetType_rev",
+         compType = "compType_rev")
+
+df_prod_full = df_production %>% 
+  # include duplicated comp data
+  bind_rows(df_prodcompetitor)
+
+# target and comp probability do NOT add up to 1 (not normalized yet)
+df_prodprob = df_prod_full %>% 
+  group_by(condition, intended_target, targetType, compType) %>% 
+  summarize(ProbColMention = mean(ColorMention)) %>% 
+  ungroup()
+
+```
+
+# RSA: flat prior data
+
+```{r}
+# this is completely independent of the comprehension data
+
+df_rsa_flatprior = df_prodprob %>% 
+  group_by(condition, targetType, compType) %>% 
+  mutate(norm = sum(ProbColMention)) %>% 
+  ungroup() %>% 
+  mutate(predProportion_uniform = ProbColMention / norm) %>% 
+  filter(intended_target == "target" | intended_target == "comp") %>% 
+  select(condition, predProportion_uniform, targetType, compType, intended_target)
+
+df_rsa_flatpriorTarget = df_rsa_flatprior %>% 
+  filter(intended_target == "target") %>% 
+  select(condition, predProportion_uniform, targetType, compType)
+
+```
+
+
+# RSA: inf prior data
+
+```{r}
+# extract prior from comprehension data
+df_beforeadj = df_compr_priorclicks %>% 
+  # only clicks before adjective
+  filter(timeStep_selec == "selectedItem_prior")
+
+# aggregated prior over all objects in the display
+df_prior_aggr = df_beforeadj %>% 
+  group_by(condition, obj_in_display, targetType, compType) %>% 
+  summarize(PropClicks_prior = mean(clicked)) %>% 
+  ungroup() %>% 
+  rename(intended_target = "obj_in_display")
+```
+
+
+## Simple prior (no manipulation)
+
+```{r}
+# RSA model predictions with aggregated prior
+# since the selection probability after adj is 0, contrast and distractor(s) disappear
+df_rsa_prior_simple = df_prodprob %>% 
+  left_join(df_prior_aggr) %>% 
+  # no prior simulation
+  mutate(weightedProbColMention = ProbColMention * PropClicks_prior) %>%
+  group_by(condition, targetType, compType) %>%
+  mutate(norm = sum(weightedProbColMention)) %>%
+  ungroup() %>%
+  mutate(predProportion_simple = (ProbColMention * PropClicks_prior) / norm) %>%
+  #
+  select(condition, predProportion_simple, targetType, compType, intended_target)
+
+df_rsa_prior_simpleTarget = df_rsa_prior_simple %>% 
+  filter(intended_target == "target") %>% 
+  select(condition, predProportion_simple, targetType, compType)
+```
+
+## Typicality prior manipulation
+
+```{r}
+
+# RSA model predictions with aggregated prior
+# since the selection probability after adj is 0, contrast and distractor(s) disappear
+df_rsa_prior_typ = df_prodprob %>% 
+  left_join(df_prior_aggr) %>% 
+  # typicality prior simulation
+  mutate(PropClicks_prior_sim = case_when(
+    str_detect(condition, "ta") & intended_target == "target" ~ PropClicks_prior*0.5,
+    str_detect(condition, "ta") & intended_target == "comp" ~ PropClicks_prior*2,
+    str_detect(condition, "at") & intended_target == "target" ~ PropClicks_prior*2,
+    str_detect(condition, "at") & intended_target == "comp" ~ PropClicks_prior*0.5,
+    TRUE ~ PropClicks_prior
+  )) %>%
+  mutate_at(vars(PropClicks_prior_sim), funs(ifelse(.>1, 1, .))) %>%
+  mutate(weightedProbColMention = ProbColMention * PropClicks_prior_sim) %>%
+  group_by(condition, targetType, compType) %>%
+  mutate(norm = sum(weightedProbColMention)) %>%
+  ungroup() %>%
+  mutate(predProportion_typ = (ProbColMention * PropClicks_prior_sim) / norm) %>%
+  select(condition, predProportion_typ, targetType, compType, intended_target)
+
+df_rsa_prior_typTarget = df_rsa_prior_typ %>% 
+  filter(intended_target == "target") %>% 
+  select(condition, predProportion_typ, targetType, compType)
+
+```
+
+## By-item prior manipulation
+
+```{r}
+
+# RSA model predictions with aggregated prior
+# since the selection probability after adj is 0, contrast and distractor(s) disappear
+df_rsa_prior_byitem = df_prodprob %>% 
+  left_join(df_prior_aggr) %>% 
+  # # item prior simulation
+  mutate(PropClicks_prior_sim = case_when(
+    (targetType == "banana" | targetType == "carrot" | targetType == "egg") & intended_target == "target" ~ PropClicks_prior*2,
+    (compType == "banana" | compType == "carrot" | compType == "egg") & intended_target == "target" ~ PropClicks_prior*0.5,
+    TRUE ~ PropClicks_prior
+  )) %>%
+  mutate_at(vars(PropClicks_prior_sim), funs(ifelse(.>1, 1, .))) %>%
+  mutate(weightedProbColMention = ProbColMention * PropClicks_prior_sim) %>%
+  group_by(condition, targetType, compType) %>%
+  mutate(norm = sum(weightedProbColMention)) %>%
+  ungroup() %>%
+  mutate(predProportion_byitem = (ProbColMention * PropClicks_prior_sim) / norm) %>%
+  mutate(prioredContext = case_when(
+    (targetType == "banana" | targetType == "carrot" | targetType == "egg") & (compType == "banana" | compType == "carrot" | compType == "egg") ~ "both_priored",
+    (targetType == "banana" | targetType == "carrot" | targetType == "egg") ~ "target_prior",
+    (compType == "banana" | compType == "carrot" | compType == "egg") ~ "comp_prior",
+    TRUE ~ "not_priored"
+    )) %>%
+  select(condition, predProportion_byitem, targetType, compType, intended_target, prioredContext)
+
+df_rsa_prior_byitemTarget = df_rsa_prior_byitem %>% 
+  filter(intended_target == "target") %>% 
+  select(condition, predProportion_byitem, targetType, compType)
+
+```
+
+# Plots
+
+## Empirical data vs model predictions
+
+The facets are the different conditions and the bars represent the (predicted) proportions of target selections after observing the adjective.
+
+In red we see the empirical results from the study we ran a few weeks ago without the before-adjective clicks.
+In orange are the model predictions with a uniform prior and in red with the prior information from the previous comprehension study (i.e., the selection data after “Click on the…“). These bars represent what we already have and function as reference.
+The following bars are simulations of prior manipulations. For that purpose I used the previous raw prior and double its value for the predicted preferred item.
+
+In green I represented the typicality bias that we would expect if we told participants that the speaker likes normal or odd objects. We then predict no changes in the aa\* and tt\* conditions because target and competitor are equally (dis)preferred. The only differences occur in the at\* and ta\* conditions, where the target preference essentially becomes more pronounced in the direction it was already in. In other words, target preference increases for the at\* conditions and decreases for the ta\* conditions. Even though the effect is then quite pronounced, it should be stressed that the direction of the predicted effect essentially never changes (possibly except for tap).
+
+In different brightness levels of blue, this figure shows a simulation of the byitem-bias, where we somehow made participants believe that the speaker prefers some particular items (here I chose bananas, carrots and eggs). The dark blue bar shows the predictions if the target item is of a preferred type. The slightly brighter blue next to it shows the predictions if the competitor is of the preferred type instead. (The last two bars are the cases where both, target and competitor, are (dis)preferred, but they are not relevant in this discussion. I’ll just say that the last bar especially cannot be trusted because the number of data points there is very low.) We can see that in almost all conditions, the target preference prior and competitor preference prior make highly different predictions about target preference. They even change the directionality of preference in some conditions (e.g., competitor preference in atn). The other thing I like about this manipulation is that there is a clear pattern in the ttn and aan conditions which is very straightforward to show and explain. At this point, this speaks in my view for the item-based prior manipulation.
+
+```{r}
+
+df_full = df_afteradj_prop_noprior %>% 
+  rename(intended_target = "obj_in_display") %>% 
+  left_join(df_rsa_flatprior, by=(c("condition","targetType","compType", "intended_target"))) %>% 
+  left_join(df_rsa_prior_simple, by=(c("condition","targetType","compType", "intended_target"))) %>% 
+  left_join(df_rsa_prior_typ, by=(c("condition","targetType","compType", "intended_target"))) %>% 
+  left_join(df_rsa_prior_byitem, by=(c("condition","targetType","compType", "intended_target"))) %>% 
+  spread(prioredContext, predProportion_byitem) %>% 
+  # gather(Measure, Value, PropClicks, predProportion_simple, predProportion_typ, predProportion_byitem) %>% 
+  gather(Measure, Value, PropClicks, predProportion_uniform, predProportion_simple, predProportion_typ, both_priored, comp_prior, target_prior, not_priored) %>% 
+  mutate_at(vars(Measure), funs(case_when(.=="PropClicks" ~ "Empirical (no prior clicks)", 
+    .=="predProportion_uniform" ~ "Uniform prior", 
+    .=="predProportion_simple" ~ "Raw prior", 
+    .=="predProportion_typ" ~ "Typicality prior", 
+    .=="target_prior" ~ "Byitem target prior", 
+    .=="comp_prior" ~ "Byitem comp prior", 
+    .=="not_priored" ~ "Byitem neither prior", 
+    .=="both_priored" ~ "Byitem both prior", 
+    TRUE ~ "HELP"))) %>%
+  mutate_at(vars(Measure), funs(factor(., levels=c("Empirical (no prior clicks)", "Uniform prior", "Raw prior", "Typicality prior", "Byitem target prior", "Byitem comp prior", "Byitem neither prior", "Byitem both prior")))) %>% 
+  filter(intended_target == "target")
+
+df_full %>%
+  mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan")))) %>%
+  # filter(prioredContext == "both_priored") %>% 
+  mutate_at(vars(intended_target), funs(factor(., levels=c("target", "comp")))) %>%
+  ggplot(., aes(x=intended_target, 
+                y=Value, 
+                fill=Measure
+                # color=intended_target
+                )) +
+  facet_wrap(~condition, scales = "free_x", nrow=2) +
+  stat_summary(fun.y = "mean", 
+               geom = "bar",
+               position = position_dodge(width = 0.8),
+               width = 0.8) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               position = position_dodge(width = 0.8),
+               size = .3,
+               width = 0.3) +
+  theme(legend.position = "top") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
+        ) +
+  scale_alpha_manual(values=c(0.5, 1)) +
+  scale_color_manual(values=c(target_color, comp_color)) +
+  scale_fill_manual(values=c("#d11141", "#f37735", "#ffc425", "#00b159", "#008baf", "#4cc6e5", "#cceef7", "#e5f6fb")) +
+  scale_x_discrete(labels=c("comp"="competitor")) +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
+        ) +
+  coord_cartesian(ylim = c(0,1)) +
+  theme(axis.text.x = element_text(size=14)) +
+  theme(axis.title = element_text(size=16)) +
+  geom_hline(yintercept = 0.5, linetype="dashed", color = "lightgrey") +
+  xlab("Item") +
+  ylab("Proportion of (predicted) selections")
+
+# ggsave(here("priormanipulation_itemprior_both.pdf"), width = 8, height = 6)
+```

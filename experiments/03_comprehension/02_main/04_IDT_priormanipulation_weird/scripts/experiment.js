@@ -21,7 +21,7 @@ exp.customize = function () {
   // randomize main trial order, but keep practice trial order fixed
 
   // have no incongruent trials among the first 15 trials of the experiment
-  // & have no prior manipulation incongruent trials among the first 15 trials
+  // & have no prior manipulation incongruent trials among the first 5 trials
   var shuffled_main_trials = _.shuffle(main_trials);
   var i = 0;
   while (i < 15) {
@@ -31,10 +31,8 @@ exp.customize = function () {
         ((i < 5) & 
             ((context.refObject == 'target' & context.targetTypicality == 'typical') |
             (context.refObject == 'comp' & context.compTypicality == 'typical') |
-            // if target is atypical, contrast must be typical
-            (context.refObject == 'contrast' & context.targetTypicality == 'atypical') |
-            // distractor is always typical
-            (context.refObject == 'distractor')))) {
+            (context.refObject == 'contrast' & context.contrastTypicality == 'typical') |
+            (context.refObject == 'distractor' & context.contrastTypicality == 'typical')))) {
 
       shuffled_main_trials.splice(i, 1);
       var new_pos = _.random(15,shuffled_main_trials.length);
