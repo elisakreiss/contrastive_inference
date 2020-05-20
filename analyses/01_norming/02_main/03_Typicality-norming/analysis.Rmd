@@ -171,7 +171,7 @@ select_color <- function(string) {
 }
 
 ggplot(df_cd, aes(x=reorder(col_item, -slider_val), y=slider_val)) +
-  facet_wrap(vars(item), scale = "free_x") +
+  facet_wrap(vars(item), scale = "free_x", nrow = 3) +
   geom_point(alpha = 0.2) +
   # error bars 
   stat_summary(fun.data = "mean_cl_boot",
@@ -196,13 +196,15 @@ ggplot(df_cd, aes(x=reorder(col_item, -slider_val), y=slider_val)) +
   ylab("Typicality slider rating") +
   scale_x_discrete(labels = select_color)
 
+ggsave(here("writing","QP1","img","norming3_results.pdf"), width=7, height = 6)
+
 sum_file = df_cd %>%
   rename(col_type = col_item,
          type = item) %>% 
   group_by(col_type, color, type) %>% 
   summarize(typicality = median(slider_val)) %>% 
   select(col_type, color, type, typicality)
-write.csv(sum_file, here("data","01_norming","02_main","typicality_data.csv"), row.names = FALSE)
+# write.csv(sum_file, here("data","01_norming","02_main","typicality_data.csv"), row.names = FALSE)
 ```
 
 #### Non-color diagnostic objects

@@ -150,9 +150,10 @@ df_plot = df %>%
   # correct misspellings
   mutate(refexp_corrected = case_when(
     (refexp == "bananna" | refexp == "banna" | refexp == "bannana")  ~ "banana",
-    (refexp == "brocholi" | refexp == "brocholli" | refexp == "brocoli" | refexp == "broccolli")  ~ "broccoli",
-    refexp == "carrott"  ~ "carrot ",
+    (refexp == "brocholi" | refexp == "brocholli" | refexp == "brocoli" | refexp == "broccolli" | refexp == "brocolli")  ~ "broccoli",
+    refexp == "carrott"  ~ "carrot",
     (refexp == "cor" | refexp == "corn\\") ~ "corn",
+    (refexp == "lectuce") ~ "lettuce ",
     (refexp == "snoman" | refexp == "snow man" | refexp == "snow") ~ "snowman",
     (refexp == "yellow straberry") ~ "yellow strawberry",
     (refexp == "tomaot" | refexp == "tomoto") ~ "tomato",
@@ -168,6 +169,8 @@ df_plot = df %>%
     (refexp == "siccors" | refexp == "scissor" | refexp == "sissors") ~ "scissors",
     refexp == "spong"  ~ "sponge ",
     (refexp == "tooth brush" | refexp == "toothbtush") ~ "toothbrush",
+    # other
+    str_detect(refexp, "apple") ~ "apple",
     TRUE ~ refexp
   )) %>% 
   # repair compound nouns
@@ -248,7 +251,42 @@ ggplot(df_cd,aes(x=ref_cat,
 sum_file = df_cd %>%
   filter(ref_used) %>% 
   select(col_type, color, type, typicality_cat, ref_cat, anon_worker_id)
-write.csv(sum_file, here("data","01_norming","02_main","freeprod_data.csv"), row.names = FALSE)
+# write.csv(sum_file, here("data","01_norming","02_main","freeprod_data.csv"), row.names = FALSE)
+```
+
+
+```{r}
+df_cd = df_plot %>% 
+  filter(typicality_cat!="noncd") %>% 
+  filter(ref_used)
+  
+
+# df_cd %>%
+#      filter(ref_used == TRUE,
+#             ref_cat == "other") %>%
+#      select(type, refexp_corrected) %>%
+#      arrange(type) %>% 
+#      unique() 
+#      # View()
+
+# all
+
+df_cd %>% 
+  group_by(refexp_corrected, type) %>% 
+  mutate(n = n()) %>% 
+  ungroup() %>% 
+  # view()
+  ggplot(.) + 
+    geom_bar(mapping = aes(x = reorder(refexp_corrected, -n), y = ..prop.., group = typicality_cat, fill=typicality_cat), stat = "count", width = 0.8, position=position_dodge(0.8)) +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+    facet_wrap(vars(type), scales = "free_x") +
+    scale_y_continuous(labels = scales::percent_format()) +
+    scale_fill_manual(name = "Typicality", labels = c("typical", "atypical"), values=c("#9ed492", "#4a8358")) +
+    theme(legend.position = "top") +
+    xlab("Labels") +
+    ylab("Number of occurrences")
+
+ggsave(here("writing","QP1","img","norming4_results.pdf"), width=9, height = 7.5)
 ```
 
 

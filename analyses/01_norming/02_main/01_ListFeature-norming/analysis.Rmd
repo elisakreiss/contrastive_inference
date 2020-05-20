@@ -231,6 +231,8 @@ ggplot(df_plot_f1[df_plot_f1$cd==T,],aes(x=reorder(reorder(question,color_mentio
   scale_fill_manual(values=c("#7CB637")) +
   xlab("objects facetted by intended typical color") +
   ylab("proportion of color mention in first feature")
+
+# ggsave(here("writing", "QP1", "img", "norming1_results.pdf"), width=7, height=6)
 ```
 
 #### All features
@@ -311,11 +313,14 @@ ggplot(df_plot_f1,aes(x=reorder(reorder(question,color_mention),cd), y=color_men
   geom_hline(yintercept = 0.5,
              linetype = "dashed",
              color = "grey") +
-  theme(axis.text.x = element_text(angle = 30, hjust=1)) +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
   theme(legend.position="top") +
-  scale_fill_manual(values=c("#E6AB02", "#7CB637")) +
+  scale_fill_manual(values=c("#E6AB02", "#7CB637"), name = "presumably", labels = c("non-color-diagnostic", "color-diagnostic")) +
+  # scale_fill_discrete(name = "Dose", labels = c("A", "B")) +
   xlab("objects") +
-  ylab("proportion of color mention in first feature")
+  ylab("proportion of color mention\nin first feature")
+
+# ggsave(here("writing", "QP1", "img", "norming1_resultsoverall.pdf"), width=9.5, height=5)
 ```
 
 #### All features
@@ -391,9 +396,11 @@ ggplot(df_cd_coloronly, aes(x=feature_utt)) +
   ggtitle("Presumably color diagnostic") +
   facet_wrap(vars(question), scale="free_x") +
   theme(plot.title = element_text(size=15)) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  # theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   xlab("colors mentioned in all features for each object") +
   ylab("total number of color being mentioned in all features")
+
+# ggsave(here("writing", "QP1", "img", "norming1_resultscolorcd.pdf"), width=10, height=11)
 
 # no CD, color
 df_nocd_coloronly = df_plot %>% 
@@ -407,9 +414,26 @@ ggplot(df_nocd_coloronly, aes(x=feature_utt)) +
   ggtitle("Presumably non color diagnostic") +
   facet_wrap(vars(question), scale="free_x") +
   theme(plot.title = element_text(size=15)) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  # theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   xlab("colors mentioned in first feature for each object") +
-  ylab("total number of color being mentioned in first feature")
+  ylab("total number of color being mentioned in all features")
+
+# ggsave(here("writing", "QP1", "img", "norming1_resultscolornoncd.pdf"), width=10, height=11)
+
+df_nocd_coloronly %>% 
+  filter(question == "bell pepper") %>% 
+  ggplot(., aes(x=feature_utt)) +
+    geom_bar(stat="count",
+             fill = "#E6AB02",
+             width = 0.5) +
+    ggtitle("Presumably non color diagnostic") +
+    facet_wrap(vars(question), scale="free_x") +
+    theme(plot.title = element_text(size=15)) +
+    # theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    xlab("colors mentioned in first feature for each object") +
+    ylab("total number of color being\nmentioned in all features")
+
+ggsave(here("writing", "QP1", "img", "norming1_resultscolorbellpepper.pdf"), width=5, height=3)
 ```
 
 
