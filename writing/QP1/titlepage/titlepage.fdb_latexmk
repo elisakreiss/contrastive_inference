@@ -1,8 +1,8 @@
 # Fdb version 3
-["pdflatex"] 1570211953 "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/QP1/titlepage/titlepage.tex" "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/QP1/titlepage/titlepage.pdf" "titlepage" 1570211954
+["pdflatex"] 1588267397 "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/QP1/titlepage/titlepage.tex" "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/QP1/titlepage/titlepage.pdf" "titlepage" 1588267398
   "../img/stanford_logo.jpg" 1570211651 192177 bbd47c147dcd8eaea60f6f92113d9c48 ""
-  "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/QP1/titlepage/titlepage.aux" 1570211954 30 00c4328e8c6c75fce40642ef2bcfb215 ""
-  "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/QP1/titlepage/titlepage.tex" 1570211953 993 e754a0aee12788fce02894fb2cf8f43a ""
+  "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/QP1/titlepage/titlepage.aux" 1588267398 30 00c4328e8c6c75fce40642ef2bcfb215 ""
+  "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/QP1/titlepage/titlepage.tex" 1588267396 1042 2a3623daa35ec8786ad665fe53ac0d79 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1480098701 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmr12.tfm" 1480098701 1288 655e228510b4c2a1abe905c368440826 ""
@@ -124,11 +124,11 @@
   "/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1523934492 2717033 f61a5287d9c22a39a74f1979fe3f905c ""
   "/usr/local/texlive/2018/texmf-var/web2c/pdftex/pdflatex.fmt" 1523934516 4220280 10cab8fbd7c5a7c52aba9917e190d018 ""
   "/usr/local/texlive/2018/texmf.cnf" 1523934483 577 0b39adfd7c93507ff20c9c14c2f1a33f ""
-  "titlepage.aux" 1570211954 30 00c4328e8c6c75fce40642ef2bcfb215 ""
-  "titlepage.tex" 1570211953 993 e754a0aee12788fce02894fb2cf8f43a ""
+  "titlepage.aux" 1588267398 30 00c4328e8c6c75fce40642ef2bcfb215 ""
+  "titlepage.tex" 1588267396 1042 2a3623daa35ec8786ad665fe53ac0d79 ""
   (generated)
-  "titlepage.log"
   "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/QP1/titlepage/titlepage.log"
+  "titlepage.pdf"
+  "titlepage.log"
   "titlepage.aux"
   "/Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/QP1/titlepage/titlepage.pdf"
-  "titlepage.pdf"
