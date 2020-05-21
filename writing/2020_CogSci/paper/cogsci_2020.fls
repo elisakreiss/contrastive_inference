@@ -204,6 +204,7 @@ INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmri7t.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmri7t.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmr7t.tfm
+INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmr7t.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmri7t.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmr7t.tfm
@@ -217,6 +218,8 @@ INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm
 INPUT /usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm
+INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
+INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
@@ -227,8 +230,6 @@ INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm
-INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
-INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/ptmri7t.vf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmri8r.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmr7t.tfm
@@ -268,7 +269,6 @@ INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/zpzccmry.vf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/zapfchan/pzcmi8r.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
-INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmr7t.tfm
 INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/prod-bycond-paper.pdf
 INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/prod-bycond-paper.pdf
 INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/prod-bycond-paper.pdf
@@ -277,9 +277,6 @@ INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writi
 INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/model-bycond-paper.pdf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmr7t.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmr7t.tfm
-INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/corr-plot.pdf
-INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/corr-plot.pdf
-INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/corr-plot.pdf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/zptmcmrm.vf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm
@@ -288,6 +285,9 @@ INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/zapfchan/pzcmi8r.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/zptmcmr.vf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmr10.tfm
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/corr-plot.pdf
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/corr-plot.pdf
+INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/graphs/corr-plot.pdf
 INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.bbl
 INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.bbl
 INPUT /Users/elisakreiss/Documents/business/projects/contrastive_inference/writing/2020_CogSci/paper/cogsci_2020.aux
