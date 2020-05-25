@@ -534,6 +534,63 @@ thirdDistractor,ttp,yellow,57,872953949202777,orange_carrot,carrot,orange_pumpki
 thirdDistractor,atn,corn,58,872953949202777,white_tomato,tomato,white_egg,egg,yellow_corn.png,corn,0,0,1,0,typeOnly
 target,tan,carrot,59,872953949202777,orange_carrot,carrot,orange_lettuce,lettuce,orange_carrot.png,carrot,0,0,1,0,typeOnly
 firstDistractor,aap,strawberry,60,872953949202777,yellow_egg,egg,yellow_strawberry,strawberry,yellow_strawberry.png,strawberry,0,0,1,0,typeOnly
+target,tap,top left,1,252993099432251,white_swan,swan,white_pumpkin,pumpkin,green_swan.png,top left,0,1,0,0,other
+thirdDistractor,atn,top left,5,252993099432251,white_tomato,tomato,white_swan,swan,white_tomato.png,top left,0,1,0,0,other
+firstDistractor,ttp,top right,6,252993099432251,yellow_banana,banana,yellow_corn,corn,orange_banana.png,top right,0,1,0,0,other
+target,tan,tomato,7,252993099432251,red_tomato,tomato,red_broccoli,broccoli,red_tomato.png,tomato,0,0,1,0,typeOnly
+thirdDistractor,tan,tomato,8,252993099432251,orange_pumpkin,pumpkin,orange_lettuce,lettuce,red_tomato.png,tomato,0,0,1,0,typeOnly
+secondDistractor,tap,onion,9,252993099432251,orange_pumpkin,pumpkin,orange_banana,banana,white_pumpkin.png,onion,0,0,0,1,other
+thirdDistractor,tan,egg,10,252993099432251,orange_pumpkin,pumpkin,orange_banana,banana,white_egg.png,egg,0,0,1,0,typeOnly
+thirdDistractor,aan,egg,11,252993099432251,green_swan,swan,green_carrot,carrot,white_egg.png,egg,0,0,1,0,typeOnly
+target,tan,strawberry,12,252993099432251,red_strawberry,strawberry,red_corn,corn,red_strawberry.png,strawberry,0,0,1,0,typeOnly
+thirdDistractor,tan,banana,13,252993099432251,red_strawberry,strawberry,red_broccoli,broccoli,yellow_banana.png,banana,0,0,1,0,typeOnly
+target,ttn,corn,14,252993099432251,yellow_corn,corn,yellow_banana,banana,yellow_corn.png,corn,0,0,1,0,typeOnly
+firstDistractor,tap,lemon,15,252993099432251,yellow_corn,corn,yellow_egg,egg,yellow_egg.png,lemon,0,0,0,1,other
+thirdDistractor,aan,onion,16,252993099432251,red_broccoli,broccoli,red_corn,corn,white_tomato.png,onion,0,0,0,1,other
+secondDistractor,atp,egg,17,252993099432251,yellow_egg,egg,yellow_banana,banana,white_egg.png,egg,0,0,1,0,typeOnly
+secondDistractor,tap,pineapple,18,252993099432251,red_strawberry,strawberry,red_broccoli,broccoli,yellow_strawberry.png,pineapple,0,0,0,1,other
+target,aan,banana,19,252993099432251,orange_banana,banana,orange_lettuce,lettuce,orange_banana.png,banana,0,0,1,0,typeOnly
+target,aap,big onion,20,252993099432251,white_pumpkin,pumpkin,white_tomato,tomato,white_pumpkin.png,big onion,0,1,0,1,other
+thirdDistractor,atn,bird,21,252993099432251,green_carrot,carrot,green_lettuce,lettuce,white_swan.png,bird,0,0,0,1,other
+target,tan,carrot,22,252993099432251,orange_carrot,carrot,orange_banana,banana,orange_carrot.png,carrot,0,0,1,0,typeOnly
+target,ttp,cleaner bird,23,252993099432251,white_swan,swan,white_egg,egg,white_swan.png,cleaner bird,0,0,0,1,other
+firstDistractor,atp,lettuce,24,252993099432251,green_swan,swan,green_lettuce,lettuce,green_lettuce.png,lettuce,0,0,1,0,typeOnly
+thirdDistractor,tan,onion,25,252993099432251,green_lettuce,lettuce,green_swan,swan,white_tomato.png,onion,0,0,0,1,other
+target,atn,mushroom,26,252993099432251,red_broccoli,broccoli,red_strawberry,strawberry,red_broccoli.png,mushroom,0,0,0,1,other
+target,aan,corn,27,252993099432251,red_corn,corn,red_broccoli,broccoli,red_corn.png,corn,0,0,1,0,typeOnly
+target,tap,cleaner bird,28,252993099432251,white_swan,swan,white_tomato,tomato,white_swan.png,cleaner bird,0,0,0,1,other
+thirdDistractor,atn,lettuce,29,252993099432251,white_pumpkin,pumpkin,white_egg,egg,orange_lettuce.png,lettuce,0,0,1,0,typeOnly
+thirdDistractor,aan,lemon,30,252993099432251,green_carrot,carrot,green_swan,swan,yellow_egg.png,lemon,0,0,0,1,other
+thirdDistractor,tan,tomato,31,252993099432251,green_broccoli,broccoli,green_swan,swan,red_tomato.png,tomato,0,0,1,0,typeOnly
+thirdDistractor,aan,banana,32,252993099432251,white_tomato,tomato,white_pumpkin,pumpkin,orange_banana.png,banana,0,0,1,0,typeOnly
+target,ttn,mushroom,33,252993099432251,green_broccoli,broccoli,green_lettuce,lettuce,green_broccoli.png,mushroom,0,0,0,1,other
+target,aap,smaller onion,34,252993099432251,white_tomato,tomato,white_pumpkin,pumpkin,white_tomato.png,smaller onion,0,1,0,1,other
+secondDistractor,atp,normal corn,35,252993099432251,red_corn,corn,red_strawberry,strawberry,yellow_corn.png,normal corn,0,1,1,0,other
+thirdDistractor,tap,corn,36,252993099432251,green_broccoli,broccoli,green_swan,swan,yellow_corn.png,corn,0,0,1,0,typeOnly
+firstDistractor,atp,pumpkin,37,252993099432251,orange_lettuce,lettuce,orange_pumpkin,pumpkin,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
+thirdDistractor,aap,carrot,38,252993099432251,yellow_egg,egg,yellow_strawberry,strawberry,green_carrot.png,carrot,0,0,1,0,typeOnly
+secondDistractor,atp,pumpkin,39,252993099432251,white_pumpkin,pumpkin,white_egg,egg,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
+target,tan,corn,40,252993099432251,yellow_corn,corn,yellow_egg,egg,yellow_corn.png,corn,0,0,1,0,typeOnly
+thirdDistractor,tap,lettuce,41,252993099432251,red_tomato,tomato,red_broccoli,broccoli,orange_lettuce.png,lettuce,0,0,1,0,typeOnly
+target,ttp,corn,42,252993099432251,yellow_corn,corn,yellow_banana,banana,yellow_corn.png,corn,0,0,1,0,typeOnly
+thirdDistractor,atn,banana,43,252993099432251,red_corn,corn,red_tomato,tomato,orange_banana.png,banana,0,0,1,0,typeOnly
+secondDistractor,atp,cleaner bird,44,252993099432251,green_swan,swan,green_broccoli,broccoli,white_swan.png,cleaner bird,0,0,0,1,other
+secondDistractor,tap,pineapple color,45,252993099432251,red_strawberry,strawberry,red_corn,corn,yellow_strawberry.png,pineapple color,0,0,0,1,other
+target,ttn,egg,46,252993099432251,white_egg,egg,white_swan,swan,white_egg.png,egg,0,0,1,0,typeOnly
+firstDistractor,tap,pineapple,47,252993099432251,yellow_banana,banana,yellow_strawberry,strawberry,yellow_strawberry.png,pineapple,0,0,0,1,other
+target,atn,pineapple,48,252993099432251,yellow_strawberry,strawberry,yellow_banana,banana,yellow_strawberry.png,pineapple,0,0,0,1,other
+secondDistractor,atp,normal strawberry,49,252993099432251,yellow_strawberry,strawberry,yellow_banana,banana,red_strawberry.png,normal strawberry,0,1,1,0,other
+firstDistractor,aap,bird,50,252993099432251,green_carrot,carrot,green_swan,swan,green_swan.png,bird,0,0,0,1,other
+thirdDistractor,tap,strawberry,51,252993099432251,green_lettuce,lettuce,green_swan,swan,red_strawberry.png,strawberry,0,0,1,0,typeOnly
+target,atn,pineapple,52,252993099432251,yellow_strawberry,strawberry,yellow_corn,corn,yellow_strawberry.png,pineapple,0,0,0,1,other
+thirdDistractor,tan,lettuce,53,252993099432251,white_swan,swan,white_tomato,tomato,orange_lettuce.png,lettuce,0,0,1,0,typeOnly
+target,atn,onion,54,252993099432251,white_pumpkin,pumpkin,white_swan,swan,white_pumpkin.png,onion,0,0,0,1,other
+firstDistractor,ttp,tomato,55,252993099432251,red_strawberry,strawberry,red_tomato,tomato,red_tomato.png,tomato,0,0,1,0,typeOnly
+target,atp,onion,56,252993099432251,white_tomato,tomato,white_egg,egg,white_tomato.png,onion,0,0,0,1,other
+target,aan,lettuce,57,252993099432251,orange_lettuce,lettuce,orange_banana,banana,orange_lettuce.png,lettuce,0,0,1,0,typeOnly
+thirdDistractor,aap,bird,58,252993099432251,yellow_strawberry,strawberry,yellow_egg,egg,green_swan.png,bird,0,0,0,1,other
+target,atp,mushroom red,59,252993099432251,red_broccoli,broccoli,red_tomato,tomato,red_broccoli.png,mushroom red,1,0,0,1,other
+firstDistractor,aap,mushroom,60,252993099432251,red_corn,corn,red_broccoli,broccoli,red_broccoli.png,mushroom,0,0,0,1,other
 thirdDistractor,atn,Pick the red broccoli,2,712540176930300,yellow_strawberry,strawberry,yellow_banana,banana,red_broccoli.png,pick the red broccoli,1,0,1,0,colorType
 thirdDistractor,tap,Pick the banana,3,712540176930300,green_broccoli,broccoli,green_swan,swan,yellow_banana.png,pick the banana,0,0,1,0,typeOnly
 thirdDistractor,aan,Pick the white pumpkin,4,712540176930300,red_corn,corn,red_broccoli,broccoli,white_pumpkin.png,pick the white pumpkin,1,0,1,0,colorType
@@ -644,22 +701,22 @@ secondDistractor,tap,yellow egg,49,699038811821275,white_egg,egg,white_pumpkin,p
 target,tan,pumpkin,50,699038811821275,orange_pumpkin,pumpkin,orange_banana,banana,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
 secondDistractor,atp,orange carrot,51,699038811821275,green_carrot,carrot,green_lettuce,lettuce,orange_carrot.png,orange carrot,1,0,1,0,colorType
 thirdDistractor,tan,white tomato,52,699038811821275,yellow_corn,corn,yellow_egg,egg,white_tomato.png,white tomato,1,0,1,0,colorType
-thirdDistractor,atn,top right,54,699038811821275,red_corn,corn,red_strawberry,strawberry,red_corn.png,top right,0,0,0,0,whatisthis?
-target,atp,top left,56,699038811821275,orange_lettuce,lettuce,orange_pumpkin,pumpkin,yellow_banana.png,top left,0,0,0,0,whatisthis?
+thirdDistractor,atn,top right,54,699038811821275,red_corn,corn,red_strawberry,strawberry,red_corn.png,top right,0,1,0,0,other
+target,atp,top left,56,699038811821275,orange_lettuce,lettuce,orange_pumpkin,pumpkin,yellow_banana.png,top left,0,1,0,0,other
 target,ttn,pumpkin,58,699038811821275,orange_pumpkin,pumpkin,orange_carrot,carrot,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
 firstDistractor,tap,white tomato,59,699038811821275,white_swan,swan,white_tomato,tomato,white_tomato.png,white tomato,1,0,1,0,colorType
 thirdDistractor,atp,it's the small one,1,307722906071310,green_swan,swan,green_lettuce,lettuce,yellow_strawberry.png,it's the small one,0,1,0,0,other
 target,atn,it's the small one again,2,307722906071310,yellow_strawberry,strawberry,yellow_banana,banana,yellow_strawberry.png,it's the small one again,0,1,0,0,other
-target,ttn,halloween,3,307722906071310,orange_pumpkin,pumpkin,orange_carrot,carrot,orange_pumpkin.png,halloween,0,0,0,0,whatisthis?
+target,ttn,halloween,3,307722906071310,orange_pumpkin,pumpkin,orange_carrot,carrot,orange_pumpkin.png,halloween,0,0,0,1,other
 thirdDistractor,ttn,ugly duckling,4,307722906071310,yellow_banana,banana,yellow_corn,corn,white_swan.png,ugly duckling,0,1,1,0,other
-thirdDistractor,atp,rabbits eat them,5,307722906071310,yellow_egg,egg,yellow_banana,banana,green_carrot.png,rabbits eat them,0,0,0,0,whatisthis?
+thirdDistractor,atp,rabbits eat them,5,307722906071310,yellow_egg,egg,yellow_banana,banana,green_carrot.png,rabbits eat them,0,1,0,0,other
 target,aan,supposed to be ruby red,6,307722906071310,white_tomato,tomato,white_pumpkin,pumpkin,white_tomato.png,supposed to be ruby red,1,1,0,0,other
 target,atn,still supposed to be ruby red,7,307722906071310,white_tomato,tomato,white_egg,egg,white_tomato.png,still supposed to be ruby red,1,1,0,0,other
-firstDistractor,atp,halloween,8,307722906071310,orange_lettuce,lettuce,orange_pumpkin,pumpkin,orange_pumpkin.png,halloween,0,0,0,0,whatisthis?
-target,tan,maize,9,307722906071310,yellow_corn,corn,yellow_strawberry,strawberry,yellow_corn.png,maize,0,0,0,0,whatisthis?
-thirdDistractor,atn,good with cheese,10,307722906071310,orange_lettuce,lettuce,orange_carrot,carrot,green_broccoli.png,good with cheese,0,0,0,0,whatisthis?
-firstDistractor,ttp,maize,11,307722906071310,yellow_banana,banana,yellow_corn,corn,yellow_corn.png,maize,0,0,0,0,whatisthis?
-firstDistractor,tap,white halloween,13,307722906071310,white_egg,egg,white_pumpkin,pumpkin,white_pumpkin.png,white halloween,1,0,0,0,colorOnly
+firstDistractor,atp,halloween,8,307722906071310,orange_lettuce,lettuce,orange_pumpkin,pumpkin,orange_pumpkin.png,halloween,0,0,0,1,other
+target,tan,maize,9,307722906071310,yellow_corn,corn,yellow_strawberry,strawberry,yellow_corn.png,maize,0,0,1,0,typeOnly
+thirdDistractor,atn,good with cheese,10,307722906071310,orange_lettuce,lettuce,orange_carrot,carrot,green_broccoli.png,good with cheese,0,0,0,1,other
+firstDistractor,ttp,maize,11,307722906071310,yellow_banana,banana,yellow_corn,corn,yellow_corn.png,maize,0,0,1,0,typeOnly
+firstDistractor,tap,white halloween,13,307722906071310,white_egg,egg,white_pumpkin,pumpkin,white_pumpkin.png,white halloween,1,0,0,1,other
 thirdDistractor,tan,broccoli,14,307722906071310,orange_pumpkin,pumpkin,orange_lettuce,lettuce,red_broccoli.png,broccoli,0,0,1,0,typeOnly
 target,tap,orange pumpkin,16,307722906071310,orange_pumpkin,pumpkin,orange_lettuce,lettuce,orange_pumpkin.png,orange pumpkin,1,0,1,0,colorType
 secondDistractor,atp,yellow corn,17,307722906071310,red_corn,corn,red_tomato,tomato,yellow_corn.png,yellow corn,1,0,1,0,colorType
@@ -705,7 +762,7 @@ target,aap,white pumpkin,57,307722906071310,white_pumpkin,pumpkin,white_tomato,t
 thirdDistractor,atp,broccoli,58,307722906071310,white_tomato,tomato,white_swan,swan,green_broccoli.png,broccoli,0,0,1,0,typeOnly
 thirdDistractor,atn,corn,59,307722906071310,white_tomato,tomato,white_swan,swan,yellow_corn.png,corn,0,0,1,0,typeOnly
 secondDistractor,tap,red corn,60,307722906071310,yellow_corn,corn,yellow_egg,egg,red_corn.png,red corn,1,0,1,0,colorType
-target,ttp,Yellow corb,2,433634770856346,yellow_corn,corn,yellow_banana,banana,yellow_banana.png,yellow corb,1,0,0,0,colorOnly
+target,ttp,Yellow corb,2,433634770856346,yellow_corn,corn,yellow_banana,banana,yellow_banana.png,yellow corb,1,0,1,0,colorType
 target,tan,broccoli,3,433634770856346,green_broccoli,broccoli,green_carrot,carrot,white_swan.png,broccoli,0,0,1,0,typeOnly
 target,aan,egg,4,433634770856346,yellow_egg,egg,yellow_strawberry,strawberry,red_broccoli.png,egg,0,0,1,0,typeOnly
 thirdDistractor,atn,corn,6,433634770856346,white_tomato,tomato,white_egg,egg,white_egg.png,corn,0,0,1,0,typeOnly
@@ -842,7 +899,7 @@ target,ttn,banana,23,932021077079251,yellow_banana,banana,yellow_corn,corn,yello
 thirdDistractor,tan,white pumpkin,24,932021077079251,red_strawberry,strawberry,red_corn,corn,white_pumpkin.png,white pumpkin,1,0,1,0,colorType
 secondDistractor,atp,green cabbage,25,932021077079251,orange_lettuce,lettuce,orange_pumpkin,pumpkin,green_lettuce.png,green cabbage,1,0,1,0,colorType
 secondDistractor,atp,yellow corn,26,932021077079251,red_corn,corn,red_tomato,tomato,yellow_corn.png,yellow corn,1,0,1,0,colorType
-thirdDistractor,tan,green   carraot,27,932021077079251,red_tomato,tomato,red_broccoli,broccoli,green_carrot.png,green   carraot,1,0,0,0,colorOnly
+thirdDistractor,tan,green   carraot,27,932021077079251,red_tomato,tomato,red_broccoli,broccoli,green_carrot.png,green   carraot,1,0,1,0,colorType
 firstDistractor,aap,red corn,28,932021077079251,red_broccoli,broccoli,red_corn,corn,red_corn.png,red corn,1,0,1,0,colorType
 secondDistractor,atp,egg,29,932021077079251,yellow_egg,egg,yellow_corn,corn,white_egg.png,egg,0,0,1,0,typeOnly
 target,aan,white tomato,30,932021077079251,white_tomato,tomato,white_pumpkin,pumpkin,white_tomato.png,white tomato,1,0,1,0,colorType
@@ -935,6 +992,66 @@ target,tan,swan,57,845796182289901,white_swan,swan,white_pumpkin,pumpkin,white_s
 target,ttn,swan,58,845796182289901,white_swan,swan,white_egg,egg,white_swan.png,swan,0,0,1,0,typeOnly
 thirdDistractor,atn,lettuce,59,845796182289901,red_broccoli,broccoli,red_strawberry,strawberry,orange_lettuce.png,lettuce,0,0,1,0,typeOnly
 secondDistractor,atp,white egg,60,845796182289901,yellow_egg,egg,yellow_corn,corn,white_egg.png,white egg,1,0,1,0,colorType
+target,ttn,"the target is the tomato, bottom right box",1,418246117087887,red_tomato,tomato,red_strawberry,strawberry,red_tomato.png,"the target is the tomato, bottom right box",0,1,1,0,other
+target,atn,"the target is the top left box, banana",2,418246117087887,orange_banana,banana,orange_pumpkin,pumpkin,orange_banana.png,"the target is the top left box, banana",0,1,1,0,other
+secondDistractor,tap,"the target is the top left box, WHITE tomato",3,418246117087887,red_tomato,tomato,red_broccoli,broccoli,white_tomato.png,"the target is the top left box, white tomato",1,1,1,0,other
+target,aap,"THE TARGET is the top right box, YELLOW EGG",4,418246117087887,yellow_egg,egg,yellow_strawberry,strawberry,yellow_egg.png,"the target is the top right box, yellow egg",1,1,1,0,other
+target,atp,"TARGET IS TOP RIGHT BOX, YELLOW strawberry",5,418246117087887,yellow_strawberry,strawberry,yellow_banana,banana,yellow_strawberry.png,"target is top right box, yellow strawberry",1,1,1,0,other
+thirdDistractor,tan,"top left box, yellow strawberry",6,418246117087887,green_lettuce,lettuce,green_swan,swan,yellow_strawberry.png,"top left box, yellow strawberry",1,1,1,0,other
+secondDistractor,tap,"bottom left box, yellow strawberry",7,418246117087887,red_strawberry,strawberry,red_broccoli,broccoli,yellow_strawberry.png,"bottom left box, yellow strawberry",1,1,1,0,other
+target,aan,"bottom right box, yellow egg",8,418246117087887,yellow_egg,egg,yellow_strawberry,strawberry,yellow_egg.png,"bottom right box, yellow egg",1,1,1,0,other
+secondDistractor,atp,"bottom right box, yellow banana",9,418246117087887,orange_banana,banana,orange_pumpkin,pumpkin,yellow_banana.png,"bottom right box, yellow banana",1,1,1,0,other
+target,aan,"top right box, orange banana",10,418246117087887,orange_banana,banana,orange_lettuce,lettuce,orange_banana.png,"top right box, orange banana",1,1,1,0,other
+thirdDistractor,tan,"top left box, pink cauliflower",11,418246117087887,yellow_corn,corn,yellow_egg,egg,red_broccoli.png,"top left box, pink cauliflower",1,1,0,1,other
+target,ttn,"top left box, CORN",12,418246117087887,yellow_corn,corn,yellow_banana,banana,yellow_corn.png,"top left box, corn",0,1,1,0,other
+thirdDistractor,aan,"bottom right box, CORN",13,418246117087887,white_pumpkin,pumpkin,white_tomato,tomato,yellow_corn.png,"bottom right box, corn",0,1,1,0,other
+secondDistractor,tap,"top right box, orange cabbage",14,418246117087887,green_lettuce,lettuce,green_carrot,carrot,orange_lettuce.png,"top right box, orange cabbage",1,1,1,0,other
+thirdDistractor,ttp,"bottom left box, broccoli",15,418246117087887,yellow_banana,banana,yellow_corn,corn,green_broccoli.png,"bottom left box, broccoli",0,1,1,0,other
+thirdDistractor,atn,"top right box, SWAN",16,418246117087887,red_corn,corn,red_tomato,tomato,white_swan.png,"top right box, swan",0,1,1,0,other
+target,aap,"top right box, GREEN swan",17,418246117087887,green_swan,swan,green_carrot,carrot,green_swan.png,"top right box, green swan",1,1,1,0,other
+target,ttp,"top right box, WHITE egg",18,418246117087887,white_egg,egg,white_swan,swan,white_egg.png,"top right box, white egg",1,1,1,0,other
+target,tan,"top right box, WHITE egg",19,418246117087887,white_egg,egg,white_pumpkin,pumpkin,white_egg.png,"top right box, white egg",1,1,1,0,other
+firstDistractor,atp,"top right box, broccoli",20,418246117087887,green_carrot,carrot,green_broccoli,broccoli,green_broccoli.png,"top right box, broccoli",0,1,1,0,other
+target,tan,"bottom right box, PUMPKIN",21,418246117087887,orange_pumpkin,pumpkin,orange_lettuce,lettuce,orange_pumpkin.png,"bottom right box, pumpkin",0,1,1,0,other
+thirdDistractor,atn,"bottom right box, CORN",22,418246117087887,green_carrot,carrot,green_broccoli,broccoli,red_corn.png,"bottom right box, corn",0,1,1,0,other
+firstDistractor,tap,"bottom left box, CORN",23,418246117087887,red_strawberry,strawberry,red_corn,corn,red_corn.png,"bottom left box, corn",0,1,1,0,other
+thirdDistractor,atn,"top right box, WHITE egg",24,418246117087887,yellow_strawberry,strawberry,yellow_corn,corn,white_egg.png,"top right box, white egg",1,1,1,0,other
+secondDistractor,tap,"top right box, WHITE pumpkin",25,418246117087887,orange_pumpkin,pumpkin,orange_lettuce,lettuce,orange_pumpkin.png,"top right box, white pumpkin",1,1,1,0,other
+thirdDistractor,tan,"bottom left box, orange banana",26,418246117087887,white_swan,swan,white_tomato,tomato,orange_banana.png,"bottom left box, orange banana",1,1,1,0,other
+target,tap,"top right box, YELLOW corn",27,418246117087887,yellow_corn,corn,yellow_strawberry,strawberry,yellow_corn.png,"top right box, yellow corn",1,1,1,0,other
+thirdDistractor,tan,"top right box, YELLOW strawberry",28,418246117087887,red_tomato,tomato,red_broccoli,broccoli,yellow_strawberry.png,"top right box, yellow strawberry",1,1,1,0,other
+thirdDistractor,atn,"top right box, SWAN",29,418246117087887,orange_banana,banana,orange_carrot,carrot,white_swan.png,"top right box, swan",0,1,1,0,other
+secondDistractor,atp,"TOP RIGHT BOX, GREEN BROCCOLI",30,418246117087887,red_broccoli,broccoli,red_strawberry,strawberry,green_broccoli.png,"top right box, green broccoli",1,1,1,0,other
+thirdDistractor,atp,"TOP LEFT BOX, GREEN CABBAGE",31,418246117087887,orange_banana,banana,orange_carrot,carrot,green_lettuce.png,"top left box, green cabbage",1,1,1,0,other
+firstDistractor,ttp,"bottom left box, BROCCOLI",32,418246117087887,green_lettuce,lettuce,green_broccoli,broccoli,green_broccoli.png,"bottom left box, broccoli",0,1,1,0,other
+target,ttn,"bottom right box, CARROT",33,418246117087887,orange_carrot,carrot,orange_pumpkin,pumpkin,orange_carrot.png,"bottom right box, carrot",0,1,1,0,other
+target,ttp,BOTTOM RIGHT BOX WHITE SWAN,34,418246117087887,white_swan,swan,white_egg,egg,white_swan.png,bottom right box white swan,1,1,1,0,other
+secondDistractor,tap,"top left box, ORANGE cabbage",35,418246117087887,green_lettuce,lettuce,green_swan,swan,orange_lettuce.png,"top left box, orange cabbage",1,1,1,0,other
+thirdDistractor,atn,STRAWBERRY,36,418246117087887,green_swan,swan,green_lettuce,lettuce,red_strawberry.png,strawberry,0,0,1,0,typeOnly
+target,atp,RED CORN,37,418246117087887,red_corn,corn,red_strawberry,strawberry,red_corn.png,red corn,1,0,1,0,colorType
+target,aan,WHITE TOMATO,38,418246117087887,white_tomato,tomato,white_pumpkin,pumpkin,white_tomato.png,white tomato,1,0,1,0,colorType
+firstDistractor,tap,YELLOW STRAWBERRY,39,418246117087887,yellow_banana,banana,yellow_strawberry,strawberry,yellow_strawberry.png,yellow strawberry,1,0,1,0,colorType
+firstDistractor,ttp,ORANGE pumpkin,40,418246117087887,orange_carrot,carrot,orange_pumpkin,pumpkin,orange_pumpkin.png,orange pumpkin,1,0,1,0,colorType
+target,ttn,STRAWBERRY,41,418246117087887,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,strawberry,0,0,1,0,typeOnly
+thirdDistractor,tan,RED CORN,42,418246117087887,yellow_banana,banana,yellow_strawberry,strawberry,red_corn.png,red corn,1,0,1,0,colorType
+target,aan,ORANGE CABBAGE,43,418246117087887,orange_lettuce,lettuce,orange_banana,banana,orange_lettuce.png,orange cabbage,1,0,1,0,colorType
+thirdDistractor,tan,RED CAULIFLOWER,44,418246117087887,yellow_corn,corn,yellow_strawberry,strawberry,red_broccoli.png,red cauliflower,1,0,0,1,other
+thirdDistractor,tan,STRAWBERRY,45,418246117087887,green_lettuce,lettuce,green_carrot,carrot,red_strawberry.png,strawberry,0,0,1,0,typeOnly
+target,atn,RED CORN,46,418246117087887,red_corn,corn,red_strawberry,strawberry,red_corn.png,red corn,1,0,1,0,colorType
+thirdDistractor,atp,CABBAGE,47,418246117087887,white_tomato,tomato,white_egg,egg,green_lettuce.png,cabbage,0,0,1,0,typeOnly
+target,tan,EGG,48,418246117087887,white_egg,egg,white_tomato,tomato,white_egg.png,egg,0,0,1,0,typeOnly
+thirdDistractor,ttp,BANANA,49,418246117087887,green_broccoli,broccoli,green_lettuce,lettuce,yellow_banana.png,banana,0,0,1,0,typeOnly
+thirdDistractor,aan,SWAN,50,418246117087887,red_corn,corn,red_broccoli,broccoli,green_swan.png,swan,0,0,1,0,typeOnly
+target,atn,GREEN CARROT,51,418246117087887,green_carrot,carrot,green_lettuce,lettuce,green_carrot.png,green carrot,1,0,1,0,colorType
+secondDistractor,atp,RED TOMATO,52,418246117087887,white_tomato,tomato,white_swan,swan,red_tomato.png,red tomato,1,0,1,0,colorType
+firstDistractor,atp,CORN,53,418246117087887,yellow_egg,egg,yellow_corn,corn,yellow_corn.png,corn,0,0,1,0,typeOnly
+firstDistractor,aap,CALIFLOWER,54,418246117087887,red_corn,corn,red_broccoli,broccoli,red_broccoli.png,califlower,0,0,0,1,other
+target,atn,CAULIFLOWER,55,418246117087887,orange_lettuce,lettuce,orange_pumpkin,pumpkin,orange_lettuce.png,cauliflower,0,0,0,1,other
+target,tap,WHITE SWAN,56,418246117087887,white_swan,swan,white_pumpkin,pumpkin,white_swan.png,white swan,1,0,1,0,colorType
+thirdDistractor,atn,STRAWBERRY,57,418246117087887,white_pumpkin,pumpkin,white_swan,swan,red_strawberry.png,strawberry,0,0,1,0,typeOnly
+target,tan,CARROT,58,418246117087887,orange_carrot,carrot,orange_banana,banana,orange_carrot.png,carrot,0,0,1,0,typeOnly
+firstDistractor,aap,ORANGE CABBAGE,59,418246117087887,orange_banana,banana,orange_lettuce,lettuce,orange_lettuce.png,orange cabbage,1,0,1,0,colorType
+thirdDistractor,tan,CARROT,60,418246117087887,red_strawberry,strawberry,red_corn,corn,orange_carrot.png,carrot,0,0,1,0,typeOnly
 thirdDistractor,tap,It the white tomato,1,803298038406136,yellow_banana,banana,yellow_strawberry,strawberry,white_tomato.png,it the white tomato,1,0,1,0,colorType
 thirdDistractor,atn,carrot,2,803298038406136,white_pumpkin,pumpkin,white_egg,egg,orange_carrot.png,carrot,0,0,1,0,typeOnly
 firstDistractor,tap,white tomato again,3,803298038406136,white_swan,swan,white_tomato,tomato,white_tomato.png,white tomato again,1,0,1,0,colorType
@@ -1001,13 +1118,13 @@ target,aan,brocolli,3,572054639213107,red_broccoli,broccoli,red_corn,corn,red_br
 target,ttp,banana,4,572054639213107,yellow_banana,banana,yellow_corn,corn,yellow_banana.png,banana,0,0,1,0,typeOnly
 thirdDistractor,atn,cabbage,5,572054639213107,white_pumpkin,pumpkin,white_swan,swan,orange_lettuce.png,cabbage,0,0,1,0,typeOnly
 secondDistractor,tap,green swan,7,572054639213107,white_swan,swan,white_pumpkin,pumpkin,green_swan.png,green swan,1,0,1,0,colorType
-target,aan,white mater,8,572054639213107,white_tomato,tomato,white_pumpkin,pumpkin,white_pumpkin.png,white mater,1,0,0,0,colorOnly
+target,aan,white mater,8,572054639213107,white_tomato,tomato,white_pumpkin,pumpkin,white_pumpkin.png,white mater,1,0,0,1,other
 thirdDistractor,ttn,egg,9,572054639213107,orange_carrot,carrot,orange_pumpkin,pumpkin,yellow_egg.png,egg,0,0,1,0,typeOnly
 secondDistractor,atp,white swan,10,572054639213107,green_swan,swan,green_broccoli,broccoli,white_swan.png,white swan,1,0,1,0,colorType
 thirdDistractor,aan,egg,11,572054639213107,green_swan,swan,green_carrot,carrot,yellow_egg.png,egg,0,0,1,0,typeOnly
 target,tap,orange carrot,12,572054639213107,orange_carrot,carrot,orange_banana,banana,orange_carrot.png,orange carrot,1,0,1,0,colorType
 target,tan,orange carrot,13,572054639213107,orange_carrot,carrot,orange_banana,banana,orange_carrot.png,orange carrot,1,0,1,0,colorType
-target,atp,white mater,14,572054639213107,white_tomato,tomato,white_swan,swan,white_tomato.png,white mater,1,0,0,0,colorOnly
+target,atp,white mater,14,572054639213107,white_tomato,tomato,white_swan,swan,white_tomato.png,white mater,1,0,0,1,other
 target,tan,orange carrot,15,572054639213107,orange_carrot,carrot,orange_lettuce,lettuce,orange_carrot.png,orange carrot,1,0,1,0,colorType
 target,aan,egg,16,572054639213107,yellow_egg,egg,yellow_strawberry,strawberry,yellow_egg.png,egg,0,0,1,0,typeOnly
 target,ttn,pumpkin,17,572054639213107,orange_pumpkin,pumpkin,orange_carrot,carrot,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
@@ -1033,7 +1150,7 @@ thirdDistractor,atn,brocoli,36,572054639213107,yellow_strawberry,strawberry,yell
 thirdDistractor,atn,banana,37,572054639213107,red_corn,corn,red_strawberry,strawberry,orange_banana.png,banana,0,0,1,0,typeOnly
 thirdDistractor,atn,swan,38,572054639213107,yellow_strawberry,strawberry,yellow_corn,corn,green_swan.png,swan,0,0,1,0,typeOnly
 firstDistractor,atp,corn,39,572054639213107,yellow_egg,egg,yellow_corn,corn,yellow_corn.png,corn,0,0,1,0,typeOnly
-secondDistractor,tap,white mater,40,572054639213107,red_tomato,tomato,red_corn,corn,white_tomato.png,white mater,1,0,0,0,colorOnly
+secondDistractor,tap,white mater,40,572054639213107,red_tomato,tomato,red_corn,corn,white_tomato.png,white mater,1,0,0,1,other
 thirdDistractor,tan,corn,41,572054639213107,green_broccoli,broccoli,green_swan,swan,red_corn.png,corn,0,0,1,0,typeOnly
 secondDistractor,atp,white egg,42,572054639213107,yellow_egg,egg,yellow_banana,banana,white_egg.png,white egg,1,0,1,0,colorType
 firstDistractor,ttp,tomato,43,572054639213107,red_strawberry,strawberry,red_tomato,tomato,red_tomato.png,tomato,0,0,1,0,typeOnly
@@ -1136,7 +1253,7 @@ thirdDistractor,tan,egg,22,123072318617070,orange_pumpkin,pumpkin,orange_lettuce
 thirdDistractor,tap,white,23,123072318617070,green_broccoli,broccoli,green_swan,swan,white_pumpkin.png,white,1,0,0,0,colorOnly
 thirdDistractor,atn,red one,24,123072318617070,white_tomato,tomato,white_swan,swan,red_corn.png,red one,1,0,0,0,colorOnly
 secondDistractor,tap,red,25,123072318617070,yellow_corn,corn,yellow_strawberry,strawberry,red_corn.png,red,1,0,0,0,colorOnly
-target,tap,big veg orange,26,123072318617070,orange_pumpkin,pumpkin,orange_lettuce,lettuce,orange_pumpkin.png,big veg orange,1,1,0,0,other
+target,tap,big veg orange,26,123072318617070,orange_pumpkin,pumpkin,orange_lettuce,lettuce,orange_pumpkin.png,big veg orange,1,1,0,1,other
 target,aan,big orange one,27,123072318617070,orange_lettuce,lettuce,orange_banana,banana,orange_lettuce.png,big orange one,1,1,0,0,other
 target,ttn,carrot,28,123072318617070,orange_carrot,carrot,orange_pumpkin,pumpkin,orange_carrot.png,carrot,0,0,1,0,typeOnly
 firstDistractor,aap,banana,29,123072318617070,orange_lettuce,lettuce,orange_banana,banana,orange_banana.png,banana,0,0,1,0,typeOnly
@@ -1151,7 +1268,7 @@ thirdDistractor,atn,tomato,37,123072318617070,yellow_strawberry,strawberry,yello
 target,tap,big one green,38,123072318617070,green_lettuce,lettuce,green_carrot,carrot,green_lettuce.png,big one green,1,1,0,0,other
 secondDistractor,tap,red,39,123072318617070,yellow_corn,corn,yellow_egg,egg,red_corn.png,red,1,0,0,0,colorOnly
 thirdDistractor,tan,tomato,40,123072318617070,orange_carrot,carrot,orange_lettuce,lettuce,red_tomato.png,tomato,0,0,1,0,typeOnly
-target,tan,big green veg,41,123072318617070,green_lettuce,lettuce,green_swan,swan,green_lettuce.png,big green veg,1,1,0,0,other
+target,tan,big green veg,41,123072318617070,green_lettuce,lettuce,green_swan,swan,green_lettuce.png,big green veg,1,1,0,1,other
 thirdDistractor,ttp,carrot,42,123072318617070,yellow_corn,corn,yellow_banana,banana,orange_carrot.png,carrot,0,0,1,0,typeOnly
 firstDistractor,ttp,tomato,44,123072318617070,red_strawberry,strawberry,red_tomato,tomato,red_tomato.png,tomato,0,0,1,0,typeOnly
 target,tan,tomato,45,123072318617070,red_tomato,tomato,red_broccoli,broccoli,red_tomato.png,tomato,0,0,1,0,typeOnly
@@ -1165,7 +1282,7 @@ thirdDistractor,tan,white,52,123072318617070,green_broccoli,broccoli,green_carro
 target,aan,carrot,53,123072318617070,green_carrot,carrot,green_swan,swan,green_carrot.png,carrot,0,0,1,0,typeOnly
 firstDistractor,tap,duck,54,123072318617070,green_lettuce,lettuce,green_swan,swan,green_swan.png,duck,0,0,1,0,typeOnly
 thirdDistractor,ttp,white,56,123072318617070,orange_carrot,carrot,orange_pumpkin,pumpkin,white_tomato.png,white,1,0,0,0,colorOnly
-target,aan,orange veg,57,123072318617070,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,orange veg,1,0,0,0,colorOnly
+target,aan,orange veg,57,123072318617070,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,orange veg,1,0,0,1,other
 thirdDistractor,tan,duck,58,123072318617070,red_tomato,tomato,red_corn,corn,green_swan.png,duck,0,0,1,0,typeOnly
 secondDistractor,atp,white egg,59,123072318617070,yellow_egg,egg,yellow_corn,corn,white_egg.png,white egg,1,0,1,0,colorType
 target,aan,The egg,1,224717051848096,yellow_egg,egg,yellow_strawberry,strawberry,yellow_egg.png,the egg,0,0,1,0,typeOnly
@@ -1227,7 +1344,7 @@ thirdDistractor,tan,The Yellow Egg,56,224717051848096,orange_pumpkin,pumpkin,ora
 secondDistractor,tap,The Abnormal Broccoli,57,224717051848096,green_broccoli,broccoli,green_carrot,carrot,red_broccoli.png,the abnormal broccoli,0,1,1,0,other
 target,aap,The Yellow Egg,58,224717051848096,yellow_egg,egg,yellow_strawberry,strawberry,yellow_egg.png,the yellow egg,1,0,1,0,colorType
 target,tan,The broccoli,59,224717051848096,green_broccoli,broccoli,green_swan,swan,green_broccoli.png,the broccoli,0,0,1,0,typeOnly
-thirdDistractor,atp,The Albino Pumpkin,60,224717051848096,green_carrot,carrot,green_broccoli,broccoli,white_pumpkin.png,the albino pumpkin,0,0,1,0,typeOnly
+thirdDistractor,atp,The Albino Pumpkin,60,224717051848096,green_carrot,carrot,green_broccoli,broccoli,white_pumpkin.png,the albino pumpkin,0,1,1,0,other
 thirdDistractor,tan,The object is all red.,2,039672363740117,orange_pumpkin,pumpkin,orange_banana,banana,red_broccoli.png,the object is all red.,1,0,0,0,colorOnly
 secondDistractor,tap,The object is all orange,3,039672363740117,yellow_banana,banana,yellow_egg,egg,orange_banana.png,the object is all orange,1,0,0,0,colorOnly
 target,ttn,The object is a strawberry,4,039672363740117,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,the object is a strawberry,0,0,1,0,typeOnly
@@ -1344,6 +1461,27 @@ secondDistractor,atp,orange carrot,57,564672605413231,green_carrot,carrot,green_
 firstDistractor,ttp,broccoli,58,564672605413231,green_lettuce,lettuce,green_broccoli,broccoli,green_broccoli.png,broccoli,0,0,1,0,typeOnly
 firstDistractor,atp,strawberry,59,564672605413231,red_broccoli,broccoli,red_strawberry,strawberry,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 target,tap,white swan,60,564672605413231,white_swan,swan,white_tomato,tomato,white_swan.png,white swan,1,0,1,0,colorType
+thirdDistractor,atn,left top,1,210024782373736,yellow_egg,egg,yellow_corn,corn,yellow_egg.png,left top,0,1,0,0,other
+firstDistractor,aap,top right,8,210024782373736,red_broccoli,broccoli,red_corn,corn,red_corn.png,top right,0,1,0,0,other
+target,ttp,top left,9,210024782373736,orange_carrot,carrot,orange_pumpkin,pumpkin,green_carrot.png,top left,0,1,0,0,other
+thirdDistractor,atn,top left,10,210024782373736,orange_lettuce,lettuce,orange_carrot,carrot,orange_carrot.png,top left,0,1,0,0,other
+thirdDistractor,atn,top right,15,210024782373736,white_tomato,tomato,white_egg,egg,orange_lettuce.png,top right,0,1,0,0,other
+firstDistractor,atp,top left,16,210024782373736,yellow_strawberry,strawberry,yellow_banana,banana,white_tomato.png,top left,0,1,0,0,other
+target,aan,top left,17,210024782373736,yellow_strawberry,strawberry,yellow_egg,egg,green_lettuce.png,top left,0,1,0,0,other
+thirdDistractor,atp,top right,25,210024782373736,orange_lettuce,lettuce,orange_pumpkin,pumpkin,green_lettuce.png,top right,0,1,0,0,other
+firstDistractor,tap,top left,26,210024782373736,white_egg,egg,white_pumpkin,pumpkin,white_pumpkin.png,top left,0,1,0,0,other
+target,tan,top left,30,210024782373736,orange_carrot,carrot,orange_lettuce,lettuce,orange_carrot.png,top left,0,1,0,0,other
+thirdDistractor,atp,top right,31,210024782373736,red_broccoli,broccoli,red_tomato,tomato,white_swan.png,top right,0,1,0,0,other
+thirdDistractor,atp,top right,32,210024782373736,green_swan,swan,green_broccoli,broccoli,green_swan.png,top right,0,1,0,0,other
+target,ttn,top right,40,210024782373736,yellow_corn,corn,yellow_banana,banana,yellow_banana.png,top right,0,1,0,0,other
+thirdDistractor,tan,botom right,42,210024782373736,green_broccoli,broccoli,green_carrot,carrot,green_broccoli.png,botom right,0,1,1,0,other
+thirdDistractor,atn,top left,44,210024782373736,white_pumpkin,pumpkin,white_swan,swan,green_lettuce.png,top left,0,1,0,0,other
+target,atp,top right,48,210024782373736,white_tomato,tomato,white_egg,egg,red_tomato.png,top right,0,1,0,0,other
+thirdDistractor,atp,top left,50,210024782373736,orange_banana,banana,orange_carrot,carrot,orange_carrot.png,top left,0,1,0,0,other
+thirdDistractor,atp,top left,53,210024782373736,white_pumpkin,pumpkin,white_swan,swan,green_broccoli.png,top left,0,1,0,0,other
+thirdDistractor,tan,top right,56,210024782373736,yellow_banana,banana,yellow_strawberry,strawberry,red_corn.png,top right,0,1,0,0,other
+thirdDistractor,tan,top left,59,210024782373736,yellow_corn,corn,yellow_strawberry,strawberry,red_tomato.png,top left,0,1,0,0,other
+target,tap,top right,60,210024782373736,green_lettuce,lettuce,green_carrot,carrot,orange_lettuce.png,top right,0,1,0,0,other
 secondDistractor,ttp,Hi! Click on the yellow egg.,1,452236662920961,white_egg,egg,white_swan,swan,yellow_egg.png,hi! click on the yellow egg.,1,0,1,0,colorType
 target,tan,Click on the banana.,2,452236662920961,yellow_banana,banana,yellow_egg,egg,yellow_banana.png,click on the banana.,0,0,1,0,typeOnly
 thirdDistractor,tap,Click on the carrot.,3,452236662920961,white_swan,swan,white_tomato,tomato,orange_carrot.png,click on the carrot.,0,0,1,0,typeOnly
@@ -1600,7 +1738,7 @@ firstDistractor,aap,white tomato,14,870370560291245,white_pumpkin,pumpkin,white_
 secondDistractor,tap,red corn,15,870370560291245,yellow_corn,corn,yellow_strawberry,strawberry,red_corn.png,red corn,1,0,1,0,colorType
 thirdDistractor,aan,yellow straw,16,870370560291245,red_broccoli,broccoli,red_corn,corn,yellow_strawberry.png,yellow straw,1,0,1,0,colorType
 target,atn,red cauli,17,870370560291245,red_broccoli,broccoli,red_tomato,tomato,red_broccoli.png,red cauli,1,0,0,1,other
-target,tap,gree brocc,18,870370560291245,green_broccoli,broccoli,green_carrot,carrot,green_broccoli.png,gree brocc,0,0,1,0,typeOnly
+target,tap,gree brocc,18,870370560291245,green_broccoli,broccoli,green_carrot,carrot,green_broccoli.png,gree brocc,1,0,1,0,colorType
 target,aan,green carrot,19,870370560291245,green_carrot,carrot,green_swan,swan,green_carrot.png,green carrot,1,0,1,0,colorType
 thirdDistractor,atn,goose,20,870370560291245,yellow_strawberry,strawberry,yellow_banana,banana,white_swan.png,goose,0,0,1,0,typeOnly
 thirdDistractor,tan,banana,21,870370560291245,green_broccoli,broccoli,green_carrot,carrot,yellow_banana.png,banana,0,0,1,0,typeOnly
@@ -2153,7 +2291,7 @@ secondDistractor,tap,yellow egg,43,095656389743800,white_egg,egg,white_pumpkin,p
 thirdDistractor,atp,red,44,095656389743800,yellow_egg,egg,yellow_corn,corn,red_broccoli.png,red,1,0,0,0,colorOnly
 target,aan,white pumpkin,45,095656389743800,white_pumpkin,pumpkin,white_tomato,tomato,white_pumpkin.png,white pumpkin,1,0,1,0,colorType
 thirdDistractor,aap,carrot,46,095656389743800,red_corn,corn,red_broccoli,broccoli,orange_carrot.png,carrot,0,0,1,0,typeOnly
-thirdDistractor,tan,yrllow egg,47,095656389743800,green_broccoli,broccoli,green_carrot,carrot,yellow_egg.png,yrllow egg,0,0,1,0,typeOnly
+thirdDistractor,tan,yrllow egg,47,095656389743800,green_broccoli,broccoli,green_carrot,carrot,yellow_egg.png,yrllow egg,1,0,1,0,colorType
 firstDistractor,ttp,white swan,48,095656389743800,white_egg,egg,white_swan,swan,white_swan.png,white swan,1,0,1,0,colorType
 target,tan,corn,49,095656389743800,yellow_corn,corn,yellow_egg,egg,yellow_corn.png,corn,0,0,1,0,typeOnly
 target,aap,red broccoli,50,095656389743800,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,red broccoli,1,0,1,0,colorType
@@ -2288,7 +2426,7 @@ target,tan,Bannaa,60,688118463485288,yellow_banana,banana,yellow_strawberry,stra
 thirdDistractor,atn,Strawberry,1,208570288547251,orange_lettuce,lettuce,orange_pumpkin,pumpkin,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 target,aap,Seasick Swan,2,208570288547251,green_swan,swan,green_carrot,carrot,yellow_strawberry.png,seasick swan,0,1,1,0,other
 thirdDistractor,atn,Broccoli,3,208570288547251,yellow_strawberry,strawberry,yellow_corn,corn,green_broccoli.png,broccoli,0,0,1,0,typeOnly
-thirdDistractor,aan,Fourth of July Broccoli lol,4,208570288547251,orange_banana,banana,orange_lettuce,lettuce,red_broccoli.png,fourth of july broccoli lol,0,0,1,0,typeOnly
+thirdDistractor,aan,Fourth of July Broccoli lol,4,208570288547251,orange_banana,banana,orange_lettuce,lettuce,red_broccoli.png,fourth of july broccoli lol,0,1,1,0,other
 secondDistractor,atp,Normal Swan,5,208570288547251,green_swan,swan,green_lettuce,lettuce,white_swan.png,normal swan,0,1,1,0,other
 secondDistractor,atp,Normal Carrot,6,208570288547251,green_carrot,carrot,green_lettuce,lettuce,orange_carrot.png,normal carrot,0,1,1,0,other
 target,atn,White Tomato,7,208570288547251,white_tomato,tomato,white_swan,swan,white_tomato.png,white tomato,1,0,1,0,colorType
@@ -2464,26 +2602,26 @@ target,atn,banana,58,738626201445248,orange_banana,banana,orange_carrot,carrot,o
 target,aap,green goose,59,738626201445248,green_swan,swan,green_carrot,carrot,green_swan.png,green goose,1,0,1,0,colorType
 firstDistractor,tap,pumpkin,60,738626201445248,white_swan,swan,white_pumpkin,pumpkin,white_pumpkin.png,pumpkin,0,0,1,0,typeOnly
 target,atn,dyed animal,2,966619756940372,green_swan,swan,green_broccoli,broccoli,green_swan.png,dyed animal,0,1,0,1,other
-thirdDistractor,tan,green veggie,3,966619756940372,orange_pumpkin,pumpkin,orange_banana,banana,green_broccoli.png,green veggie,1,0,1,0,colorType
-firstDistractor,atp,green veggie,4,966619756940372,green_swan,swan,green_broccoli,broccoli,green_broccoli.png,green veggie,1,0,1,0,colorType
-target,aan,green veggie,5,966619756940372,green_carrot,carrot,green_swan,swan,green_carrot.png,green veggie,1,0,1,0,colorType
-thirdDistractor,aan,green veggie,6,966619756940372,yellow_strawberry,strawberry,yellow_egg,egg,green_lettuce.png,green veggie,1,0,1,0,colorType
+thirdDistractor,tan,green veggie,3,966619756940372,orange_pumpkin,pumpkin,orange_banana,banana,green_broccoli.png,green veggie,1,0,1,1,other
+firstDistractor,atp,green veggie,4,966619756940372,green_swan,swan,green_broccoli,broccoli,green_broccoli.png,green veggie,1,0,1,1,other
+target,aan,green veggie,5,966619756940372,green_carrot,carrot,green_swan,swan,green_carrot.png,green veggie,1,0,1,1,other
+thirdDistractor,aan,green veggie,6,966619756940372,yellow_strawberry,strawberry,yellow_egg,egg,green_lettuce.png,green veggie,1,0,1,1,other
 firstDistractor,ttp,small tree veggie,7,966619756940372,green_lettuce,lettuce,green_broccoli,broccoli,green_broccoli.png,small tree veggie,0,1,1,1,other
-target,atn,red tinted veggie,8,966619756940372,red_broccoli,broccoli,red_tomato,tomato,red_broccoli.png,red tinted veggie,1,0,1,0,colorType
+target,atn,red tinted veggie,8,966619756940372,red_broccoli,broccoli,red_tomato,tomato,red_broccoli.png,red tinted veggie,1,0,1,1,other
 target,tap,natural colored animal,9,966619756940372,white_swan,swan,white_tomato,tomato,white_swan.png,natural colored animal,1,1,0,1,other
 thirdDistractor,atn,fruit,10,966619756940372,white_pumpkin,pumpkin,white_swan,swan,yellow_strawberry.png,fruit,0,0,0,1,other
-target,tap,natural colored veggie,11,966619756940372,orange_carrot,carrot,orange_banana,banana,orange_carrot.png,natural colored veggie,1,1,1,0,other
+target,tap,natural colored veggie,11,966619756940372,orange_carrot,carrot,orange_banana,banana,orange_carrot.png,natural colored veggie,1,1,1,1,other
 firstDistractor,aap,white fruit,12,966619756940372,white_pumpkin,pumpkin,white_tomato,tomato,white_tomato.png,white fruit,1,0,0,1,other
-target,aap,red dyed veggie,13,966619756940372,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,red dyed veggie,1,1,1,0,other
+target,aap,red dyed veggie,13,966619756940372,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,red dyed veggie,1,1,1,1,other
 target,ttn,red berry,14,966619756940372,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,red berry,1,0,1,0,colorType
 thirdDistractor,atp,red berry,15,966619756940372,white_pumpkin,pumpkin,white_swan,swan,red_strawberry.png,red berry,1,0,1,0,colorType
 target,tan,natural colored fruit,16,966619756940372,yellow_banana,banana,yellow_strawberry,strawberry,yellow_banana.png,natural colored fruit,1,1,0,1,other
-target,ttp,natural colored veggie,17,966619756940372,green_broccoli,broccoli,green_lettuce,lettuce,green_broccoli.png,natural colored veggie,1,1,1,0,other
+target,ttp,natural colored veggie,17,966619756940372,green_broccoli,broccoli,green_lettuce,lettuce,green_broccoli.png,natural colored veggie,1,1,1,1,other
 target,atp,white tinted,18,966619756940372,white_tomato,tomato,white_swan,swan,white_tomato.png,white tinted,1,0,0,0,colorOnly
 secondDistractor,aap,natural color,19,966619756940372,yellow_egg,egg,yellow_strawberry,strawberry,white_egg.png,natural color,0,1,0,0,other
 firstDistractor,tap,un-natural yellow,20,966619756940372,yellow_banana,banana,yellow_strawberry,strawberry,yellow_strawberry.png,un-natural yellow,1,1,0,0,other
-target,aan,completely red,21,966619756940372,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,completely red,1,0,0,0,colorOnly
-thirdDistractor,ttn,green veggie,22,966619756940372,red_tomato,tomato,red_strawberry,strawberry,green_broccoli.png,green veggie,1,0,1,0,colorType
+target,aan,completely red,21,966619756940372,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,completely red,1,0,1,0,colorType
+thirdDistractor,ttn,green veggie,22,966619756940372,red_tomato,tomato,red_strawberry,strawberry,green_broccoli.png,green veggie,1,0,1,1,other
 target,tan,natural red,23,966619756940372,red_tomato,tomato,red_corn,corn,red_tomato.png,natural red,1,1,0,0,other
 thirdDistractor,ttn,orange tinted,24,966619756940372,yellow_banana,banana,yellow_corn,corn,orange_lettuce.png,orange tinted,1,0,0,0,colorOnly
 target,ttn,green tree shaped,25,966619756940372,green_broccoli,broccoli,green_lettuce,lettuce,green_broccoli.png,green tree shaped,1,0,0,1,other
@@ -2581,6 +2719,65 @@ firstDistractor,tap,green carrot,57,539441611397911,green_broccoli,broccoli,gree
 firstDistractor,atp,strawberry,58,539441611397911,red_broccoli,broccoli,red_strawberry,strawberry,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 thirdDistractor,ttn,green swan,59,539441611397911,orange_pumpkin,pumpkin,orange_carrot,carrot,green_swan.png,green swan,1,0,1,0,colorType
 target,ttn,tomato,60,539441611397911,red_tomato,tomato,red_strawberry,strawberry,red_tomato.png,tomato,0,0,1,0,typeOnly
+target,atn,hello---the target looks like lettuce,1,462219836317466,orange_lettuce,lettuce,orange_carrot,carrot,orange_lettuce.png,hello---the target looks like lettuce,0,0,1,0,typeOnly
+thirdDistractor,aan,the target looks like corn,2,462219836317466,orange_lettuce,lettuce,orange_banana,banana,red_corn.png,the target looks like corn,0,0,1,0,typeOnly
+target,tan,the target looks like a tomato,3,462219836317466,red_tomato,tomato,red_broccoli,broccoli,red_tomato.png,the target looks like a tomato,0,0,1,0,typeOnly
+thirdDistractor,tap,the target looks like broccoli,4,462219836317466,white_swan,swan,white_tomato,tomato,red_broccoli.png,the target looks like broccoli,0,0,1,0,typeOnly
+thirdDistractor,tan,the target looks like broccoli,5,462219836317466,yellow_corn,corn,yellow_egg,egg,red_broccoli.png,the target looks like broccoli,0,0,1,0,typeOnly
+firstDistractor,ttp,the target looks like a tomato,6,462219836317466,red_strawberry,strawberry,red_tomato,tomato,red_tomato.png,the target looks like a tomato,0,0,1,0,typeOnly
+target,ttn,the target looks like a carrot,7,462219836317466,orange_carrot,carrot,orange_pumpkin,pumpkin,orange_carrot.png,the target looks like a carrot,0,0,1,0,typeOnly
+thirdDistractor,ttn,the target looks like a strawberry,8,462219836317466,green_broccoli,broccoli,green_lettuce,lettuce,yellow_strawberry.png,the target looks like a strawberry,0,0,1,0,typeOnly
+target,atn,the target looks like a strawberry,9,462219836317466,yellow_strawberry,strawberry,yellow_corn,corn,yellow_strawberry.png,the target looks like a strawberry,0,0,1,0,typeOnly
+target,aan,the target looks like an egg,10,462219836317466,yellow_egg,egg,yellow_strawberry,strawberry,yellow_egg.png,the target looks like an egg,0,0,1,0,typeOnly
+target,aap,the target looks like a pumpkin without color,11,462219836317466,white_pumpkin,pumpkin,white_tomato,tomato,white_pumpkin.png,the target looks like a pumpkin without color,0,1,1,0,other
+target,ttp,a pumpkin with color,12,462219836317466,orange_pumpkin,pumpkin,orange_carrot,carrot,white_pumpkin.png,a pumpkin with color,0,1,1,0,other
+thirdDistractor,aan,a swan,13,462219836317466,red_broccoli,broccoli,red_corn,corn,green_swan.png,a swan,0,0,1,0,typeOnly
+thirdDistractor,tan,a tomato,14,462219836317466,white_swan,swan,white_pumpkin,pumpkin,red_tomato.png,a tomato,0,0,1,0,typeOnly
+thirdDistractor,atp,a tomato without color,15,462219836317466,red_corn,corn,red_strawberry,strawberry,white_tomato.png,a tomato without color,0,1,1,0,other
+secondDistractor,atp,lettuce with the correct color,16,462219836317466,orange_lettuce,lettuce,orange_carrot,carrot,green_lettuce.png,lettuce with the correct color,0,1,1,0,other
+thirdDistractor,tan,corn on the cob,17,462219836317466,green_broccoli,broccoli,green_carrot,carrot,yellow_corn.png,corn on the cob,0,0,1,0,typeOnly
+thirdDistractor,atp,broccoli,18,462219836317466,orange_banana,banana,orange_carrot,carrot,green_broccoli.png,broccoli,0,0,1,0,typeOnly
+thirdDistractor,atn,an egg,19,462219836317466,green_swan,swan,green_broccoli,broccoli,white_egg.png,an egg,0,0,1,0,typeOnly
+target,ttn,corn on the cob,20,462219836317466,yellow_corn,corn,yellow_banana,banana,yellow_corn.png,corn on the cob,0,0,1,0,typeOnly
+target,ttp,original tomato,22,462219836317466,red_tomato,tomato,red_strawberry,strawberry,red_tomato.png,original tomato,0,1,1,0,other
+target,aan,carrot,23,462219836317466,green_carrot,carrot,green_swan,swan,green_carrot.png,carrot,0,0,1,0,typeOnly
+firstDistractor,atp,corn on the cob,24,462219836317466,yellow_strawberry,strawberry,yellow_corn,corn,yellow_corn.png,corn on the cob,0,0,1,0,typeOnly
+thirdDistractor,atn,corn on the cob,25,462219836317466,orange_banana,banana,orange_pumpkin,pumpkin,red_corn.png,corn on the cob,0,0,1,0,typeOnly
+secondDistractor,tap,corn on the cob off color,26,462219836317466,yellow_corn,corn,yellow_strawberry,strawberry,red_corn.png,corn on the cob off color,0,1,1,0,other
+firstDistractor,aap,egg,27,462219836317466,yellow_strawberry,strawberry,yellow_egg,egg,yellow_egg.png,egg,0,0,1,0,typeOnly
+target,atp,carrot off color,28,462219836317466,green_carrot,carrot,green_lettuce,lettuce,green_carrot.png,carrot off color,0,1,1,0,other
+target,tap,banana original color,29,462219836317466,yellow_banana,banana,yellow_egg,egg,yellow_banana.png,banana original color,0,1,1,0,other
+firstDistractor,aap,strawberry,30,462219836317466,yellow_egg,egg,yellow_strawberry,strawberry,yellow_strawberry.png,strawberry,0,0,1,0,typeOnly
+target,aap,tomato no color,31,462219836317466,white_tomato,tomato,white_pumpkin,pumpkin,white_tomato.png,tomato no color,0,1,1,0,other
+target,tap,broccoli original color,32,462219836317466,green_broccoli,broccoli,green_swan,swan,green_broccoli.png,broccoli original color,0,1,1,0,other
+secondDistractor,atp,swan original color,33,462219836317466,green_swan,swan,green_broccoli,broccoli,white_swan.png,swan original color,0,1,1,0,other
+firstDistractor,atp,tomato,34,462219836317466,red_corn,corn,red_tomato,tomato,red_tomato.png,tomato,0,0,1,0,typeOnly
+thirdDistractor,atn,strawberry,35,462219836317466,green_carrot,carrot,green_broccoli,broccoli,yellow_strawberry.png,strawberry,0,0,1,0,typeOnly
+target,atn,tomato,36,462219836317466,white_tomato,tomato,white_swan,swan,white_tomato.png,tomato,0,0,1,0,typeOnly
+target,tan,swan,37,462219836317466,white_swan,swan,white_tomato,tomato,white_swan.png,swan,0,0,1,0,typeOnly
+thirdDistractor,atn,egg,38,462219836317466,red_corn,corn,red_tomato,tomato,yellow_egg.png,egg,0,0,1,0,typeOnly
+firstDistractor,tap,strawberry,39,462219836317466,yellow_banana,banana,yellow_strawberry,strawberry,yellow_strawberry.png,strawberry,0,0,1,0,typeOnly
+thirdDistractor,tap,banana,40,462219836317466,green_lettuce,lettuce,green_carrot,carrot,yellow_banana.png,banana,0,0,1,0,typeOnly
+target,ttn,tomato,41,462219836317466,red_tomato,tomato,red_strawberry,strawberry,red_tomato.png,tomato,0,0,1,0,typeOnly
+thirdDistractor,tan,broccoli,42,462219836317466,green_lettuce,lettuce,green_carrot,carrot,red_broccoli.png,broccoli,0,0,1,0,typeOnly
+target,atp,carrot off color,43,462219836317466,green_carrot,carrot,green_broccoli,broccoli,green_carrot.png,carrot off color,0,1,1,0,other
+target,tan,banana,44,462219836317466,yellow_banana,banana,yellow_egg,egg,yellow_banana.png,banana,0,0,1,0,typeOnly
+thirdDistractor,tan,carrot,45,462219836317466,orange_pumpkin,pumpkin,orange_banana,banana,green_carrot.png,carrot,0,0,1,0,typeOnly
+target,aan,tomato,46,462219836317466,white_tomato,tomato,white_pumpkin,pumpkin,white_tomato.png,tomato,0,0,1,0,typeOnly
+target,ttn,egg,47,462219836317466,white_egg,egg,white_swan,swan,white_egg.png,egg,0,0,1,0,typeOnly
+secondDistractor,atp,pumpkin original color,48,462219836317466,white_pumpkin,pumpkin,white_swan,swan,orange_pumpkin.png,pumpkin original color,0,1,1,0,other
+target,aan,banana,49,462219836317466,orange_banana,banana,orange_lettuce,lettuce,orange_banana.png,banana,0,0,1,0,typeOnly
+thirdDistractor,atn,banana,50,462219836317466,green_swan,swan,green_lettuce,lettuce,orange_banana.png,banana,0,0,1,0,typeOnly
+thirdDistractor,tap,banana,51,462219836317466,orange_carrot,carrot,orange_lettuce,lettuce,yellow_banana.png,banana,0,0,1,0,typeOnly
+firstDistractor,tap,corn on the cob,52,462219836317466,red_tomato,tomato,red_corn,corn,red_corn.png,corn on the cob,0,0,1,0,typeOnly
+firstDistractor,ttp,broccoli,53,462219836317466,green_lettuce,lettuce,green_broccoli,broccoli,green_broccoli.png,broccoli,0,0,1,0,typeOnly
+secondDistractor,tap,strawberry off color,54,462219836317466,red_strawberry,strawberry,red_broccoli,broccoli,yellow_strawberry.png,strawberry off color,0,1,1,0,other
+thirdDistractor,tan,corn on the cob,55,462219836317466,orange_carrot,carrot,orange_lettuce,lettuce,yellow_corn.png,corn on the cob,0,0,1,0,typeOnly
+target,tan,strawberry,56,462219836317466,red_strawberry,strawberry,red_broccoli,broccoli,red_strawberry.png,strawberry,0,0,1,0,typeOnly
+secondDistractor,atp,tomato original color,57,462219836317466,white_tomato,tomato,white_swan,swan,red_tomato.png,tomato original color,0,1,1,0,other
+secondDistractor,atp,lettuce original color,58,462219836317466,orange_lettuce,lettuce,orange_pumpkin,pumpkin,green_lettuce.png,lettuce original color,0,1,1,0,other
+thirdDistractor,tan,carrot,59,462219836317466,yellow_corn,corn,yellow_strawberry,strawberry,orange_carrot.png,carrot,0,0,1,0,typeOnly
+target,atn,tomato,60,462219836317466,white_tomato,tomato,white_egg,egg,white_tomato.png,tomato,0,0,1,0,typeOnly
 target,ttp,Strawberry,1,798591879331096,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 secondDistractor,tap,green carrot,3,798591879331096,orange_carrot,carrot,orange_banana,banana,green_carrot.png,green carrot,1,0,1,0,colorType
 thirdDistractor,aan,tomato,4,798591879331096,yellow_egg,egg,yellow_strawberry,strawberry,red_tomato.png,tomato,0,0,1,0,typeOnly
@@ -2834,7 +3031,7 @@ thirdDistractor,tan,red tomato,15,212009709128768,orange_pumpkin,pumpkin,orange_
 secondDistractor,tap,red cauliflower,16,212009709128768,green_broccoli,broccoli,green_swan,swan,red_broccoli.png,red cauliflower,1,0,0,1,other
 target,ttn,red strawbry,17,212009709128768,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,red strawbry,1,0,1,0,colorType
 target,atn,red corn,18,212009709128768,red_corn,corn,red_strawberry,strawberry,red_corn.png,red corn,1,0,1,0,colorType
-thirdDistractor,tap,grn swan,19,212009709128768,red_strawberry,strawberry,red_broccoli,broccoli,green_swan.png,grn swan,0,0,1,0,typeOnly
+thirdDistractor,tap,grn swan,19,212009709128768,red_strawberry,strawberry,red_broccoli,broccoli,green_swan.png,grn swan,1,0,1,0,colorType
 thirdDistractor,ttn,yellow lemon,20,212009709128768,green_lettuce,lettuce,green_broccoli,broccoli,yellow_egg.png,yellow lemon,1,0,0,1,other
 target,tan,red tomat,21,212009709128768,red_tomato,tomato,red_broccoli,broccoli,red_tomato.png,red tomat,1,0,1,0,colorType
 thirdDistractor,atn,orang banan,22,212009709128768,green_carrot,carrot,green_broccoli,broccoli,orange_banana.png,orang banan,1,0,1,0,colorType
@@ -2854,11 +3051,11 @@ target,tap,yell bana,35,212009709128768,yellow_banana,banana,yellow_strawberry,s
 thirdDistractor,tap,red caul,36,212009709128768,white_egg,egg,white_tomato,tomato,red_broccoli.png,red caul,1,0,0,1,other
 secondDistractor,atp,yellow ban,37,212009709128768,orange_banana,banana,orange_pumpkin,pumpkin,yellow_banana.png,yellow ban,1,0,1,0,colorType
 target,tan,red strab,38,212009709128768,red_strawberry,strawberry,red_corn,corn,red_strawberry.png,red strab,1,0,1,0,colorType
-target,ttp,grn brocoli,39,212009709128768,green_broccoli,broccoli,green_lettuce,lettuce,green_broccoli.png,grn brocoli,0,0,1,0,typeOnly
-firstDistractor,tap,grn carot,40,212009709128768,green_broccoli,broccoli,green_carrot,carrot,green_carrot.png,grn carot,0,0,1,0,typeOnly
+target,ttp,grn brocoli,39,212009709128768,green_broccoli,broccoli,green_lettuce,lettuce,green_broccoli.png,grn brocoli,1,0,1,0,colorType
+firstDistractor,tap,grn carot,40,212009709128768,green_broccoli,broccoli,green_carrot,carrot,green_carrot.png,grn carot,1,0,1,0,colorType
 thirdDistractor,atn,white egg,41,212009709128768,orange_banana,banana,orange_carrot,carrot,white_egg.png,white egg,1,0,1,0,colorType
 firstDistractor,aap,green carrot,42,212009709128768,green_swan,swan,green_carrot,carrot,green_carrot.png,green carrot,1,0,1,0,colorType
-target,aan,grnee swan,43,212009709128768,green_swan,swan,green_carrot,carrot,green_swan.png,grnee swan,0,0,1,0,typeOnly
+target,aan,grnee swan,43,212009709128768,green_swan,swan,green_carrot,carrot,green_swan.png,grnee swan,1,0,1,0,colorType
 thirdDistractor,atn,green letc,44,212009709128768,yellow_egg,egg,yellow_banana,banana,green_lettuce.png,green letc,1,0,1,0,colorType
 thirdDistractor,atn,red caulifr,45,212009709128768,green_swan,swan,green_lettuce,lettuce,red_broccoli.png,red caulifr,1,0,0,1,other
 target,ttp,yellow ban,46,212009709128768,yellow_banana,banana,yellow_corn,corn,yellow_banana.png,yellow ban,1,0,1,0,colorType
@@ -2878,8 +3075,8 @@ target,aan,yellow lemon,59,212009709128768,yellow_egg,egg,yellow_strawberry,stra
 thirdDistractor,tan,red brocoli,60,212009709128768,yellow_corn,corn,yellow_strawberry,strawberry,red_broccoli.png,red brocoli,1,0,1,0,colorType
 secondDistractor,tap,hi u want banana.,3,674689641002867,white_swan,swan,white_pumpkin,pumpkin,yellow_banana.png,hi u want banana.,0,0,1,0,typeOnly
 thirdDistractor,atn,the white one,1,069513982472024,yellow_egg,egg,yellow_banana,banana,white_swan.png,the white one,1,0,0,0,colorOnly
-target,ttp,the one with inside being yellow with outside green covering,2,069513982472024,yellow_corn,corn,yellow_banana,banana,yellow_corn.png,the one with inside being yellow with outside green covering,1,0,0,0,colorOnly
-target,ttn,halloween,3,069513982472024,orange_pumpkin,pumpkin,orange_carrot,carrot,orange_pumpkin.png,halloween,0,0,0,0,whatisthis?
+target,ttp,the one with inside being yellow with outside green covering,2,069513982472024,yellow_corn,corn,yellow_banana,banana,yellow_corn.png,the one with inside being yellow with outside green covering,1,1,0,0,other
+target,ttn,halloween,3,069513982472024,orange_pumpkin,pumpkin,orange_carrot,carrot,orange_pumpkin.png,halloween,0,0,0,1,other
 secondDistractor,tap,Orange color,4,069513982472024,green_lettuce,lettuce,green_swan,swan,orange_lettuce.png,orange color,1,0,0,0,colorOnly
 secondDistractor,tap,yellow,5,069513982472024,red_strawberry,strawberry,red_broccoli,broccoli,yellow_strawberry.png,yellow,1,0,0,0,colorOnly
 firstDistractor,ttp,lettuce,6,069513982472024,green_broccoli,broccoli,green_lettuce,lettuce,green_lettuce.png,lettuce,0,0,1,0,typeOnly
@@ -3231,65 +3428,6 @@ target,tan,pumpkin,57,819212271760426,orange_pumpkin,pumpkin,orange_banana,banan
 thirdDistractor,atn,corn,58,819212271760426,green_carrot,carrot,green_broccoli,broccoli,yellow_corn.png,corn,0,0,1,0,typeOnly
 target,aan,tomato,59,819212271760426,white_tomato,tomato,white_pumpkin,pumpkin,white_tomato.png,tomato,0,0,1,0,typeOnly
 thirdDistractor,aan,carrot,60,819212271760426,yellow_strawberry,strawberry,yellow_egg,egg,orange_carrot.png,carrot,0,0,1,0,typeOnly
-secondDistractor,atp,It is a red fruit,2,586204379186854,yellow_strawberry,strawberry,yellow_corn,corn,red_strawberry.png,it is a red fruit,1,0,0,1,other
-target,tap,It is white and comes from a chicken,3,586204379186854,white_egg,egg,white_tomato,tomato,white_egg.png,it is white and comes from a chicken,1,0,0,0,colorOnly
-secondDistractor,atp,It is a yellow fruit,4,586204379186854,orange_banana,banana,orange_pumpkin,pumpkin,yellow_banana.png,it is a yellow fruit,1,0,0,1,other
-thirdDistractor,aan,It is red vegetable,5,586204379186854,yellow_egg,egg,yellow_strawberry,strawberry,red_broccoli.png,it is red vegetable,1,0,0,1,other
-target,ttn,It is the main ingredient in salads,6,586204379186854,green_lettuce,lettuce,green_broccoli,broccoli,green_lettuce.png,it is the main ingredient in salads,1,0,0,0,colorOnly
-target,ttp,It is used to make ketchup,7,586204379186854,red_tomato,tomato,red_strawberry,strawberry,red_tomato.png,it is used to make ketchup,0,0,0,0,whatisthis?
-thirdDistractor,atp,It is a type of fruit,8,586204379186854,green_swan,swan,green_broccoli,broccoli,red_strawberry.png,it is a type of fruit,0,0,0,1,other
-target,aan,It comes on a cob,9,586204379186854,red_corn,corn,red_broccoli,broccoli,red_corn.png,it comes on a cob,0,0,0,0,whatisthis?
-target,atp,"It's a vegetable, but in an unnatural color",10,586204379186854,green_carrot,carrot,green_lettuce,lettuce,green_carrot.png,"it's a vegetable, but in an unnatural color",0,1,0,1,other
-target,atp,"It has to do with Halloween, but it's a weird color",11,586204379186854,white_pumpkin,pumpkin,white_swan,swan,orange_pumpkin.png,"it has to do with halloween, but it's a weird color",0,1,0,0,other
-firstDistractor,aap,It comes on a cob,12,586204379186854,red_broccoli,broccoli,red_corn,corn,red_corn.png,it comes on a cob,0,0,0,0,whatisthis?
-target,ttn,It's a fruit with a peel,13,586204379186854,yellow_banana,banana,yellow_corn,corn,yellow_banana.png,it's a fruit with a peel,0,0,0,1,other
-target,aap,It's a green version of a common vegetable,14,586204379186854,green_carrot,carrot,green_swan,swan,green_carrot.png,it's a green version of a common vegetable,1,0,0,1,other
-target,atn,It is a halloween decoration,15,586204379186854,white_pumpkin,pumpkin,white_egg,egg,white_pumpkin.png,it is a halloween decoration,0,0,0,0,whatisthis?
-thirdDistractor,tap,it comes from a chicken,16,586204379186854,orange_carrot,carrot,orange_lettuce,lettuce,yellow_egg.png,it comes from a chicken,0,0,0,0,whatisthis?
-firstDistractor,aap,it's a type of berry,17,586204379186854,yellow_egg,egg,yellow_strawberry,strawberry,yellow_strawberry.png,it's a type of berry,0,0,1,0,typeOnly
-secondDistractor,atp,It's yellow,18,586204379186854,red_corn,corn,red_tomato,tomato,yellow_corn.png,it's yellow,1,0,0,0,colorOnly
-target,tan,It comes on a cob,19,586204379186854,yellow_corn,corn,yellow_egg,egg,yellow_corn.png,it comes on a cob,0,0,0,0,whatisthis?
-thirdDistractor,tan,It's orange,20,586204379186854,yellow_corn,corn,yellow_strawberry,strawberry,orange_banana.png,it's orange,1,0,0,0,colorOnly
-target,aan,"It's red, but usually green",21,586204379186854,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,"it's red, but usually green",1,0,0,0,colorOnly
-target,ttn,It comes from a chicken,22,586204379186854,white_egg,egg,white_swan,swan,white_egg.png,it comes from a chicken,0,0,0,0,whatisthis?
-secondDistractor,tap,It's white,23,586204379186854,orange_pumpkin,pumpkin,orange_lettuce,lettuce,white_pumpkin.png,it's white,1,0,0,0,colorOnly
-thirdDistractor,aan,It's red,24,586204379186854,white_pumpkin,pumpkin,white_tomato,tomato,red_broccoli.png,it's red,1,0,0,0,colorOnly
-thirdDistractor,ttn,It's orange,25,586204379186854,red_tomato,tomato,red_strawberry,strawberry,orange_banana.png,it's orange,1,0,0,0,colorOnly
-thirdDistractor,tan,It's a bird,26,586204379186854,yellow_banana,banana,yellow_egg,egg,white_swan.png,it's a bird,0,0,0,1,other
-thirdDistractor,ttp,It's white,27,586204379186854,green_lettuce,lettuce,green_broccoli,broccoli,white_tomato.png,it's white,1,0,0,0,colorOnly
-thirdDistractor,ttn,green,28,586204379186854,white_swan,swan,white_egg,egg,green_broccoli.png,green,1,0,0,0,colorOnly
-thirdDistractor,aan,red,29,586204379186854,green_carrot,carrot,green_swan,swan,red_tomato.png,red,1,0,0,0,colorOnly
-thirdDistractor,atn,red,30,586204379186854,orange_banana,banana,orange_pumpkin,pumpkin,red_strawberry.png,red,1,0,0,0,colorOnly
-thirdDistractor,tan,orange,31,586204379186854,red_strawberry,strawberry,red_broccoli,broccoli,orange_lettuce.png,orange,1,0,0,0,colorOnly
-thirdDistractor,tan,yellow,32,586204379186854,orange_carrot,carrot,orange_banana,banana,yellow_corn.png,yellow,1,0,0,0,colorOnly
-target,ttp,"green, but not the salad veggie",33,586204379186854,green_broccoli,broccoli,green_lettuce,lettuce,green_broccoli.png,"green, but not the salad veggie",1,1,1,0,other
-firstDistractor,atp,chicken,34,586204379186854,white_tomato,tomato,white_egg,egg,white_egg.png,chicken,0,0,0,0,whatisthis?
-firstDistractor,ttp,cob,35,586204379186854,yellow_banana,banana,yellow_corn,corn,yellow_corn.png,cob,0,0,0,0,whatisthis?
-thirdDistractor,atn,yellow,36,586204379186854,orange_lettuce,lettuce,orange_pumpkin,pumpkin,yellow_banana.png,yellow,1,0,0,0,colorOnly
-thirdDistractor,aap,chicken,37,586204379186854,orange_lettuce,lettuce,orange_banana,banana,yellow_egg.png,chicken,0,0,0,0,whatisthis?
-target,aan,orange with a peel,38,586204379186854,orange_banana,banana,orange_lettuce,lettuce,orange_banana.png,orange with a peel,1,0,0,0,colorOnly
-secondDistractor,ttp,white,39,586204379186854,orange_pumpkin,pumpkin,orange_carrot,carrot,white_pumpkin.png,white,1,0,0,0,colorOnly
-firstDistractor,tap,"red, but usually green",40,586204379186854,red_strawberry,strawberry,red_broccoli,broccoli,red_broccoli.png,"red, but usually green",1,0,0,0,colorOnly
-target,atn,bird,41,586204379186854,green_swan,swan,green_lettuce,lettuce,green_swan.png,bird,0,0,0,1,other
-secondDistractor,tap,orange,42,586204379186854,yellow_banana,banana,yellow_egg,egg,orange_banana.png,orange,1,0,0,0,colorOnly
-secondDistractor,atp,orange,43,586204379186854,green_carrot,carrot,green_broccoli,broccoli,orange_carrot.png,orange,1,0,0,0,colorOnly
-thirdDistractor,atn,orange,44,586204379186854,green_carrot,carrot,green_broccoli,broccoli,orange_banana.png,orange,1,0,0,0,colorOnly
-target,tan,chicken,45,586204379186854,white_egg,egg,white_pumpkin,pumpkin,white_egg.png,chicken,0,0,0,0,whatisthis?
-target,aap,red cob,46,586204379186854,red_corn,corn,red_broccoli,broccoli,red_corn.png,red cob,1,0,0,0,colorOnly
-secondDistractor,tap,orange,47,586204379186854,green_lettuce,lettuce,green_carrot,carrot,orange_lettuce.png,orange,1,0,0,0,colorOnly
-thirdDistractor,tan,bird,48,586204379186854,orange_pumpkin,pumpkin,orange_lettuce,lettuce,green_swan.png,bird,0,0,0,1,other
-thirdDistractor,tap,yellow,49,586204379186854,orange_pumpkin,pumpkin,orange_banana,banana,yellow_strawberry.png,yellow,1,0,0,0,colorOnly
-target,tan,green head,50,586204379186854,green_lettuce,lettuce,green_carrot,carrot,green_lettuce.png,green head,1,0,0,0,colorOnly
-firstDistractor,atp,chicken,51,586204379186854,white_pumpkin,pumpkin,white_egg,egg,white_egg.png,chicken,0,0,0,0,whatisthis?
-target,atn,bird,52,586204379186854,green_swan,swan,green_broccoli,broccoli,green_swan.png,bird,0,0,0,1,other
-firstDistractor,ttp,yellow peel,53,586204379186854,yellow_corn,corn,yellow_banana,banana,yellow_banana.png,yellow peel,1,0,0,0,colorOnly
-target,tan,red,54,586204379186854,red_strawberry,strawberry,red_corn,corn,red_strawberry.png,red,1,0,0,0,colorOnly
-thirdDistractor,tan,red,55,586204379186854,white_swan,swan,white_pumpkin,pumpkin,red_tomato.png,red,1,0,0,0,colorOnly
-thirdDistractor,atn,red,56,586204379186854,white_tomato,tomato,white_egg,egg,red_broccoli.png,red,1,0,0,0,colorOnly
-target,aan,orange head,57,586204379186854,orange_lettuce,lettuce,orange_banana,banana,orange_banana.png,orange head,1,0,0,0,colorOnly
-target,tap,white bird,58,586204379186854,white_swan,swan,white_tomato,tomato,white_swan.png,white bird,1,0,0,1,other
-target,ttn,red fruit,59,586204379186854,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,red fruit,1,0,0,1,other
-target,atn,orange cob,60,586204379186854,red_corn,corn,red_strawberry,strawberry,red_corn.png,orange cob,1,0,0,0,colorOnly
 thirdDistractor,ttn,The target is the green swan.,1,267526273521911,red_tomato,tomato,red_strawberry,strawberry,green_swan.png,the target is the green swan.,1,0,1,0,colorType
 firstDistractor,aap,The green swan is the target.,2,267526273521911,green_carrot,carrot,green_swan,swan,green_swan.png,the green swan is the target.,1,0,1,0,colorType
 target,tan,The red strawberry is the target.,3,267526273521911,red_strawberry,strawberry,red_broccoli,broccoli,red_strawberry.png,the red strawberry is the target.,1,0,1,0,colorType
@@ -3384,7 +3522,7 @@ secondDistractor,tap,yell egg,31,614103119359816,white_egg,egg,white_pumpkin,pum
 thirdDistractor,atp,cabbage,32,614103119359816,white_tomato,tomato,white_egg,egg,green_lettuce.png,cabbage,0,0,1,0,typeOnly
 thirdDistractor,atn,cabbage,33,614103119359816,white_tomato,tomato,white_egg,egg,green_lettuce.png,cabbage,0,0,1,0,typeOnly
 thirdDistractor,atn,pumpkin,34,614103119359816,red_corn,corn,red_strawberry,strawberry,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
-thirdDistractor,atn,or cabbage,35,614103119359816,red_broccoli,broccoli,red_strawberry,strawberry,orange_lettuce.png,or cabbage,0,0,1,0,typeOnly
+thirdDistractor,atn,or cabbage,35,614103119359816,red_broccoli,broccoli,red_strawberry,strawberry,orange_lettuce.png,or cabbage,1,0,1,0,colorType
 target,aan,carrot,37,614103119359816,green_carrot,carrot,green_swan,swan,green_carrot.png,carrot,0,0,1,0,typeOnly
 thirdDistractor,ttn,tomato,38,614103119359816,yellow_corn,corn,yellow_banana,banana,white_tomato.png,tomato,0,0,1,0,typeOnly
 thirdDistractor,tap,corn,39,614103119359816,red_tomato,tomato,red_broccoli,broccoli,yellow_corn.png,corn,0,0,1,0,typeOnly
@@ -3400,8 +3538,8 @@ thirdDistractor,tap,tomato,48,614103119359816,green_lettuce,lettuce,green_carrot
 target,ttn,banana,49,614103119359816,yellow_banana,banana,yellow_corn,corn,yellow_banana.png,banana,0,0,1,0,typeOnly
 target,tan,corn,50,614103119359816,yellow_corn,corn,yellow_strawberry,strawberry,yellow_corn.png,corn,0,0,1,0,typeOnly
 target,ttp,banana yell,51,614103119359816,yellow_banana,banana,yellow_corn,corn,yellow_banana.png,banana yell,1,0,1,0,colorType
-thirdDistractor,tan,gr carrot,52,614103119359816,white_swan,swan,white_tomato,tomato,green_carrot.png,gr carrot,0,0,1,0,typeOnly
-secondDistractor,tap,or banana,53,614103119359816,yellow_banana,banana,yellow_strawberry,strawberry,orange_banana.png,or banana,0,0,1,0,typeOnly
+thirdDistractor,tan,gr carrot,52,614103119359816,white_swan,swan,white_tomato,tomato,green_carrot.png,gr carrot,1,0,1,0,colorType
+secondDistractor,tap,or banana,53,614103119359816,yellow_banana,banana,yellow_strawberry,strawberry,orange_banana.png,or banana,1,0,1,0,colorType
 target,aan,yell egg,54,614103119359816,yellow_egg,egg,yellow_strawberry,strawberry,yellow_egg.png,yell egg,1,0,1,0,colorType
 thirdDistractor,tan,red corn,56,614103119359816,white_egg,egg,white_pumpkin,pumpkin,red_corn.png,red corn,1,0,1,0,colorType
 thirdDistractor,ttn,banana,57,614103119359816,white_egg,egg,white_swan,swan,yellow_banana.png,banana,0,0,1,0,typeOnly
@@ -3466,66 +3604,6 @@ target,tan,cabbage,57,792826929080447,green_lettuce,lettuce,green_carrot,carrot,
 thirdDistractor,tan,egg,58,792826929080447,green_lettuce,lettuce,green_swan,swan,white_egg.png,egg,0,0,1,0,typeOnly
 firstDistractor,ttp,strawberry,59,792826929080447,red_tomato,tomato,red_strawberry,strawberry,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 thirdDistractor,atn,broccoli,60,792826929080447,green_swan,swan,green_lettuce,lettuce,red_broccoli.png,broccoli,0,0,1,0,typeOnly
-target,ttn,The object is yellow and you can peel it to eat it.,1,472980327902005,yellow_banana,banana,yellow_corn,corn,yellow_banana.png,the object is yellow and you can peel it to eat it.,1,0,0,0,colorOnly
-thirdDistractor,atp,The object is orange.,2,472980327902005,green_swan,swan,green_broccoli,broccoli,orange_lettuce.png,the object is orange.,1,0,0,0,colorOnly
-target,atn,The object is an animal,3,472980327902005,green_swan,swan,green_broccoli,broccoli,green_swan.png,the object is an animal,0,0,0,1,other
-thirdDistractor,tap,The object is green,4,472980327902005,red_strawberry,strawberry,red_corn,corn,green_lettuce.png,the object is green,1,0,0,0,colorOnly
-target,atp,The object is white and you use it in salads,5,472980327902005,white_tomato,tomato,white_swan,swan,white_tomato.png,the object is white and you use it in salads,1,0,0,0,colorOnly
-target,tan,The object is an animal,6,472980327902005,white_swan,swan,white_pumpkin,pumpkin,white_swan.png,the object is an animal,0,0,0,1,other
-target,ttp,The object is yellow and you peel to eat it.,7,472980327902005,yellow_banana,banana,yellow_corn,corn,yellow_banana.png,the object is yellow and you peel to eat it.,1,0,0,0,colorOnly
-secondDistractor,tap,The object is red,8,472980327902005,yellow_corn,corn,yellow_egg,egg,red_corn.png,the object is red,1,0,0,0,colorOnly
-secondDistractor,ttp,The object is red,9,472980327902005,green_broccoli,broccoli,green_lettuce,lettuce,red_broccoli.png,the object is red,1,0,0,0,colorOnly
-thirdDistractor,atn,The object is white,10,472980327902005,red_broccoli,broccoli,red_strawberry,strawberry,white_tomato.png,the object is white,1,0,0,0,colorOnly
-target,atn,The object is a yellow fruit,11,472980327902005,yellow_strawberry,strawberry,yellow_corn,corn,yellow_strawberry.png,the object is a yellow fruit,1,0,0,1,other
-target,atn,The object is an orange fruit,12,472980327902005,orange_banana,banana,orange_carrot,carrot,orange_banana.png,the object is an orange fruit,1,0,0,1,other
-thirdDistractor,tan,The object is white,13,472980327902005,red_tomato,tomato,red_corn,corn,white_pumpkin.png,the object is white,1,0,0,0,colorOnly
-firstDistractor,ttp,The object is a small green vegetable with a stem,14,472980327902005,green_lettuce,lettuce,green_broccoli,broccoli,green_broccoli.png,the object is a small green vegetable with a stem,1,1,0,1,other
-thirdDistractor,tap,the object is orange,15,472980327902005,green_broccoli,broccoli,green_carrot,carrot,red_broccoli.png,the object is orange,1,0,0,0,colorOnly
-target,tan,the object is a red fruit,16,472980327902005,red_strawberry,strawberry,red_broccoli,broccoli,red_strawberry.png,the object is a red fruit,1,0,0,1,other
-secondDistractor,tap,the object is yellow,17,472980327902005,white_egg,egg,white_pumpkin,pumpkin,yellow_egg.png,the object is yellow,1,0,0,0,colorOnly
-thirdDistractor,ttp,the object is white,18,472980327902005,yellow_corn,corn,yellow_banana,banana,white_tomato.png,the object is white,1,0,0,0,colorOnly
-thirdDistractor,atp,the object is red,19,472980327902005,orange_lettuce,lettuce,orange_pumpkin,pumpkin,red_strawberry.png,the object is red,1,0,0,0,colorOnly
-thirdDistractor,tan,the object is white,20,472980327902005,green_broccoli,broccoli,green_swan,swan,white_tomato.png,the object is white,1,0,0,0,colorOnly
-firstDistractor,tap,the object is red with a husk,21,472980327902005,red_tomato,tomato,red_corn,corn,red_corn.png,the object is red with a husk,1,0,0,0,colorOnly
-target,aan,the object is yellow and has a shell,22,472980327902005,yellow_egg,egg,yellow_strawberry,strawberry,yellow_egg.png,the object is yellow and has a shell,1,0,0,0,colorOnly
-target,aap,the object is a yellow fruit,23,472980327902005,yellow_strawberry,strawberry,yellow_egg,egg,yellow_strawberry.png,the object is a yellow fruit,1,0,0,1,other
-firstDistractor,tap,the object is white and you put in salads,24,472980327902005,white_swan,swan,white_tomato,tomato,white_tomato.png,the object is white and you put in salads,1,0,0,0,colorOnly
-thirdDistractor,tap,the object is yellow,25,472980327902005,red_tomato,tomato,red_broccoli,broccoli,yellow_corn.png,the object is yellow,1,0,0,0,colorOnly
-target,ttp,the object is orange and you carve it,26,472980327902005,orange_pumpkin,pumpkin,orange_carrot,carrot,orange_pumpkin.png,the object is orange and you carve it,1,0,0,0,colorOnly
-firstDistractor,atp,the object is orange and you carve it,27,472980327902005,orange_banana,banana,orange_pumpkin,pumpkin,orange_pumpkin.png,the object is orange and you carve it,1,0,0,0,colorOnly
-target,aan,the object is white and you carve it,28,472980327902005,white_pumpkin,pumpkin,white_tomato,tomato,white_pumpkin.png,the object is white and you carve it,1,0,0,0,colorOnly
-target,aan,the object is red with a stem,29,472980327902005,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,the object is red with a stem,1,0,0,0,colorOnly
-firstDistractor,aap,the object is a yellow fruit,30,472980327902005,yellow_egg,egg,yellow_strawberry,strawberry,yellow_strawberry.png,the object is a yellow fruit,1,0,0,1,other
-target,tan,the object is an orange vegetable,31,472980327902005,orange_carrot,carrot,orange_banana,banana,orange_carrot.png,the object is an orange vegetable,1,0,0,1,other
-secondDistractor,ttp,the object is yellow,32,472980327902005,white_egg,egg,white_swan,swan,yellow_egg.png,the object is yellow,1,0,0,0,colorOnly
-secondDistractor,atp,the object is red,33,472980327902005,yellow_strawberry,strawberry,yellow_corn,corn,red_strawberry.png,the object is red,1,0,0,0,colorOnly
-thirdDistractor,ttn,the object is red,34,472980327902005,orange_carrot,carrot,orange_pumpkin,pumpkin,red_tomato.png,the object is red,1,0,0,0,colorOnly
-target,ttn,the object is a  small rough green vegetable with a stem,35,472980327902005,green_broccoli,broccoli,green_lettuce,lettuce,green_broccoli.png,the object is a  small rough green vegetable with a stem,1,1,0,1,other
-firstDistractor,aap,the object is red with a stem,36,472980327902005,red_corn,corn,red_broccoli,broccoli,red_broccoli.png,the object is red with a stem,1,0,0,0,colorOnly
-firstDistractor,ttp,the object is red and you put on pizza,37,472980327902005,red_strawberry,strawberry,red_tomato,tomato,red_tomato.png,the object is red and you put on pizza,1,0,0,0,colorOnly
-target,atp,the object is red and has a husk,38,472980327902005,red_corn,corn,red_tomato,tomato,red_corn.png,the object is red and has a husk,1,0,0,0,colorOnly
-target,aan,the object is green vegetable,39,472980327902005,green_carrot,carrot,green_swan,swan,green_carrot.png,the object is green vegetable,1,0,0,1,other
-thirdDistractor,tan,the object is a yellow fruit,40,472980327902005,white_egg,egg,white_pumpkin,pumpkin,yellow_strawberry.png,the object is a yellow fruit,1,0,0,1,other
-firstDistractor,atp,the object is a green vegetable with a stem and rough,41,472980327902005,green_carrot,carrot,green_broccoli,broccoli,green_broccoli.png,the object is a green vegetable with a stem and rough,1,0,0,1,other
-thirdDistractor,tan,the object is red,42,472980327902005,yellow_banana,banana,yellow_strawberry,strawberry,red_tomato.png,the object is red,1,0,0,0,colorOnly
-thirdDistractor,ttn,the object is orange,43,472980327902005,white_egg,egg,white_swan,swan,orange_pumpkin.png,the object is orange,1,0,0,0,colorOnly
-target,tap,the object is a yellow fruit,44,472980327902005,yellow_banana,banana,yellow_egg,egg,yellow_banana.png,the object is a yellow fruit,1,0,0,1,other
-thirdDistractor,atn,the object is green,45,472980327902005,orange_banana,banana,orange_pumpkin,pumpkin,green_swan.png,the object is green,1,0,0,0,colorOnly
-thirdDistractor,aan,the object is white,46,472980327902005,orange_lettuce,lettuce,orange_banana,banana,white_egg.png,the object is white,1,0,0,0,colorOnly
-thirdDistractor,atn,the object is white,47,472980327902005,yellow_strawberry,strawberry,yellow_banana,banana,white_pumpkin.png,the object is white,1,0,0,0,colorOnly
-thirdDistractor,atp,the object is green,48,472980327902005,yellow_strawberry,strawberry,yellow_banana,banana,green_swan.png,the object is green,1,0,0,0,colorOnly
-target,ttn,the object is green with leaves,49,472980327902005,green_lettuce,lettuce,green_broccoli,broccoli,green_lettuce.png,the object is green with leaves,1,0,0,0,colorOnly
-thirdDistractor,atp,the object is red,50,472980327902005,green_swan,swan,green_lettuce,lettuce,red_tomato.png,the object is red,1,0,0,0,colorOnly
-secondDistractor,tap,the object is red,51,472980327902005,yellow_corn,corn,yellow_strawberry,strawberry,red_corn.png,the object is red,1,0,0,0,colorOnly
-secondDistractor,tap,the object is green,52,472980327902005,orange_carrot,carrot,orange_lettuce,lettuce,green_carrot.png,the object is green,1,0,0,0,colorOnly
-secondDistractor,atp,the object is orange,53,472980327902005,white_pumpkin,pumpkin,white_egg,egg,orange_pumpkin.png,the object is orange,1,0,0,0,colorOnly
-target,ttn,the object is red and you put on pizza,54,472980327902005,red_tomato,tomato,red_strawberry,strawberry,red_tomato.png,the object is red and you put on pizza,1,0,0,0,colorOnly
-target,tap,the object is yellow and you peel it,55,472980327902005,yellow_banana,banana,yellow_strawberry,strawberry,yellow_banana.png,the object is yellow and you peel it,1,0,0,0,colorOnly
-target,tan,the object is orange and you carve it,56,472980327902005,orange_pumpkin,pumpkin,orange_lettuce,lettuce,orange_pumpkin.png,the object is orange and you carve it,1,0,0,0,colorOnly
-target,aap,the object is red and small with a stem,57,472980327902005,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,the object is red and small with a stem,1,1,0,0,other
-target,atn,the object is white and you eat on pizza,58,472980327902005,white_tomato,tomato,white_swan,swan,white_tomato.png,the object is white and you eat on pizza,1,0,0,0,colorOnly
-thirdDistractor,tan,the object is yellow,59,472980327902005,green_lettuce,lettuce,green_carrot,carrot,yellow_banana.png,the object is yellow,1,0,0,0,colorOnly
-thirdDistractor,atp,the object is red,60,472980327902005,green_carrot,carrot,green_lettuce,lettuce,red_corn.png,the object is red,1,0,0,0,colorOnly
 target,aap,orange corn,1,845470393305425,red_corn,corn,red_broccoli,broccoli,red_corn.png,orange corn,1,0,1,0,colorType
 thirdDistractor,tan,pumpkin,2,845470393305425,red_strawberry,strawberry,red_corn,corn,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
 thirdDistractor,aan,green carrot,3,845470393305425,white_tomato,tomato,white_pumpkin,pumpkin,green_carrot.png,green carrot,1,0,1,0,colorType
@@ -3586,6 +3664,66 @@ thirdDistractor,tan,white tomato,57,845470393305425,orange_pumpkin,pumpkin,orang
 target,tap,broccoli,58,845470393305425,green_broccoli,broccoli,green_swan,swan,green_broccoli.png,broccoli,0,0,1,0,typeOnly
 target,tan,pumpkin,59,845470393305425,orange_pumpkin,pumpkin,orange_lettuce,lettuce,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
 target,tan,broccoli,60,845470393305425,green_broccoli,broccoli,green_swan,swan,green_broccoli.png,broccoli,0,0,1,0,typeOnly
+thirdDistractor,tan,red,1,002229728341097,yellow_banana,banana,yellow_strawberry,strawberry,red_broccoli.png,red,1,0,0,0,colorOnly
+target,atn,lemon,2,002229728341097,yellow_egg,egg,yellow_banana,banana,yellow_egg.png,lemon,0,0,0,1,other
+secondDistractor,atp,yellow banana,3,002229728341097,orange_banana,banana,orange_pumpkin,pumpkin,yellow_banana.png,yellow banana,1,0,1,0,colorType
+thirdDistractor,atn,egg,4,002229728341097,orange_lettuce,lettuce,orange_pumpkin,pumpkin,white_egg.png,egg,0,0,1,0,typeOnly
+secondDistractor,tap,green goose,5,002229728341097,white_swan,swan,white_tomato,tomato,green_swan.png,green goose,1,0,1,0,colorType
+thirdDistractor,tan,lettuce,6,002229728341097,white_swan,swan,white_pumpkin,pumpkin,green_lettuce.png,lettuce,0,0,1,0,typeOnly
+target,ttn,broccoli,7,002229728341097,green_broccoli,broccoli,green_lettuce,lettuce,green_broccoli.png,broccoli,0,0,1,0,typeOnly
+target,tan,broccoli,8,002229728341097,green_broccoli,broccoli,green_carrot,carrot,green_broccoli.png,broccoli,0,0,1,0,typeOnly
+thirdDistractor,atn,green carrot,9,002229728341097,white_pumpkin,pumpkin,white_egg,egg,green_carrot.png,green carrot,1,0,1,0,colorType
+thirdDistractor,atn,orange lettuce,10,002229728341097,red_broccoli,broccoli,red_tomato,tomato,orange_lettuce.png,orange lettuce,1,0,1,0,colorType
+target,tap,pumpkin,11,002229728341097,orange_pumpkin,pumpkin,orange_banana,banana,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
+target,atn,orange banana,12,002229728341097,orange_banana,banana,orange_pumpkin,pumpkin,orange_banana.png,orange banana,1,0,1,0,colorType
+firstDistractor,atp,strawberry,13,002229728341097,red_corn,corn,red_strawberry,strawberry,red_strawberry.png,strawberry,0,0,1,0,typeOnly
+target,aan,yellow egg,14,002229728341097,yellow_egg,egg,yellow_strawberry,strawberry,yellow_egg.png,yellow egg,1,0,1,0,colorType
+firstDistractor,tap,yellow egg,15,002229728341097,yellow_corn,corn,yellow_egg,egg,yellow_egg.png,yellow egg,1,0,1,0,colorType
+thirdDistractor,atp,red broccoli,16,002229728341097,yellow_egg,egg,yellow_banana,banana,red_broccoli.png,red broccoli,1,0,1,0,colorType
+target,tan,egg,17,002229728341097,white_egg,egg,white_pumpkin,pumpkin,white_egg.png,egg,0,0,1,0,typeOnly
+thirdDistractor,atn,strawberry,18,002229728341097,green_swan,swan,green_broccoli,broccoli,red_strawberry.png,strawberry,0,0,1,0,typeOnly
+thirdDistractor,atn,banana,19,002229728341097,green_carrot,carrot,green_lettuce,lettuce,yellow_banana.png,banana,0,0,1,0,typeOnly
+target,atn,yellow strawberry,20,002229728341097,yellow_strawberry,strawberry,yellow_banana,banana,yellow_strawberry.png,yellow strawberry,1,0,1,0,colorType
+target,ttn,tomato,21,002229728341097,red_tomato,tomato,red_strawberry,strawberry,red_tomato.png,tomato,0,0,1,0,typeOnly
+thirdDistractor,tan,yellow strawberry,22,002229728341097,red_tomato,tomato,red_corn,corn,yellow_strawberry.png,yellow strawberry,1,0,1,0,colorType
+target,atp,white pumpkin,23,002229728341097,white_pumpkin,pumpkin,white_egg,egg,white_pumpkin.png,white pumpkin,1,0,1,0,colorType
+secondDistractor,aap,tomato,24,002229728341097,white_tomato,tomato,white_pumpkin,pumpkin,red_tomato.png,tomato,0,0,1,0,typeOnly
+thirdDistractor,tan,yellow strawberry,25,002229728341097,green_lettuce,lettuce,green_carrot,carrot,yellow_strawberry.png,yellow strawberry,1,0,1,0,colorType
+target,ttp,yellow corn,26,002229728341097,yellow_corn,corn,yellow_banana,banana,yellow_corn.png,yellow corn,1,0,1,0,colorType
+secondDistractor,atp,yellow banana,27,002229728341097,orange_banana,banana,orange_carrot,carrot,yellow_banana.png,yellow banana,1,0,1,0,colorType
+secondDistractor,tap,white tomato,28,002229728341097,red_tomato,tomato,red_broccoli,broccoli,white_tomato.png,white tomato,1,0,1,0,colorType
+target,tap,orange carrot,29,002229728341097,orange_carrot,carrot,orange_banana,banana,orange_carrot.png,orange carrot,1,0,1,0,colorType
+target,tan,pumpkin,30,002229728341097,orange_pumpkin,pumpkin,orange_lettuce,lettuce,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
+target,aan,white pumpkin,31,002229728341097,white_pumpkin,pumpkin,white_tomato,tomato,white_pumpkin.png,white pumpkin,1,0,1,0,colorType
+firstDistractor,aap,red broccoli,32,002229728341097,red_corn,corn,red_broccoli,broccoli,red_broccoli.png,red broccoli,1,0,1,0,colorType
+thirdDistractor,atp,yellow strawberry,33,002229728341097,green_swan,swan,green_broccoli,broccoli,yellow_strawberry.png,yellow strawberry,1,0,1,0,colorType
+target,ttn,strawberry,34,002229728341097,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,strawberry,0,0,1,0,typeOnly
+firstDistractor,ttp,strawberry,35,002229728341097,red_tomato,tomato,red_strawberry,strawberry,red_strawberry.png,strawberry,0,0,1,0,typeOnly
+thirdDistractor,atn,orange banana,36,002229728341097,white_tomato,tomato,white_swan,swan,orange_banana.png,orange banana,1,0,1,0,colorType
+firstDistractor,atp,banana,37,002229728341097,yellow_strawberry,strawberry,yellow_banana,banana,yellow_banana.png,banana,0,0,1,0,typeOnly
+target,aap,green goose,38,002229728341097,green_swan,swan,green_carrot,carrot,green_swan.png,green goose,1,0,1,0,colorType
+firstDistractor,aap,lemon,39,002229728341097,yellow_strawberry,strawberry,yellow_egg,egg,yellow_strawberry.png,lemon,0,0,0,1,other
+secondDistractor,tap,"sorry about the last one, green carrot",40,002229728341097,orange_carrot,carrot,orange_lettuce,lettuce,green_carrot.png,"sorry about the last one, green carrot",1,0,1,0,colorType
+target,ttp,orange carrot,41,002229728341097,orange_carrot,carrot,orange_pumpkin,pumpkin,orange_carrot.png,orange carrot,1,0,1,0,colorType
+secondDistractor,atp,yellow corn,42,002229728341097,red_corn,corn,red_tomato,tomato,yellow_corn.png,yellow corn,1,0,1,0,colorType
+target,aan,white tomato,43,002229728341097,white_tomato,tomato,white_pumpkin,pumpkin,white_tomato.png,white tomato,1,0,1,0,colorType
+thirdDistractor,atn,orange banana,44,002229728341097,red_broccoli,broccoli,red_strawberry,strawberry,orange_banana.png,orange banana,1,0,1,0,colorType
+thirdDistractor,atn,white tomato,45,002229728341097,green_swan,swan,green_lettuce,lettuce,white_tomato.png,white tomato,1,0,1,0,colorType
+target,tan,carrot,46,002229728341097,orange_carrot,carrot,orange_banana,banana,orange_carrot.png,carrot,0,0,1,0,typeOnly
+secondDistractor,atp,white egg,47,002229728341097,yellow_egg,egg,yellow_corn,corn,white_egg.png,white egg,1,0,1,0,colorType
+thirdDistractor,atn,broccoli,48,002229728341097,yellow_egg,egg,yellow_corn,corn,green_broccoli.png,broccoli,0,0,1,0,typeOnly
+thirdDistractor,tap,broccoli,49,002229728341097,white_egg,egg,white_pumpkin,pumpkin,green_broccoli.png,broccoli,0,0,1,0,typeOnly
+firstDistractor,tap,goose,50,002229728341097,green_lettuce,lettuce,green_swan,swan,green_swan.png,goose,0,0,1,0,typeOnly
+thirdDistractor,atn,orange lettuce,51,002229728341097,red_corn,corn,red_tomato,tomato,orange_lettuce.png,orange lettuce,1,0,1,0,colorType
+thirdDistractor,atn,carrot,52,002229728341097,white_pumpkin,pumpkin,white_swan,swan,orange_carrot.png,carrot,0,0,1,0,typeOnly
+target,atp,orange lettuce,53,002229728341097,orange_lettuce,lettuce,orange_pumpkin,pumpkin,orange_lettuce.png,orange lettuce,1,0,1,0,colorType
+firstDistractor,ttp,carrot,54,002229728341097,orange_pumpkin,pumpkin,orange_carrot,carrot,orange_carrot.png,carrot,0,0,1,0,typeOnly
+thirdDistractor,atn,strawberry,55,002229728341097,orange_banana,banana,orange_carrot,carrot,yellow_strawberry.png,strawberry,0,0,1,0,typeOnly
+target,ttn,goose,56,002229728341097,white_swan,swan,white_egg,egg,white_swan.png,goose,0,0,1,0,typeOnly
+target,aan,strawberry,57,002229728341097,yellow_strawberry,strawberry,yellow_egg,egg,yellow_strawberry.png,strawberry,0,0,1,0,typeOnly
+thirdDistractor,tap,yellow egg,58,002229728341097,green_lettuce,lettuce,green_carrot,carrot,yellow_egg.png,yellow egg,1,0,1,0,colorType
+target,aap,white pumpkin,59,002229728341097,white_pumpkin,pumpkin,white_tomato,tomato,white_pumpkin.png,white pumpkin,1,0,1,0,colorType
+target,atn,white tomato,60,002229728341097,white_tomato,tomato,white_egg,egg,white_tomato.png,white tomato,1,0,1,0,colorType
 firstDistractor,ttp,lettuce,1,767455525528448,green_broccoli,broccoli,green_lettuce,lettuce,green_lettuce.png,lettuce,0,0,1,0,typeOnly
 thirdDistractor,tap,red,2,767455525528448,orange_pumpkin,pumpkin,orange_lettuce,lettuce,red_broccoli.png,red,1,0,0,0,colorOnly
 secondDistractor,tap,orange lettuce,3,767455525528448,green_lettuce,lettuce,green_carrot,carrot,orange_lettuce.png,orange lettuce,1,0,1,0,colorType
@@ -3749,9 +3887,9 @@ thirdDistractor,atp,brocolli,44,659465690726559,yellow_strawberry,strawberry,yel
 secondDistractor,atp,orange carrot,45,659465690726559,green_carrot,carrot,green_broccoli,broccoli,orange_carrot.png,orange carrot,1,0,1,0,colorType
 target,tan,banana,46,659465690726559,yellow_banana,banana,yellow_egg,egg,yellow_banana.png,banana,0,0,1,0,typeOnly
 thirdDistractor,tap,egg,47,659465690726559,orange_pumpkin,pumpkin,orange_banana,banana,yellow_egg.png,egg,0,0,1,0,typeOnly
-firstDistractor,tap,geese,48,659465690726559,green_lettuce,lettuce,green_swan,swan,green_swan.png,geese,0,0,0,0,whatisthis?
+firstDistractor,tap,geese,48,659465690726559,green_lettuce,lettuce,green_swan,swan,green_swan.png,geese,0,1,0,1,other
 thirdDistractor,tan,banana,49,659465690726559,red_strawberry,strawberry,red_broccoli,broccoli,yellow_banana.png,banana,0,0,1,0,typeOnly
-target,ttn,geese,50,659465690726559,white_swan,swan,white_egg,egg,white_swan.png,geese,0,0,0,0,whatisthis?
+target,ttn,geese,50,659465690726559,white_swan,swan,white_egg,egg,white_swan.png,geese,0,1,0,1,other
 thirdDistractor,atp,banana,51,659465690726559,green_swan,swan,green_lettuce,lettuce,orange_banana.png,banana,0,0,1,0,typeOnly
 target,tan,egg,52,659465690726559,white_egg,egg,white_pumpkin,pumpkin,white_egg.png,egg,0,0,1,0,typeOnly
 thirdDistractor,aap,carrot,53,659465690726559,yellow_strawberry,strawberry,yellow_egg,egg,orange_carrot.png,carrot,0,0,1,0,typeOnly
@@ -3827,19 +3965,19 @@ target,tan,tomato,6,415036578463951,red_tomato,tomato,red_broccoli,broccoli,red_
 thirdDistractor,ttn,corn yellow,7,415036578463951,red_strawberry,strawberry,red_tomato,tomato,yellow_corn.png,corn yellow,1,0,1,0,colorType
 firstDistractor,atp,strawberry,8,415036578463951,red_corn,corn,red_strawberry,strawberry,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 secondDistractor,atp,broccoli,9,415036578463951,red_broccoli,broccoli,red_tomato,tomato,green_broccoli.png,broccoli,0,0,1,0,typeOnly
-firstDistractor,aap,sphere,10,415036578463951,yellow_strawberry,strawberry,yellow_egg,egg,orange_lettuce.png,sphere,0,0,0,0,whatisthis?
+firstDistractor,aap,sphere,10,415036578463951,yellow_strawberry,strawberry,yellow_egg,egg,orange_lettuce.png,sphere,0,0,0,1,other
 target,aap,cherry tomatoes,11,415036578463951,white_tomato,tomato,white_pumpkin,pumpkin,red_tomato.png,cherry tomatoes,0,0,1,0,typeOnly
-firstDistractor,tap,pattypan,12,415036578463951,white_swan,swan,white_pumpkin,pumpkin,white_pumpkin.png,pattypan,0,0,0,0,whatisthis?
+firstDistractor,tap,pattypan,12,415036578463951,white_swan,swan,white_pumpkin,pumpkin,white_pumpkin.png,pattypan,0,0,0,1,other
 thirdDistractor,tan,baby carrot,13,415036578463951,red_strawberry,strawberry,red_corn,corn,orange_carrot.png,baby carrot,0,0,1,0,typeOnly
 thirdDistractor,atp,lettuce in a ball,14,415036578463951,yellow_strawberry,strawberry,yellow_banana,banana,green_lettuce.png,lettuce in a ball,0,0,1,0,typeOnly
 secondDistractor,atp,plum tomato,15,415036578463951,white_tomato,tomato,white_egg,egg,white_egg.png,plum tomato,0,0,1,0,typeOnly
 thirdDistractor,atn,swan,16,415036578463951,orange_lettuce,lettuce,orange_pumpkin,pumpkin,green_swan.png,swan,0,0,1,0,typeOnly
-thirdDistractor,atn,pattypan squash,17,415036578463951,yellow_egg,egg,yellow_corn,corn,white_pumpkin.png,pattypan squash,0,0,0,0,whatisthis?
-target,aan,pattypan squash,19,415036578463951,white_pumpkin,pumpkin,white_tomato,tomato,white_pumpkin.png,pattypan squash,0,0,0,0,whatisthis?
+thirdDistractor,atn,pattypan squash,17,415036578463951,yellow_egg,egg,yellow_corn,corn,white_pumpkin.png,pattypan squash,0,0,0,1,other
+target,aan,pattypan squash,19,415036578463951,white_pumpkin,pumpkin,white_tomato,tomato,white_pumpkin.png,pattypan squash,0,0,0,1,other
 thirdDistractor,tap,saba banana,20,415036578463951,green_broccoli,broccoli,green_swan,swan,orange_banana.png,saba banana,0,0,1,0,typeOnly
 thirdDistractor,atn,corn yellow,21,415036578463951,red_broccoli,broccoli,red_tomato,tomato,yellow_corn.png,corn yellow,1,0,1,0,colorType
 thirdDistractor,tan,baby carrot,22,415036578463951,white_egg,egg,white_tomato,tomato,orange_carrot.png,baby carrot,0,0,1,0,typeOnly
-firstDistractor,ttp,tundra swan,23,415036578463951,white_egg,egg,white_swan,swan,white_swan.png,tundra swan,0,0,1,0,typeOnly
+firstDistractor,ttp,tundra swan,23,415036578463951,white_egg,egg,white_swan,swan,white_swan.png,tundra swan,0,1,1,0,other
 target,aan,cherry tomato,24,415036578463951,white_tomato,tomato,white_pumpkin,pumpkin,white_tomato.png,cherry tomato,0,0,1,0,typeOnly
 target,tan,pumpkin,25,415036578463951,orange_pumpkin,pumpkin,orange_lettuce,lettuce,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
 thirdDistractor,ttn,pumpkin,26,415036578463951,green_broccoli,broccoli,green_lettuce,lettuce,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
@@ -3851,10 +3989,10 @@ target,atn,vegetable,31,415036578463951,green_carrot,carrot,green_lettuce,lettuc
 target,tan,baby carrot,32,415036578463951,orange_carrot,carrot,orange_banana,banana,orange_carrot.png,baby carrot,0,0,1,0,typeOnly
 thirdDistractor,tan,vegetable,33,415036578463951,white_egg,egg,white_pumpkin,pumpkin,green_carrot.png,vegetable,0,0,0,1,other
 secondDistractor,tap,lettuce,34,415036578463951,green_lettuce,lettuce,green_swan,swan,orange_lettuce.png,lettuce,0,0,1,0,typeOnly
-secondDistractor,atp,wap c,35,415036578463951,yellow_egg,egg,yellow_corn,corn,white_egg.png,wap c,0,0,0,0,whatisthis?
+secondDistractor,atp,wap c,35,415036578463951,yellow_egg,egg,yellow_corn,corn,white_egg.png,wap c,0,0,0,1,other
 thirdDistractor,atn,saba banana,36,415036578463951,orange_lettuce,lettuce,orange_carrot,carrot,yellow_banana.png,saba banana,0,0,1,0,typeOnly
 thirdDistractor,tan,strawberry,37,415036578463951,yellow_banana,banana,yellow_egg,egg,red_strawberry.png,strawberry,0,0,1,0,typeOnly
-target,atp,pattypan squash,38,415036578463951,white_pumpkin,pumpkin,white_egg,egg,white_pumpkin.png,pattypan squash,0,0,0,0,whatisthis?
+target,atp,pattypan squash,38,415036578463951,white_pumpkin,pumpkin,white_egg,egg,white_pumpkin.png,pattypan squash,0,0,0,1,other
 target,tap,plum tomato,39,415036578463951,red_tomato,tomato,red_corn,corn,red_tomato.png,plum tomato,0,0,1,0,typeOnly
 target,tap,broccoli,40,415036578463951,green_broccoli,broccoli,green_carrot,carrot,green_broccoli.png,broccoli,0,0,1,0,typeOnly
 target,atn,saba banana,41,415036578463951,orange_banana,banana,orange_carrot,carrot,orange_banana.png,saba banana,0,0,1,0,typeOnly
@@ -3863,7 +4001,7 @@ target,ttn,corn yellow,43,415036578463951,yellow_corn,corn,yellow_banana,banana,
 secondDistractor,atp,strawberry,44,415036578463951,yellow_strawberry,strawberry,yellow_corn,corn,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 secondDistractor,tap,corn,45,415036578463951,yellow_corn,corn,yellow_strawberry,strawberry,yellow_corn.png,corn,0,0,1,0,typeOnly
 firstDistractor,ttp,broccoli,46,415036578463951,green_lettuce,lettuce,green_broccoli,broccoli,green_broccoli.png,broccoli,0,0,1,0,typeOnly
-thirdDistractor,ttp,sphere,47,415036578463951,green_broccoli,broccoli,green_lettuce,lettuce,yellow_egg.png,sphere,0,0,0,0,whatisthis?
+thirdDistractor,ttp,sphere,47,415036578463951,green_broccoli,broccoli,green_lettuce,lettuce,yellow_egg.png,sphere,0,0,0,1,other
 thirdDistractor,atp,strawberry,48,415036578463951,orange_banana,banana,orange_pumpkin,pumpkin,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 firstDistractor,atp,strawberry,49,415036578463951,red_broccoli,broccoli,red_strawberry,strawberry,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 thirdDistractor,atn,strawberry,50,415036578463951,white_tomato,tomato,white_swan,swan,red_strawberry.png,strawberry,0,0,1,0,typeOnly
@@ -4105,9 +4243,9 @@ thirdDistractor,tan,banana,2,121333953537583,red_tomato,tomato,red_corn,corn,ora
 thirdDistractor,atn,carrot,3,121333953537583,red_corn,corn,red_tomato,tomato,orange_carrot.png,carrot,0,0,1,0,typeOnly
 target,atn,green color swan,4,121333953537583,green_swan,swan,green_lettuce,lettuce,green_swan.png,green color swan,1,0,1,0,colorType
 thirdDistractor,aap,corn,5,121333953537583,green_carrot,carrot,green_swan,swan,red_corn.png,corn,0,0,1,0,typeOnly
-firstDistractor,aap,garlic,7,121333953537583,white_tomato,tomato,white_pumpkin,pumpkin,white_tomato.png,garlic,0,0,0,0,whatisthis?
+firstDistractor,aap,garlic,7,121333953537583,white_tomato,tomato,white_pumpkin,pumpkin,white_tomato.png,garlic,0,0,0,1,other
 secondDistractor,tap,red broccoli,8,121333953537583,green_broccoli,broccoli,green_carrot,carrot,red_broccoli.png,red broccoli,1,0,1,0,colorType
-target,ttn,cababage,9,121333953537583,green_lettuce,lettuce,green_broccoli,broccoli,green_lettuce.png,cababage,0,0,0,0,whatisthis?
+target,ttn,cababage,9,121333953537583,green_lettuce,lettuce,green_broccoli,broccoli,green_lettuce.png,cababage,0,0,1,0,typeOnly
 thirdDistractor,atp,broccoli,10,121333953537583,orange_banana,banana,orange_carrot,carrot,green_broccoli.png,broccoli,0,0,1,0,typeOnly
 thirdDistractor,atn,red banana,11,121333953537583,green_carrot,carrot,green_lettuce,lettuce,orange_banana.png,red banana,1,0,1,0,colorType
 firstDistractor,aap,red cabbage,12,121333953537583,orange_banana,banana,orange_lettuce,lettuce,orange_lettuce.png,red cabbage,1,0,1,0,colorType
@@ -4154,7 +4292,7 @@ target,tap,red tomato,57,121333953537583,red_tomato,tomato,red_corn,corn,red_tom
 thirdDistractor,atn,red tomato,58,121333953537583,orange_banana,banana,orange_pumpkin,pumpkin,red_tomato.png,red tomato,1,0,1,0,colorType
 thirdDistractor,tan,orange carrot,59,121333953537583,yellow_banana,banana,yellow_egg,egg,orange_carrot.png,orange carrot,1,0,1,0,colorType
 target,tap,green cabbage,60,121333953537583,green_lettuce,lettuce,green_carrot,carrot,green_lettuce.png,green cabbage,1,0,1,0,colorType
-target,aan,A yellow oblong object sittings on its end,1,789424068004771,yellow_egg,egg,yellow_strawberry,strawberry,yellow_strawberry.png,a yellow oblong object sittings on its end,1,0,0,0,colorOnly
+target,aan,A yellow oblong object sittings on its end,1,789424068004771,yellow_egg,egg,yellow_strawberry,strawberry,yellow_strawberry.png,a yellow oblong object sittings on its end,1,1,0,0,other
 target,atn,A green colored carrot,2,789424068004771,green_carrot,carrot,green_broccoli,broccoli,green_carrot.png,a green colored carrot,1,0,1,0,colorType
 target,aap,a reddish colored broccoli,3,789424068004771,red_broccoli,broccoli,red_corn,corn,red_corn.png,a reddish colored broccoli,1,0,1,0,colorType
 secondDistractor,tap,a white tomato,4,789424068004771,red_tomato,tomato,red_corn,corn,white_tomato.png,a white tomato,1,0,1,0,colorType
@@ -4169,11 +4307,11 @@ thirdDistractor,atp,a regular looking tomato,12,789424068004771,orange_lettuce,l
 target,aan,a red broccoli,13,789424068004771,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,a red broccoli,1,0,1,0,colorType
 thirdDistractor,atp,a regular brocoli,14,789424068004771,orange_banana,banana,orange_carrot,carrot,green_broccoli.png,a regular brocoli,0,1,1,0,other
 target,ttn,a regular brocoli,15,789424068004771,green_broccoli,broccoli,green_lettuce,lettuce,green_broccoli.png,a regular brocoli,0,1,1,0,other
-target,atp,a yellow oblong,16,789424068004771,yellow_egg,egg,yellow_banana,banana,yellow_egg.png,a yellow oblong,1,0,0,0,colorOnly
-thirdDistractor,tap,a white oblong or egg,17,789424068004771,orange_carrot,carrot,orange_lettuce,lettuce,white_egg.png,a white oblong or egg,1,0,1,0,colorType
+target,atp,a yellow oblong,16,789424068004771,yellow_egg,egg,yellow_banana,banana,yellow_egg.png,a yellow oblong,1,1,0,0,other
+thirdDistractor,tap,a white oblong or egg,17,789424068004771,orange_carrot,carrot,orange_lettuce,lettuce,white_egg.png,a white oblong or egg,1,1,1,0,other
 thirdDistractor,atn,a white swan,18,789424068004771,yellow_egg,egg,yellow_banana,banana,white_swan.png,a white swan,1,0,1,0,colorType
-target,ttp,reg brocoli,19,789424068004771,green_broccoli,broccoli,green_lettuce,lettuce,red_broccoli.png,reg brocoli,0,0,1,0,typeOnly
-target,ttn,reg corn,20,789424068004771,yellow_corn,corn,yellow_banana,banana,yellow_corn.png,reg corn,0,0,1,0,typeOnly
+target,ttp,reg brocoli,19,789424068004771,green_broccoli,broccoli,green_lettuce,lettuce,red_broccoli.png,reg brocoli,0,1,1,0,other
+target,ttn,reg corn,20,789424068004771,yellow_corn,corn,yellow_banana,banana,yellow_corn.png,reg corn,0,1,1,0,other
 firstDistractor,aap,reddish banana,21,789424068004771,orange_lettuce,lettuce,orange_banana,banana,orange_banana.png,reddish banana,1,0,1,0,colorType
 thirdDistractor,tan,green corn,22,789424068004771,white_swan,swan,white_tomato,tomato,green_carrot.png,green corn,1,0,1,0,colorType
 secondDistractor,atp,pumpkin,23,789424068004771,white_pumpkin,pumpkin,white_egg,egg,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
@@ -4272,7 +4410,7 @@ thirdDistractor,ttn,green swan,58,597221740958907,orange_carrot,carrot,orange_pu
 thirdDistractor,atn,strawberry,59,597221740958907,green_carrot,carrot,green_broccoli,broccoli,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 thirdDistractor,atn,carrot,60,597221740958907,white_pumpkin,pumpkin,white_swan,swan,orange_carrot.png,carrot,0,0,1,0,typeOnly
 thirdDistractor,atn,click the cabbage again,2,376283740244835,white_pumpkin,pumpkin,white_swan,swan,green_lettuce.png,click the cabbage again,0,0,1,0,typeOnly
-target,aan,pineapple,3,376283740244835,yellow_strawberry,strawberry,yellow_egg,egg,yellow_egg.png,pineapple,0,0,0,0,whatisthis?
+target,aan,pineapple,3,376283740244835,yellow_strawberry,strawberry,yellow_egg,egg,yellow_egg.png,pineapple,0,0,0,1,other
 thirdDistractor,atn,carrot,4,376283740244835,yellow_strawberry,strawberry,yellow_banana,banana,orange_carrot.png,carrot,0,0,1,0,typeOnly
 thirdDistractor,tan,tomato,5,376283740244835,orange_pumpkin,pumpkin,orange_banana,banana,red_tomato.png,tomato,0,0,1,0,typeOnly
 target,atn,onion,6,376283740244835,white_tomato,tomato,white_swan,swan,white_tomato.png,onion,0,0,0,1,other
@@ -4349,7 +4487,7 @@ target,atn,orange corn,17,682755887755777,red_corn,corn,red_strawberry,strawberr
 target,ttp,normal corn,18,682755887755777,yellow_corn,corn,yellow_banana,banana,yellow_corn.png,normal corn,0,1,1,0,other
 thirdDistractor,atp,lettuce,19,682755887755777,white_tomato,tomato,white_swan,swan,green_lettuce.png,lettuce,0,0,1,0,typeOnly
 thirdDistractor,tan,corn,20,682755887755777,orange_pumpkin,pumpkin,orange_lettuce,lettuce,red_corn.png,corn,0,0,1,0,typeOnly
-firstDistractor,tap,green brid,21,682755887755777,green_broccoli,broccoli,green_swan,swan,green_swan.png,green brid,1,0,0,0,colorOnly
+firstDistractor,tap,green brid,21,682755887755777,green_broccoli,broccoli,green_swan,swan,green_swan.png,green brid,1,0,0,1,other
 secondDistractor,tap,white pumpkin,22,682755887755777,orange_pumpkin,pumpkin,orange_lettuce,lettuce,white_pumpkin.png,white pumpkin,1,0,1,0,colorType
 secondDistractor,tap,red broccoli,23,682755887755777,green_broccoli,broccoli,green_carrot,carrot,red_broccoli.png,red broccoli,1,0,1,0,colorType
 target,tan,pumpkin,24,682755887755777,orange_pumpkin,pumpkin,orange_banana,banana,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
@@ -4366,7 +4504,7 @@ secondDistractor,atp,yellow ban,34,682755887755777,orange_banana,banana,orange_c
 target,aan,lettuce,35,682755887755777,orange_lettuce,lettuce,orange_banana,banana,orange_lettuce.png,lettuce,0,0,1,0,typeOnly
 thirdDistractor,tan,broc,36,682755887755777,white_swan,swan,white_pumpkin,pumpkin,green_broccoli.png,broc,0,0,1,0,typeOnly
 secondDistractor,tap,orange ban,38,682755887755777,yellow_banana,banana,yellow_egg,egg,orange_banana.png,orange ban,1,0,1,0,colorType
-thirdDistractor,atn,korn,39,682755887755777,green_carrot,carrot,green_lettuce,lettuce,red_corn.png,korn,0,0,0,0,whatisthis?
+thirdDistractor,atn,korn,39,682755887755777,green_carrot,carrot,green_lettuce,lettuce,red_corn.png,korn,0,0,1,0,typeOnly
 thirdDistractor,ttn,strawberry,40,682755887755777,white_swan,swan,white_egg,egg,yellow_strawberry.png,strawberry,0,0,1,0,typeOnly
 firstDistractor,tap,carrot,41,682755887755777,green_lettuce,lettuce,green_carrot,carrot,green_carrot.png,carrot,0,0,1,0,typeOnly
 target,aan,pumpkin,42,682755887755777,white_pumpkin,pumpkin,white_tomato,tomato,white_pumpkin.png,pumpkin,0,0,1,0,typeOnly
@@ -4383,7 +4521,7 @@ thirdDistractor,atp,lettuce,52,682755887755777,white_pumpkin,pumpkin,white_swan,
 thirdDistractor,tap,corn,53,682755887755777,white_swan,swan,white_pumpkin,pumpkin,yellow_corn.png,corn,0,0,1,0,typeOnly
 target,atn,lettuce,54,682755887755777,orange_lettuce,lettuce,orange_pumpkin,pumpkin,orange_lettuce.png,lettuce,0,0,1,0,typeOnly
 firstDistractor,atp,lettuce,55,682755887755777,green_carrot,carrot,green_lettuce,lettuce,green_lettuce.png,lettuce,0,0,1,0,typeOnly
-target,aap,starw yellow,56,682755887755777,yellow_strawberry,strawberry,yellow_egg,egg,yellow_strawberry.png,starw yellow,1,0,0,0,colorOnly
+target,aap,starw yellow,56,682755887755777,yellow_strawberry,strawberry,yellow_egg,egg,yellow_strawberry.png,starw yellow,1,0,1,0,colorType
 target,aan,ban,57,682755887755777,orange_banana,banana,orange_lettuce,lettuce,orange_banana.png,ban,0,0,1,0,typeOnly
 target,ttn,carrot,58,682755887755777,orange_carrot,carrot,orange_pumpkin,pumpkin,orange_carrot.png,carrot,0,0,1,0,typeOnly
 target,tap,straw red,59,682755887755777,red_strawberry,strawberry,red_corn,corn,red_strawberry.png,straw red,1,0,1,0,colorType
@@ -4507,55 +4645,6 @@ firstDistractor,atp,lettuce,57,038246751684723,green_carrot,carrot,green_lettuce
 target,ttn,strawberry,58,038246751684723,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 thirdDistractor,ttn,corn,59,038246751684723,orange_carrot,carrot,orange_pumpkin,pumpkin,yellow_corn.png,corn,0,0,1,0,typeOnly
 target,tap,broccoli,60,038246751684723,green_broccoli,broccoli,green_swan,swan,green_broccoli.png,broccoli,0,0,1,0,typeOnly
-target,ttn,IS THE ITEM RED,1,750942843375356,green_lettuce,lettuce,green_broccoli,broccoli,red_strawberry.png,is the item red,1,0,0,0,colorOnly
-thirdDistractor,aan,IS THE ITEM WHITE,6,750942843375356,green_carrot,carrot,green_swan,swan,white_pumpkin.png,is the item white,1,0,0,0,colorOnly
-thirdDistractor,atn,IS THE ITEM RED,7,750942843375356,yellow_strawberry,strawberry,yellow_banana,banana,red_corn.png,is the item red,1,0,0,0,colorOnly
-thirdDistractor,tan,Is the item red,8,750942843375356,white_swan,swan,white_pumpkin,pumpkin,red_tomato.png,is the item red,1,0,0,0,colorOnly
-thirdDistractor,atn,Is the item YELLOW,9,750942843375356,white_tomato,tomato,white_swan,swan,yellow_banana.png,is the item yellow,1,0,0,0,colorOnly
-secondDistractor,atp,Is the item WHITE,11,750942843375356,green_swan,swan,green_broccoli,broccoli,white_swan.png,is the item white,1,0,0,0,colorOnly
-thirdDistractor,tan,Is the item GREEN,13,750942843375356,orange_carrot,carrot,orange_lettuce,lettuce,green_broccoli.png,is the item green,1,0,0,0,colorOnly
-target,tan,Is the item WHITE EGG,15,750942843375356,white_egg,egg,white_tomato,tomato,white_egg.png,is the item white egg,1,0,1,0,colorType
-firstDistractor,aap,ORANGE,17,750942843375356,red_broccoli,broccoli,red_corn,corn,green_broccoli.png,orange,1,0,0,0,colorOnly
-thirdDistractor,tan,YELLOW,18,750942843375356,green_broccoli,broccoli,green_carrot,carrot,yellow_banana.png,yellow,1,0,0,0,colorOnly
-secondDistractor,atp,GREEN,19,750942843375356,orange_lettuce,lettuce,orange_carrot,carrot,green_lettuce.png,green,1,0,0,0,colorOnly
-target,ttn,RED,20,750942843375356,red_tomato,tomato,red_strawberry,strawberry,red_tomato.png,red,1,0,0,0,colorOnly
-target,tap,GREEN,21,750942843375356,green_lettuce,lettuce,green_swan,swan,green_lettuce.png,green,1,0,0,0,colorOnly
-target,tap,WHITE EGG,22,750942843375356,white_egg,egg,white_tomato,tomato,white_egg.png,white egg,1,0,1,0,colorType
-target,atp,YELLOW,23,750942843375356,orange_banana,banana,orange_carrot,carrot,yellow_banana.png,yellow,1,0,0,0,colorOnly
-target,ttp,YELLOW,24,750942843375356,orange_pumpkin,pumpkin,orange_carrot,carrot,orange_carrot.png,yellow,1,0,0,0,colorOnly
-firstDistractor,aap,GREEN,25,750942843375356,green_carrot,carrot,green_swan,swan,green_carrot.png,green,1,0,0,0,colorOnly
-thirdDistractor,tan,WHITE,26,750942843375356,red_tomato,tomato,red_broccoli,broccoli,white_pumpkin.png,white,1,0,0,0,colorOnly
-thirdDistractor,ttn,WHITE,28,750942843375356,orange_carrot,carrot,orange_pumpkin,pumpkin,white_swan.png,white,1,0,0,0,colorOnly
-firstDistractor,atp,YELLOW BANANA,29,750942843375356,yellow_egg,egg,yellow_banana,banana,yellow_banana.png,yellow banana,1,0,1,0,colorType
-target,tan,GREEN,31,750942843375356,green_lettuce,lettuce,green_swan,swan,green_swan.png,green,1,0,0,0,colorOnly
-thirdDistractor,atn,YELLOW,32,750942843375356,red_broccoli,broccoli,red_tomato,tomato,orange_banana.png,yellow,1,0,0,0,colorOnly
-thirdDistractor,ttn,GREEN,33,750942843375356,yellow_banana,banana,yellow_corn,corn,green_carrot.png,green,1,0,0,0,colorOnly
-target,ttp,GREEN,34,750942843375356,green_broccoli,broccoli,green_lettuce,lettuce,green_lettuce.png,green,1,0,0,0,colorOnly
-target,atn,YELLOW,35,750942843375356,orange_banana,banana,orange_carrot,carrot,yellow_egg.png,yellow,1,0,0,0,colorOnly
-firstDistractor,tap,YELLOW,36,750942843375356,yellow_corn,corn,yellow_egg,egg,yellow_egg.png,yellow,1,0,0,0,colorOnly
-thirdDistractor,atn,ORANGE,37,750942843375356,red_broccoli,broccoli,red_strawberry,strawberry,orange_carrot.png,orange,1,0,0,0,colorOnly
-target,atn,GREEN ANIMAL,38,750942843375356,green_swan,swan,green_lettuce,lettuce,green_swan.png,green animal,1,0,0,1,other
-target,aan,GREEN ANIMAL,40,750942843375356,green_swan,swan,green_carrot,carrot,green_swan.png,green animal,1,0,0,1,other
-thirdDistractor,atn,ORANGE,41,750942843375356,white_tomato,tomato,white_egg,egg,orange_lettuce.png,orange,1,0,0,0,colorOnly
-target,ttn,WHITE EGG,42,750942843375356,white_egg,egg,white_swan,swan,white_egg.png,white egg,1,0,1,0,colorType
-thirdDistractor,atn,GREEN TOMATO,43,750942843375356,orange_lettuce,lettuce,orange_carrot,carrot,red_tomato.png,green tomato,1,0,1,0,colorType
-target,ttn,GREEN BROCOLI,44,750942843375356,green_broccoli,broccoli,green_lettuce,lettuce,green_broccoli.png,green brocoli,1,0,1,0,colorType
-target,atn,YELLOW,45,750942843375356,yellow_egg,egg,yellow_corn,corn,yellow_corn.png,yellow,1,0,0,0,colorOnly
-secondDistractor,ttp,ORANGE,46,750942843375356,green_lettuce,lettuce,green_broccoli,broccoli,orange_lettuce.png,orange,1,0,0,0,colorOnly
-target,aan,RED BROCOLI,47,750942843375356,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,red brocoli,1,0,1,0,colorType
-thirdDistractor,atn,GREEN,48,750942843375356,red_corn,corn,red_strawberry,strawberry,green_lettuce.png,green,1,0,0,0,colorOnly
-secondDistractor,atp,WHITE,49,750942843375356,yellow_egg,egg,yellow_corn,corn,white_egg.png,white,1,0,0,0,colorOnly
-target,aap,ORANGE BANANA,50,750942843375356,orange_banana,banana,orange_lettuce,lettuce,orange_banana.png,orange banana,1,0,1,0,colorType
-target,aan,ORANGE BANANA,51,750942843375356,orange_banana,banana,orange_lettuce,lettuce,orange_banana.png,orange banana,1,0,1,0,colorType
-target,tan,RED,52,750942843375356,orange_pumpkin,pumpkin,orange_banana,banana,orange_banana.png,red,1,0,0,0,colorOnly
-target,aap,ORANG ECABBAGE,53,750942843375356,orange_lettuce,lettuce,orange_banana,banana,orange_lettuce.png,orang ecabbage,1,0,1,0,colorType
-secondDistractor,atp,WHITE,54,750942843375356,green_swan,swan,green_lettuce,lettuce,white_swan.png,white,1,0,0,0,colorOnly
-thirdDistractor,tan,YELLOW,55,750942843375356,white_swan,swan,white_tomato,tomato,yellow_egg.png,yellow,1,0,0,0,colorOnly
-secondDistractor,atp,ORANGE,56,750942843375356,green_carrot,carrot,green_lettuce,lettuce,orange_carrot.png,orange,1,0,0,0,colorOnly
-thirdDistractor,tan,ORANGE CABBAGE,57,750942843375356,red_strawberry,strawberry,red_corn,corn,orange_lettuce.png,orange cabbage,1,0,1,0,colorType
-firstDistractor,ttp,WHITE DUCK,58,750942843375356,white_egg,egg,white_swan,swan,white_swan.png,white duck,1,0,1,0,colorType
-thirdDistractor,atn,GREEN,59,750942843375356,red_corn,corn,red_tomato,tomato,green_lettuce.png,green,1,0,0,0,colorOnly
-target,tan,GREEN,60,750942843375356,green_broccoli,broccoli,green_swan,swan,green_broccoli.png,green,1,0,0,0,colorOnly
 target,tan,The white bird,1,264827588055643,white_swan,swan,white_tomato,tomato,white_swan.png,the white bird,1,0,0,1,other
 target,tap,The white bird,2,264827588055643,white_swan,swan,white_pumpkin,pumpkin,white_swan.png,the white bird,1,0,0,1,other
 target,atn,The yellow egg,3,264827588055643,yellow_egg,egg,yellow_banana,banana,yellow_egg.png,the yellow egg,1,0,1,0,colorType
@@ -4606,7 +4695,7 @@ firstDistractor,ttp,tomatoe,47,264827588055643,red_strawberry,strawberry,red_tom
 thirdDistractor,tan,brocolli,48,264827588055643,green_lettuce,lettuce,green_carrot,carrot,red_broccoli.png,brocolli,0,0,1,0,typeOnly
 thirdDistractor,tan,strawberry,49,264827588055643,orange_pumpkin,pumpkin,orange_lettuce,lettuce,yellow_strawberry.png,strawberry,0,0,1,0,typeOnly
 target,atn,brocolli,50,264827588055643,red_broccoli,broccoli,red_tomato,tomato,red_broccoli.png,brocolli,0,0,1,0,typeOnly
-firstDistractor,atp,matoe,51,264827588055643,red_broccoli,broccoli,red_tomato,tomato,red_tomato.png,matoe,0,0,0,0,whatisthis?
+firstDistractor,atp,matoe,51,264827588055643,red_broccoli,broccoli,red_tomato,tomato,red_tomato.png,matoe,0,0,0,1,other
 target,ttn,corn,52,264827588055643,yellow_corn,corn,yellow_banana,banana,yellow_corn.png,corn,0,0,1,0,typeOnly
 thirdDistractor,tan,strawberry,53,264827588055643,red_tomato,tomato,red_corn,corn,yellow_strawberry.png,strawberry,0,0,1,0,typeOnly
 target,aan,swan,54,264827588055643,green_swan,swan,green_carrot,carrot,green_swan.png,swan,0,0,1,0,typeOnly
@@ -4616,59 +4705,6 @@ firstDistractor,atp,egg,57,264827588055643,white_tomato,tomato,white_egg,egg,whi
 target,aap,red brocolli,58,264827588055643,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,red brocolli,1,0,1,0,colorType
 secondDistractor,tap,red brocolli,59,264827588055643,green_broccoli,broccoli,green_carrot,carrot,red_broccoli.png,red brocolli,1,0,1,0,colorType
 target,atp,green swan,60,264827588055643,green_swan,swan,green_broccoli,broccoli,green_swan.png,green swan,1,0,1,0,colorType
-firstDistractor,aap,YELLOW\,1,126242604268138,orange_lettuce,lettuce,orange_banana,banana,orange_banana.png,yellow\,1,0,0,0,colorOnly
-target,atn,ORANGE,2,126242604268138,red_corn,corn,red_tomato,tomato,red_tomato.png,orange,1,0,0,0,colorOnly
-secondDistractor,tap,GREEN,4,126242604268138,white_swan,swan,white_tomato,tomato,green_swan.png,green,1,0,0,0,colorOnly
-firstDistractor,ttp,GREEN,5,126242604268138,green_lettuce,lettuce,green_broccoli,broccoli,green_broccoli.png,green,1,0,0,0,colorOnly
-firstDistractor,tap,YELLOW,6,126242604268138,yellow_corn,corn,yellow_strawberry,strawberry,yellow_strawberry.png,yellow,1,0,0,0,colorOnly
-target,tap,YELLOW,7,126242604268138,yellow_corn,corn,yellow_egg,egg,yellow_egg.png,yellow,1,0,0,0,colorOnly
-target,tan,YELLOW,8,126242604268138,yellow_corn,corn,yellow_egg,egg,yellow_egg.png,yellow,1,0,0,0,colorOnly
-target,aan,RED,9,126242604268138,red_corn,corn,red_broccoli,broccoli,red_broccoli.png,red,1,0,0,0,colorOnly
-target,atn,YELLOW,10,126242604268138,yellow_strawberry,strawberry,yellow_corn,corn,yellow_strawberry.png,yellow,1,0,0,0,colorOnly
-target,aap,YELLOW,12,126242604268138,white_tomato,tomato,white_pumpkin,pumpkin,orange_banana.png,yellow,1,0,0,0,colorOnly
-secondDistractor,ttp,ORANGE,13,126242604268138,yellow_corn,corn,yellow_banana,banana,orange_carrot.png,orange,1,0,0,0,colorOnly
-target,ttp,ORANGE,14,126242604268138,orange_pumpkin,pumpkin,orange_carrot,carrot,orange_carrot.png,orange,1,0,0,0,colorOnly
-thirdDistractor,tan,GREEN,15,126242604268138,red_strawberry,strawberry,red_corn,corn,green_broccoli.png,green,1,0,0,0,colorOnly
-firstDistractor,ttp,STRAWBERRY,16,126242604268138,red_tomato,tomato,red_strawberry,strawberry,red_strawberry.png,strawberry,0,0,1,0,typeOnly
-secondDistractor,atp,STRAWBERRY,17,126242604268138,yellow_strawberry,strawberry,yellow_corn,corn,red_strawberry.png,strawberry,0,0,1,0,typeOnly
-firstDistractor,atp,WHITE ANIMAL,18,126242604268138,white_tomato,tomato,white_swan,swan,white_swan.png,white animal,1,0,0,1,other
-target,ttn,STRAWBERRY,19,126242604268138,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,strawberry,0,0,1,0,typeOnly
-thirdDistractor,aan,GREEN,20,126242604268138,white_pumpkin,pumpkin,white_tomato,tomato,green_swan.png,green,1,0,0,0,colorOnly
-target,ttn,GREEN CABBAGE,21,126242604268138,green_lettuce,lettuce,green_broccoli,broccoli,green_lettuce.png,green cabbage,1,0,1,0,colorType
-thirdDistractor,atn,WHITE,22,126242604268138,green_carrot,carrot,green_broccoli,broccoli,white_egg.png,white,1,0,0,0,colorOnly
-thirdDistractor,aan,WHITE,23,126242604268138,green_swan,swan,green_carrot,carrot,white_tomato.png,white,1,0,0,0,colorOnly
-thirdDistractor,atn,YELLOW,24,126242604268138,white_pumpkin,pumpkin,white_egg,egg,yellow_banana.png,yellow,1,0,0,0,colorOnly
-target,ttp,WHITE ANIMAL,25,126242604268138,white_swan,swan,white_egg,egg,white_swan.png,white animal,1,0,0,1,other
-thirdDistractor,atn,RED TOMATO,26,126242604268138,yellow_egg,egg,yellow_corn,corn,red_tomato.png,red tomato,1,0,1,0,colorType
-thirdDistractor,tan,ORANGE,27,126242604268138,white_egg,egg,white_tomato,tomato,orange_lettuce.png,orange,1,0,0,0,colorOnly
-target,tap,RED TOMATO,29,126242604268138,red_tomato,tomato,red_broccoli,broccoli,red_tomato.png,red tomato,1,0,1,0,colorType
-thirdDistractor,tan,YELLOW,30,126242604268138,white_swan,swan,white_pumpkin,pumpkin,yellow_banana.png,yellow,1,0,0,0,colorOnly
-target,ttn,WHITE EGG,31,126242604268138,white_egg,egg,white_swan,swan,white_egg.png,white egg,1,0,1,0,colorType
-secondDistractor,atp,WHITE,32,126242604268138,green_swan,swan,green_broccoli,broccoli,white_swan.png,white,1,0,0,0,colorOnly
-target,atn,YELLOW BANANA,33,126242604268138,yellow_strawberry,strawberry,yellow_banana,banana,yellow_banana.png,yellow banana,1,0,1,0,colorType
-thirdDistractor,atp,GREEN,34,126242604268138,yellow_egg,egg,yellow_corn,corn,green_lettuce.png,green,1,0,0,0,colorOnly
-secondDistractor,tap,GREEN,35,126242604268138,orange_carrot,carrot,orange_lettuce,lettuce,green_carrot.png,green,1,0,0,0,colorOnly
-secondDistractor,atp,YELLOW,36,126242604268138,red_corn,corn,red_strawberry,strawberry,yellow_corn.png,yellow,1,0,0,0,colorOnly
-firstDistractor,tap,RED,37,126242604268138,red_tomato,tomato,red_corn,corn,red_tomato.png,red,1,0,0,0,colorOnly
-target,aan,YELLOW STRAWBERRY,38,126242604268138,yellow_strawberry,strawberry,yellow_egg,egg,yellow_strawberry.png,yellow strawberry,1,0,1,0,colorType
-target,atp,WHITE FRUIT,39,126242604268138,white_pumpkin,pumpkin,white_swan,swan,white_pumpkin.png,white fruit,1,0,0,1,other
-thirdDistractor,tan,WHITE EGG,40,126242604268138,green_broccoli,broccoli,green_carrot,carrot,white_egg.png,white egg,1,0,1,0,colorType
-firstDistractor,aap,YELLOW STRAWBERRY,41,126242604268138,yellow_egg,egg,yellow_strawberry,strawberry,yellow_strawberry.png,yellow strawberry,1,0,1,0,colorType
-thirdDistractor,tan,GREEN,42,126242604268138,red_strawberry,strawberry,red_broccoli,broccoli,green_carrot.png,green,1,0,0,0,colorOnly
-firstDistractor,atp,STRAWBERRY,43,126242604268138,red_broccoli,broccoli,red_strawberry,strawberry,red_strawberry.png,strawberry,0,0,1,0,typeOnly
-thirdDistractor,atp,GREEN,44,126242604268138,yellow_egg,egg,yellow_banana,banana,green_broccoli.png,green,1,0,0,0,colorOnly
-thirdDistractor,tan,WHITE,45,126242604268138,green_lettuce,lettuce,green_carrot,carrot,white_swan.png,white,1,0,0,0,colorOnly
-target,tan,YELLOW CORN,46,126242604268138,yellow_corn,corn,yellow_strawberry,strawberry,yellow_corn.png,yellow corn,1,0,1,0,colorType
-thirdDistractor,atn,WHITE,47,126242604268138,orange_banana,banana,orange_carrot,carrot,white_egg.png,white,1,0,0,0,colorOnly
-target,atn,ORANGE CABBAGE,48,126242604268138,orange_lettuce,lettuce,orange_pumpkin,pumpkin,orange_lettuce.png,orange cabbage,1,0,1,0,colorType
-secondDistractor,atp,YELLOW,50,126242604268138,red_corn,corn,red_tomato,tomato,yellow_corn.png,yellow,1,0,0,0,colorOnly
-target,tan,YELLOW BANANA,51,126242604268138,yellow_banana,banana,yellow_egg,egg,yellow_banana.png,yellow banana,1,0,1,0,colorType
-target,aan,GREEN FRUIT,52,126242604268138,green_carrot,carrot,green_swan,swan,green_carrot.png,green fruit,1,0,0,1,other
-thirdDistractor,tan,WHITE,53,126242604268138,orange_carrot,carrot,orange_lettuce,lettuce,white_swan.png,white,1,0,0,0,colorOnly
-thirdDistractor,aan,YELLOW,55,126242604268138,red_broccoli,broccoli,red_corn,corn,yellow_banana.png,yellow,1,0,0,0,colorOnly
-thirdDistractor,tap,GREEN,56,126242604268138,orange_pumpkin,pumpkin,orange_lettuce,lettuce,green_broccoli.png,green,1,0,0,0,colorOnly
-secondDistractor,atp,ORANGE,58,126242604268138,white_pumpkin,pumpkin,white_egg,egg,orange_pumpkin.png,orange,1,0,0,0,colorOnly
-thirdDistractor,atn,RED,60,126242604268138,yellow_egg,egg,yellow_banana,banana,red_broccoli.png,red,1,0,0,0,colorOnly
 thirdDistractor,atn,it is the egg,1,572221846298481,orange_lettuce,lettuce,orange_pumpkin,pumpkin,white_egg.png,it is the egg,0,0,1,0,typeOnly
 target,ttn,it is the strawberry,2,572221846298481,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,it is the strawberry,0,0,1,0,typeOnly
 thirdDistractor,atn,it is the red broccoli,3,572221846298481,white_tomato,tomato,white_swan,swan,red_broccoli.png,it is the red broccoli,1,0,1,0,colorType
@@ -4788,11 +4824,71 @@ secondDistractor,tap,white tomato,57,437696977568919,red_tomato,tomato,red_brocc
 thirdDistractor,atn,banana,58,437696977568919,red_corn,corn,red_tomato,tomato,orange_banana.png,banana,0,0,1,0,typeOnly
 firstDistractor,atp,strawberry,59,437696977568919,red_broccoli,broccoli,red_strawberry,strawberry,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 target,ttn,corn,60,437696977568919,yellow_corn,corn,yellow_banana,banana,yellow_corn.png,corn,0,0,1,0,typeOnly
-target,aan,hi there - please click on the pink broccoli,1,378419555393285,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,hi there - please click on the pink broccoli,0,0,1,0,typeOnly
+thirdDistractor,tan,the animal,1,082649082836494,white_egg,egg,white_tomato,tomato,green_swan.png,the animal,0,0,0,1,other
+target,tan,the green vegetable,2,082649082836494,green_broccoli,broccoli,green_swan,swan,green_broccoli.png,the green vegetable,1,0,0,1,other
+thirdDistractor,aan,the fruit,3,082649082836494,green_carrot,carrot,green_swan,swan,yellow_banana.png,the fruit,0,0,0,1,other
+thirdDistractor,atn,the red vegetable,4,082649082836494,green_carrot,carrot,green_broccoli,broccoli,red_corn.png,the red vegetable,1,0,0,1,other
+firstDistractor,atp,the carrot,5,082649082836494,orange_banana,banana,orange_carrot,carrot,orange_carrot.png,the carrot,0,0,1,0,typeOnly
+thirdDistractor,aap,the corn,6,082649082836494,green_swan,swan,green_carrot,carrot,yellow_corn.png,the corn,0,0,1,0,typeOnly
+secondDistractor,atp,the normal colored broccoli,7,082649082836494,red_broccoli,broccoli,red_tomato,tomato,green_broccoli.png,the normal colored broccoli,1,1,1,0,other
+target,tan,the corn,8,082649082836494,yellow_corn,corn,yellow_egg,egg,yellow_corn.png,the corn,0,0,1,0,typeOnly
+secondDistractor,tap,the abnormally colored lettuce (or cabbage?),9,082649082836494,green_lettuce,lettuce,green_swan,swan,orange_lettuce.png,the abnormally colored lettuce (or cabbage?),1,1,1,0,other
+thirdDistractor,tap,banana,10,082649082836494,white_egg,egg,white_tomato,tomato,orange_banana.png,banana,0,0,1,0,typeOnly
+target,ttn,lettuce,11,082649082836494,green_lettuce,lettuce,green_broccoli,broccoli,green_lettuce.png,lettuce,0,0,1,0,typeOnly
+firstDistractor,ttp,pumpkin,12,082649082836494,orange_carrot,carrot,orange_pumpkin,pumpkin,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
+thirdDistractor,tan,banana,13,082649082836494,white_swan,swan,white_pumpkin,pumpkin,yellow_banana.png,banana,0,0,1,0,typeOnly
+thirdDistractor,aan,carrot,14,082649082836494,yellow_strawberry,strawberry,yellow_egg,egg,orange_carrot.png,carrot,0,0,1,0,typeOnly
+firstDistractor,aap,pumpkin,15,082649082836494,white_tomato,tomato,white_pumpkin,pumpkin,white_pumpkin.png,pumpkin,0,0,1,0,typeOnly
+thirdDistractor,atp,pumpkin,16,082649082836494,red_broccoli,broccoli,red_strawberry,strawberry,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
+thirdDistractor,atn,egg,17,082649082836494,red_broccoli,broccoli,red_tomato,tomato,yellow_egg.png,egg,0,0,1,0,typeOnly
+target,tap,normally colored strawberry,18,082649082836494,red_strawberry,strawberry,red_broccoli,broccoli,red_strawberry.png,normally colored strawberry,1,1,1,0,other
+thirdDistractor,tap,swan,19,082649082836494,orange_pumpkin,pumpkin,orange_banana,banana,green_swan.png,swan,0,0,1,0,typeOnly
+thirdDistractor,tap,lettuce,20,082649082836494,green_broccoli,broccoli,green_carrot,carrot,orange_lettuce.png,lettuce,0,0,1,0,typeOnly
+firstDistractor,atp,banana,21,082649082836494,yellow_egg,egg,yellow_banana,banana,yellow_banana.png,banana,0,0,1,0,typeOnly
+thirdDistractor,aap,strawberry,22,082649082836494,green_carrot,carrot,green_swan,swan,red_strawberry.png,strawberry,0,0,1,0,typeOnly
+target,ttp,normally colored strawberry,23,082649082836494,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,normally colored strawberry,1,1,1,0,other
+target,atn,pumpkin,24,082649082836494,white_pumpkin,pumpkin,white_swan,swan,white_pumpkin.png,pumpkin,0,0,1,0,typeOnly
+target,ttn,broccoli,25,082649082836494,green_broccoli,broccoli,green_lettuce,lettuce,green_broccoli.png,broccoli,0,0,1,0,typeOnly
+secondDistractor,atp,normally colored tomato,26,082649082836494,white_tomato,tomato,white_egg,egg,red_tomato.png,normally colored tomato,1,1,1,0,other
+target,atp,abnormally colored lettuce,27,082649082836494,orange_lettuce,lettuce,orange_carrot,carrot,orange_lettuce.png,abnormally colored lettuce,1,1,1,0,other
+secondDistractor,tap,abnormally colored corn,28,082649082836494,yellow_corn,corn,yellow_strawberry,strawberry,red_corn.png,abnormally colored corn,1,1,1,0,other
+target,atp,abnormally colored strawberry,29,082649082836494,yellow_strawberry,strawberry,yellow_banana,banana,yellow_strawberry.png,abnormally colored strawberry,1,1,1,0,other
+thirdDistractor,aan,tomato,30,082649082836494,green_swan,swan,green_carrot,carrot,white_tomato.png,tomato,0,0,1,0,typeOnly
+firstDistractor,tap,pumpkin,31,082649082836494,white_egg,egg,white_pumpkin,pumpkin,white_pumpkin.png,pumpkin,0,0,1,0,typeOnly
+thirdDistractor,tap,corn,32,082649082836494,white_swan,swan,white_pumpkin,pumpkin,red_corn.png,corn,0,0,1,0,typeOnly
+target,aan,corn,33,082649082836494,red_corn,corn,red_broccoli,broccoli,red_corn.png,corn,0,0,1,0,typeOnly
+target,ttn,egg,34,082649082836494,white_egg,egg,white_swan,swan,white_egg.png,egg,0,0,1,0,typeOnly
+target,aap,abnormally colored strawberry,35,082649082836494,yellow_strawberry,strawberry,yellow_egg,egg,yellow_strawberry.png,abnormally colored strawberry,1,1,1,0,other
+firstDistractor,ttp,corn,36,082649082836494,yellow_banana,banana,yellow_corn,corn,yellow_corn.png,corn,0,0,1,0,typeOnly
+target,ttn,tomato,37,082649082836494,red_tomato,tomato,red_strawberry,strawberry,red_tomato.png,tomato,0,0,1,0,typeOnly
+secondDistractor,aap,normally colored lettuce,38,082649082836494,orange_lettuce,lettuce,orange_banana,banana,green_lettuce.png,normally colored lettuce,1,1,1,0,other
+target,aap,abnormally colored corn,39,082649082836494,red_corn,corn,red_broccoli,broccoli,red_corn.png,abnormally colored corn,1,1,1,0,other
+target,atn,swan,40,082649082836494,green_swan,swan,green_lettuce,lettuce,green_swan.png,swan,0,0,1,0,typeOnly
+thirdDistractor,atn,lettuce,41,082649082836494,red_corn,corn,red_tomato,tomato,green_lettuce.png,lettuce,0,0,1,0,typeOnly
+target,tap,normal carrot,42,082649082836494,orange_carrot,carrot,orange_banana,banana,orange_carrot.png,normal carrot,0,1,1,0,other
+target,atn,banana,43,082649082836494,orange_banana,banana,orange_carrot,carrot,orange_banana.png,banana,0,0,1,0,typeOnly
+firstDistractor,aap,corn,44,082649082836494,red_broccoli,broccoli,red_corn,corn,red_corn.png,corn,0,0,1,0,typeOnly
+secondDistractor,atp,normal corn,45,082649082836494,red_corn,corn,red_tomato,tomato,yellow_corn.png,normal corn,0,1,1,0,other
+thirdDistractor,atn,corn,46,082649082836494,yellow_strawberry,strawberry,yellow_banana,banana,red_corn.png,corn,0,0,1,0,typeOnly
+target,atn,lettuce,47,082649082836494,orange_lettuce,lettuce,orange_pumpkin,pumpkin,orange_lettuce.png,lettuce,0,0,1,0,typeOnly
+firstDistractor,tap,strawberry,48,082649082836494,yellow_banana,banana,yellow_strawberry,strawberry,yellow_strawberry.png,strawberry,0,0,1,0,typeOnly
+thirdDistractor,aap,egg,49,082649082836494,white_pumpkin,pumpkin,white_tomato,tomato,yellow_egg.png,egg,0,0,1,0,typeOnly
+thirdDistractor,atp,corn,50,082649082836494,white_pumpkin,pumpkin,white_egg,egg,yellow_corn.png,corn,0,0,1,0,typeOnly
+thirdDistractor,tap,banana,51,082649082836494,red_tomato,tomato,red_broccoli,broccoli,orange_banana.png,banana,0,0,1,0,typeOnly
+secondDistractor,atp,normal carrot,52,082649082836494,green_carrot,carrot,green_broccoli,broccoli,orange_carrot.png,normal carrot,0,1,1,0,other
+target,tan,banana,53,082649082836494,yellow_banana,banana,yellow_strawberry,strawberry,yellow_banana.png,banana,0,0,1,0,typeOnly
+target,ttp,normal broccoli,54,082649082836494,green_broccoli,broccoli,green_lettuce,lettuce,green_broccoli.png,normal broccoli,0,1,1,0,other
+target,aan,egg,55,082649082836494,yellow_egg,egg,yellow_strawberry,strawberry,yellow_egg.png,egg,0,0,1,0,typeOnly
+target,tan,lettuce,56,082649082836494,green_lettuce,lettuce,green_carrot,carrot,green_lettuce.png,lettuce,0,0,1,0,typeOnly
+target,aan,broccoli,57,082649082836494,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,broccoli,0,0,1,0,typeOnly
+target,aan,tomato,58,082649082836494,white_tomato,tomato,white_pumpkin,pumpkin,white_tomato.png,tomato,0,0,1,0,typeOnly
+thirdDistractor,atp,lettuce,59,082649082836494,yellow_egg,egg,yellow_corn,corn,orange_lettuce.png,lettuce,0,0,1,0,typeOnly
+secondDistractor,atp,regular pumpkin,60,082649082836494,white_pumpkin,pumpkin,white_swan,swan,orange_pumpkin.png,regular pumpkin,0,1,1,0,other
+target,aan,hi there - please click on the pink broccoli,1,378419555393285,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,hi there - please click on the pink broccoli,1,0,1,0,colorType
 target,atp,Please click on the green goose,2,378419555393285,green_swan,swan,green_lettuce,lettuce,green_swan.png,please click on the green goose,1,0,1,0,colorType
 thirdDistractor,tap,White pumpkin,3,378419555393285,green_lettuce,lettuce,green_carrot,carrot,white_pumpkin.png,white pumpkin,1,0,1,0,colorType
-target,ttn,Green (gonna misspell this) Lettus(?),4,378419555393285,green_lettuce,lettuce,green_broccoli,broccoli,green_lettuce.png,green (gonna misspell this) lettus(?),1,0,0,0,colorOnly
-target,aan,pink corn,5,378419555393285,red_corn,corn,red_broccoli,broccoli,red_corn.png,pink corn,0,0,1,0,typeOnly
+target,ttn,Green (gonna misspell this) Lettus(?),4,378419555393285,green_lettuce,lettuce,green_broccoli,broccoli,green_lettuce.png,green (gonna misspell this) lettus(?),1,0,1,0,colorType
+target,aan,pink corn,5,378419555393285,red_corn,corn,red_broccoli,broccoli,red_corn.png,pink corn,1,0,1,0,colorType
 target,ttp,orange pumpkin,6,378419555393285,orange_pumpkin,pumpkin,orange_carrot,carrot,orange_pumpkin.png,orange pumpkin,1,0,1,0,colorType
 thirdDistractor,tan,orange carrot,7,378419555393285,green_broccoli,broccoli,green_swan,swan,orange_carrot.png,orange carrot,1,0,1,0,colorType
 thirdDistractor,atp,green carrot,8,378419555393285,orange_banana,banana,orange_pumpkin,pumpkin,green_carrot.png,green carrot,1,0,1,0,colorType
@@ -4816,36 +4912,36 @@ secondDistractor,tap,white tomato,25,378419555393285,red_tomato,tomato,red_brocc
 thirdDistractor,atn,broccoli,26,378419555393285,red_corn,corn,red_strawberry,strawberry,green_broccoli.png,broccoli,0,0,1,0,typeOnly
 target,aan,carrot,27,378419555393285,green_carrot,carrot,green_swan,swan,green_carrot.png,carrot,0,0,1,0,typeOnly
 target,tan,white egg,29,378419555393285,white_egg,egg,white_pumpkin,pumpkin,white_egg.png,white egg,1,0,1,0,colorType
-thirdDistractor,atn,orange lettus,30,378419555393285,red_broccoli,broccoli,red_tomato,tomato,orange_lettuce.png,orange lettus,1,0,0,0,colorOnly
-target,aap,orange lettus,31,378419555393285,orange_lettuce,lettuce,orange_banana,banana,orange_lettuce.png,orange lettus,1,0,0,0,colorOnly
+thirdDistractor,atn,orange lettus,30,378419555393285,red_broccoli,broccoli,red_tomato,tomato,orange_lettuce.png,orange lettus,1,0,1,0,colorType
+target,aap,orange lettus,31,378419555393285,orange_lettuce,lettuce,orange_banana,banana,orange_lettuce.png,orange lettus,1,0,1,0,colorType
 firstDistractor,atp,red tomato,32,378419555393285,red_broccoli,broccoli,red_tomato,tomato,red_tomato.png,red tomato,1,0,1,0,colorType
-thirdDistractor,atn,pink corn,33,378419555393285,yellow_egg,egg,yellow_banana,banana,red_corn.png,pink corn,0,0,1,0,typeOnly
+thirdDistractor,atn,pink corn,33,378419555393285,yellow_egg,egg,yellow_banana,banana,red_corn.png,pink corn,1,0,1,0,colorType
 target,tan,regular corn,34,378419555393285,yellow_corn,corn,yellow_egg,egg,yellow_corn.png,regular corn,0,1,1,0,other
 thirdDistractor,tan,red strawberry,35,378419555393285,yellow_banana,banana,yellow_egg,egg,red_strawberry.png,red strawberry,1,0,1,0,colorType
 target,atn,green carrot,36,378419555393285,green_carrot,carrot,green_broccoli,broccoli,green_carrot.png,green carrot,1,0,1,0,colorType
 target,tan,corn,37,378419555393285,yellow_corn,corn,yellow_strawberry,strawberry,yellow_corn.png,corn,0,0,1,0,typeOnly
 thirdDistractor,tap,carrot,38,378419555393285,white_swan,swan,white_tomato,tomato,orange_carrot.png,carrot,0,0,1,0,typeOnly
 target,tap,yellow bannana,39,378419555393285,yellow_banana,banana,yellow_egg,egg,yellow_banana.png,yellow bannana,1,0,1,0,colorType
-firstDistractor,aap,pink corn,40,378419555393285,red_broccoli,broccoli,red_corn,corn,red_corn.png,pink corn,0,0,1,0,typeOnly
+firstDistractor,aap,pink corn,40,378419555393285,red_broccoli,broccoli,red_corn,corn,red_corn.png,pink corn,1,0,1,0,colorType
 firstDistractor,aap,swan,41,378419555393285,green_carrot,carrot,green_swan,swan,green_swan.png,swan,0,0,1,0,typeOnly
-thirdDistractor,atn,pink corn,42,378419555393285,yellow_strawberry,strawberry,yellow_banana,banana,red_corn.png,pink corn,0,0,1,0,typeOnly
+thirdDistractor,atn,pink corn,42,378419555393285,yellow_strawberry,strawberry,yellow_banana,banana,red_corn.png,pink corn,1,0,1,0,colorType
 target,atn,orange banna,43,378419555393285,orange_banana,banana,orange_pumpkin,pumpkin,orange_banana.png,orange banna,1,0,1,0,colorType
 target,aap,yellow egg,44,378419555393285,yellow_egg,egg,yellow_strawberry,strawberry,yellow_egg.png,yellow egg,1,0,1,0,colorType
 firstDistractor,atp,corn,45,378419555393285,yellow_egg,egg,yellow_corn,corn,yellow_corn.png,corn,0,0,1,0,typeOnly
-target,atp,orange lettus,46,378419555393285,orange_lettuce,lettuce,orange_pumpkin,pumpkin,orange_lettuce.png,orange lettus,1,0,0,0,colorOnly
+target,atp,orange lettus,46,378419555393285,orange_lettuce,lettuce,orange_pumpkin,pumpkin,orange_lettuce.png,orange lettus,1,0,1,0,colorType
 thirdDistractor,tan,tomato,47,378419555393285,orange_carrot,carrot,orange_lettuce,lettuce,red_tomato.png,tomato,0,0,1,0,typeOnly
 firstDistractor,ttp,bannana,48,378419555393285,yellow_corn,corn,yellow_banana,banana,yellow_banana.png,bannana,0,0,1,0,typeOnly
-thirdDistractor,atn,lettus,49,378419555393285,red_broccoli,broccoli,red_strawberry,strawberry,green_lettuce.png,lettus,0,0,0,0,whatisthis?
-thirdDistractor,atn,pink broccoli,50,378419555393285,yellow_egg,egg,yellow_corn,corn,red_broccoli.png,pink broccoli,0,0,1,0,typeOnly
+thirdDistractor,atn,lettus,49,378419555393285,red_broccoli,broccoli,red_strawberry,strawberry,green_lettuce.png,lettus,0,0,1,0,typeOnly
+thirdDistractor,atn,pink broccoli,50,378419555393285,yellow_egg,egg,yellow_corn,corn,red_broccoli.png,pink broccoli,1,0,1,0,colorType
 target,aan,white tomato,51,378419555393285,white_tomato,tomato,white_pumpkin,pumpkin,white_tomato.png,white tomato,1,0,1,0,colorType
-secondDistractor,atp,white e gg,52,378419555393285,yellow_egg,egg,yellow_banana,banana,white_egg.png,white e gg,1,0,0,0,colorOnly
+secondDistractor,atp,white e gg,52,378419555393285,yellow_egg,egg,yellow_banana,banana,white_egg.png,white e gg,1,0,1,0,colorType
 thirdDistractor,atn,swan,53,378419555393285,orange_banana,banana,orange_carrot,carrot,white_swan.png,swan,0,0,1,0,typeOnly
 target,tap,red tomato,54,378419555393285,red_tomato,tomato,red_corn,corn,red_tomato.png,red tomato,1,0,1,0,colorType
 thirdDistractor,atn,bannana,55,378419555393285,orange_lettuce,lettuce,orange_pumpkin,pumpkin,yellow_banana.png,bannana,0,0,1,0,typeOnly
 thirdDistractor,tan,bannana,56,378419555393285,white_egg,egg,white_tomato,tomato,orange_banana.png,bannana,0,0,1,0,typeOnly
 target,ttn,strawberry,57,378419555393285,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 target,tan,swan,58,378419555393285,white_swan,swan,white_tomato,tomato,white_swan.png,swan,0,0,1,0,typeOnly
-secondDistractor,atp,green lettus,59,378419555393285,orange_lettuce,lettuce,orange_carrot,carrot,green_lettuce.png,green lettus,1,0,0,0,colorOnly
+secondDistractor,atp,green lettus,59,378419555393285,orange_lettuce,lettuce,orange_carrot,carrot,green_lettuce.png,green lettus,1,0,1,0,colorType
 secondDistractor,atp,green broccoli,60,378419555393285,red_broccoli,broccoli,red_strawberry,strawberry,green_broccoli.png,green broccoli,1,0,1,0,colorType
 target,atp,red eared corn,1,170694312953642,red_corn,corn,red_tomato,tomato,red_corn.png,red eared corn,1,0,1,0,colorType
 thirdDistractor,aan,yellow corn,2,170694312953642,orange_lettuce,lettuce,orange_banana,banana,yellow_corn.png,yellow corn,1,0,1,0,colorType
@@ -4875,7 +4971,7 @@ target,aap,white pumpkin,25,170694312953642,white_pumpkin,pumpkin,white_tomato,t
 firstDistractor,aap,orange lettuce,26,170694312953642,orange_banana,banana,orange_lettuce,lettuce,orange_lettuce.png,orange lettuce,1,0,1,0,colorType
 thirdDistractor,atn,yellow corn,27,170694312953642,red_broccoli,broccoli,red_tomato,tomato,yellow_corn.png,yellow corn,1,0,1,0,colorType
 thirdDistractor,tap,white tomato,28,170694312953642,yellow_banana,banana,yellow_strawberry,strawberry,white_tomato.png,white tomato,1,0,1,0,colorType
-thirdDistractor,atn,greeen carrot,29,170694312953642,orange_lettuce,lettuce,orange_pumpkin,pumpkin,green_carrot.png,greeen carrot,0,0,1,0,typeOnly
+thirdDistractor,atn,greeen carrot,29,170694312953642,orange_lettuce,lettuce,orange_pumpkin,pumpkin,green_carrot.png,greeen carrot,1,0,1,0,colorType
 secondDistractor,atp,orange pumpkin,30,170694312953642,white_pumpkin,pumpkin,white_egg,egg,orange_pumpkin.png,orange pumpkin,1,0,1,0,colorType
 target,atn,white tomato,31,170694312953642,white_tomato,tomato,white_egg,egg,white_tomato.png,white tomato,1,0,1,0,colorType
 thirdDistractor,atn,green carrot,32,170694312953642,white_pumpkin,pumpkin,white_swan,swan,green_carrot.png,green carrot,1,0,1,0,colorType
@@ -4911,7 +5007,7 @@ firstDistractor,atp,strawberry,2,597866026153360,red_broccoli,broccoli,red_straw
 thirdDistractor,tan,onion,3,597866026153360,orange_pumpkin,pumpkin,orange_banana,banana,white_tomato.png,onion,0,0,0,1,other
 secondDistractor,tap,yellow egg,4,597866026153360,white_egg,egg,white_tomato,tomato,yellow_egg.png,yellow egg,1,0,1,0,colorType
 target,ttp,strawberry,5,597866026153360,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,strawberry,0,0,1,0,typeOnly
-thirdDistractor,tan,gree carrot,6,597866026153360,orange_pumpkin,pumpkin,orange_lettuce,lettuce,green_carrot.png,gree carrot,0,0,1,0,typeOnly
+thirdDistractor,tan,gree carrot,6,597866026153360,orange_pumpkin,pumpkin,orange_lettuce,lettuce,green_carrot.png,gree carrot,1,0,1,0,colorType
 firstDistractor,tap,green carrot,7,597866026153360,green_broccoli,broccoli,green_carrot,carrot,green_carrot.png,green carrot,1,0,1,0,colorType
 thirdDistractor,tap,red corn,8,597866026153360,orange_carrot,carrot,orange_lettuce,lettuce,red_corn.png,red corn,1,0,1,0,colorType
 target,atp,white pumpkin,9,597866026153360,white_pumpkin,pumpkin,white_egg,egg,white_pumpkin.png,white pumpkin,1,0,1,0,colorType
@@ -4962,11 +5058,11 @@ target,aan,pumpkin,53,597866026153360,white_pumpkin,pumpkin,white_tomato,tomato,
 thirdDistractor,ttp,pumpkin,54,597866026153360,yellow_banana,banana,yellow_corn,corn,white_pumpkin.png,pumpkin,0,0,1,0,typeOnly
 secondDistractor,atp,orange pump,55,597866026153360,white_pumpkin,pumpkin,white_swan,swan,orange_pumpkin.png,orange pump,1,0,1,0,colorType
 thirdDistractor,aan,swan,56,597866026153360,white_tomato,tomato,white_pumpkin,pumpkin,green_swan.png,swan,0,0,1,0,typeOnly
-target,aap,gold straw,57,597866026153360,yellow_strawberry,strawberry,yellow_egg,egg,yellow_strawberry.png,gold straw,0,0,1,0,typeOnly
+target,aap,gold straw,57,597866026153360,yellow_strawberry,strawberry,yellow_egg,egg,yellow_strawberry.png,gold straw,1,0,1,0,colorType
 target,atn,carrot,58,597866026153360,green_carrot,carrot,green_broccoli,broccoli,green_carrot.png,carrot,0,0,1,0,typeOnly
 target,atn,straw,59,597866026153360,yellow_strawberry,strawberry,yellow_corn,corn,yellow_strawberry.png,straw,0,0,1,0,typeOnly
 firstDistractor,aap,cabbage,60,597866026153360,orange_banana,banana,orange_lettuce,lettuce,orange_lettuce.png,cabbage,0,0,1,0,typeOnly
-thirdDistractor,tan,Hi,1,111682981139507,orange_pumpkin,pumpkin,orange_lettuce,lettuce,yellow_banana.png,hi,0,0,0,0,whatisthis?
+thirdDistractor,tan,Hi,1,111682981139507,orange_pumpkin,pumpkin,orange_lettuce,lettuce,yellow_banana.png,hi,0,0,0,1,other
 target,ttn,"Hi, the target is the egg.",3,111682981139507,white_egg,egg,white_swan,swan,white_egg.png,"hi, the target is the egg.",0,0,1,0,typeOnly
 target,tan,"Hi, the target is the banana",4,111682981139507,yellow_banana,banana,yellow_strawberry,strawberry,yellow_banana.png,"hi, the target is the banana",0,0,1,0,typeOnly
 thirdDistractor,tan,"Hi, the target is the pumpkin.",5,111682981139507,yellow_banana,banana,yellow_egg,egg,orange_pumpkin.png,"hi, the target is the pumpkin.",0,0,1,0,typeOnly
@@ -5028,14 +5124,14 @@ firstDistractor,ttp,"Hi, the target is the broccoli",60,111682981139507,green_le
 thirdDistractor,ttp,tomoto,2,385890941190079,orange_carrot,carrot,orange_pumpkin,pumpkin,red_tomato.png,tomoto,0,0,1,0,typeOnly
 thirdDistractor,tan,tomoto,3,385890941190079,white_egg,egg,white_pumpkin,pumpkin,red_tomato.png,tomoto,0,0,1,0,typeOnly
 thirdDistractor,tan,duck,5,385890941190079,red_tomato,tomato,red_corn,corn,green_swan.png,duck,0,0,1,0,typeOnly
-thirdDistractor,ttn,mango,6,385890941190079,orange_pumpkin,pumpkin,orange_carrot,carrot,yellow_egg.png,mango,0,0,0,0,whatisthis?
+thirdDistractor,ttn,mango,6,385890941190079,orange_pumpkin,pumpkin,orange_carrot,carrot,yellow_egg.png,mango,0,0,0,1,other
 target,atp,white tomoto,7,385890941190079,white_tomato,tomato,white_egg,egg,white_tomato.png,white tomoto,1,0,1,0,colorType
-target,atn,mango,8,385890941190079,yellow_egg,egg,yellow_corn,corn,yellow_egg.png,mango,0,0,0,0,whatisthis?
+target,atn,mango,8,385890941190079,yellow_egg,egg,yellow_corn,corn,yellow_egg.png,mango,0,0,0,1,other
 target,atn,corn,9,385890941190079,red_corn,corn,red_tomato,tomato,red_corn.png,corn,0,0,1,0,typeOnly
 thirdDistractor,tan,orange,10,385890941190079,white_swan,swan,white_tomato,tomato,orange_pumpkin.png,orange,1,0,0,0,colorOnly
 thirdDistractor,ttp,tomoto,11,385890941190079,white_swan,swan,white_egg,egg,red_tomato.png,tomoto,0,0,1,0,typeOnly
 thirdDistractor,atn,strawferry,12,385890941190079,green_swan,swan,green_lettuce,lettuce,red_strawberry.png,strawferry,0,0,1,0,typeOnly
-target,aan,mango,13,385890941190079,yellow_egg,egg,yellow_strawberry,strawberry,yellow_egg.png,mango,0,0,0,0,whatisthis?
+target,aan,mango,13,385890941190079,yellow_egg,egg,yellow_strawberry,strawberry,yellow_egg.png,mango,0,0,0,1,other
 thirdDistractor,tap,corn,14,385890941190079,red_tomato,tomato,red_broccoli,broccoli,yellow_corn.png,corn,0,0,1,0,typeOnly
 target,tap,duck,15,385890941190079,white_swan,swan,white_pumpkin,pumpkin,white_swan.png,duck,0,0,1,0,typeOnly
 target,aan,tomoto,16,385890941190079,white_tomato,tomato,white_pumpkin,pumpkin,white_tomato.png,tomoto,0,0,1,0,typeOnly
@@ -5048,9 +5144,9 @@ secondDistractor,atp,strawperry,24,385890941190079,yellow_strawberry,strawberry,
 target,tan,yellow corn,25,385890941190079,yellow_corn,corn,yellow_egg,egg,yellow_corn.png,yellow corn,1,0,1,0,colorType
 secondDistractor,atp,broccoli,26,385890941190079,red_broccoli,broccoli,red_strawberry,strawberry,green_broccoli.png,broccoli,0,0,1,0,typeOnly
 target,ttn,strawperry,27,385890941190079,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,strawperry,0,0,1,0,typeOnly
-secondDistractor,tap,mango,28,385890941190079,white_egg,egg,white_pumpkin,pumpkin,yellow_egg.png,mango,0,0,0,0,whatisthis?
+secondDistractor,tap,mango,28,385890941190079,white_egg,egg,white_pumpkin,pumpkin,yellow_egg.png,mango,0,0,0,1,other
 target,ttn,egg,29,385890941190079,white_egg,egg,white_swan,swan,white_egg.png,egg,0,0,1,0,typeOnly
-firstDistractor,aap,mango,30,385890941190079,yellow_strawberry,strawberry,yellow_egg,egg,yellow_egg.png,mango,0,0,0,0,whatisthis?
+firstDistractor,aap,mango,30,385890941190079,yellow_strawberry,strawberry,yellow_egg,egg,yellow_egg.png,mango,0,0,0,1,other
 firstDistractor,ttp,strawperry,31,385890941190079,red_tomato,tomato,red_strawberry,strawberry,red_strawberry.png,strawperry,0,0,1,0,typeOnly
 secondDistractor,atp,egg,32,385890941190079,yellow_egg,egg,yellow_corn,corn,white_egg.png,egg,0,0,1,0,typeOnly
 secondDistractor,atp,yellow corn,33,385890941190079,red_corn,corn,red_strawberry,strawberry,yellow_corn.png,yellow corn,1,0,1,0,colorType
@@ -5060,23 +5156,23 @@ thirdDistractor,atp,orange,37,385890941190079,green_swan,swan,green_broccoli,bro
 target,ttn,red tomoto,38,385890941190079,red_tomato,tomato,red_strawberry,strawberry,red_tomato.png,red tomoto,1,0,1,0,colorType
 target,tap,red carrot,39,385890941190079,orange_carrot,carrot,orange_banana,banana,orange_carrot.png,red carrot,1,0,1,0,colorType
 thirdDistractor,ttp,duck,40,385890941190079,red_strawberry,strawberry,red_tomato,tomato,white_swan.png,duck,0,0,1,0,typeOnly
-secondDistractor,tap,squash,41,385890941190079,orange_pumpkin,pumpkin,orange_banana,banana,white_pumpkin.png,squash,0,0,0,0,whatisthis?
+secondDistractor,tap,squash,41,385890941190079,orange_pumpkin,pumpkin,orange_banana,banana,white_pumpkin.png,squash,0,0,0,1,other
 thirdDistractor,atp,duck,42,385890941190079,yellow_strawberry,strawberry,yellow_corn,corn,green_swan.png,duck,0,0,1,0,typeOnly
 thirdDistractor,atp,yellow strawperry,43,385890941190079,orange_lettuce,lettuce,orange_carrot,carrot,yellow_strawberry.png,yellow strawperry,1,0,1,0,colorType
 target,atp,red banana,44,385890941190079,orange_banana,banana,orange_carrot,carrot,orange_banana.png,red banana,1,0,1,0,colorType
 firstDistractor,ttp,red carrot,45,385890941190079,orange_pumpkin,pumpkin,orange_carrot,carrot,orange_carrot.png,red carrot,1,0,1,0,colorType
 target,aan,red banana,46,385890941190079,orange_banana,banana,orange_lettuce,lettuce,orange_banana.png,red banana,1,0,1,0,colorType
-thirdDistractor,tan,lecture,47,385890941190079,white_egg,egg,white_tomato,tomato,green_lettuce.png,lecture,0,0,0,0,whatisthis?
+thirdDistractor,tan,lecture,47,385890941190079,white_egg,egg,white_tomato,tomato,green_lettuce.png,lecture,0,0,1,0,typeOnly
 thirdDistractor,atn,banana,48,385890941190079,red_corn,corn,red_strawberry,strawberry,yellow_banana.png,banana,0,0,1,0,typeOnly
 target,aap,duck,49,385890941190079,green_swan,swan,green_carrot,carrot,white_swan.png,duck,0,0,1,0,typeOnly
 target,ttp,yellow corn,50,385890941190079,yellow_corn,corn,yellow_banana,banana,yellow_corn.png,yellow corn,1,0,1,0,colorType
-thirdDistractor,tap,squash,51,385890941190079,yellow_corn,corn,yellow_egg,egg,white_pumpkin.png,squash,0,0,0,0,whatisthis?
+thirdDistractor,tap,squash,51,385890941190079,yellow_corn,corn,yellow_egg,egg,white_pumpkin.png,squash,0,0,0,1,other
 thirdDistractor,atn,corn,52,385890941190079,green_carrot,carrot,green_lettuce,lettuce,yellow_corn.png,corn,0,0,1,0,typeOnly
 firstDistractor,tap,duck,53,385890941190079,green_broccoli,broccoli,green_swan,swan,green_swan.png,duck,0,0,1,0,typeOnly
 firstDistractor,tap,yellow strawperry,54,385890941190079,yellow_banana,banana,yellow_strawberry,strawberry,yellow_strawberry.png,yellow strawperry,1,0,1,0,colorType
 target,ttp,banana,55,385890941190079,yellow_banana,banana,yellow_corn,corn,yellow_banana.png,banana,0,0,1,0,typeOnly
 target,tan,orange,56,385890941190079,orange_pumpkin,pumpkin,orange_lettuce,lettuce,orange_pumpkin.png,orange,1,0,0,0,colorOnly
-thirdDistractor,atn,lectuce,57,385890941190079,white_pumpkin,pumpkin,white_egg,egg,green_lettuce.png,lectuce,0,0,0,0,whatisthis?
+thirdDistractor,atn,lectuce,57,385890941190079,white_pumpkin,pumpkin,white_egg,egg,green_lettuce.png,lectuce,0,0,1,0,typeOnly
 target,ttn,duck,58,385890941190079,white_swan,swan,white_egg,egg,white_swan.png,duck,0,0,1,0,typeOnly
 thirdDistractor,atn,broccoli,59,385890941190079,yellow_strawberry,strawberry,yellow_corn,corn,red_broccoli.png,broccoli,0,0,1,0,typeOnly
 target,tan,carrot,60,385890941190079,orange_carrot,carrot,orange_lettuce,lettuce,orange_carrot.png,carrot,0,0,1,0,typeOnly
@@ -5085,14 +5181,14 @@ target,atn,lettuce,2,210946033762143,orange_lettuce,lettuce,orange_pumpkin,pumpk
 thirdDistractor,tan,Broccoll,3,210946033762143,yellow_corn,corn,yellow_egg,egg,red_broccoli.png,broccoll,0,0,1,0,typeOnly
 target,tap,orange,4,210946033762143,orange_pumpkin,pumpkin,orange_banana,banana,orange_banana.png,orange,1,0,0,0,colorOnly
 firstDistractor,tap,lettuce,5,210946033762143,orange_pumpkin,pumpkin,orange_lettuce,lettuce,orange_lettuce.png,lettuce,0,0,1,0,typeOnly
-target,atp,mango,6,210946033762143,yellow_egg,egg,yellow_banana,banana,orange_lettuce.png,mango,0,0,0,0,whatisthis?
+target,atp,mango,6,210946033762143,yellow_egg,egg,yellow_banana,banana,orange_lettuce.png,mango,0,0,0,1,other
 secondDistractor,atp,banana,7,210946033762143,orange_banana,banana,orange_pumpkin,pumpkin,yellow_banana.png,banana,0,0,1,0,typeOnly
 firstDistractor,atp,corn,8,210946033762143,yellow_egg,egg,yellow_corn,corn,yellow_corn.png,corn,0,0,1,0,typeOnly
 target,atp,lettuce,9,210946033762143,orange_lettuce,lettuce,orange_carrot,carrot,green_lettuce.png,lettuce,0,0,1,0,typeOnly
 secondDistractor,tap,corn,10,210946033762143,yellow_corn,corn,yellow_strawberry,strawberry,yellow_corn.png,corn,0,0,1,0,typeOnly
 thirdDistractor,tan,carrot,11,210946033762143,yellow_corn,corn,yellow_strawberry,strawberry,green_carrot.png,carrot,0,0,1,0,typeOnly
-firstDistractor,aap,Patty pan\n,12,210946033762143,white_tomato,tomato,white_pumpkin,pumpkin,red_tomato.png,patty pan\n,0,0,0,0,whatisthis?
-firstDistractor,aap,mango,13,210946033762143,yellow_strawberry,strawberry,yellow_egg,egg,yellow_egg.png,mango,0,0,0,0,whatisthis?
+firstDistractor,aap,Patty pan\n,12,210946033762143,white_tomato,tomato,white_pumpkin,pumpkin,red_tomato.png,patty pan\n,0,0,0,1,other
+firstDistractor,aap,mango,13,210946033762143,yellow_strawberry,strawberry,yellow_egg,egg,yellow_egg.png,mango,0,0,0,1,other
 target,aan,lettuce,14,210946033762143,orange_lettuce,lettuce,orange_banana,banana,orange_lettuce.png,lettuce,0,0,1,0,typeOnly
 target,ttn,corn,15,210946033762143,yellow_corn,corn,yellow_banana,banana,yellow_corn.png,corn,0,0,1,0,typeOnly
 target,atn,banana,16,210946033762143,orange_banana,banana,orange_pumpkin,pumpkin,orange_banana.png,banana,0,0,1,0,typeOnly
@@ -5103,21 +5199,21 @@ target,tan,broccoli png,20,210946033762143,green_broccoli,broccoli,green_swan,sw
 target,tan,egg,21,210946033762143,white_egg,egg,white_tomato,tomato,white_egg.png,egg,0,0,1,0,typeOnly
 target,ttn,duck,22,210946033762143,white_swan,swan,white_egg,egg,white_swan.png,duck,0,0,1,0,typeOnly
 thirdDistractor,atn,corn,23,210946033762143,green_swan,swan,green_lettuce,lettuce,yellow_corn.png,corn,0,0,1,0,typeOnly
-thirdDistractor,atn,brecol png,24,210946033762143,orange_lettuce,lettuce,orange_carrot,carrot,green_broccoli.png,brecol png,0,0,0,0,whatisthis?
-thirdDistractor,atn,mango,25,210946033762143,red_corn,corn,red_tomato,tomato,yellow_egg.png,mango,0,0,0,0,whatisthis?
+thirdDistractor,atn,brecol png,24,210946033762143,orange_lettuce,lettuce,orange_carrot,carrot,green_broccoli.png,brecol png,0,0,0,1,other
+thirdDistractor,atn,mango,25,210946033762143,red_corn,corn,red_tomato,tomato,yellow_egg.png,mango,0,0,0,1,other
 target,aan,banana,26,210946033762143,orange_banana,banana,orange_lettuce,lettuce,orange_banana.png,banana,0,0,1,0,typeOnly
 thirdDistractor,atn,corn,27,210946033762143,orange_banana,banana,orange_carrot,carrot,red_corn.png,corn,0,0,1,0,typeOnly
-thirdDistractor,tan,mango,28,210946033762143,green_lettuce,lettuce,green_swan,swan,yellow_egg.png,mango,0,0,0,0,whatisthis?
+thirdDistractor,tan,mango,28,210946033762143,green_lettuce,lettuce,green_swan,swan,yellow_egg.png,mango,0,0,0,1,other
 secondDistractor,atp,carrot,29,210946033762143,green_carrot,carrot,green_lettuce,lettuce,orange_carrot.png,carrot,0,0,1,0,typeOnly
-firstDistractor,ttp,patty pan,30,210946033762143,orange_carrot,carrot,orange_pumpkin,pumpkin,orange_pumpkin.png,patty pan,0,0,0,0,whatisthis?
-secondDistractor,tap,mango,31,210946033762143,white_egg,egg,white_tomato,tomato,yellow_egg.png,mango,0,0,0,0,whatisthis?
+firstDistractor,ttp,patty pan,30,210946033762143,orange_carrot,carrot,orange_pumpkin,pumpkin,orange_pumpkin.png,patty pan,0,0,0,1,other
+secondDistractor,tap,mango,31,210946033762143,white_egg,egg,white_tomato,tomato,yellow_egg.png,mango,0,0,0,1,other
 target,aan,strawberry,32,210946033762143,yellow_strawberry,strawberry,yellow_egg,egg,yellow_strawberry.png,strawberry,0,0,1,0,typeOnly
 thirdDistractor,tan,banana,34,210946033762143,white_swan,swan,white_tomato,tomato,orange_banana.png,banana,0,0,1,0,typeOnly
 secondDistractor,tap,carrot,35,210946033762143,orange_carrot,carrot,orange_banana,banana,orange_carrot.png,carrot,0,0,1,0,typeOnly
 thirdDistractor,aap,lettuce,36,210946033762143,red_broccoli,broccoli,red_corn,corn,green_broccoli.png,lettuce,0,0,1,0,typeOnly
 thirdDistractor,atp,tomato,37,210946033762143,green_carrot,carrot,green_broccoli,broccoli,white_tomato.png,tomato,0,0,1,0,typeOnly
 thirdDistractor,aap,corn,38,210946033762143,orange_lettuce,lettuce,orange_banana,banana,red_corn.png,corn,0,0,1,0,typeOnly
-secondDistractor,tap,bercol png,39,210946033762143,green_broccoli,broccoli,green_carrot,carrot,green_broccoli.png,bercol png,0,0,0,0,whatisthis?
+secondDistractor,tap,bercol png,39,210946033762143,green_broccoli,broccoli,green_carrot,carrot,green_broccoli.png,bercol png,0,0,0,1,other
 target,atn,duck,40,210946033762143,green_swan,swan,green_broccoli,broccoli,green_swan.png,duck,0,0,1,0,typeOnly
 target,aap,red corn,41,210946033762143,red_corn,corn,red_broccoli,broccoli,red_corn.png,red corn,1,0,1,0,colorType
 target,ttn,carrot,42,210946033762143,orange_carrot,carrot,orange_pumpkin,pumpkin,orange_carrot.png,carrot,0,0,1,0,typeOnly
@@ -5130,15 +5226,15 @@ secondDistractor,atp,green lettuce,48,210946033762143,orange_lettuce,lettuce,ora
 target,ttp,strawberry,49,210946033762143,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 thirdDistractor,tap,carrot,50,210946033762143,white_egg,egg,white_pumpkin,pumpkin,green_carrot.png,carrot,0,0,1,0,typeOnly
 thirdDistractor,atn,carrot,51,210946033762143,white_tomato,tomato,white_swan,swan,orange_carrot.png,carrot,0,0,1,0,typeOnly
-target,aap,patty pan,52,210946033762143,white_pumpkin,pumpkin,white_tomato,tomato,white_tomato.png,patty pan,0,0,0,0,whatisthis?
-thirdDistractor,aan,patty pan,53,210946033762143,green_swan,swan,green_carrot,carrot,green_carrot.png,patty pan,0,0,0,0,whatisthis?
-target,atn,mango,54,210946033762143,yellow_egg,egg,yellow_banana,banana,yellow_egg.png,mango,0,0,0,0,whatisthis?
-target,aan,mango,55,210946033762143,yellow_egg,egg,yellow_strawberry,strawberry,yellow_egg.png,mango,0,0,0,0,whatisthis?
+target,aap,patty pan,52,210946033762143,white_pumpkin,pumpkin,white_tomato,tomato,white_tomato.png,patty pan,0,0,0,1,other
+thirdDistractor,aan,patty pan,53,210946033762143,green_swan,swan,green_carrot,carrot,green_carrot.png,patty pan,0,0,0,1,other
+target,atn,mango,54,210946033762143,yellow_egg,egg,yellow_banana,banana,yellow_egg.png,mango,0,0,0,1,other
+target,aan,mango,55,210946033762143,yellow_egg,egg,yellow_strawberry,strawberry,yellow_egg.png,mango,0,0,0,1,other
 thirdDistractor,tan,banana,56,210946033762143,red_strawberry,strawberry,red_corn,corn,yellow_banana.png,banana,0,0,1,0,typeOnly
 target,tan,carrot,57,210946033762143,orange_carrot,carrot,orange_lettuce,lettuce,orange_carrot.png,carrot,0,0,1,0,typeOnly
 thirdDistractor,atn,strawberry,58,210946033762143,white_pumpkin,pumpkin,white_egg,egg,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 target,ttp,green broccoli png,59,210946033762143,green_broccoli,broccoli,green_lettuce,lettuce,green_broccoli.png,green broccoli png,1,0,1,0,colorType
-thirdDistractor,atn,tamato,60,210946033762143,yellow_strawberry,strawberry,yellow_corn,corn,red_tomato.png,tamato,0,0,0,0,whatisthis?
+thirdDistractor,atn,tamato,60,210946033762143,yellow_strawberry,strawberry,yellow_corn,corn,red_tomato.png,tamato,0,0,1,0,typeOnly
 thirdDistractor,atn,strawberry,1,960663612265407,orange_lettuce,lettuce,orange_carrot,carrot,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 thirdDistractor,atp,broccoli,2,960663612265407,white_pumpkin,pumpkin,white_swan,swan,green_broccoli.png,broccoli,0,0,1,0,typeOnly
 target,ttp,tomato,3,960663612265407,red_tomato,tomato,red_strawberry,strawberry,red_tomato.png,tomato,0,0,1,0,typeOnly
@@ -5222,17 +5318,17 @@ thirdDistractor,tan,carrot,20,031709963774132,white_egg,egg,white_pumpkin,pumpki
 target,aan,tomato,21,031709963774132,white_tomato,tomato,white_pumpkin,pumpkin,white_tomato.png,tomato,0,0,1,0,typeOnly
 thirdDistractor,tan,bana,22,031709963774132,green_broccoli,broccoli,green_carrot,carrot,orange_banana.png,bana,0,0,1,0,typeOnly
 target,ttn,egg,23,031709963774132,white_egg,egg,white_swan,swan,white_egg.png,egg,0,0,1,0,typeOnly
-target,tan,carr,24,031709963774132,orange_carrot,carrot,orange_lettuce,lettuce,orange_carrot.png,carr,0,0,0,0,whatisthis?
-firstDistractor,tap,carr,25,031709963774132,green_lettuce,lettuce,green_carrot,carrot,green_carrot.png,carr,0,0,0,0,whatisthis?
+target,tan,carr,24,031709963774132,orange_carrot,carrot,orange_lettuce,lettuce,orange_carrot.png,carr,0,0,1,0,typeOnly
+firstDistractor,tap,carr,25,031709963774132,green_lettuce,lettuce,green_carrot,carrot,green_carrot.png,carr,0,0,1,0,typeOnly
 secondDistractor,atp,lettuce,26,031709963774132,orange_lettuce,lettuce,orange_pumpkin,pumpkin,green_lettuce.png,lettuce,0,0,1,0,typeOnly
-secondDistractor,aap,carr,27,031709963774132,green_carrot,carrot,green_swan,swan,orange_carrot.png,carr,0,0,0,0,whatisthis?
+secondDistractor,aap,carr,27,031709963774132,green_carrot,carrot,green_swan,swan,orange_carrot.png,carr,0,0,1,0,typeOnly
 target,atn,pump,28,031709963774132,white_pumpkin,pumpkin,white_swan,swan,white_pumpkin.png,pump,0,0,1,0,typeOnly
 secondDistractor,atp,bana,29,031709963774132,orange_banana,banana,orange_pumpkin,pumpkin,yellow_banana.png,bana,0,0,1,0,typeOnly
 thirdDistractor,tan,broc,30,031709963774132,green_lettuce,lettuce,green_swan,swan,red_broccoli.png,broc,0,0,1,0,typeOnly
-target,aan,carr,31,031709963774132,green_carrot,carrot,green_swan,swan,green_carrot.png,carr,0,0,0,0,whatisthis?
+target,aan,carr,31,031709963774132,green_carrot,carrot,green_swan,swan,green_carrot.png,carr,0,0,1,0,typeOnly
 thirdDistractor,atn,corn,32,031709963774132,orange_lettuce,lettuce,orange_pumpkin,pumpkin,yellow_corn.png,corn,0,0,1,0,typeOnly
 firstDistractor,aap,pump,33,031709963774132,white_tomato,tomato,white_pumpkin,pumpkin,white_pumpkin.png,pump,0,0,1,0,typeOnly
-target,atn,star,34,031709963774132,yellow_strawberry,strawberry,yellow_banana,banana,yellow_strawberry.png,star,0,0,0,0,whatisthis?
+target,atn,star,34,031709963774132,yellow_strawberry,strawberry,yellow_banana,banana,yellow_strawberry.png,star,0,0,1,0,typeOnly
 thirdDistractor,atn,broc,35,031709963774132,white_pumpkin,pumpkin,white_egg,egg,green_broccoli.png,broc,0,0,1,0,typeOnly
 thirdDistractor,tan,ban,36,031709963774132,orange_pumpkin,pumpkin,orange_lettuce,lettuce,yellow_banana.png,ban,0,0,1,0,typeOnly
 target,atp,white pumpkin,37,031709963774132,white_pumpkin,pumpkin,white_egg,egg,white_pumpkin.png,white pumpkin,1,0,1,0,colorType
@@ -5249,15 +5345,15 @@ firstDistractor,ttp,pum,47,031709963774132,orange_carrot,carrot,orange_pumpkin,p
 target,tan,corn,48,031709963774132,yellow_corn,corn,yellow_egg,egg,yellow_corn.png,corn,0,0,1,0,typeOnly
 thirdDistractor,aan,ban,49,031709963774132,green_swan,swan,green_carrot,carrot,yellow_banana.png,ban,0,0,1,0,typeOnly
 thirdDistractor,tan,egg,50,031709963774132,red_tomato,tomato,red_corn,corn,yellow_egg.png,egg,0,0,1,0,typeOnly
-thirdDistractor,atn,let,51,031709963774132,orange_banana,banana,orange_carrot,carrot,green_lettuce.png,let,0,0,0,0,whatisthis?
+thirdDistractor,atn,let,51,031709963774132,orange_banana,banana,orange_carrot,carrot,green_lettuce.png,let,0,0,1,0,typeOnly
 target,aan,brocc,52,031709963774132,red_broccoli,broccoli,red_corn,corn,red_broccoli.png,brocc,0,0,1,0,typeOnly
-target,ttp,lett,53,031709963774132,green_lettuce,lettuce,green_broccoli,broccoli,green_lettuce.png,lett,0,0,0,0,whatisthis?
-secondDistractor,atp,lett,54,031709963774132,orange_lettuce,lettuce,orange_carrot,carrot,green_lettuce.png,lett,0,0,0,0,whatisthis?
+target,ttp,lett,53,031709963774132,green_lettuce,lettuce,green_broccoli,broccoli,green_lettuce.png,lett,0,0,1,0,typeOnly
+secondDistractor,atp,lett,54,031709963774132,orange_lettuce,lettuce,orange_carrot,carrot,green_lettuce.png,lett,0,0,1,0,typeOnly
 firstDistractor,ttp,egg,55,031709963774132,white_swan,swan,white_egg,egg,white_egg.png,egg,0,0,1,0,typeOnly
 thirdDistractor,aan,pum,56,031709963774132,orange_lettuce,lettuce,orange_banana,banana,white_pumpkin.png,pum,0,0,1,0,typeOnly
 target,atn,ban,57,031709963774132,orange_banana,banana,orange_pumpkin,pumpkin,orange_banana.png,ban,0,0,1,0,typeOnly
-thirdDistractor,tan,lett,58,031709963774132,yellow_banana,banana,yellow_strawberry,strawberry,orange_lettuce.png,lett,0,0,0,0,whatisthis?
-thirdDistractor,tan,carr,59,031709963774132,red_strawberry,strawberry,red_broccoli,broccoli,orange_carrot.png,carr,0,0,0,0,whatisthis?
+thirdDistractor,tan,lett,58,031709963774132,yellow_banana,banana,yellow_strawberry,strawberry,orange_lettuce.png,lett,0,0,1,0,typeOnly
+thirdDistractor,tan,carr,59,031709963774132,red_strawberry,strawberry,red_broccoli,broccoli,orange_carrot.png,carr,0,0,1,0,typeOnly
 secondDistractor,atp,tom,60,031709963774132,white_tomato,tomato,white_egg,egg,red_tomato.png,tom,0,0,1,0,typeOnly
 firstDistractor,aap,corn,1,000111774824877,red_broccoli,broccoli,red_corn,corn,red_corn.png,corn,0,0,1,0,typeOnly
 thirdDistractor,tan,broccoli,2,000111774824877,yellow_corn,corn,yellow_egg,egg,green_broccoli.png,broccoli,0,0,1,0,typeOnly
@@ -5319,15 +5415,15 @@ target,ttn,strawberry,57,000111774824877,red_strawberry,strawberry,red_tomato,to
 firstDistractor,atp,carrot,58,000111774824877,orange_banana,banana,orange_carrot,carrot,orange_carrot.png,carrot,0,0,1,0,typeOnly
 thirdDistractor,ttn,strawberry,59,000111774824877,white_egg,egg,white_swan,swan,yellow_strawberry.png,strawberry,0,0,1,0,typeOnly
 thirdDistractor,tan,lettuce,60,000111774824877,red_strawberry,strawberry,red_broccoli,broccoli,green_lettuce.png,lettuce,0,0,1,0,typeOnly
-thirdDistractor,ttn,Hi,1,398769172156093,red_tomato,tomato,red_strawberry,strawberry,yellow_banana.png,hi,0,0,0,0,whatisthis?
-target,atn,clipart,2,398769172156093,red_corn,corn,red_strawberry,strawberry,green_swan.png,clipart,0,0,0,0,whatisthis?
+thirdDistractor,ttn,Hi,1,398769172156093,red_tomato,tomato,red_strawberry,strawberry,yellow_banana.png,hi,0,0,0,1,other
+target,atn,clipart,2,398769172156093,red_corn,corn,red_strawberry,strawberry,green_swan.png,clipart,0,0,0,1,other
 target,tan,lettuce in a ball,4,398769172156093,green_lettuce,lettuce,green_carrot,carrot,red_broccoli.png,lettuce in a ball,0,0,1,0,typeOnly
 target,aan,Banana,5,398769172156093,orange_banana,banana,orange_lettuce,lettuce,orange_banana.png,banana,0,0,1,0,typeOnly
 target,aan,Duck,6,398769172156093,green_swan,swan,green_carrot,carrot,green_swan.png,duck,0,0,1,0,typeOnly
 firstDistractor,tap,Lemon,7,398769172156093,yellow_corn,corn,yellow_egg,egg,yellow_egg.png,lemon,0,0,0,1,other
-target,ttp,marijuana pumpkin,8,398769172156093,orange_pumpkin,pumpkin,orange_carrot,carrot,orange_pumpkin.png,marijuana pumpkin,0,0,1,0,typeOnly
-secondDistractor,atp,marijuana pumpkin,9,398769172156093,white_pumpkin,pumpkin,white_swan,swan,orange_pumpkin.png,marijuana pumpkin,0,0,1,0,typeOnly
-thirdDistractor,tan,marijuana pumpkin,10,398769172156093,yellow_banana,banana,yellow_strawberry,strawberry,orange_pumpkin.png,marijuana pumpkin,0,0,1,0,typeOnly
+target,ttp,marijuana pumpkin,8,398769172156093,orange_pumpkin,pumpkin,orange_carrot,carrot,orange_pumpkin.png,marijuana pumpkin,0,1,1,0,other
+secondDistractor,atp,marijuana pumpkin,9,398769172156093,white_pumpkin,pumpkin,white_swan,swan,orange_pumpkin.png,marijuana pumpkin,0,1,1,0,other
+thirdDistractor,tan,marijuana pumpkin,10,398769172156093,yellow_banana,banana,yellow_strawberry,strawberry,orange_pumpkin.png,marijuana pumpkin,0,1,1,0,other
 thirdDistractor,atn,lettuce in a ball,12,398769172156093,yellow_strawberry,strawberry,yellow_corn,corn,green_broccoli.png,lettuce in a ball,0,0,1,0,typeOnly
 target,tan,Egg,13,398769172156093,white_egg,egg,white_tomato,tomato,white_egg.png,egg,0,0,1,0,typeOnly
 target,aan,lettuce in a ball,14,398769172156093,orange_lettuce,lettuce,orange_banana,banana,orange_lettuce.png,lettuce in a ball,0,0,1,0,typeOnly
@@ -5354,22 +5450,22 @@ thirdDistractor,atp,lettuce in a ball,36,398769172156093,yellow_strawberry,straw
 target,ttp,Strawberry,37,398769172156093,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 firstDistractor,atp,carrot,38,398769172156093,orange_lettuce,lettuce,orange_carrot,carrot,orange_carrot.png,carrot,0,0,1,0,typeOnly
 thirdDistractor,atn,lettuce in a ball,39,398769172156093,white_tomato,tomato,white_egg,egg,green_lettuce.png,lettuce in a ball,0,0,1,0,typeOnly
-firstDistractor,tap,clipart,40,398769172156093,red_tomato,tomato,red_corn,corn,green_broccoli.png,clipart,0,0,0,0,whatisthis?
-target,tap,marijuana pumpkin,41,398769172156093,orange_pumpkin,pumpkin,orange_banana,banana,white_pumpkin.png,marijuana pumpkin,0,0,1,0,typeOnly
+firstDistractor,tap,clipart,40,398769172156093,red_tomato,tomato,red_corn,corn,green_broccoli.png,clipart,0,0,0,1,other
+target,tap,marijuana pumpkin,41,398769172156093,orange_pumpkin,pumpkin,orange_banana,banana,white_pumpkin.png,marijuana pumpkin,0,1,1,0,other
 target,aap,Broccoli,42,398769172156093,red_broccoli,broccoli,red_corn,corn,green_broccoli.png,broccoli,0,0,1,0,typeOnly
 secondDistractor,tap,Duck,43,398769172156093,white_swan,swan,white_tomato,tomato,green_swan.png,duck,0,0,1,0,typeOnly
 target,atn,Tomato,44,398769172156093,white_tomato,tomato,white_swan,swan,white_tomato.png,tomato,0,0,1,0,typeOnly
 firstDistractor,aap,Green carrot,45,398769172156093,green_swan,swan,green_carrot,carrot,green_carrot.png,green carrot,1,0,1,0,colorType
 secondDistractor,atp,Broccoli,46,398769172156093,red_broccoli,broccoli,red_tomato,tomato,green_broccoli.png,broccoli,0,0,1,0,typeOnly
 thirdDistractor,ttn,Broccoli,47,398769172156093,white_egg,egg,white_swan,swan,red_broccoli.png,broccoli,0,0,1,0,typeOnly
-thirdDistractor,tan,marijuana pumpkin,48,398769172156093,red_tomato,tomato,red_broccoli,broccoli,orange_pumpkin.png,marijuana pumpkin,0,0,1,0,typeOnly
+thirdDistractor,tan,marijuana pumpkin,48,398769172156093,red_tomato,tomato,red_broccoli,broccoli,orange_pumpkin.png,marijuana pumpkin,0,1,1,0,other
 target,atn,lettuce in a ball,49,398769172156093,orange_lettuce,lettuce,orange_carrot,carrot,orange_lettuce.png,lettuce in a ball,0,0,1,0,typeOnly
 thirdDistractor,aap,Egg,50,398769172156093,green_carrot,carrot,green_swan,swan,white_egg.png,egg,0,0,1,0,typeOnly
 target,ttn,Duck,51,398769172156093,white_swan,swan,white_egg,egg,white_swan.png,duck,0,0,1,0,typeOnly
 target,ttn,Strawberry,52,398769172156093,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 thirdDistractor,atn,Strawberry,53,398769172156093,yellow_egg,egg,yellow_banana,banana,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 firstDistractor,ttp,Broccoli,54,398769172156093,green_lettuce,lettuce,green_broccoli,broccoli,green_lettuce.png,broccoli,0,0,1,0,typeOnly
-target,atp,clipart,55,398769172156093,red_corn,corn,red_tomato,tomato,red_corn.png,clipart,0,0,0,0,whatisthis?
+target,atp,clipart,55,398769172156093,red_corn,corn,red_tomato,tomato,red_corn.png,clipart,0,0,0,1,other
 secondDistractor,atp,Egg,56,398769172156093,yellow_egg,egg,yellow_banana,banana,white_egg.png,egg,0,0,1,0,typeOnly
 target,atn,Broccoli,57,398769172156093,red_broccoli,broccoli,red_tomato,tomato,orange_pumpkin.png,broccoli,0,0,1,0,typeOnly
 target,aan,White tomato,58,398769172156093,white_tomato,tomato,white_pumpkin,pumpkin,white_tomato.png,white tomato,1,0,1,0,colorType
@@ -5377,62 +5473,62 @@ thirdDistractor,tan,Banana,59,398769172156093,red_strawberry,strawberry,red_corn
 target,ttn,Broccoli,60,398769172156093,green_broccoli,broccoli,green_lettuce,lettuce,green_broccoli.png,broccoli,0,0,1,0,typeOnly
 thirdDistractor,tap,the object looks like an egg,1,845983696870560,white_egg,egg,white_pumpkin,pumpkin,yellow_egg.png,the object looks like an egg,0,0,1,0,typeOnly
 target,aan,looks like a tree,2,845983696870560,orange_lettuce,lettuce,orange_banana,banana,green_broccoli.png,looks like a tree,0,0,0,1,other
-thirdDistractor,tan,swims in water,4,845983696870560,red_tomato,tomato,red_broccoli,broccoli,green_swan.png,swims in water,0,0,0,0,whatisthis?
-thirdDistractor,tan,shaped like a bent rod,5,845983696870560,yellow_banana,banana,yellow_strawberry,strawberry,yellow_banana.png,shaped like a bent rod,0,0,0,0,whatisthis?
-thirdDistractor,atn,long with green leafs at the end,8,845983696870560,white_pumpkin,pumpkin,white_egg,egg,orange_carrot.png,long with green leafs at the end,1,0,0,0,colorOnly
-secondDistractor,tap,white and looks like an apple,9,845983696870560,red_tomato,tomato,red_corn,corn,white_tomato.png,white and looks like an apple,1,0,0,0,colorOnly
-target,ttp,green and you can make salad with it,10,845983696870560,green_lettuce,lettuce,green_broccoli,broccoli,green_lettuce.png,green and you can make salad with it,1,0,0,0,colorOnly
-secondDistractor,aap,same as before,11,845983696870560,orange_lettuce,lettuce,orange_banana,banana,green_lettuce.png,same as before,0,0,0,0,whatisthis?
-firstDistractor,ttp,cook it for breakfast,12,845983696870560,white_swan,swan,white_egg,egg,white_egg.png,cook it for breakfast,0,0,0,0,whatisthis?
+thirdDistractor,tan,swims in water,4,845983696870560,red_tomato,tomato,red_broccoli,broccoli,green_swan.png,swims in water,0,0,0,1,other
+thirdDistractor,tan,shaped like a bent rod,5,845983696870560,yellow_banana,banana,yellow_strawberry,strawberry,yellow_banana.png,shaped like a bent rod,0,1,0,0,other
+thirdDistractor,atn,long with green leafs at the end,8,845983696870560,white_pumpkin,pumpkin,white_egg,egg,orange_carrot.png,long with green leafs at the end,1,1,0,0,other
+secondDistractor,tap,white and looks like an apple,9,845983696870560,red_tomato,tomato,red_corn,corn,white_tomato.png,white and looks like an apple,1,0,0,1,other
+target,ttp,green and you can make salad with it,10,845983696870560,green_lettuce,lettuce,green_broccoli,broccoli,green_lettuce.png,green and you can make salad with it,1,1,0,1,other
+secondDistractor,aap,same as before,11,845983696870560,orange_lettuce,lettuce,orange_banana,banana,green_lettuce.png,same as before,0,0,0,1,other
+firstDistractor,ttp,cook it for breakfast,12,845983696870560,white_swan,swan,white_egg,egg,white_egg.png,cook it for breakfast,0,0,0,1,other
 target,atn,make lemonade,13,845983696870560,yellow_egg,egg,yellow_banana,banana,yellow_egg.png,make lemonade,0,0,0,1,other
-thirdDistractor,atn,swims in lake,14,845983696870560,red_corn,corn,red_tomato,tomato,green_swan.png,swims in lake,0,0,0,0,whatisthis?
-target,aan,used at halloween,15,845983696870560,white_pumpkin,pumpkin,white_tomato,tomato,white_pumpkin.png,used at halloween,0,0,0,0,whatisthis?
-secondDistractor,atp,cook for breakfast,16,845983696870560,yellow_egg,egg,yellow_banana,banana,white_egg.png,cook for breakfast,0,0,0,0,whatisthis?
-target,ttn,make salad,17,845983696870560,green_lettuce,lettuce,green_broccoli,broccoli,green_lettuce.png,make salad,0,0,0,0,whatisthis?
+thirdDistractor,atn,swims in lake,14,845983696870560,red_corn,corn,red_tomato,tomato,green_swan.png,swims in lake,0,0,0,1,other
+target,aan,used at halloween,15,845983696870560,white_pumpkin,pumpkin,white_tomato,tomato,white_pumpkin.png,used at halloween,0,0,0,1,other
+secondDistractor,atp,cook for breakfast,16,845983696870560,yellow_egg,egg,yellow_banana,banana,white_egg.png,cook for breakfast,0,0,0,1,other
+target,ttn,make salad,17,845983696870560,green_lettuce,lettuce,green_broccoli,broccoli,green_lettuce.png,make salad,0,0,0,1,other
 target,aan,make lemonade,18,845983696870560,yellow_egg,egg,yellow_strawberry,strawberry,yellow_egg.png,make lemonade,0,0,0,1,other
 secondDistractor,aap,steam brocolli green,19,845983696870560,red_broccoli,broccoli,red_corn,corn,green_broccoli.png,steam brocolli green,1,0,1,0,colorType
-firstDistractor,atp,swims in lake,20,845983696870560,red_corn,corn,red_tomato,tomato,green_swan.png,swims in lake,0,0,0,0,whatisthis?
-thirdDistractor,tan,make salad,21,845983696870560,orange_pumpkin,pumpkin,orange_banana,banana,green_lettuce.png,make salad,0,0,0,0,whatisthis?
-thirdDistractor,tan,same as before,22,845983696870560,yellow_banana,banana,yellow_egg,egg,green_lettuce.png,same as before,0,0,0,0,whatisthis?
+firstDistractor,atp,swims in lake,20,845983696870560,red_corn,corn,red_tomato,tomato,green_swan.png,swims in lake,0,0,0,1,other
+thirdDistractor,tan,make salad,21,845983696870560,orange_pumpkin,pumpkin,orange_banana,banana,green_lettuce.png,make salad,0,0,0,1,other
+thirdDistractor,tan,same as before,22,845983696870560,yellow_banana,banana,yellow_egg,egg,green_lettuce.png,same as before,0,0,0,1,other
 thirdDistractor,atn,white pumkin,23,845983696870560,yellow_strawberry,strawberry,yellow_banana,banana,white_tomato.png,white pumkin,1,0,1,0,colorType
-target,ttn,swims in lake,24,845983696870560,white_swan,swan,white_egg,egg,white_swan.png,swims in lake,0,0,0,0,whatisthis?
-firstDistractor,ttp,halloween pumpkin,25,845983696870560,orange_carrot,carrot,orange_pumpkin,pumpkin,orange_pumpkin.png,halloween pumpkin,0,0,1,0,typeOnly
-thirdDistractor,ttn,bugs bunny,26,845983696870560,yellow_banana,banana,yellow_corn,corn,yellow_corn.png,bugs bunny,0,0,0,0,whatisthis?
-target,atn,swims in lake,27,845983696870560,green_swan,swan,green_broccoli,broccoli,green_swan.png,swims in lake,0,0,0,0,whatisthis?
-thirdDistractor,atp,breakfast,28,845983696870560,red_corn,corn,red_strawberry,strawberry,white_egg.png,breakfast,0,0,0,0,whatisthis?
+target,ttn,swims in lake,24,845983696870560,white_swan,swan,white_egg,egg,white_swan.png,swims in lake,0,0,0,1,other
+firstDistractor,ttp,halloween pumpkin,25,845983696870560,orange_carrot,carrot,orange_pumpkin,pumpkin,orange_pumpkin.png,halloween pumpkin,0,0,1,1,other
+thirdDistractor,ttn,bugs bunny,26,845983696870560,yellow_banana,banana,yellow_corn,corn,yellow_corn.png,bugs bunny,0,0,0,1,other
+target,atn,swims in lake,27,845983696870560,green_swan,swan,green_broccoli,broccoli,green_swan.png,swims in lake,0,0,0,1,other
+thirdDistractor,atp,breakfast,28,845983696870560,red_corn,corn,red_strawberry,strawberry,white_egg.png,breakfast,0,0,0,1,other
 target,aan,banana,29,845983696870560,orange_banana,banana,orange_lettuce,lettuce,orange_banana.png,banana,0,0,1,0,typeOnly
 target,aap,strawberry,30,845983696870560,yellow_strawberry,strawberry,yellow_egg,egg,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 thirdDistractor,atn,red brocolli,31,845983696870560,orange_lettuce,lettuce,orange_carrot,carrot,red_broccoli.png,red brocolli,1,0,1,0,colorType
-target,atp,bugs bunny green,32,845983696870560,green_carrot,carrot,green_lettuce,lettuce,green_carrot.png,bugs bunny green,1,0,0,0,colorOnly
+target,atp,bugs bunny green,32,845983696870560,green_carrot,carrot,green_lettuce,lettuce,green_carrot.png,bugs bunny green,1,0,0,1,other
 target,tan,strawberry,33,845983696870560,red_strawberry,strawberry,red_broccoli,broccoli,red_broccoli.png,strawberry,0,0,1,0,typeOnly
-firstDistractor,atp,brcolli,34,845983696870560,green_carrot,carrot,green_broccoli,broccoli,green_broccoli.png,brcolli,0,0,0,0,whatisthis?
+firstDistractor,atp,brcolli,34,845983696870560,green_carrot,carrot,green_broccoli,broccoli,green_broccoli.png,brcolli,0,0,1,0,typeOnly
 secondDistractor,tap,red brocolli,35,845983696870560,green_broccoli,broccoli,green_carrot,carrot,red_broccoli.png,red brocolli,1,0,1,0,colorType
 target,ttn,egg,36,845983696870560,white_egg,egg,white_swan,swan,white_egg.png,egg,0,0,1,0,typeOnly
 target,atn,banana,37,845983696870560,orange_banana,banana,orange_pumpkin,pumpkin,orange_banana.png,banana,0,0,1,0,typeOnly
 target,tan,swan,38,845983696870560,white_swan,swan,white_tomato,tomato,white_swan.png,swan,0,0,1,0,typeOnly
 target,aap,banana orange,39,845983696870560,orange_banana,banana,orange_lettuce,lettuce,orange_banana.png,banana orange,1,0,1,0,colorType
-target,tap,salad,40,845983696870560,green_lettuce,lettuce,green_swan,swan,green_lettuce.png,salad,0,0,0,0,whatisthis?
+target,tap,salad,40,845983696870560,green_lettuce,lettuce,green_swan,swan,green_lettuce.png,salad,0,0,0,1,other
 target,tap,corn,41,845983696870560,yellow_corn,corn,yellow_egg,egg,yellow_corn.png,corn,0,0,1,0,typeOnly
 thirdDistractor,tap,strwberry,42,845983696870560,orange_carrot,carrot,orange_lettuce,lettuce,red_strawberry.png,strwberry,0,0,1,0,typeOnly
-thirdDistractor,aap,bugs bunny,43,845983696870560,yellow_egg,egg,yellow_strawberry,strawberry,orange_carrot.png,bugs bunny,0,0,0,0,whatisthis?
+thirdDistractor,aap,bugs bunny,43,845983696870560,yellow_egg,egg,yellow_strawberry,strawberry,orange_carrot.png,bugs bunny,0,0,0,1,other
 target,tan,strawberry,44,845983696870560,red_strawberry,strawberry,red_corn,corn,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 firstDistractor,tap,swan,45,845983696870560,green_broccoli,broccoli,green_swan,swan,green_swan.png,swan,0,0,1,0,typeOnly
-thirdDistractor,tan,salad,46,845983696870560,white_egg,egg,white_tomato,tomato,green_lettuce.png,salad,0,0,0,0,whatisthis?
+thirdDistractor,tan,salad,46,845983696870560,white_egg,egg,white_tomato,tomato,green_lettuce.png,salad,0,0,0,1,other
 thirdDistractor,tan,lettuce orange,47,845983696870560,green_broccoli,broccoli,green_swan,swan,orange_lettuce.png,lettuce orange,1,0,1,0,colorType
 firstDistractor,aap,orange brocolli,48,845983696870560,red_corn,corn,red_broccoli,broccoli,red_broccoli.png,orange brocolli,1,0,1,0,colorType
 firstDistractor,aap,swan,49,845983696870560,green_carrot,carrot,green_swan,swan,green_swan.png,swan,0,0,1,0,typeOnly
 target,ttp,banana,50,845983696870560,yellow_banana,banana,yellow_corn,corn,yellow_banana.png,banana,0,0,1,0,typeOnly
 secondDistractor,tap,strabwrry yellow,51,845983696870560,red_strawberry,strawberry,red_corn,corn,yellow_strawberry.png,strabwrry yellow,1,0,1,0,colorType
 target,ttn,green brocolli,52,845983696870560,green_broccoli,broccoli,green_lettuce,lettuce,green_broccoli.png,green brocolli,1,0,1,0,colorType
-secondDistractor,atp,gr brcolli,53,845983696870560,red_broccoli,broccoli,red_strawberry,strawberry,green_broccoli.png,gr brcolli,0,0,0,0,whatisthis?
+secondDistractor,atp,gr brcolli,53,845983696870560,red_broccoli,broccoli,red_strawberry,strawberry,green_broccoli.png,gr brcolli,1,0,1,0,colorType
 target,atp,white pumpkin,54,845983696870560,white_tomato,tomato,white_egg,egg,white_tomato.png,white pumpkin,1,0,1,0,colorType
 thirdDistractor,atn,banana,55,845983696870560,orange_lettuce,lettuce,orange_pumpkin,pumpkin,yellow_banana.png,banana,0,0,1,0,typeOnly
 thirdDistractor,atn,tomota,56,845983696870560,green_carrot,carrot,green_broccoli,broccoli,red_tomato.png,tomota,0,0,1,0,typeOnly
 target,tan,swan,57,845983696870560,white_swan,swan,white_pumpkin,pumpkin,white_swan.png,swan,0,0,1,0,typeOnly
 thirdDistractor,tan,white pumpkin,58,845983696870560,red_tomato,tomato,red_corn,corn,white_pumpkin.png,white pumpkin,1,0,1,0,colorType
-target,atn,y strawberry,59,845983696870560,yellow_strawberry,strawberry,yellow_corn,corn,yellow_strawberry.png,y strawberry,0,0,1,0,typeOnly
+target,atn,y strawberry,59,845983696870560,yellow_strawberry,strawberry,yellow_corn,corn,yellow_strawberry.png,y strawberry,1,0,1,0,colorType
 thirdDistractor,tap,red brocolli,60,845983696870560,yellow_banana,banana,yellow_strawberry,strawberry,red_broccoli.png,red brocolli,1,0,1,0,colorType
-target,aan,the maize,2,888386917680315,red_corn,corn,red_broccoli,broccoli,red_corn.png,the maize,0,0,0,0,whatisthis?
+target,aan,the maize,2,888386917680315,red_corn,corn,red_broccoli,broccoli,red_corn.png,the maize,0,0,1,0,typeOnly
 thirdDistractor,ttp,Banana,3,888386917680315,white_swan,swan,white_egg,egg,yellow_banana.png,banana,0,0,1,0,typeOnly
 target,ttn,cabbage,4,888386917680315,green_lettuce,lettuce,green_broccoli,broccoli,green_lettuce.png,cabbage,0,0,1,0,typeOnly
 thirdDistractor,tan,pumpkin,5,888386917680315,green_lettuce,lettuce,green_carrot,carrot,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
@@ -5441,7 +5537,7 @@ target,aan,the duck,7,888386917680315,green_swan,swan,green_carrot,carrot,green_
 target,atp,white pumpkin,8,888386917680315,white_pumpkin,pumpkin,white_egg,egg,white_pumpkin.png,white pumpkin,1,0,1,0,colorType
 thirdDistractor,tan,cabbage,9,888386917680315,yellow_banana,banana,yellow_strawberry,strawberry,green_lettuce.png,cabbage,0,0,1,0,typeOnly
 firstDistractor,tap,egg,10,888386917680315,yellow_corn,corn,yellow_egg,egg,yellow_egg.png,egg,0,0,1,0,typeOnly
-secondDistractor,atp,yellow maize,11,888386917680315,red_corn,corn,red_strawberry,strawberry,yellow_corn.png,yellow maize,1,0,0,0,colorOnly
+secondDistractor,atp,yellow maize,11,888386917680315,red_corn,corn,red_strawberry,strawberry,yellow_corn.png,yellow maize,1,0,1,0,colorType
 target,tan,banana,12,888386917680315,yellow_banana,banana,yellow_egg,egg,yellow_banana.png,banana,0,0,1,0,typeOnly
 firstDistractor,aap,banana,13,888386917680315,orange_lettuce,lettuce,orange_banana,banana,orange_banana.png,banana,0,0,1,0,typeOnly
 target,atn,egg,14,888386917680315,yellow_egg,egg,yellow_banana,banana,yellow_egg.png,egg,0,0,1,0,typeOnly
@@ -5452,7 +5548,7 @@ secondDistractor,ttp,orange banana,18,888386917680315,yellow_banana,banana,yello
 target,ttp,orange pumpkin,19,888386917680315,orange_pumpkin,pumpkin,orange_carrot,carrot,orange_pumpkin.png,orange pumpkin,1,0,1,0,colorType
 secondDistractor,tap,green duck,20,888386917680315,white_swan,swan,white_pumpkin,pumpkin,green_swan.png,green duck,1,0,1,0,colorType
 target,atn,carrot,21,888386917680315,green_carrot,carrot,green_broccoli,broccoli,green_carrot.png,carrot,0,0,1,0,typeOnly
-secondDistractor,atp,res strawberry,22,888386917680315,yellow_strawberry,strawberry,yellow_corn,corn,red_strawberry.png,res strawberry,0,0,1,0,typeOnly
+secondDistractor,atp,res strawberry,22,888386917680315,yellow_strawberry,strawberry,yellow_corn,corn,red_strawberry.png,res strawberry,1,0,1,0,colorType
 target,aap,yellow strawberry,23,888386917680315,yellow_strawberry,strawberry,yellow_egg,egg,yellow_strawberry.png,yellow strawberry,1,0,1,0,colorType
 thirdDistractor,atn,strawberry,24,888386917680315,orange_banana,banana,orange_pumpkin,pumpkin,yellow_strawberry.png,strawberry,0,0,1,0,typeOnly
 thirdDistractor,aap,egg,25,888386917680315,red_broccoli,broccoli,red_corn,corn,yellow_egg.png,egg,0,0,1,0,typeOnly
@@ -5463,22 +5559,22 @@ secondDistractor,tap,green carrot,29,888386917680315,orange_carrot,carrot,orange
 target,aan,banana,30,888386917680315,orange_banana,banana,orange_lettuce,lettuce,orange_banana.png,banana,0,0,1,0,typeOnly
 target,ttn,strawberry,33,888386917680315,red_strawberry,strawberry,red_tomato,tomato,red_strawberry.png,strawberry,0,0,1,0,typeOnly
 firstDistractor,atp,starwberry,34,888386917680315,red_broccoli,broccoli,red_strawberry,strawberry,red_strawberry.png,starwberry,0,0,1,0,typeOnly
-firstDistractor,tap,maize,35,888386917680315,red_strawberry,strawberry,red_corn,corn,red_corn.png,maize,0,0,0,0,whatisthis?
+firstDistractor,tap,maize,35,888386917680315,red_strawberry,strawberry,red_corn,corn,red_corn.png,maize,0,0,1,0,typeOnly
 thirdDistractor,atn,carrot,36,888386917680315,yellow_strawberry,strawberry,yellow_banana,banana,orange_carrot.png,carrot,0,0,1,0,typeOnly
 target,tan,pumpkin,37,888386917680315,orange_pumpkin,pumpkin,orange_lettuce,lettuce,orange_pumpkin.png,pumpkin,0,0,1,0,typeOnly
 thirdDistractor,atp,banana,38,888386917680315,red_broccoli,broccoli,red_tomato,tomato,orange_banana.png,banana,0,0,1,0,typeOnly
 thirdDistractor,atp,tomato,39,888386917680315,orange_lettuce,lettuce,orange_pumpkin,pumpkin,white_tomato.png,tomato,0,0,1,0,typeOnly
-target,atn,maize,40,888386917680315,red_corn,corn,red_strawberry,strawberry,red_corn.png,maize,0,0,0,0,whatisthis?
+target,atn,maize,40,888386917680315,red_corn,corn,red_strawberry,strawberry,red_corn.png,maize,0,0,1,0,typeOnly
 target,tan,carrot,41,888386917680315,orange_carrot,carrot,orange_lettuce,lettuce,orange_carrot.png,carrot,0,0,1,0,typeOnly
 thirdDistractor,tan,egg,42,888386917680315,white_swan,swan,white_tomato,tomato,yellow_egg.png,egg,0,0,1,0,typeOnly
 target,tap,green broccoli,44,888386917680315,green_broccoli,broccoli,green_carrot,carrot,green_broccoli.png,green broccoli,1,0,1,0,colorType
 thirdDistractor,tan,duck,46,888386917680315,red_tomato,tomato,red_broccoli,broccoli,green_swan.png,duck,0,0,1,0,typeOnly
-thirdDistractor,tan,maize,47,888386917680315,red_strawberry,strawberry,red_broccoli,broccoli,yellow_corn.png,maize,0,0,0,0,whatisthis?
+thirdDistractor,tan,maize,47,888386917680315,red_strawberry,strawberry,red_broccoli,broccoli,yellow_corn.png,maize,0,0,1,0,typeOnly
 firstDistractor,ttp,banana,48,888386917680315,yellow_corn,corn,yellow_banana,banana,yellow_banana.png,banana,0,0,1,0,typeOnly
 target,aap,red banana,49,888386917680315,orange_banana,banana,orange_lettuce,lettuce,orange_banana.png,red banana,1,0,1,0,colorType
 target,ttn,tomato,50,888386917680315,red_tomato,tomato,red_strawberry,strawberry,red_tomato.png,tomato,0,0,1,0,typeOnly
-secondDistractor,tap,red maize,51,888386917680315,yellow_corn,corn,yellow_strawberry,strawberry,red_corn.png,red maize,1,0,0,0,colorOnly
-firstDistractor,atp,maize,52,888386917680315,yellow_egg,egg,yellow_corn,corn,yellow_corn.png,maize,0,0,0,0,whatisthis?
+secondDistractor,tap,red maize,51,888386917680315,yellow_corn,corn,yellow_strawberry,strawberry,red_corn.png,red maize,1,0,1,0,colorType
+firstDistractor,atp,maize,52,888386917680315,yellow_egg,egg,yellow_corn,corn,yellow_corn.png,maize,0,0,1,0,typeOnly
 secondDistractor,tap,red banana,53,888386917680315,yellow_banana,banana,yellow_strawberry,strawberry,orange_banana.png,red banana,1,0,1,0,colorType
 target,tap,egg,54,888386917680315,white_egg,egg,white_tomato,tomato,white_egg.png,egg,0,0,1,0,typeOnly
 thirdDistractor,tan,strawberry,55,888386917680315,white_egg,egg,white_pumpkin,pumpkin,red_strawberry.png,strawberry,0,0,1,0,typeOnly
@@ -6009,7 +6105,7 @@ thirdDistractor,tan,banana,43,574885825612676,red_tomato,tomato,red_corn,corn,ye
 secondDistractor,tap,yellow strawberry,44,574885825612676,red_strawberry,strawberry,red_broccoli,broccoli,yellow_strawberry.png,yellow strawberry,1,0,1,0,colorType
 thirdDistractor,atn,swan,45,574885825612676,yellow_egg,egg,yellow_banana,banana,green_swan.png,swan,0,0,1,0,typeOnly
 thirdDistractor,tap,swan,46,574885825612676,yellow_corn,corn,yellow_strawberry,strawberry,green_swan.png,swan,0,0,1,0,typeOnly
-target,aan,con,47,574885825612676,red_corn,corn,red_broccoli,broccoli,red_corn.png,con,0,0,0,0,whatisthis?
+target,aan,con,47,574885825612676,red_corn,corn,red_broccoli,broccoli,red_corn.png,con,0,0,1,0,typeOnly
 target,ttp,pumpkin (orange),48,574885825612676,orange_pumpkin,pumpkin,orange_carrot,carrot,orange_pumpkin.png,pumpkin (orange),1,0,1,0,colorType
 firstDistractor,aap,carrot,49,574885825612676,green_swan,swan,green_carrot,carrot,green_carrot.png,carrot,0,0,1,0,typeOnly
 thirdDistractor,tan,corn,50,574885825612676,orange_pumpkin,pumpkin,orange_banana,banana,yellow_corn.png,corn,0,0,1,0,typeOnly
@@ -6363,7 +6459,7 @@ secondDistractor,tap,yellow strawberry,42,623512212977112,red_strawberry,strawbe
 target,aan,red ear of corn,43,623512212977112,red_corn,corn,red_broccoli,broccoli,red_corn.png,red ear of corn,1,0,1,0,colorType
 firstDistractor,atp,white swan,44,623512212977112,white_tomato,tomato,white_swan,swan,white_swan.png,white swan,1,0,1,0,colorType
 target,tan,white egg,45,623512212977112,white_egg,egg,white_pumpkin,pumpkin,white_egg.png,white egg,1,0,1,0,colorType
-thirdDistractor,tap,gree head of lettuce,46,623512212977112,yellow_corn,corn,yellow_egg,egg,green_lettuce.png,gree head of lettuce,0,0,1,0,typeOnly
+thirdDistractor,tap,gree head of lettuce,46,623512212977112,yellow_corn,corn,yellow_egg,egg,green_lettuce.png,gree head of lettuce,1,0,1,0,colorType
 secondDistractor,tap,green swan,47,623512212977112,white_swan,swan,white_tomato,tomato,green_swan.png,green swan,1,0,1,0,colorType
 target,aan,green swan,48,623512212977112,green_swan,swan,green_carrot,carrot,green_swan.png,green swan,1,0,1,0,colorType
 thirdDistractor,atn,green head of lettuce,49,623512212977112,red_corn,corn,red_strawberry,strawberry,green_lettuce.png,green head of lettuce,1,0,1,0,colorType

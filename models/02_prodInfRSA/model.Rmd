@@ -11,10 +11,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(cowplot)
-library(plyr)
+# library(plyr)
 library(tidyverse)
 library(here)
-library(boot)
+# library(boot)
+
+theme_set(theme_cowplot())
 
 target_color = "#d55e00" # red
 comp_color = "#009e74"
@@ -201,7 +203,7 @@ df_rsa_flatpriorTarget = df_rsa_flatprior %>%
 
 ## Simple prior
 
-```{r}
+```{r eval=FALSE, include=FALSE}
   
 # aggregated prior over all objects in the display
 df_prior_aggr = df_beforeadj %>% 
@@ -266,7 +268,55 @@ df_rsa_prior_aggrTarget = df_rsa_prior_aggr %>%
 
 ## Correlation
 
-### Flat prior
+### Flat prior -- COGSCI plot
+
+```{r}
+
+source(here("models","02_prodInfRSA","helpers.r"))
+
+df_cor_flatprior = df_afteradj_propTarget %>% 
+  left_join(df_rsa_flatpriorTarget) %>% 
+  group_by(condition) %>% 
+  summarize(meanPropClicks=mean(PropClicks),
+            prop_CI_low_diff=ci.low(PropClicks),
+            prop_CI_high_diff=ci.high(PropClicks),
+            meanProb=mean(Probability),
+            prob_CI_low_diff=ci.low(Probability),
+            prob_CI_high_diff=ci.high(Probability)) %>% 
+  ungroup() %>% 
+  mutate(prob_CI_low = meanProb-prob_CI_low_diff) %>% 
+  mutate(prob_CI_high = meanProb+prob_CI_high_diff) %>% 
+  mutate(prop_CI_low = meanPropClicks-prop_CI_low_diff) %>% 
+  mutate(prop_CI_high = meanPropClicks+prop_CI_high_diff) %>% 
+  mutate(contrast = ifelse(str_detect(condition, "p"), "contrast present", "contrast absent")) %>%
+  mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan"))))
+
+glimpse(df_cor_flatprior)
+
+ggplot(df_cor_flatprior, aes(x=meanProb, y=meanPropClicks, color=condition)) +
+  geom_abline(intercept = 0, slope = 1) +
+  geom_vline(xintercept = 0.5, linetype="dashed", color = "lightgrey") +
+  geom_hline(yintercept = 0.5, linetype="dashed", color = "lightgrey") +
+  geom_errorbar(aes(ymin = prop_CI_low, ymax = prop_CI_high)) + 
+  geom_errorbarh(aes(xmin = prob_CI_low, xmax = prob_CI_high)) +
+  geom_point(size = 3.5) +
+  # xlim(0,1) +
+  # ylim(0,1) +
+  coord_cartesian(xlim = c(0.2,0.9), ylim = c(0.2,0.9)) +
+  # scale_color_manual(values=c("#edc951", "#c9df8a", "#eb6841", "#77ab59", "#cc2a36", "#36802d", "#cc2a87", "#234d20")) +
+  scale_color_manual(values=c("#c9df8a", "#77ab59", "#36802d", "#234d20", "#edc951", "#eb6841", "#cc2a36", "#cc2a87")) +
+  xlab("Model prediction") +
+  ylab("Empirical proportion of\ntarget selections")
+
+cor(df_cor_flatprior$meanProb,df_cor_flatprior$meanPropClicks)
+
+# df_rsa_flatpriorTarget %>%
+  # select(condition, Probability, targetType, compType) %>% 
+  # write_csv(., here("analyses", "03_comprehension", "02_main", "0102_summary", "df_rsa_flatprior.csv"))
+
+ggsave(here("writing","2020_CogSci","paper","graphs","corr-modelflat-bycondition.pdf"), width = 5, height = 3.5)
+
+```
 
 ```{r}
 
