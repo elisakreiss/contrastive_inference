@@ -14,16 +14,10 @@ library(plyr)
 library(tidyverse)
 library(here)
 
-df_import1 = read_csv(here("data","03_comprehension","02_main","01_IDT","data.csv")) %>%
+df_import = read_csv(here("data","03_comprehension","02_main","0304_IDTpriormanipulation","data.csv")) %>%
   # exclude test
   # weird filter property will exclude NAs
   filter(is.na(comments) | !str_detect(comments,"TEST"))
-
-df_import = read_csv(here("data","03_comprehension","02_main","02_IDTfollowup","data.csv")) %>%
-  # exclude test
-  # weird filter property will exclude NAs
-  filter(is.na(comments) | !str_detect(comments,"TEST")) %>% 
-  bind_rows(df_import1)
 ```
 
 # Subject pool
@@ -69,15 +63,15 @@ df_clean = df_import %>%
   # 2) if native language is not english
   mutate_at(vars(languages), funs(str_to_lower(.))) %>% 
   mutate_at(vars(languages), funs(ifelse(. %in% engl_spellings, "english", .))) %>%
-  filter(languages=="english") %>% 
+  filter(languages=="english")
   # 69, 4130
   # 3) if comments suggest that the hit was done incorrectly
   # 4) if too many erroneous responses
-  filter(anon_worker_id!="688591774563327" & anon_worker_id!="841129639930929") %>%
-  filter(anon_worker_id!="456140787085838" & anon_worker_id!="486034687892865" & anon_worker_id!="586594222010457" & anon_worker_id!="846666432419341" & anon_worker_id!="935528864670490") %>% 
+  # filter(anon_worker_id!="051134074799198")
+  # filter(anon_worker_id!="456140787085838" & anon_worker_id!="486034687892865" & anon_worker_id!="586594222010457" & anon_worker_id!="846666432419341" & anon_worker_id!="935528864670490") %>% 
   # 67, 4012
   # 5) if hit was done multiple times by a worker
-  filter(anon_worker_id!="886492649205797")
+  # filter(anon_worker_id!="886492649205797")
   # 66, 3894
 
 # number of participants before exclusion (238)
@@ -87,7 +81,7 @@ length(unique(df_clean$anon_worker_id))
 
 # atypical: 108 participants
 # typical: 103 participants
-table(df_clean$betwsubj)/59
+table(df_clean$betwsubj, df_clean$prior)/55
 ```
 
 ```{r create main df, message=FALSE, include=FALSE}
@@ -150,6 +144,15 @@ plot_grid(p_age, p_gen, p_enj, p_time, labels = "AUTO", ncol = 2, align = 'v')
 
 ```
 
+```{r}
+df %>% 
+  select(anon_worker_id, failed_question, prior) %>% 
+  distinct() %>% 
+  ggplot(., aes(x=failed_question)) +
+    facet_wrap(~prior) +
+    geom_bar(stat="count")
+```
+
 
 # Main Trials
 
@@ -203,7 +206,7 @@ df_main_unique = df %>%
   # select main trials
   filter(trial_type == "critical" | trial_type == "filler") %>% 
   # select columns relevant for main trials
-  select(trial_type,refObject,context_id,condition,utterance,utterance_cat,
+  select(prior,trial_type,refObject,context_id,condition,utterance,utterance_cat,
          target,comp,contrast,distractor,pos1,pos2,pos3,pos4,
          selectedItem_prior,selectedItem1,selectedItem2,
          reaction_time_prior,reaction_time1,reaction_time2,
@@ -330,6 +333,100 @@ df_prior_wfillers_unique = df_main_unique %>%
 
 ```
 
+#### Typicality target bias
+
+```{r}
+df_prior_wfillers_unique %>% 
+  mutate(refObj_typ = case_when(
+    refObject == "target" ~ target_typ_bin,
+    refObject == "comp" ~ comp_typ_bin,
+    refObject == "contrast" ~ contrast_typ_bin,
+    refObject == "distractor" ~ distractor_typ_bin,
+    TRUE ~ "FIRE"
+  )) %>%
+  mutate_at(vars(refObj_typ), funs(ifelse(. == "atypical", 1, 0))) %>%
+  select(refObject, refObj_typ, trial_type, prior) %>% 
+  ggplot(., aes(x=prior, y=refObj_typ)) +
+    # facet_wrap(~refObject) +
+    stat_summary(fun.y = "mean", 
+               geom = "bar",
+               width = 0.7,
+               position = position_dodge(width=0.65)) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               size = .3,
+               width = 0.3,
+               position = position_dodge(width=0.65))
+
+df_prior_wfillers_unique %>% 
+  mutate(refObj_typ = case_when(
+    refObject == "target" ~ target_typ_bin,
+    refObject == "comp" ~ comp_typ_bin,
+    refObject == "contrast" ~ contrast_typ_bin,
+    refObject == "distractor" ~ distractor_typ_bin,
+    TRUE ~ "FIRE"
+  )) %>%
+  mutate_at(vars(refObj_typ), funs(ifelse(. == "atypical", 1, 0))) %>%
+  select(refObject, refObj_typ, trial_type, prior) %>% 
+  ggplot(., aes(x=trial_type, y=refObj_typ)) +
+    # facet_wrap(~refObject) +
+    stat_summary(fun.y = "mean", 
+               geom = "bar",
+               width = 0.7,
+               position = position_dodge(width=0.65)) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               size = .3,
+               width = 0.3,
+               position = position_dodge(width=0.65))
+
+df_prior_wfillers_unique %>% 
+  mutate(refObj_typ = case_when(
+    refObject == "target" ~ target_typ_bin,
+    refObject == "comp" ~ comp_typ_bin,
+    refObject == "contrast" ~ contrast_typ_bin,
+    refObject == "distractor" ~ distractor_typ_bin,
+    TRUE ~ "FIRE"
+  )) %>%
+  # mutate_at(vars(refObj_typ), funs(ifelse(. == "atypical", 1, 0))) %>%
+  select(refObject, refObj_typ, trial_type, prior) %>% 
+  ggplot(., aes(x=trial_type, fill=refObj_typ)) +
+    facet_wrap(~refObject) +
+    geom_bar(stat="count", position = position_dodge())
+```
+
+```{r}
+df_prior_wfillers_unique %>% 
+  select(utterance_cat, trial_type, prior, refObject) %>% 
+  ggplot(., aes(x=utterance_cat)) +
+    geom_bar(stat="count")
+
+df_prior_wfillers_unique %>% 
+  mutate_at(vars(utterance_cat), funs(ifelse(. == "modified", 1, 0))) %>%
+  select(refObject, trial_type, prior, utterance_cat) %>% 
+  ggplot(., aes(x=prior, y=utterance_cat)) +
+    # facet_wrap(~refObject) +
+    stat_summary(fun.y = "mean", 
+               geom = "bar",
+               width = 0.7,
+               position = position_dodge(width=0.65)) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               size = .3,
+               width = 0.3,
+               position = position_dodge(width=0.65))
+
+df_prior_wfillers_unique %>% 
+  select(utterance_cat, trial_type, prior, refObject) %>% 
+  ggplot(., aes(x=utterance_cat, fill=refObject)) +
+    facet_wrap(~trial_type) +
+    geom_bar(stat="count", position=position_dodge())
+```
+
+
 #### Contrast bias
 
 If a contrast object is present, is it more likely that the target/contrast are selected? 
@@ -343,10 +440,12 @@ df_prior_wf_contrast = df_prior_wfillers %>%
 
 # If a contrast is NOT present, do the prior distributions change between the first and 
 # second half of the experiment?
-ggplot(df_prior_wf_contrast, aes(x=obj_in_display_diff, 
+df_prior_wf_contrast %>% 
+  # filter(prior=="normal") %>%
+  # filter(prior=="weird") %>%
+ggplot(., aes(x=obj_in_display_diff, 
                                  y=clicked, 
-                                 fill=obj_in_display_diff, 
-                                 alpha=trial_half)) +
+                                 fill=obj_in_display_diff)) +
   facet_wrap(vars(contrast_present), scales = "free_x") +
   stat_summary(fun.y = "mean", 
                geom = "bar",
@@ -371,7 +470,7 @@ ggplot(df_prior_wf_contrast, aes(x=obj_in_display_diff,
                                contrast_color, distractor_1_color, 
                                distractor_2_color, distractor_2_color)) +
   guides(fill = FALSE,
-         alpha = guide_legend(title="Trial half")) +
+         alpha = guide_legend(title="Condition")) +
   scale_x_discrete(labels=c("comp"="competitor")) +
   xlab("Item function") +
   ylab("Proportion of clicks")
@@ -397,6 +496,7 @@ df_prior_wfillers_pos = df_prior_wfillers %>%
   ))
 
 ggplot(df_prior_wfillers_pos, aes(x=reorder(clicked_obj_pos, -clicked), y=clicked, fill=clicked_obj_pos)) +
+  facet_wrap(~prior) +
   stat_summary(fun.y = "mean", 
                geom = "bar") +
   stat_summary(fun.data = "mean_cl_boot",
@@ -416,20 +516,19 @@ ggplot(df_prior_wfillers_pos, aes(x=reorder(clicked_obj_pos, -clicked), y=clicke
 
 #### By-item bias
 
-Overall, there was not a big item preference that is different from chance. The only item that seems slightly preferred is the green swan, which is the only atypical animate object.
-
 ```{r byitem prior, echo=FALSE}
 
 # total occurrences range between 623 (white pumpkin) and 825 (red strawberry)
 df_byitemprior = df_prior_wfillers_unique %>%
   # filter(condition=="aan") %>% 
-  select(clickedType, target, comp, contrast, distractor) %>% 
-  gather(obj_fct, item, -clickedType) %>% 
+  select(clickedType, target, comp, contrast, distractor, prior) %>% 
+  gather(obj_fct, item, -clickedType, -prior) %>% 
   mutate_at(vars(clickedType), funs(str_replace_all(., "contrast/distractor", "contrast"))) %>% 
   mutate(clicked = ifelse(clickedType == obj_fct, 1, 0)) %>% 
   left_join(typ_data, by=c("item"="col_type"))
 
 ggplot(df_byitemprior, aes(x=reorder(item, clicked), y=clicked, fill=typicality)) +
+  facet_wrap(~prior) +
   stat_summary(fun.y = "mean", 
                geom = "bar") +
   stat_summary(fun.data = "mean_cl_boot",
@@ -493,6 +592,41 @@ We see a target boost/competitor reduction though in all conditions. However, if
 ```{r after adj overall selection patterns, echo=FALSE, fig.height=4, fig.width=7, message=FALSE, warning=FALSE, paged.print=FALSE}
 
 df_prior_vs_adj %>%
+  filter(prior=="normal") %>% 
+  mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan")))) %>% 
+  ggplot(., aes(x=obj_in_display_diff, 
+                            y=clicked, 
+                            fill=obj_in_display_diff, 
+                            alpha=timeStep_selec)) +
+  facet_wrap(~condition, scales = "free_x", nrow=2) +
+  stat_summary(fun.y = "mean", 
+               geom = "bar",
+               width = 0.8,
+               position = position_dodge(width = 0.8)) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               position = position_dodge(width = 0.8),
+               size = .3,
+               width = 0.3) +
+  theme(legend.position = "none") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(3,0,3,0, "pt"))
+        ) +
+  scale_alpha_manual(values=c(0.5, 1)) +
+  scale_fill_manual(values=c(target_color, comp_color, 
+                               contrast_color, distractor_1_color, 
+                               distractor_2_color, distractor_2_color)) +
+  scale_x_discrete(labels=c("comp"="competitor")) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  xlab("Item function") +
+  ylab("Proportion of clicks")
+
+df_prior_vs_adj %>%
+  filter(prior=="weird") %>% 
   mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan")))) %>%  
   ggplot(., aes(x=obj_in_display_diff, 
                             y=clicked, 
@@ -520,6 +654,39 @@ df_prior_vs_adj %>%
   scale_fill_manual(values=c(target_color, comp_color, 
                                contrast_color, distractor_1_color, 
                                distractor_2_color, distractor_2_color)) +
+  scale_x_discrete(labels=c("comp"="competitor")) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  xlab("Item function") +
+  ylab("Proportion of clicks")
+
+df_prior_vs_adj %>%
+  filter(timeStep_selec=="selectedItem1") %>%
+  mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan")))) %>%  
+  ggplot(., aes(x=obj_in_display_diff, 
+                            y=clicked, 
+                            fill=prior)) +
+  facet_wrap(~condition, scales = "free_x", nrow=2) +
+  stat_summary(fun.y = "mean", 
+               geom = "bar",
+               width = 0.8,
+               position = position_dodge(width = 0.8)) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               position = position_dodge(width = 0.8),
+               size = .3,
+               width = 0.3) +
+  # theme(legend.position = "none") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(3,0,3,0, "pt"))
+        ) +
+  # scale_alpha_manual(values=c(0.5, 1)) +
+  # scale_fill_manual(values=c(target_color, comp_color, 
+  #                              contrast_color, distractor_1_color, 
+  #                              distractor_2_color, distractor_2_color)) +
   scale_x_discrete(labels=c("comp"="competitor")) +
   theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
   xlab("Item function") +
@@ -580,7 +747,7 @@ ggplot(., aes(x=obj_in_display_diff,
   xlab("Item") +
   ylab("Proportion of selections")
 
-ggsave(here("writing", "2020_CogSci", "paper", "graphs", "compr-bycondition-contrast.pdf"), width = 8, height = 3)
+# ggsave(here("writing", "2020_CogSci", "paper", "graphs", "compr-bycondition-contrast.pdf"), width = 8, height = 3)
 
 df_prior_vs_adj %>% 
   filter(!str_detect(condition, "p")) %>%
@@ -633,7 +800,7 @@ ggplot(., aes(x=obj_in_display_diff,
   xlab("Item") +
   ylab("Proportion of selections")
 
-ggsave(here("writing", "2020_CogSci", "paper", "graphs", "compr-bycondition-nocontrast.pdf"), width = 8, height = 3)
+# ggsave(here("writing", "2020_CogSci", "paper", "graphs", "compr-bycondition-nocontrast.pdf"), width = 8, height = 3)
 
 ```
 
@@ -641,6 +808,7 @@ ggsave(here("writing", "2020_CogSci", "paper", "graphs", "compr-bycondition-noco
 
 ```{r}
 df_prior_vs_adj %>% 
+  filter(prior=="normal") %>% 
   mutate(contrast_presence = ifelse(contrast_present, "contrast", "no contrast")) %>% 
   mutate_at(vars(contrast_presence), funs(fct_relevel(., "contrast", "no contrast"))) %>% 
   ggplot(aes(x=obj_in_display_diff, y=clicked, fill=obj_in_display_diff, alpha=timeStep_selec)) +
@@ -673,7 +841,8 @@ df_prior_vs_adj %>%
 
 # ggsave(file="contrast.pdf", width=5, height=3)
 
-df_prior_vs_adj %>% 
+df_prior_vs_adj %>%
+  filter(prior=="normal") %>% 
   mutate_at(vars(comp_typ_bin), funs(ifelse(.=="typical", "typical competitor", "atypical competitor"))) %>%
   mutate_at(vars(comp_typ_bin), funs(fct_relevel(., "typical competitor", "atypical competitor"))) %>% 
   ggplot(aes(x=obj_in_display, y=clicked, fill=obj_in_display, alpha=timeStep_selec)) +
@@ -708,6 +877,118 @@ df_prior_vs_adj %>%
 # ggsave(file="comptyp.pdf", width=5, height=3)
 
 df_prior_vs_adj %>% 
+  filter(prior=="normal") %>% 
+  # mutate_at(vars(obj_in_display_diff), funs(case_when(
+  #   obj_in_display_diff == "distractor1" ~ "no_contr_distr1",
+  #   obj_in_display_diff == "distractor2" ~ "no_contr_distr2",
+  #   obj_in_display_diff == "distractor" ~ "contr_distr1",
+  #   TRUE ~ as.character(obj_in_display_diff)
+  # ))) %>%
+  mutate_at(vars(target_typ_bin), funs(ifelse(.=="typical", "typical target", "atypical target"))) %>%
+  mutate_at(vars(target_typ_bin), funs(fct_relevel(., "typical target", "atypical target"))) %>% 
+  ggplot(aes(x=obj_in_display, y=clicked, fill=obj_in_display, alpha=timeStep_selec)) +
+    facet_wrap(~target_typ_bin,  scales = "free_x") +
+    stat_summary(fun.y = "mean", 
+               geom = "bar",
+               width = 0.7,
+               position = position_dodge(width = 0.65)) +
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "errorbar",
+                 color = "black",
+                 position = position_dodge(width = 0.65),
+                 size = .3,
+                 width = 0.3) +
+    theme(legend.position = "none") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(3,0,3,0, "pt"))
+        ) +
+  scale_alpha_manual(values=c(0.5, 1)) +
+  scale_fill_manual(values=c(target_color, comp_color, 
+                               contrast_color, distractor_1_color, 
+                               distractor_2_color, distractor_2_color)) +
+  scale_x_discrete(labels=c("comp"="competitor")) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  xlab("Item function") +
+  ylab("Proportion of clicks")
+
+# ggsave(file="targettyp.png", width=5, height=3)
+
+# WEIRD
+
+df_prior_vs_adj %>% 
+  filter(prior=="weird") %>% 
+  mutate(contrast_presence = ifelse(contrast_present, "contrast", "no contrast")) %>% 
+  mutate_at(vars(contrast_presence), funs(fct_relevel(., "contrast", "no contrast"))) %>% 
+  ggplot(aes(x=obj_in_display_diff, y=clicked, fill=obj_in_display_diff, alpha=timeStep_selec)) +
+    facet_wrap(~contrast_presence,  scales = "free_x") +
+    stat_summary(fun.y = "mean", 
+               geom = "bar",
+               width = 0.7,
+               position = position_dodge(width = 0.65)) +
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "errorbar",
+                 color = "black",
+                 position = position_dodge(width = 0.65),
+                 size = .3,
+                 width = 0.3) +
+    theme(legend.position = "none") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(3,0,3,0, "pt"))
+        ) +
+  scale_alpha_manual(values=c(0.5, 1)) +
+  scale_fill_manual(values=c(target_color, comp_color, 
+                               contrast_color, distractor_1_color, 
+                               distractor_2_color, distractor_2_color)) +
+  scale_x_discrete(labels=c("comp"="competitor")) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  xlab("Item function") +
+  ylab("Proportion of clicks")
+
+# ggsave(file="contrast.pdf", width=5, height=3)
+
+df_prior_vs_adj %>%
+  filter(prior=="weird") %>% 
+  mutate_at(vars(comp_typ_bin), funs(ifelse(.=="typical", "typical competitor", "atypical competitor"))) %>%
+  mutate_at(vars(comp_typ_bin), funs(fct_relevel(., "typical competitor", "atypical competitor"))) %>% 
+  ggplot(aes(x=obj_in_display, y=clicked, fill=obj_in_display, alpha=timeStep_selec)) +
+    facet_wrap(~comp_typ_bin,  scales = "free_x") +
+    stat_summary(fun.y = "mean", 
+               geom = "bar",
+               width = 0.7,
+               position = position_dodge(width = 0.65)) +
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "errorbar",
+                 color = "black",
+                 position = position_dodge(width = 0.65),
+                 size = .3,
+                 width = 0.3) +
+    theme(legend.position = "none") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(3,0,3,0, "pt"))
+        ) +
+  scale_alpha_manual(values=c(0.5, 1)) +
+  scale_fill_manual(values=c(target_color, comp_color, 
+                               contrast_color, distractor_1_color, 
+                               distractor_2_color, distractor_2_color)) +
+  scale_x_discrete(labels=c("comp"="competitor")) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(axis.title.x = element_blank()) +
+  xlab("Item function") +
+  ylab("Proportion of clicks")
+
+# ggsave(file="comptyp.pdf", width=5, height=3)
+
+df_prior_vs_adj %>% 
+  filter(prior=="weird") %>% 
   # mutate_at(vars(obj_in_display_diff), funs(case_when(
   #   obj_in_display_diff == "distractor1" ~ "no_contr_distr1",
   #   obj_in_display_diff == "distractor2" ~ "no_contr_distr2",
@@ -764,7 +1045,7 @@ We see a shift here compared to the prior. Now atypical items are more likely to
 
 df_byitemadj = df_adj %>%
   filter(clickedType=="target" | clickedType=="comp") %>% 
-  select(clickedType, target, comp, anon_worker_id, trial_number) %>% 
+  select(clickedType, target, comp, anon_worker_id, trial_number, prior) %>% 
   distinct() %>% 
   gather(obj_fct, item, target, comp) %>% 
   mutate(clicked = ifelse(clickedType == obj_fct, 1, 0)) %>% 
@@ -772,6 +1053,7 @@ df_byitemadj = df_adj %>%
   mutate(bin_typ=ifelse(typicality>50,"typical","atypical"))
 
 ggplot(df_byitemadj, aes(x=reorder(item, clicked), y=clicked, fill=typicality)) +
+  facet_wrap(~prior) +
   stat_summary(fun.y = "mean", 
                geom = "bar") +
   stat_summary(fun.data = "mean_cl_boot",
@@ -790,6 +1072,42 @@ ggplot(df_byitemadj, aes(x=reorder(item, clicked), y=clicked, fill=typicality)) 
 
 ```{r}
 df_prior_vs_adj %>% 
+  filter(prior=="normal") %>% 
+  filter(timeStep_selec == "selectedItem1") %>% 
+  separate(target, c(NA, "targetType"), sep="_") %>%
+  filter(obj_in_display_diff == "target" | obj_in_display_diff == "comp") %>% 
+ggplot(., aes(x=obj_in_display_diff, 
+                            y=clicked, 
+                            fill=targetType)) +
+  facet_wrap(~condition_lvl, scales = "free_x", nrow=2) +
+  stat_summary(fun.y = "mean", 
+               geom = "bar",
+               width = 0.7,
+               position = position_dodge(width = 0.65)) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               position = position_dodge(width = 0.65),
+               size = .3,
+               width = 0.3) +
+  # theme(legend.position = "none") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(3,0,3,0, "pt"))
+        ) +
+  # scale_alpha_manual(values=c(0.5, 1)) +
+  # scale_fill_manual(values=c(target_color, comp_color, 
+  #                              contrast_color, distractor_1_color, 
+  #                              distractor_2_color, distractor_2_color)) +
+  scale_x_discrete(labels=c("comp"="competitor")) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  xlab("Item function") +
+  ylab("Proportion of clicks")
+
+df_prior_vs_adj %>% 
+  filter(prior=="weird") %>% 
   filter(timeStep_selec == "selectedItem1") %>% 
   separate(target, c(NA, "targetType"), sep="_") %>%
   filter(obj_in_display_diff == "target" | obj_in_display_diff == "comp") %>% 
@@ -840,7 +1158,7 @@ df_switch = df_main_prop %>%
          !mult_selec,
          timeStep_selec == "selectedItem_prior" | timeStep_selec == "selectedItem1") %>% 
   select(clickedType, timeStep_selec, anon_worker_id, trial_number, target, comp, 
-         condition, condition_lvl) %>% 
+         condition, condition_lvl, prior) %>% 
   distinct() %>% 
   spread(timeStep_selec, clickedType) %>% 
   filter((selectedItem_prior == "target" | selectedItem_prior == "comp") & 
@@ -849,6 +1167,7 @@ df_switch = df_main_prop %>%
   mutate(switch_ct = factor(str_c(selectedItem_prior, selectedItem1, sep="_")))
 
 ggplot(df_switch, aes(x=reorder(condition, switch), y=switch)) +
+  facet_wrap(~prior) +
   stat_summary(fun.y = "mean", 
                geom = "bar",
                fill = "#db4900") +
@@ -862,6 +1181,7 @@ ggplot(df_switch, aes(x=reorder(condition, switch), y=switch)) +
   xlab("Condition")
 
 df_switch %>% 
+  filter(prior == "normal") %>% 
   mutate(used_combo = 1) %>% 
   spread(switch_ct, used_combo, fill=0) %>%
   gather(targcomp_combo, selected_combo, 
@@ -891,7 +1211,38 @@ df_switch %>%
     xlab("Click combination") +
     ylab("Number of occurrences")
 
-ggsave(here("writing", "2020_CogSci", "paper", "graphs", "switching-bycond.pdf"), width = 8, height = 6)
+df_switch %>% 
+  filter(prior == "weird") %>% 
+  mutate(used_combo = 1) %>% 
+  spread(switch_ct, used_combo, fill=0) %>%
+  gather(targcomp_combo, selected_combo, 
+         target_target, target_comp, comp_comp, comp_target) %>% 
+  mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan")))) %>%
+  mutate_at(vars(targcomp_combo), funs(factor(., levels=c("target_target", "comp_comp", "comp_target", "target_comp")))) %>% 
+  mutate(adap_switch = ifelse(targcomp_combo=="target_comp" | 
+                                targcomp_combo=="comp_target", T, F)) %>% 
+  ggplot(., aes(x=targcomp_combo, y=selected_combo, fill=adap_switch)) +
+    facet_wrap(~condition, nrow=2) +
+    stat_summary(fun.y = "mean", 
+                 geom = "bar") +
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "errorbar",
+                 color = "black",
+                 size = .3,
+                 width = 0.3) +
+    theme(axis.text.x = element_text(angle=40, hjust=1)) +
+    theme(legend.position = "none") +
+    theme(strip.background = element_rect(color="black", 
+                                          fill="white", 
+                                          size=1.5,
+                                          linetype="solid"),
+          strip.text.x = element_text(margin = margin(3,0,3,0, "pt"))
+          ) +
+    scale_fill_manual(values = c("#009292", "#db4900")) +
+    xlab("Click combination") +
+    ylab("Number of occurrences")
+
+# ggsave(here("writing", "2020_CogSci", "paper", "graphs", "switching-bycond.pdf"), width = 8, height = 6)
 ```
 
 ```{r switch, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
@@ -944,7 +1295,7 @@ df_switch_away %>%
 #### RSA
 
 ```{r rsa}
-write_csv(df_prior_vs_adj, here("models","02_prodInfRSA","data","emp_comprehension_data.csv"))
+# write_csv(df_prior_vs_adj, here("models","02_prodInfRSA","data","emp_comprehension_data.csv"))
 ```
 
 
@@ -994,12 +1345,14 @@ df_multselec %>%
          mult_selec) %>% 
   ggplot(., aes(x=condition)) +
     geom_bar(stat = "count") +
+    facet_wrap(~prior) +
   ggtitle("Multiple selections after noun")
 
 df_multselec %>% 
   filter(noun_error) %>% 
   ggplot(., aes(x=condition)) +
     geom_bar(stat = "count") +
+  facet_wrap(~prior) +
   ggtitle("Errors after noun")
 
 df_multselec %>% 
@@ -1007,11 +1360,13 @@ df_multselec %>%
          mult_selec | noun_error) %>% 
   ggplot(., aes(x=condition)) +
     geom_bar(stat = "count") +
+  facet_wrap(~prior) +
   ggtitle("Multiple selections and errors after noun")
 
 df_multselec %>% 
   filter(adj_error) %>% 
   ggplot(., aes(x=condition)) +
+  facet_wrap(~prior) +
     geom_bar(stat = "count") +
   ggtitle("Errors after adjective")
 
@@ -1309,9 +1664,7 @@ f_rsa2 = click_to_target ~ RSA_pred+clickedType_prior+pos + (1+RSA_pred|anon_wor
 f_rsa2 = click_to_target ~ RSA_pred*clickedType_prior + (1+RSA_pred+clickedType_prior|anon_worker_id)
 
 # significant Intercept and RSA_pred
-# COGSCI
 f_rsa3 = click_to_target ~ RSA_pred + (1+RSA_pred|anon_worker_id)
-# f_rsa3 = click_to_target ~ RSA_pred + (1+RSA_pred|anon_worker_id)
 
 # divergent
 f_rsanew = click_to_target ~ RSA_pred + clickedType_prior + (1+RSA_pred|anon_worker_id)
@@ -1319,11 +1672,11 @@ f_rsanew = click_to_target ~ RSA_pred + clickedType_prior + (1+RSA_pred|anon_wor
 # glmer()
 
 model_rsanew = brm(
-  formula = f_rsa3,
+  formula = f_rsanew,
   data = df_model_rsa,
   seed = 1702,
-  family = 'bernoulli'
-  # save_all_pars = TRUE
+  family = 'bernoulli',
+  save_all_pars = TRUE
 )
 
 summary(model_rsanew)
