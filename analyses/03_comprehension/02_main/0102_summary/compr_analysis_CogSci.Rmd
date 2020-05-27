@@ -1210,6 +1210,7 @@ df_model_prevclick =  df %>%
     TRUE ~ "comp_pref"
   ))
 
+# COGSCI PAPER
 f_new1 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + c_prev_click + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_comp_typ_bin|target) + (1+c_contrast*c_target_typ_bin|comp)
 
 # significant contrast, comp typicality, prev_click, pos(target pref), pos(equal pos), prev_click:pos(equal), prev_click:pos(target_pref)

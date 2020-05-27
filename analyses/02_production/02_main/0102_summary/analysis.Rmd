@@ -768,6 +768,7 @@ library(lmerTest)
 
 ```{r stat analysis preregistered, eval=FALSE, include=FALSE}
 
+# merge with typicality ratings data for target and competitor
 df_main_typ = df_main %>% 
   left_join(typ_data_short, by=c("target_item" = "col_type")) %>% 
   rename(target_typ = typicality) %>% 
@@ -775,8 +776,8 @@ df_main_typ = df_main %>%
   rename(comp_typ = typicality) %>% 
   mutate_at(vars(target_typ, comp_typ), funs(./100))
 
-df_model_prereg = df_main_typ %>% 
-  filter(intended_target == "target") %>%
+df_model_prereg_targetonly = df_main_typ %>% 
+  filter(intended_target == "target" ) %>%
   mutate(wrong_selection = !str_detect(selected_image, target_item)) %>% 
   filter(!wrong_selection) %>% 
   filter(UtteranceCat=="colorType" | UtteranceCat=="typeOnly") %>% 
@@ -784,15 +785,52 @@ df_model_prereg = df_main_typ %>%
   mutate(contrast_present = ifelse(str_detect(condition, "p"), 1, 0)) %>% 
   mutate(target_typ_bin = ifelse(str_sub(condition,1,1) == "t", 0, 1)) %>% 
   mutate(comp_typ_bin = ifelse(str_sub(condition,2,2) == "t", 0, 1)) %>% 
+  mutate(trial_half = ifelse(trial_number<=15, 0, 1)) %>% 
+  # center
   mutate(c_target_typ = target_typ-mean(target_typ)) %>%
   mutate(c_comp_typ = comp_typ-mean(comp_typ)) %>%
   mutate(c_target_typ_bin = target_typ_bin-mean(target_typ_bin)) %>%
   mutate(c_comp_typ_bin = comp_typ_bin-mean(comp_typ_bin)) %>%
   mutate(c_contrast = contrast_present-mean(contrast_present)) %>% 
-  mutate(trial_half = ifelse(trial_number<=15, 0, 1)) %>% 
   mutate(c_trial_half = trial_half-mean(trial_half)) %>% 
+  # reformat
   mutate_at(vars(target_typ_bin, comp_typ_bin, contrast_present, ColMentioned, anon_worker_id), funs(as.factor(.))) %>%
   rename(contrast = contrast_present)
+
+df_model_prereg_targetcomp = df_main %>% 
+  # only select relevant trials
+  filter(intended_target == "target" | intended_target == "firstDistractor") %>%
+  # exclude failed trials
+  mutate(wrong_selection = case_when(
+    (intended_target == "firstDistractor") ~ !str_detect(selected_image, comp_item),
+    (intended_target == "target") ~ !str_detect(selected_image, target_item),
+    TRUE ~ TRUE)) %>% 
+  filter(!wrong_selection) %>% 
+  # only consider utterances of category (ADJ) + NOUN
+  filter(UtteranceCat=="colorType" | UtteranceCat=="typeOnly") %>% 
+  # binary code utterance type and condition
+  mutate(ColMentioned = ifelse(UtteranceCat=="colorType", 1, 0)) %>%  
+  mutate(contrast_present = case_when(
+    (intended_target == "target") & str_detect(condition, "p") ~ 1,
+    TRUE ~ 0)) %>% 
+  mutate(referent_typ_bin = case_when(
+    (intended_target == "target") & (str_sub(condition,1,1) == "t") ~ 0,
+    (intended_target == "target") & (str_sub(condition,1,1) == "a") ~ 1,
+    (intended_target == "firstDistractor") & (str_sub(condition,2,2) == "t") ~ 0,
+    TRUE ~ 1
+  )) %>% 
+  mutate(nonreferent_typ_bin = case_when(
+    (intended_target == "target") & (str_sub(condition,2,2) == "t") ~ 0,
+    (intended_target == "target") & (str_sub(condition,2,2) == "a") ~ 1,
+    (intended_target == "firstDistractor") & (str_sub(condition,1,1) == "t") ~ 0,
+    TRUE ~ 1
+  )) %>% 
+  mutate(trial_half = ifelse(trial_number<=15, 0, 1)) %>% 
+  # center
+  mutate(c_referent_typ_bin = referent_typ_bin-mean(referent_typ_bin)) %>%
+  mutate(c_nonreferent_typ_bin = nonreferent_typ_bin-mean(nonreferent_typ_bin)) %>%
+  mutate(c_contrast = contrast_present-mean(contrast_present)) %>% 
+  mutate(c_trial_half = trial_half-mean(trial_half))
 ```
 
 Understand the structure of the data.
@@ -850,12 +888,33 @@ model_prereg = brm(
   family = 'bernoulli' # or bernoulli?
 )
 
-# REPORTED IN COGSCI PAPER
 model_prereg = brm(
   formula = ColMentioned ~ c_contrast*c_comp_typ_bin + c_comp_typ_bin*c_target_typ_bin + (1|anon_worker_id),
   data = df_model_prereg,
   seed = 1702,
   family = 'bernoulli' # or bernoulli?
+)
+
+summary(model_prereg)
+
+# REPORTED IN COGSCI PAPER in footnote
+model_prereg = brm(
+  formula = ColMentioned ~ c_contrast*c_nonreferent_typ_bin + c_nonreferent_typ_bin*c_referent_typ_bin + (1|anon_worker_id),
+  data = df_model_prereg_targetcomp,
+  seed = 1702,
+  family = 'bernoulli',
+  iter=4000
+)
+
+summary(model_prereg)
+
+# REPORTED IN COGSCI PAPER
+model_prereg = brm(
+  formula = ColMentioned ~ c_contrast + c_nonreferent_typ_bin + c_referent_typ_bin + (1|anon_worker_id),
+  data = df_model_prereg_targetcomp,
+  seed = 1702,
+  family = 'bernoulli',
+  iter=4000
 )
 
 summary(model_prereg)
@@ -1145,136 +1204,6 @@ summary(m)
 
 
 
-
-
-
-
-
-
-
-
-
-# f_notprereg = ColMentioned ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1|anon_worker_id) + (1|target_item)
-m.1 = glmer(f_prereg, data = df_model_prereg, family = "binomial")
-summary(m.1)
-
-m.2 = glm(ColMentioned ~ c_contrast+c_target_typ+c_comp_typ, data = df_model_prereg, family = "binomial")
-summary(m.2)
-
-m = glm(ColMentioned ~ c_contrast+c_target_typ*c_comp_typ,data=df_model_prereg,family="binomial")
-summary(m)
-
-m.3 = glmer(ColMentioned ~ c_contrast+c_target_typ+c_comp_typ + (1+c_target_typ|anon_worker_id), data = df_model_prereg, family = "binomial")
-summary(m.3)
-
-m.4 = glmer(ColMentioned ~ c_contrast+c_target_typ*c_comp_typ + (1+c_target_typ|anon_worker_id), data = df_model_prereg, family = "binomial")
-summary(m.4)
-
-m.5 = glmer(ColMentioned ~ contrast_present*target_typ_bin+comp_typ_bin  + (1+target_typ_bin|anon_worker_id) + (1|targetType), data = df_model_prereg, family = "binomial")
-summary(m.5)
-
-plot = df_model_prereg %>% ggplot(aes(x=c_target_typ, fill=ColMentioned)) + geom_histogram(stat="count")
-plot = df_model_prereg %>% ggplot(aes(x=target_typ_bin, fill=ColMentioned)) + geom_histogram(stat="count")
-
-plot
-
-model_prereg = brm(
-  formula = ColMentioned ~ contrast_present*target_typ_bin+comp_typ_bin  + (1+target_typ_bin|anon_worker_id) + (1|targetType),
-  data = df_model_prereg,
-  seed = 1702,
-  family = 'bernoulli' # or bernoulli?
-)
-
-summary(model_prereg)
-
-bayes_R2(model_prereg)
-
-plot_model_prereg = 
-  model_prereg %>% 
-  as_tibble() %>% 
-  select("b_Intercept", "b_contrast_present1", "b_target_typ_bin1", "b_comp_typ_bin1", "b_contrast_present1.target_typ_bin1") %>% 
-  gather(key = "parameter", value = "posterior") %>% 
-  mutate_at(vars(parameter), funs(str_replace_all(.,"b_",""))) %>%
-  mutate_at(vars(parameter), funs(str_replace_all(.,"\\.",":"))) %>%
-  mutate(parameter = as.factor(parameter)) %>%
-  mutate(parameter = factor(parameter, levels = c("Intercept", "contrast_present1", "target_typ_bin1", "comp_typ_bin1", "contrast_present1:target_typ_bin1"))) %>%
-  ggplot(aes(x = posterior)) + 
-    geom_density(fill = "grey") +
-    facet_wrap(~ parameter, scales = "free") +
-  ylab("density\n") +
-  xlab("\nparameter value") +
-  theme_classic() +
-  theme(legend.position = "right",
-        legend.key.height = unit(2,"line"),
-        legend.title = element_text(size = 18, face = "bold"),
-        legend.text = element_text(size = 16),
-        legend.background = element_rect(fill = "transparent"),
-        strip.background = element_blank(),
-        strip.text = element_text(size = 18, face = "bold"),
-        axis.line = element_blank(),
-        panel.spacing = unit(2, "lines"),
-        plot.background = element_rect(fill = "transparent", colour = NA),
-        panel.background = element_rect(fill = "transparent"),
-        axis.text = element_text(size = 16),
-        axis.title = element_text(size = 18, face = "bold"),
-        plot.title = element_text(size = 18, face = "bold"),
-        plot.margin = unit(c(0.2,0.1,0.2,0.1),"cm")) +
-  geom_vline(xintercept = 0) +
-  geom_segment(
-    mapping = aes(y = 0, yend = 0, x = low, xend = high),
-    color = "firebrick",
-    size = 3,
-    data = fixef(model_prereg) %>% as_tibble() %>%
-      mutate(parameter = c("Intercept", "contrast_present1", "target_typ_bin1", "comp_typ_bin1", "contrast_present1:target_typ_bin1")) %>%
-      mutate(parameter = as.factor(parameter)) %>%
-      mutate(parameter = factor(parameter, levels = c("Intercept", "contrast_present1", "target_typ_bin1", "comp_typ_bin1", "contrast_present1:target_typ_bin1"))) %>%
-      rename(low = Q2.5, high = Q97.5))
-
-plot_model_prereg = 
-  model_prereg %>% 
-  as_tibble() %>% 
-  select("b_Intercept", "b_c_contrast", "b_c_target_typ", "b_c_comp_typ", "b_c_target_typ.c_comp_typ") %>% 
-  gather(key = "parameter", value = "posterior") %>% 
-  mutate_at(vars(parameter), funs(str_replace_all(.,"b_",""))) %>%
-  mutate_at(vars(parameter), funs(str_replace_all(.,"\\.",":"))) %>%
-  mutate(parameter = as.factor(parameter)) %>%
-  mutate(parameter = factor(parameter, levels = c("Intercept", "c_contrast", "c_target_typ", "c_comp_typ", "c_target_typ:c_comp_typ"))) %>%
-  ggplot(aes(x = posterior)) + 
-    geom_density(fill = "grey") +
-    facet_wrap(~ parameter, scales = "free") +
-  ylab("density\n") +
-  xlab("\nparameter value") +
-  theme_classic() +
-  theme(legend.position = "right",
-        legend.key.height = unit(2,"line"),
-        legend.title = element_text(size = 18, face = "bold"),
-        legend.text = element_text(size = 16),
-        legend.background = element_rect(fill = "transparent"),
-        strip.background = element_blank(),
-        strip.text = element_text(size = 18, face = "bold"),
-        axis.line = element_blank(),
-        panel.spacing = unit(2, "lines"),
-        plot.background = element_rect(fill = "transparent", colour = NA),
-        panel.background = element_rect(fill = "transparent"),
-        axis.text = element_text(size = 16),
-        axis.title = element_text(size = 18, face = "bold"),
-        plot.title = element_text(size = 18, face = "bold"),
-        plot.margin = unit(c(0.2,0.1,0.2,0.1),"cm")) +
-  geom_vline(xintercept = 0) +
-  geom_segment(
-    mapping = aes(y = 0, yend = 0, x = low, xend = high),
-    color = "firebrick",
-    size = 3,
-    data = fixef(model_prereg) %>% as_tibble() %>%
-      mutate(parameter = c("Intercept", "c_contrast", "c_target_typ", "c_comp_typ", "c_target_typ:c_comp_typ")) %>%
-      mutate(parameter = as.factor(parameter)) %>%
-      mutate(parameter = factor(parameter, levels = c("Intercept", "c_contrast", "c_target_typ", "c_comp_typ", "c_target_typ:c_comp_typ"))) %>%
-      rename(low = Q2.5, high = Q97.5))
-
-plot_model_prereg
-
-ggsave(plot = plot_model_prereg, filename = "graphs/posterior_density_prereg.png",
-       width = 15, height = 10)
 
 ```
 
