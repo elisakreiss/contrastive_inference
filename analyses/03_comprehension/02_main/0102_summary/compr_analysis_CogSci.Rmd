@@ -1062,7 +1062,7 @@ f_prereg = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_c
 
 # for bernoulli
 # effect of contrast and comp typicality
-# COGSCI PAPER
+# cogsci paper version without prev click
 f_new1 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin + (1+c_contrast*c_target_typ_bin|anon_worker_id) + (1+c_contrast*c_comp_typ_bin|target) + (1+c_contrast*c_target_typ_bin|comp)
 
 m = glmer(f_new1, data = df_model_prereg, family = "binomial")
@@ -1225,7 +1225,8 @@ model_prevclick = brm(
   formula = f_new1,
   data = df_model_prevclick,
   seed = 1702,
-  family = 'bernoulli' # or bernoulli?
+  family = 'bernoulli',
+  iter = 4000
 )
 
 summary(model_prevclick)
