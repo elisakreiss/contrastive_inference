@@ -314,7 +314,7 @@ cor(df_cor_flatprior$meanProb,df_cor_flatprior$meanPropClicks)
   # select(condition, Probability, targetType, compType) %>% 
   # write_csv(., here("analyses", "03_comprehension", "02_main", "0102_summary", "df_rsa_flatprior.csv"))
 
-ggsave(here("writing","2020_CogSci","paper","graphs","corr-modelflat-bycondition.pdf"), width = 5, height = 3.5)
+ggsave(here("writing","2020_CogSci","paper","graphs","corr-modelflat-bycondition.pdf"), width = 5.5, height = 3)
 
 ```
 
