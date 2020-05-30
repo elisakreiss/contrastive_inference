@@ -273,7 +273,7 @@ There was strong evidence for an effect of contrast presence ($E=0.34,\ CI=[0.13
 	\begin{center}
 		\includegraphics[width=.475\textwidth]{graphs/model-bycond-paper.pdf}
 	\end{center}
-\caption{Empirical proportion (light bars) and model predicted probability (in darker colors) of object selections for each condition. Dashed line marks chance level of target versus competitor selections. Error bars indicate 95\% bootstrapped confidence intervals.} %for each target-competitor item combination.} 
+\caption{Empirical proportion (light bars) and model predicted probability (dark bars) of object selections in each condition. Dashed line indicates chance. Error bars indicate 95\% bootstrapped confidence intervals.} %for each target-competitor item combination.} 
 \label{modelcompr-results}
 \end{figure}
 
@@ -298,13 +298,13 @@ Here we assess the extent to which RSA captures the comprehension data based on 
 
 \figref{modelcompr-results} shows the model predictions (dark bars) alongside the empirical results (light bars) for target and competitor selection in the adjective window. Using the modifier production probabilities obtained in Exp.~1, the model predicts the qualitative patterns for all the different context conditions. 
 
-Quantitatively we found strong evidence that the RSA model predicts the empirically elicited comprehension data ($E=1.46, CI=[1.01, 1.92]$)\footnote{Results of a Bayesian mixed effects logistic regression model: $\text{target\_selection} \sim \text{RSA\_prediction} + (1+\text{RSA\_prediction}|\text{participant})$} and its predictions are highly correlated with the empirical results ($r=0.91$). However, it generally predicts more extreme probabilities than are borne out in the empirical data, as shown in \figref{model-results-corr-flatprior}. The model overpredicts target selections in high target preference conditions and underpredicts target selections in low target preference conditions. 
+Quantitatively we found strong evidence that the RSA model predicts the empirically elicited comprehension data ($E=1.46, CI=[1.01, 1.92]$)\footnote{Results of a Bayesian mixed effects logistic regression model: $\text{target\_selection} \sim \text{RSA\_prediction} + (1+\text{RSA\_prediction}|\text{participant})$} and its predictions are highly correlated with the empirical results ($r=0.91$). However, it generally predicts more extreme probabilities than observed in the empirical data (see \figref{model-results-corr-flatprior}). The model overpredicts target selections in high target preference conditions and underpredicts target selections in low target preference conditions. 
 
 \begin{figure}
 	\begin{center}
 		\includegraphics[width=.475\textwidth]{graphs/corr-plot.pdf}
 	\end{center}
-\caption{Empirical proportion of target selections against RSA model predictions. The dashed lines mark chance level for target over competitor selections. Error bars indicate 95\% bootstrapped confidence intervals.} 
+\caption{Empirical target selection proportions  against RSA model predictions. Dashed lines indicate chance. Error bars indicate 95\% bootstrapped confidence intervals.} 
 \label{model-results-corr-flatprior}
 \end{figure}
 
