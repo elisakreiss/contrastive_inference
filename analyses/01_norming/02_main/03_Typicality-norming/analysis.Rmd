@@ -207,6 +207,51 @@ sum_file = df_cd %>%
 # write.csv(sum_file, here("data","01_norming","02_main","typicality_data.csv"), row.names = FALSE)
 ```
 
+```{r typicality ratings cd, echo=FALSE, fig.height=9, fig.width=9, message=FALSE, warning=FALSE}
+
+df_cd = df_plot %>% 
+  filter(cd == T) %>% 
+  mutate(xaxis = str_c(item, "\n", "(", color, ")"))
+
+select_color <- function(string) {
+  str_replace_all(string,"_"," ")
+}
+
+df_cd %>% 
+  filter(col_item != "red_pumpkin" & col_item != "white_carrot" & col_item != "green_corn" & col_item != "white_snowman" & col_item != "yellow_snowman") %>% 
+  mutate_at(vars(slider_val), funs(./100)) %>% 
+ggplot(., aes(x=reorder(xaxis, -slider_val), y=slider_val)) +
+  # facet_wrap(vars(item), scale = "free_x", nrow = 3) +
+  theme_cowplot() +
+  geom_point(alpha = 0.2) +
+  # error bars 
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "black",
+               size = 1) + 
+  # median
+  # stat_summary(fun.y = "median",
+  #              geom = "point",
+  #              shape = 21,
+  #              fill = "red",
+  #              color = "black",
+  #              size = 4) +
+  # means
+  stat_summary(fun.y = "mean",
+               geom = "point",
+               shape = 21,
+               fill = "#7CB637",
+               color = "black",
+               size = 4) +
+  xlab("") +
+  ylab("Typicality slider rating")
+  # theme(axis.text.x = element_text(angle=30, hjust=1))
+  # scale_x_discrete(labels = select_color)
+
+# ggsave(here("writing","2020_Journal","img","norming","typicality_results.pdf"), width=10.5, height = 4)
+
+```
+
 #### Non-color diagnostic objects
 Means are plotted in orange, medians in red.
 

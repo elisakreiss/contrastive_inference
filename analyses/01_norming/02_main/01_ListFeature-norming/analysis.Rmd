@@ -323,6 +323,115 @@ ggplot(df_plot_f1,aes(x=reorder(reorder(question,color_mention),cd), y=color_men
 # ggsave(here("writing", "QP1", "img", "norming1_resultsoverall.pdf"), width=9.5, height=5)
 ```
 
+##### Final stimuli: only first feature
+
+```{r plot first feature all, echo=FALSE, fig.height=5, fig.width=11}
+final_stimuli = c("banana", "broccoli", "carrot", "corn", "egg", "lettuce", "pumpkin", "strawberry", "swan", "tomato")
+
+df_plot_f1 %>% 
+  filter(question %in% final_stimuli) %>% 
+ggplot(.,aes(x=reorder(question,color_mention), y=color_mention, fill=color)) +
+  theme_cowplot() +
+  stat_summary(fun = "mean",
+               geom = "bar",
+               color="darkgrey") +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "black") +
+  # geom_hline(yintercept = 0.5,
+  #            linetype = "dashed",
+  #            color = "grey") +
+  # theme(axis.ticks.x = element_blank()) +
+  theme(axis.title = element_text(size=20)) +
+  theme(axis.text.x = element_text(size=15, angle=30, hjust=1)) +
+  theme(axis.text.x = element_text(size=15)) +
+  theme(legend.position = "none") +
+  scale_fill_manual(values=c("#66b266", "#ff8f52", "#de1a24", "white", "#ffe552")) +
+  # scale_fill_manual(values=c("green", "orange", "red", "white", "yellow")) +
+  xlab("") +
+  ylab("Proportion of color mention\nin first feature")
+
+# ggsave(here("writing", "2020_Journal", "img", "norming", "featurenorming_resultsoverall.pdf"), width=9.5, height=5)
+```
+
+```{r plot first feature all, echo=FALSE, fig.height=5, fig.width=11}
+final_stimuli = c("banana", "broccoli", "carrot", "corn", "egg", "lettuce", "pumpkin", "strawberry", "swan", "tomato")
+
+df_plot_allf %>% 
+  filter(question %in% final_stimuli) %>% 
+ggplot(.,aes(x=reorder(question,color_mention), y=color_mention, fill=color)) +
+  theme_cowplot() +
+  stat_summary(fun = "mean",
+               geom = "bar",
+               color="darkgrey") +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "black") +
+  # geom_hline(yintercept = 0.5,
+  #            linetype = "dashed",
+  #            color = "grey") +
+  # theme(axis.ticks.x = element_blank()) +
+  theme(axis.title = element_text(size=20)) +
+  theme(axis.text.x = element_text(size=15, angle=30, hjust=1)) +
+  theme(axis.text.x = element_text(size=15)) +
+  theme(legend.position = "none") +
+  scale_fill_manual(values=c("#66b266", "#ff8f52", "#de1a24", "white", "#ffe552")) +
+  # scale_fill_manual(values=c("green", "orange", "red", "white", "yellow")) +
+  xlab("") +
+  ylab("Proportion of color mention\nin first feature")
+
+# ggsave(here("writing", "2020_Journal", "img", "norming", "featurenorming_resultsoverall.pdf"), width=9.5, height=5)
+```
+
+```{r plot first feature all, echo=FALSE}
+final_stimuli = c("banana", "broccoli", "carrot", "corn", "egg", "lettuce", "pumpkin", "strawberry", "swan", "tomato")
+
+df_allf_helper = df_plot_allf %>% 
+  mutate(final = ifelse(question %in% final_stimuli, T, F)) %>% 
+  mutate(feature="all features")
+
+df_helper_all_data = df_plot_f1 %>% 
+  mutate(final = ifelse(question %in% final_stimuli, T, F)) %>% 
+  mutate(feature="first feature only") %>% 
+  bind_rows(df_allf_helper) %>% 
+  mutate_at(vars(feature), funs(fct_relevel(., c("first feature only")))) %>% 
+  mutate_at(vars(final), funs(fct_relevel(as.factor(.), c("TRUE"))))
+
+ggplot(df_helper_all_data,aes(x=feature, y=color_mention, color=final)) +
+  theme_cowplot() +
+  stat_summary(data = df_helper_all_data,
+               mapping = aes(x=feature, 
+                             y=color_mention, 
+                             group=question, 
+                             color=final),
+               fun = "mean",
+               geom = "point",
+               position = position_dodge(width=0.35),
+               alpha = 0.2,
+               size = 2) +
+  stat_summary(fun = "mean",
+               geom = "point",
+               size = 7) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               size = 2) +
+  # geom_hline(yintercept = 0.5,
+  #            linetype = "dashed",
+  #            color = "grey") +
+  # theme(axis.ticks.x = element_blank()) +
+  # theme(axis.title = element_text(size=20)) +
+  # theme(axis.text.x = element_text(size=15, angle=30, hjust=1)) +
+  # theme(axis.text.x = element_text(size=15)) +
+  theme(legend.position = "right") +
+  scale_color_discrete(name = "Items", labels = c("chosen", "other")) +
+  # scale_fill_manual(values=c("#66b266", "#ff8f52", "#de1a24", "white", "#ffe552")) +
+  # scale_fill_manual(values=c("green", "orange", "red", "white", "yellow")) +
+  xlab("") +
+  ylab("Proportion of\ncolor mention")
+
+ggsave(here("writing", "2020_Journal", "img", "norming", "featurenorming_resultsnew.pdf"), width=6, height=3)
+```
+
 #### All features
 
 ```{r plot all features all, echo=FALSE, fig.height=7, fig.width=12}
