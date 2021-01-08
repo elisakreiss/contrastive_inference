@@ -197,6 +197,22 @@ df_rsa_flatpriorTarget = df_rsa_flatprior %>%
 
 ```
 
+```{r shiny data creation}
+df_model_pred_flatprior = df_afteradj_prop %>% 
+  rename(intended_target = "obj_in_display") %>% 
+  left_join(df_rsa_flatprior, by=(c("condition","targetType","compType", "intended_target"))) %>% 
+  gather(Measure, Value, PropClicks, Probability) %>% 
+  mutate_at(vars(Measure), funs(ifelse(.=="PropClicks", "Empirical data", "Model predictions"))) %>% 
+  filter(intended_target == "target" | intended_target == "comp") %>% 
+  filter(Measure == "Model predictions") %>% 
+  rename(clicked = "Value") %>% 
+  rename(obj_in_display_diff = "intended_target") %>% 
+  mutate(prior = "flat") %>% 
+  select(obj_in_display_diff, clicked, condition, prior)
+
+write_csv(df_model_pred_flatprior, "model_flatprior.csv")
+```
+
 
 # RSA: inf prior data
 
@@ -263,6 +279,7 @@ df_rsa_prior_aggrTarget = df_rsa_prior_aggr %>%
   select(condition, predProportion, PropClicks_prior, targetType, compType)
 
 ```
+
 
 # Plots
 
@@ -735,7 +752,7 @@ df_full %>%
 ggsave(here("preadj-flatprior-nocontrast.pdf"), width = 8, height = 3)
 ```
 
-##### CUNY poster plot
+##### COGSCI talk & CUNY poster plot
 
 ```{r}
 
@@ -761,7 +778,8 @@ df_full %>%
   mutate_at(vars(intended_target), funs(factor(., levels=c("target", "comp")))) %>%
   ggplot(., aes(x=intended_target, 
                 y=Value, 
-                fill=intended_target
+                fill=condition
+                # fill=intended_target
                 # alpha=Measure
                 )) +
   facet_wrap(~condition, scales = "free_x", nrow=1) +
@@ -775,7 +793,7 @@ df_full %>%
                position = position_dodge(width = 0.6),
                size = .3,
                width = 0.3) +
-  geom_hline(yintercept = 0.5, linetype="dashed", color = "lightgrey") +
+  # geom_hline(yintercept = 0.5, linetype="dashed", color = "lightgrey") +
   theme(legend.position = "none") +
   theme(strip.background = element_rect(color="black", 
                                         fill="white", 
@@ -784,9 +802,9 @@ df_full %>%
         strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
         ) +
   scale_alpha_manual(values=c(0.5, 1)) +
-  scale_fill_manual(values=c(target_color, comp_color)) +
+  # scale_fill_manual(values=c(target_color, comp_color)) +
   # scale_fill_manual(values=c("#edc951", "#eb6841", "#cc2a36", "#cc2a87")) +
-  # scale_fill_manual(values=c("#c9df8a", "#77ab59", "#36802d", "#234d20")) +
+  scale_fill_manual(values=c("#c9df8a", "#77ab59", "#36802d", "#234d20")) +
   scale_x_discrete(labels=c("comp"="competitor")) +
   theme(strip.background = element_rect(color="black", 
                                         fill="white", 
@@ -801,7 +819,7 @@ df_full %>%
   xlab("Item") +
   ylab("Proportion of (predicted) selections")
 
-ggsave(here("modelpred-contrast.pdf"), width = 8, height = 3)
+ggsave(here("modelpred-contrast.pdf"), width = 8, height = 2.95)
 
 df_full %>%
   # mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan")))) %>%
@@ -817,7 +835,8 @@ df_full %>%
   mutate_at(vars(intended_target), funs(factor(., levels=c("target", "comp")))) %>%
   ggplot(., aes(x=intended_target, 
                 y=Value, 
-                fill=intended_target
+                fill=condition
+                # fill=intended_target
                 # alpha=Measure
                 )) +
   facet_wrap(~condition, scales = "free_x", nrow=1) +
@@ -831,7 +850,7 @@ df_full %>%
                position = position_dodge(width = 0.6),
                size = .3,
                width = 0.3) +
-  geom_hline(yintercept = 0.5, linetype="dashed", color = "lightgrey") +
+  # geom_hline(yintercept = 0.5, linetype="dashed", color = "lightgrey") +
   theme(legend.position = "none") +
   theme(strip.background = element_rect(color="black", 
                                         fill="white", 
@@ -840,8 +859,8 @@ df_full %>%
         strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)
         ) +
   scale_alpha_manual(values=c(0.5, 1)) +
-  scale_fill_manual(values=c(target_color, comp_color)) +
-  # scale_fill_manual(values=c("#edc951", "#eb6841", "#cc2a36", "#cc2a87")) +
+  # scale_fill_manual(values=c(target_color, comp_color)) +
+  scale_fill_manual(values=c("#edc951", "#eb6841", "#cc2a36", "#cc2a87")) +
   # scale_fill_manual(values=c("#c9df8a", "#77ab59", "#36802d", "#234d20")) +
   scale_x_discrete(labels=c("comp"="competitor")) +
   theme(strip.background = element_rect(color="black", 
@@ -857,7 +876,7 @@ df_full %>%
   xlab("Item") +
   ylab("Proportion of (predicted) selections")
 
-ggsave(here("modelpred-nocontrast.pdf"), width = 8, height = 3)
+ggsave(here("modelpred-nocontrast.pdf"), width = 8, height = 2.95)
 ```
 
 ### Flat prior + prev click & pos

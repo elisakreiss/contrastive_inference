@@ -63,12 +63,12 @@ df_clean = df_import %>%
   # 2) if native language is not english
   mutate_at(vars(languages), funs(str_to_lower(.))) %>% 
   mutate_at(vars(languages), funs(ifelse(. %in% engl_spellings, "english", .))) %>%
-  filter(languages=="english")
+  filter(str_detect(languages,"english")) %>% 
   # 69, 4130
   # 3) if comments suggest that the hit was done incorrectly
   # 4) if too many erroneous responses
   # filter(anon_worker_id!="051134074799198")
-  # filter(anon_worker_id!="456140787085838" & anon_worker_id!="486034687892865" & anon_worker_id!="586594222010457" & anon_worker_id!="846666432419341" & anon_worker_id!="935528864670490") %>% 
+  filter(anon_worker_id!="073292564463958" & anon_worker_id!="116094209453297" & anon_worker_id!="182787438180499" & anon_worker_id!="182787438180499" & anon_worker_id!="193929304876402" & anon_worker_id!="260916623895607" & anon_worker_id!="408489803795468" & anon_worker_id!="415823359368771" & anon_worker_id!="484135221025167" & anon_worker_id!="511086193615292" & anon_worker_id!="618334277125045" & anon_worker_id!="751451021316546" & anon_worker_id!="756928657241156")
   # 67, 4012
   # 5) if hit was done multiple times by a worker
   # filter(anon_worker_id!="886492649205797")
@@ -317,6 +317,12 @@ df_errorcheck = df_main_prop %>%
 table(df_errorcheck$anon_worker_id,df_errorcheck$error)
 ```
 
+```{r shiny}
+df_main_prop %>% 
+  filter(timeStep_selec == "selectedItem_prior") %>% 
+  select(prior, condition, obj_in_display_diff, clicked) %>% 
+  write_csv(., "emp_prevsel_prior.csv", col_names = TRUE)
+```
 
 ## Priors -- clicks before adjective or noun onset
 
@@ -441,7 +447,7 @@ df_prior_wf_contrast = df_prior_wfillers %>%
 # If a contrast is NOT present, do the prior distributions change between the first and 
 # second half of the experiment?
 df_prior_wf_contrast %>% 
-  # filter(prior=="normal") %>%
+  filter(prior=="normal") %>%
   # filter(prior=="weird") %>%
 ggplot(., aes(x=obj_in_display_diff, 
                                  y=clicked, 
@@ -694,7 +700,7 @@ df_prior_vs_adj %>%
 
 ```
 
-```{r after adj cogsci paper cond, echo=FALSE, fig.height=4, fig.width=7, message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r after adj cogsci paper cond, eval=FALSE, fig.height=4, fig.width=7, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 
 df_prior_vs_adj %>% 
   filter(str_detect(condition, "p")) %>%
@@ -1295,7 +1301,7 @@ df_switch_away %>%
 #### RSA
 
 ```{r rsa}
-# write_csv(df_prior_vs_adj, here("models","02_prodInfRSA","data","emp_comprehension_data.csv"))
+write_csv(df_prior_vs_adj, here("models", "03_prodInfRSA_prior", "data", "emp_comprehension_data.csv"))
 ```
 
 
@@ -1390,6 +1396,87 @@ library(HDInterval)
 library(tidybayes)
 library(GGally)
 ```
+
+```{r}
+df_model_prevclick =  df %>% 
+  # select main trials
+  filter(trial_type == "critical") %>% 
+  # select columns relevant for main trials
+  select(prior,target,comp,contrast,distractor,selectedItem_prior,selectedItem1,
+         anon_worker_id,trial_number,condition,pos1,pos2,pos3,pos4) %>% 
+  # encode which contexts have a contrast
+  mutate(contrast_present = str_detect(condition,"p")) %>%
+  # import typicality
+  left_join(typ_data, by=c("target"="col_type")) %>% 
+  rename(target_typ=typicality, target_typ_bin=bin_typ) %>%
+  left_join(typ_data, by=c("comp"="col_type")) %>% 
+  rename(comp_typ=typicality, comp_typ_bin=bin_typ) %>%
+  # if there were multiple selections (which are separated by commas),
+  # select the last one
+  mutate(lastSelectedItem_prior = sapply(str_split(selectedItem_prior,","),tail,1)) %>% 
+  mutate(lastSelectedItem_adj = sapply(str_split(selectedItem1,","),tail,1)) %>% 
+  # encode the clicked type of the object
+  mutate(clickedType_prior = case_when(
+    lastSelectedItem_prior == target ~ "target",
+    TRUE ~ "other"
+  )) %>% 
+  mutate(clickedType_adj = case_when(
+    lastSelectedItem_adj == target ~ "target",
+    lastSelectedItem_adj == comp ~ "comp",
+    TRUE ~ "other"
+  )) %>% 
+  filter(clickedType_adj=="target" | clickedType_adj=="comp") %>% 
+  mutate(click_to_target = ifelse(clickedType_adj == "target", 1, 0)) %>%
+  mutate(prior_cond = ifelse(prior == "normal", 0, 1)) %>% 
+  mutate(c_prior_cond = prior_cond-mean(prior_cond)) %>%
+  mutate(prev_click = ifelse(clickedType_prior == "target", 1, 0)) %>%
+  mutate(c_prev_click = prev_click-mean(prev_click)) %>%
+  # typicalities
+  mutate_at(vars(target_typ_bin, comp_typ_bin), funs(ifelse(. == "typical", 0, 1))) %>%
+  mutate(c_target_typ_bin = target_typ_bin-mean(target_typ_bin)) %>%
+  mutate(c_comp_typ_bin = comp_typ_bin-mean(comp_typ_bin)) %>%
+  mutate(c_contrast = contrast_present-mean(contrast_present)) %>%
+  # item types
+  separate(target, c(NA, "targetType"), sep="_", remove = FALSE) %>%
+  separate(comp, c(NA, "compType"), sep="_", remove = FALSE) %>% 
+  mutate(tar_comp = str_c(targetType, compType, sep="_")) %>% 
+  # position constellation
+  mutate(pos_target = ifelse(pos1 == "target" | pos2 == "target", T, F)) %>%
+  mutate(pos_comp = ifelse(pos1 == "comp" | pos2 == "comp", T, F)) %>%
+  mutate(pos = case_when(
+    (pos_target & pos_comp) | (!pos_target & !pos_comp) ~ "equal",
+    pos_target ~ "target_pref",
+    TRUE ~ "comp_pref"
+  ))
+
+# COGSCI PAPER
+
+# click to target ~ contrast presence*typicality of target*typicality of competitor*prior + preadj selection + (1+contrast*typicality of target*prior|participant) +(1+contrast*typicality of competitor*prior|target) + (1+contrast*typicality of target*prior|competitor)
+f_new1 = click_to_target ~ c_contrast*c_target_typ_bin*c_comp_typ_bin*c_prior_cond + c_prev_click + (1+c_contrast*c_target_typ_bin*c_prior_cond|anon_worker_id) + (1+c_contrast*c_comp_typ_bin*c_prior_cond|target) + (1+c_contrast*c_target_typ_bin*c_prior_cond|comp)
+
+model_prevclick = brm(
+  formula = f_new1,
+  data = df_model_prevclick,
+  seed = 1702,
+  family = 'bernoulli',
+  iter = 4000
+)
+
+summary(model_prevclick)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ```{r stat analysis preregistered, eval=FALSE, include=FALSE}

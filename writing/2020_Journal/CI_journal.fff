@@ -1,0 +1,18 @@
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+[H!]
+\begin{center}
+\includegraphics[width=1\textwidth]{img/production/prod-design.pdf}
+\end{center}
+\caption{Example display for the interactive reference game (Exp. 1). Both, the speaker (here \textit{Director}) and listener (\textit{Matcher}) see the same four objects but in a scrambled order. Additionally, the speaker sees a green border around one of the objects, marking the intended target which the listener needs to select.}
+\label{prod-design}
+\end{figure*}
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+[H]
+\begin{center}
+\includegraphics[width=1\textwidth]{img/production/prod-bycond-paper.pdf}
+\end{center}
+\caption{Proportion of modifier mentions in each condition for objects that functioned as target and competitor in Exp.~2. Error bars indicate 95\% bootstrapped confidence intervals.}
+\label{prod-results}
+\end{figure*}
