@@ -314,6 +314,12 @@ df_errorcheck = df_main_prop %>%
 table(df_errorcheck$anon_worker_id,df_errorcheck$error)
 ```
 
+```{r shiny}
+df_main_prop %>% 
+  filter(timeStep_selec == "selectedItem_prior") %>% 
+  select(condition, obj_in_display_diff, clicked) %>% 
+  write_csv(., "emp_prevsel_noprior.csv", col_names = TRUE)
+```
 
 ## Priors -- clicks before adjective or noun onset
 
@@ -329,6 +335,7 @@ df_prior_wfillers_unique = df_main_unique %>%
   filter(timeStep_selec == "selectedItem_prior")
 
 ```
+
 
 #### Contrast bias
 
