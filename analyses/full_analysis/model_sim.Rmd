@@ -1,0 +1,334 @@
+---
+title: "CI: production data prep"
+# output: html_document
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Data preparation
+
+```{r data import, include=FALSE}
+# library(cowplot)
+library(tidyverse)
+library(here)
+
+df_import = read_csv(here("analyses","visualization","data","df_full.csv"), col_names = TRUE)
+
+df_model_adddata = df_import %>% 
+  filter(data_type == "model") %>% 
+  mutate(color_typ == "black") %>% 
+  mutate(clicked = 0) %>% 
+  distinct() %>% 
+  mutate_at(vars(obj_in_display_diff), funs(case_when(
+    str_detect(condition, "p") & obj_in_display_diff == "target" ~ "contrast",
+    str_detect(condition, "p") & obj_in_display_diff == "comp" ~ "distractor",
+    (!str_detect(condition, "p")) & obj_in_display_diff == "target" ~ "distractor1",
+    (!str_detect(condition, "p")) & obj_in_display_diff == "comp" ~ "distractor2",
+    TRUE ~ "FIRE"
+  )))
+
+df = df_import %>% 
+  bind_rows(df_model_adddata) %>%
+  mutate_at(vars(obj_in_display_diff),
+            funs(factor(., levels=c("target", "comp", "contrast",
+                                    "distractor1", "distractor", "distractor2")))) 
+```
+
+
+```{r}
+df_RSA_pred = df %>% 
+  filter(data_type == "model",
+         prior == "flat") %>% 
+  mutate(data_type = "RSA") %>% 
+  filter(obj_in_display_diff == "target") %>% 
+  select(condition, clicked, data_type) %>% 
+  group_by(condition) %>% 
+  summarize(mean = mean(clicked))
+```
+
+
+```{r}
+df_RSA_pred = df %>% 
+  filter(data_type == "model",
+         prior == "flat") %>% 
+  mutate(data_type = "RSA") %>% 
+  filter(obj_in_display_diff == "target") %>% 
+  select(condition, clicked, data_type)
+
+df_simple = tibble(condition = c("atp","ttp","aap","tap","atn","ttn","aan","tan"),
+                   clicked = c(1,1,1,1,0.5,0.5,0.5,0.5)) %>% 
+  mutate(data_type = "vanilla")
+
+df_default = tibble(condition = c("atp","ttp","aap","tap","atn","ttn","aan","tan"),
+                    clicked = c(0.5,1,0.5,1,0.5,0.5,0.5,0.5)) %>% 
+  mutate(data_type = "default")
+
+df_model_sim = df_RSA_pred %>% 
+    bind_rows(df_simple) %>% 
+    bind_rows(df_default) %>% 
+    mutate_at(vars(data_type), funs(fct_relevel(., c("vanilla", "default", "RSA")))) %>% 
+    mutate(contr_present = ifelse(str_detect(condition, "p"), "contrast present", "contrast absent")) %>% 
+    mutate_at(vars(contr_present), funs(fct_relevel(as.factor(.), "contrast present"))) %>% 
+    mutate_at(vars(condition), funs(case_when(
+      .=="atp" ~ "atypical target\ntypical competitor",
+      .=="tap" ~ "typical target\natypical competitor",
+      .=="aap" ~ "atypical target\natypical competitor",
+      .=="ttp" ~ "typical target\ntypical competitor",
+      .=="atn" ~ "atypical target\ntypical competitor",
+      .=="tan" ~ "typical target\natypical competitor",
+      .=="aan" ~ "atypical target\natypical competitor",
+      .=="ttn" ~ "typical target\ntypical competitor",
+      TRUE ~ "FIRE!"
+    ))) %>%
+    mutate_at(vars(condition), funs(factor(., 
+         levels=c("atypical target\ntypical competitor",
+                  "typical target\ntypical competitor",
+                  "atypical target\natypical competitor",
+                  "typical target\natypical competitor"))))
+
+theme_set(theme_bw())
+
+ggplot(df_model_sim, aes(x=condition, 
+                y=clicked,
+                fill=data_type)) +
+  facet_wrap(~contr_present, nrow=2) +
+  stat_summary(fun = "mean", 
+               geom = "bar",
+               width = 0.8,
+               position = position_dodge(width = 0.8)) +
+  # geom_hline(yintercept=1/2, linetype="dashed", color="grey", size=1) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               position = position_dodge(width = 0.8),
+               size = .3,
+               width = 0.3) +
+  theme(legend.position = "right") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(3,0,3,0, "pt"))
+  ) +
+  scale_alpha_manual(values=c(1, 0.5)) +
+  scale_fill_manual(name="Model",values=c("#faca82","#7F93B5","#7F93B5")) +
+  theme(
+      panel.border = element_rect(colour = "black", fill=NA),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.background = element_blank(), 
+      axis.line = element_line(colour = "black")) +
+  # theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust=1)) +
+  xlab("Condition") +
+  ylab("Predicted target (> 0.5) vs.\ncompetitor (< 0.5) selections") +
+  ylim(0,1) +
+  theme(text = element_text(size=20)) +
+  theme(panel.background = element_rect(color="white"))
+  
+ggsave(here("analyses","full_analysis","graphs","model-comparison.png"), height=6, width=8)
+```
+
+
+
+```{r}
+df_RSA_pred = df %>% 
+  filter(data_type == "model",
+         prior == "flat") %>% 
+  mutate(data_type = "RSA") %>% 
+  filter(obj_in_display_diff == "target") %>% 
+  select(condition, clicked, data_type)
+
+df_simple = tibble(condition = c("atp","ttp","aap","tap","atn","ttn","aan","tan"),
+                   clicked = c(1,1,1,1,0.5,0.5,0.5,0.5)) %>% 
+  mutate(data_type = "vanilla")
+
+df_default = tibble(condition = c("atp","ttp","aap","tap","atn","ttn","aan","tan"),
+                    clicked = c(0.5,1,0.5,1,0.5,0.5,0.5,0.5)) %>% 
+  mutate(data_type = "default")
+
+df_descrinf_contradv_default = tibble(condition = c("atp","ttp","aap","tap","atn","ttn","aan","tan"),
+                                      clicked = c(1,1,0.5,1,1,0.5,0.5,0)) %>% 
+  mutate(data_type = "default + descr. infer.")
+
+df_descrinf_contradv_simple = tibble(condition = c("atp","ttp","aap","tap","atn","ttn","aan","tan"),
+                                      clicked = c(1,1,1,1,1,0.5,0.5,0)) %>% 
+  mutate(data_type = "vanilla + descr. infer.")
+
+df_model_sim = df_RSA_pred %>% 
+    bind_rows(df_simple) %>% 
+    bind_rows(df_default) %>% 
+    bind_rows(df_descrinf_contradv_default) %>% 
+    bind_rows(df_descrinf_contradv_simple) %>% 
+    mutate_at(vars(data_type), funs(fct_relevel(., c("vanilla", "default", "vanilla + descr. infer.", "default + descr. infer.", "RSA")))) %>% 
+    mutate(contr_present = ifelse(str_detect(condition, "p"), "contrast present", "contrast absent")) %>% 
+    mutate_at(vars(contr_present), funs(fct_relevel(as.factor(.), "contrast present"))) %>% 
+    mutate_at(vars(condition), funs(case_when(
+      .=="atp" ~ "atypical target\ntypical competitor",
+      .=="tap" ~ "typical target\natypical competitor",
+      .=="aap" ~ "atypical target\natypical competitor",
+      .=="ttp" ~ "typical target\ntypical competitor",
+      .=="atn" ~ "atypical target\ntypical competitor",
+      .=="tan" ~ "typical target\natypical competitor",
+      .=="aan" ~ "atypical target\natypical competitor",
+      .=="ttn" ~ "typical target\ntypical competitor",
+      TRUE ~ "FIRE!"
+    ))) %>%
+    mutate_at(vars(condition), funs(factor(., 
+         levels=c("atypical target\ntypical competitor",
+                  "typical target\ntypical competitor",
+                  "atypical target\natypical competitor",
+                  "typical target\natypical competitor"))))
+theme_set(theme_bw())
+  ggplot(df_model_sim, aes(x=condition, 
+                  y=clicked,
+                  fill=data_type)) +
+    facet_wrap(~contr_present, nrow=2) +
+    stat_summary(fun = "mean", 
+                 geom = "bar",
+                 width = 0.8,
+                 position = position_dodge(width = 0.8)) +
+    geom_hline(yintercept=1/2, linetype="dashed", color="grey", size=1) +
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "errorbar",
+                 color = "black",
+                 position = position_dodge(width = 0.8),
+                 size = .3,
+                 width = 0.3) +
+    theme(legend.position = "right") +
+    theme(strip.background = element_rect(color="black", 
+                                          fill="white", 
+                                          size=1.5,
+                                          linetype="solid"),
+          strip.text.x = element_text(margin = margin(3,0,3,0, "pt"))
+    ) +
+    scale_alpha_manual(values=c(1, 0.5)) +
+    scale_fill_manual(name="Model",values=c("#faf2be","#faca82","#fad4be","#fa8e82","#82b2fa")) +
+    # theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust=1)) +
+    xlab("Condition") +
+    ylab("Predicted target (> 0.5) vs.\ncompetitor (< 0.5) selections") +
+    ylim(0,1) +
+    theme(text = element_text(size=20)) +
+    theme(panel.background = element_rect(color="white"))
+  
+  # ggsave(here("writing","2020_Journal","img","model-comparison.pdf"), height=6, width=12)
+```
+
+
+```{r}
+df_model_sim %>% 
+  mutate_at(vars(clicked), funs((clicked-0.5)*2)) %>% 
+ggplot(., aes(x=condition, 
+                  y=clicked,
+                  color=data_type,
+                  fill=data_type)) +
+    facet_wrap(~contr_present, nrow=2) +
+  # geom_hline(yintercept=0, linetype="solid", color="grey", size=.5) +
+    stat_summary(fun = "mean", 
+                 geom = "bar",
+                 width = 0.8,
+                 position = position_dodge(width = 0.8)) +
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "errorbar",
+                 color = "black",
+                 position = position_dodge(width = 0.8),
+                 size = .3,
+                 width = 0.3) +
+    theme(legend.position = "right") +
+    theme(strip.background = element_rect(color="black", 
+                                          fill="white", 
+                                          size=1.5,
+                                          linetype="solid"),
+          strip.text.x = element_text(margin = margin(3,0,3,0, "pt"))
+    ) +
+    scale_alpha_manual(values=c(1, 0.5)) +
+    scale_fill_manual(name="Model",values=c("#faf2be","#faca82","#fad4be","#fa8e82","#82b2fa")) +
+    scale_color_manual(name="Model",values=c("#faf2be","#faca82","#fad4be","#fa8e82","#82b2fa")) +
+    # theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust=1)) +
+    xlab("Condition") +
+    ylab("Predicted target preference") +
+    ylim(-1,1) +
+    theme(text = element_text(size=20)) +
+    theme(panel.background = element_rect(color="white"))
+  
+  ggsave(here("writing","2020_Journal","img","model-comparison-pref.pdf"), height=6, width=12)
+```
+
+
+```{r}
+  ggplot(df_model_sim, aes(x=condition, 
+                  y=clicked,
+                  fill=data_type,
+                  alpha=contr_present)) +
+    # facet_wrap(~contr_present, nrow=2) +
+    stat_summary(fun = "mean", 
+                 geom = "bar",
+                 width = 0.8,
+                 position = position_dodge(width = 0.8)) +
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "errorbar",
+                 color = "black",
+                 position = position_dodge(width = 0.8),
+                 size = .3,
+                 width = 0.3) +
+    theme(legend.position = "top") +
+    theme(strip.background = element_rect(color="black", 
+                                          fill="white", 
+                                          size=1.5,
+                                          linetype="solid"),
+          strip.text.x = element_text(margin = margin(3,0,3,0, "pt"))
+    ) +
+    scale_alpha_manual(values=c(1, 0.5)) +
+    # scale_fill_identity() +
+    # theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust=1)) +
+    geom_hline(yintercept=1/2, linetype="dashed", color="grey", size=1.5) +
+    xlab("Condition") +
+    ylab("Predicted\ntarget preference") +
+    ylim(0,1) +
+    theme(text = element_text(size=20))
+```
+
+
+```{r contr inference strength or boost}
+df_model_sim %>% 
+  mutate(new_clicked = case_when(
+    contr_present == "contrast absent" ~ (clicked*(-1)),
+    contr_present == "contrast present" ~ clicked,
+    TRUE ~ 42
+  )) %>% 
+  # view()
+  ggplot(., aes(x=condition, 
+                  y=new_clicked,
+                  fill=data_type,
+                  color=data_type)) +
+    # facet_wrap(~contr_present, nrow=2) +
+    # geom_point(position = position_dodge(width = 0.8)) +
+    stat_summary(fun = "mean", 
+                 geom = "bar",
+                 width = 0.8,
+                 position = position_dodge(width = 0.8)) +
+    # stat_summary(fun.data = "mean_cl_boot",
+    #              geom = "errorbar",
+    #              color = "black",
+    #              position = position_dodge(width = 0.8),
+    #              size = .3,
+    #              width = 0.3) +
+    theme(legend.position = "top") +
+    theme(strip.background = element_rect(color="black", 
+                                          fill="white", 
+                                          size=1.5,
+                                          linetype="solid"),
+          strip.text.x = element_text(margin = margin(3,0,3,0, "pt"))
+    ) +
+    scale_alpha_manual(values=c(1, 0.5)) +
+    # scale_fill_identity() +
+    # theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust=1)) +
+    geom_hline(yintercept=1/2, linetype="dashed", color="grey", size=1.5) +
+    xlab("Condition") +
+    ylab("Predicted\ntarget preference") +
+    # ylim(0,1) +
+    theme(text = element_text(size=20))
+```
+

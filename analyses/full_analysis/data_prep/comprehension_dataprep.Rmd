@@ -1,0 +1,277 @@
+---
+title: "CI: IDT analysis"
+# output: html_document
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Data preparation
+
+```{r data import, include=FALSE}
+library(tidyverse)
+library(here)
+
+df_noprior_preadj = read_csv(here("data","03_comprehension","02_main","02_IDTfollowup","data.csv")) %>% 
+  bind_rows(read_csv(here("data","03_comprehension","02_main","01_IDT","data.csv"))) %>%
+  mutate(preadj_selection = T) %>% 
+  mutate(prior = "none") %>% 
+  mutate(failed_question = NA) %>% 
+  mutate_at(vars(reaction_time1, reaction_time2, reaction_time_prior), funs(as.numeric(.)))
+
+df_noprior_nopreadj = read_csv(here("data","03_comprehension","02_main","03_IDTnoprior","data.csv")) %>%
+  mutate(preadj_selection = F) %>% 
+  mutate(prior = "none") %>% 
+  mutate(failed_question = NA) %>% 
+  mutate_at(vars(anon_worker_id), funs(as.character(.))) %>% 
+  mutate_at(vars(reaction_time1, reaction_time2), funs(as.numeric(.)))
+
+df_prior_preadj = read_csv(here("data","03_comprehension","02_main","0304_IDTpriormanipulation","data.csv")) %>% 
+  mutate(preadj_selection = T) %>% 
+  mutate_at(vars(reaction_time1, reaction_time2, reaction_time_prior), funs(as.numeric(.)))
+
+df_prior_nopreadj = read_csv(here("data","03_comprehension","02_main","0506_0304_noprevsel","data.csv")) %>% 
+  mutate(preadj_selection = F) %>% 
+  mutate_at(vars(reaction_time1, reaction_time2), funs(as.numeric(.)))
+
+df_import = df_noprior_preadj %>%
+  bind_rows(df_noprior_nopreadj) %>%
+  bind_rows(df_prior_preadj) %>%
+  bind_rows(df_prior_nopreadj) %>%
+  # exclude test
+  # weird filter property will exclude NAs
+  filter(is.na(comments) | !str_detect(comments,"TEST"))
+```
+
+```{r import typicality data, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+typ_data = read_csv(here::here("data","01_norming","02_main","typicality_data.csv")) %>% 
+  filter(!(col_type=="green_corn" | col_type=="white_carrot" | type=="snowman")) %>% 
+  mutate(bin_typ=ifelse(typicality>50,"typical","atypical")) %>% 
+  select(col_type, bin_typ)
+
+```
+
+## Data cleaning
+
+```{r prepare df for main trial data, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+
+df_main = df_import %>% 
+  # select main trials
+  filter(trial_type == "critical" | trial_type == "filler") %>% 
+  # select columns relevant for main trials
+  select(prior,preadj_selection,trial_type,refObject,context_id,condition,
+         utterance,utterance_cat,target,comp,contrast,distractor,pos1,pos2,pos3,pos4,
+         selectedItem_prior,selectedItem1,selectedItem2,
+         reaction_time_prior,reaction_time1,reaction_time2,
+         anon_worker_id,trial_number,languages,betwsubj, failed_question,HitCorrect) %>% 
+  # encode which contexts have a contrast
+  mutate(contrast_present = str_detect(condition,"p")) %>% 
+  # split data into trial halves per participants
+  mutate(trial_half = ifelse(trial_number < max(trial_number)/2, 
+                             "first half", "second half")) %>% 
+  # import binary typicality
+  left_join(typ_data, by=c("target"="col_type")) %>% 
+  rename(target_typ_bin=bin_typ) %>%
+  left_join(typ_data, by=c("comp"="col_type")) %>% 
+  rename(comp_typ_bin=bin_typ) %>%
+  left_join(typ_data, by=c("contrast"="col_type")) %>% 
+  rename(contrast_typ_bin=bin_typ) %>%
+  left_join(typ_data, by=c("distractor"="col_type")) %>% 
+  rename(distractor_typ_bin=bin_typ) %>%
+  # reformat df 
+  gather(timeStep_selec,selectedItem,selectedItem_prior,selectedItem1,selectedItem2) %>%
+  # remove selectedItem2 rows when referring expression was unmodified
+  # because this is always NaN
+  filter(!(timeStep_selec == "selectedItem2" & utterance_cat == "unmodified")) %>% 
+  # same for prior selections when there were none
+  filter(!(timeStep_selec == "selectedItem_prior" & !preadj_selection)) %>% 
+  # if there were multiple selections (which are separated by commas),
+  # select the last one
+  mutate(lastSelectedItem = sapply(str_split(selectedItem,","),tail,1)) %>% 
+  # mark the ones that had multiple selections
+  mutate(mult_selec = str_detect(selectedItem, ",")) %>% 
+  # encode the clicked type of the object
+  mutate(clickedType = case_when(
+    lastSelectedItem == target ~ "target",
+    lastSelectedItem == comp ~ "comp",
+    lastSelectedItem == contrast  ~ "contrast/distractor",
+    lastSelectedItem == distractor ~ "distractor",
+    TRUE ~ "other"
+  )) %>%
+  mutate(clickedType_diff = case_when(
+              (contrast_present & clickedType == "contrast/distractor") ~ "contrast",
+              (!contrast_present & clickedType == "contrast/distractor") ~ "distractor1",
+              (!contrast_present & clickedType == "distractor") ~ "distractor2",
+              TRUE ~ clickedType)) %>%
+  mutate_at(vars(clickedType_diff),
+            funs(factor(., levels=c("target", "comp", "contrast",
+                                    "distractor1", "distractor", "distractor2")))) %>% 
+  
+  # now add negative samples to be able to calculate proportion of selection for each item:
+  # for calculation of proportion and CIs, duplicate each trial such that each row 
+  # represents an object the participant could have clicked on (4 rows for the 4 objects)
+  slice(rep(1:n(), each = 4)) %>%
+  # each row receives now one out of the 4 objects labels, 
+  # such that the 4 rows for this trial are identical except for this label
+  mutate(obj_in_display = rep_len(c("target", "comp", "contrast/distractor", "distractor"), 
+                                  length.out=n())) %>% 
+  # create a one-hot vector that is 1 for the object that was actually clicked on
+  mutate(clicked = ifelse(clickedType==obj_in_display,1,0)) %>% 
+  # add column with informative contrast/distractor label and order it
+  mutate_at(vars(obj_in_display), funs(as.character(.))) %>%
+  mutate(obj_in_display_diff = case_when(
+              (contrast_present & obj_in_display == "contrast/distractor") ~ "contrast",
+              (!contrast_present & obj_in_display == "contrast/distractor") ~ "distractor1",
+              (!contrast_present & obj_in_display == "distractor") ~ "distractor2",
+              TRUE ~ obj_in_display)) %>%
+  # order them according to relevance for later plotting
+  mutate_at(vars(obj_in_display_diff),
+            funs(factor(., levels=c("target", "comp", "contrast",
+                                    "distractor1", "distractor", "distractor2")))) %>% 
+  mutate_at(vars(obj_in_display, clickedType),
+            funs(factor(., levels=c("target", "comp", "contrast/distractor", "distractor"))))
+
+```
+
+
+```{r determine avg time spent}
+df_noprior_nopreadj %>% 
+  distinct(anon_worker_id, timeSpent) %>% 
+  mutate(avg = mean(timeSpent)) %>% 
+  mutate(median = median(round(timeSpent))) 
+```
+
+
+## Participant exclusions
+
+
+```{r participant exclusion, message=FALSE, include=FALSE}
+
+df_main %>% 
+  select(anon_worker_id, preadj_selection, prior) %>% 
+  group_by(anon_worker_id, prior) %>%
+  summarize(all_trials = n()) %>%
+  ungroup() %>% 
+  mutate_at(vars(all_trials), funs(as.character(.))) %>% 
+  ggplot(., aes(x=all_trials, fill=prior)) +
+    geom_bar(stat="count")
+
+# to identify multiple submissions
+mult_subm = df_main %>% 
+  group_by(anon_worker_id, preadj_selection, prior) %>%
+  summarize(all_trials = n()) %>%
+  ungroup() %>%
+  mutate(mult_subm = case_when(
+    preadj_selection & prior == "none" ~ all_trials > 560,
+    !preadj_selection & prior == "none" ~ all_trials > 340,
+    preadj_selection & prior != "none" ~ all_trials > 600,
+    TRUE ~ all_trials > 380
+  )) %>% 
+  filter(mult_subm)
+mult_subm_list = as.list(mult_subm['anon_worker_id'])$anon_worker_id
+
+# to identify incomplete submissions
+incompl_subm = df_main %>% 
+  group_by(anon_worker_id, preadj_selection, prior) %>%
+  summarize(all_trials = n()) %>%
+  ungroup() %>%
+  mutate(incompl_subm = case_when(
+    preadj_selection & prior == "none" ~ all_trials < 560,
+    !preadj_selection & prior == "none" ~ all_trials < 340,
+    preadj_selection & prior != "none" ~ all_trials < 600,
+    TRUE ~ all_trials < 380
+  )) %>% 
+  filter(incompl_subm)
+incompl_subm_list = as.list(incompl_subm['anon_worker_id'])$anon_worker_id
+
+# goal: identify workers who made more than 20% mistakes in the 55 trials 
+# (i.e., selected the wrong final object more than 11 times)
+errorcheck = df_main %>% 
+  filter(clicked == 1,
+         # final object click is in selectedItem1 when the utterance is unmodified, 
+         # otherwise in selectedItem2
+         (timeStep_selec == "selectedItem2" & utterance_cat == "modified") | 
+           (timeStep_selec == "selectedItem1" & utterance_cat == "unmodified")) %>%
+  # the participant made a mistake when the clickedType is not the same as the logged one
+  mutate(error = !str_detect(clickedType, refObject)) %>% 
+  group_by(anon_worker_id) %>%
+  summarize(all_errors = sum(error)) %>%
+  ungroup() %>%
+  filter(all_errors > 11)
+# overview on errors per participant
+error_list = as.list(errorcheck['anon_worker_id'])$anon_worker_id
+
+# typo spellings of "english"
+engl_spellings = c("english|englis|eng|engilsh|englsh|en|engliah|englis|englsig|english language|enghlish|enlgish|engllish|englih|englsih|englisj|engliish|engrish|enligh|engllish|ebglish|engliosh")
+
+# Exclusions
+df = df_main %>%
+  # exclude if hit was reportedly done incorrectly or 
+  # participant was confused
+  filter(HitCorrect==1) %>%
+  # exclude incomplete submissions
+  filter(!(anon_worker_id %in% incompl_subm_list)) %>% 
+  # exclude multiple submissions
+  filter(!(anon_worker_id %in% mult_subm_list)) %>% 
+  # if native language is not english
+  mutate_at(vars(languages), funs(str_to_lower(.))) %>% 
+  filter(str_detect(languages, engl_spellings)) %>% 
+  # exclude participants with too many errors
+  filter(!(anon_worker_id %in% error_list))
+
+
+# EXCLUSIONS
+
+# before exclusions (631)
+length(unique(df_import$anon_worker_id))
+# after exclusions (587)
+length(unique(df$anon_worker_id))
+
+# before exclusions (238); after exclusions (225)
+length(unique(filter(df_import, preadj_selection & prior == "none")$anon_worker_id))
+length(unique(filter(df, preadj_selection & prior == "none")$anon_worker_id))
+# atypical (114); typical (111)
+table(filter(df, preadj_selection & prior == "none")$betwsubj)/560
+
+# before exclusions (79); after exclusions (75)
+length(unique(filter(df_import, !preadj_selection & prior == "none")$anon_worker_id))
+length(unique(filter(df, !preadj_selection & prior == "none")$anon_worker_id))
+# atypical (38); typical (37)
+table(filter(df, !preadj_selection & prior == "none")$betwsubj)/340
+
+# before exclusions (158); after exclusions (139)
+length(unique(filter(df_import, preadj_selection & prior != "none")$anon_worker_id))
+length(unique(filter(df, preadj_selection & prior != "none")$anon_worker_id))
+# atypical + normal (37); typical + normal (32)
+# atypical + weird (35); typical + weird (35)
+table(filter(df, preadj_selection & prior != "none")$betwsubj,
+      filter(df, preadj_selection & prior != "none")$prior)/600
+
+# before exclusions (156); after exclusions (144)
+length(unique(filter(df_import, !preadj_selection & prior != "none")$anon_worker_id))
+length(unique(filter(df, !preadj_selection & prior != "none")$anon_worker_id))
+# atypical + normal (36); typical + normal (37)
+# atypical + weird (37); typical + weird (34)
+table(filter(df, !preadj_selection & prior != "none")$betwsubj,
+      filter(df, !preadj_selection & prior != "none")$prior)/380
+
+# preexclusion condition split
+df_dist = df_import %>% 
+  distinct(anon_worker_id, preadj_selection, prior, betwsubj)
+table(filter(df_dist, !preadj_selection & prior != "none")$betwsubj,
+      filter(df_dist, !preadj_selection & prior != "none")$prior)
+table(filter(df_dist, !preadj_selection & prior == "none")$betwsubj)
+
+```
+
+```{r csv for plotting}
+
+df %>% 
+  write_csv(., here("analyses", "full_analysis", "data", "comprehension.csv"))
+
+```
+
+

@@ -1,0 +1,712 @@
+---
+title: "CI: production data prep"
+# output: html_document
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+# Data preparation
+
+```{r data import, include=FALSE}
+# library(cowplot)
+library(tidyverse)
+library(here)
+
+theme_set(theme_bw())
+
+df_import1 = read_csv(here("data","02_production","02_main","01_refgame","data1.csv"))
+
+df_import2 = read_csv(here("data","02_production","02_main","01_refgame","data2.csv"))
+
+df_import = read_csv(here("data","02_production","02_main","02_refgame_followup","data.csv")) %>%
+  bind_rows(df_import1) %>% 
+  bind_rows(df_import2) %>% 
+  # exclude test
+  # weird filter property will exclude NAs
+  filter(is.na(comments) | !str_detect(comments,"TEST")) %>% 
+  filter(!str_detect(conversation, "elisakreiss")) %>% 
+  # only select speakers
+  filter(glb_variant == 1) %>% 
+  mutate(target_item = str_c(targetcompColor, targetType, sep="_")) %>% 
+  mutate(comp_item = str_c(targetcompColor, compType, sep="_")) %>% 
+  mutate(contrast_item = str_c(contrastColor, contrastType, sep="_")) %>% 
+  mutate(distractor_item = str_c(distractorColor, distractorType, sep="_"))
+```
+
+## Participant exclusions
+
+Exclusions are based on the speaker, not on the listener.
+
+We excluded participants who indicated that they did the Hit incorrectly or were confused (7), who indicated that they had a native language other than English (4), who gave more then 20% erroneous responses (2) and who did the Hit multiple times (1). Overall, we excluded 14 people. 33 participants per condition, i.e., 66 in total, remain.
+
+```{r participant exclusion, message=FALSE, include=FALSE}
+
+# to identify multiple submissions
+mult_subm = df_import %>% 
+  group_by(anon_worker_id) %>%
+  summarize(all_trials = n()) %>%
+  ungroup() %>%
+  filter(all_trials > 60)
+mult_subm_list = as.list(mult_subm['anon_worker_id'])$anon_worker_id
+
+# to identify incomplete submissions
+incompl_subm = df_import %>% 
+  group_by(anon_worker_id) %>%
+  summarize(all_trials = n()) %>%
+  ungroup() %>%
+  filter(all_trials < 60)
+incompl_subm_list = as.list(incompl_subm['anon_worker_id'])$anon_worker_id
+
+# typo spellings of "english"
+engl_spellings = c("english|englis|eng|engilsh|englsh|en|engliah|englis|englsig|english language|enghlish|enlgish|engllish|englih|englsih|englisj|engliish|engrish|enligh|engllish|ebglish|engliosh")
+
+# Exclusions
+df_preclean = df_import %>%
+  # exclude incomplete submissions
+  filter(!(anon_worker_id %in% incompl_subm_list)) %>% 
+  # exclude multiple submissions
+  filter(!(anon_worker_id %in% mult_subm_list)) %>% 
+  # if native language is not english
+  mutate_at(vars(languages), funs(str_to_lower(.))) %>% 
+  filter(str_detect(languages, engl_spellings))
+
+# before exclusions (141 speakers, 282 dyads)
+length(unique(df_import$anon_worker_id))
+# after exclusions (137)
+length(unique(df_preclean$anon_worker_id))
+```
+
+
+## Data cleaning
+
+
+```{r exclude taboo players}
+
+df_raw = df_preclean %>%
+  select(intended_target, condition, speaker_chat, trial_number, anon_worker_id, target_item, targetType, comp_item, compType, contrast_item, distractor_item, selected_image)  %>% 
+  mutate(refexp = speaker_chat) %>% 
+  # TODO: filter out all \n
+  mutate_at(vars(refexp), funs(str_to_lower(.)))
+
+types = c("banana|banaa|bananna|nana|banan|bannaa|ban|broccoli|broc|brcolli|carrot|carro|carot|cararot|c arrot|carraot|carr|corb|con|maize|corn|korn|tomato|tamato|tom|tamayo|egg|e gg|strawberry|straw|str|star|berry|lettuce|letc|lettus|let|lett|lectuce|lecture|cabbage|cabb|cabage|cababage|swan|goose|duck|pumpkin|pump|punmkn|pum|starw")
+
+taboo_player = df_raw %>% 
+  filter(!str_detect(refexp, types)) %>%
+  select(anon_worker_id, refexp) %>%
+  group_by(anon_worker_id) %>%
+  mutate(all_trials = n()) %>%
+  ungroup() %>%
+  filter(all_trials >= 30)
+taboo_player_list = as.list(taboo_player['anon_worker_id'])$anon_worker_id
+
+df_clean = df_raw %>%
+  filter(!(anon_worker_id %in% taboo_player_list))
+
+# number of participants before taboo player exclusion (137)
+length(unique(df_preclean$anon_worker_id))
+# number of participants after exclusion (111)
+length(unique(df_clean$anon_worker_id))
+
+```
+
+
+```{r}
+
+# overall 6660 messages
+# nrow(df_clean)
+# 2664 critical messages
+# df_clean %>%
+#   filter(intended_target == "target" | intended_target == "comp") %>%
+#   nrow()
+
+
+df_singleTurnUtts = df_clean %>% 
+  # filter everything with longer conversations (corrections) on speaker side
+  filter(!str_detect(speaker_chat, "\\|\\|\\|"))
+
+# 6521 (97.9% of all messages only contain a single speaker message)
+# nrow(df_singleTurnUtts)
+# 2602 (97.7% of all critical messages only contain a single speaker message)
+# df_singleTurnUtts %>%
+#   filter(intended_target == "target" | intended_target == "comp") %>%
+#   nrow()
+
+```
+
+
+```{r create main df, message=FALSE, include=FALSE}
+# create main df
+df = df_singleTurnUtts  %>% 
+  # contrast presence encoding
+  mutate(contrast_present = ifelse(str_detect(condition, "p"), "contrast", "no contrast")) %>% 
+  # exclude wrong selections
+  mutate(correct_sel = case_when(
+    intended_target == "target" ~ str_detect(selected_image, target_item),
+    intended_target == "firstDistractor" ~ str_detect(selected_image, comp_item),
+    intended_target == "secondDistractor" ~ str_detect(selected_image, contrast_item),
+    intended_target == "thirdDistractor" ~ str_detect(selected_image, distractor_item),
+    TRUE ~ NA
+  )) %>%
+  filter(correct_sel) %>% 
+  # rename "firstDistractor" to "competitor"
+  mutate_at(vars(intended_target), funs(ifelse(. == "firstDistractor", "competitor", .)))
+
+# # 6521
+# nrow(df_singleTurnUtts)
+# # 2602
+# df_singleTurnUtts %>%
+#   filter(intended_target == "target" | intended_target == "comp") %>%
+#   nrow()
+# 
+# # 6264 (96%)
+# nrow(df)
+# # 2485 (95.5% have correct selections on the critical trials)
+# df %>%
+#   filter(intended_target == "target" | intended_target == "comp") %>%
+#   nrow()
+```
+
+## Utterance categorization
+
+```{r utterance categorization}
+
+color = c("yellow|yrllow|yell|^y |red|^res |ref|pink|^or |orange|orng|ornage|orang|orane|oragne|white|whtie|green|gree|grn|grnee|gr |greeen|gold")
+types = c("banana|banaa|bananna|nana|banan|bannaa|ban|broccoli|broc|brcolli|carrot|carro|carot|cararot|c arrot|carraot|carr|corb|con|maize|corn|korn|tomato|tamato|tom|tamayo|egg|e gg|strawberry|straw|str|star|berry|lettuce|letc|lettus|let|lett|lectuce|lecture|cabbage|cabb|cabage|cababage|swan|goose|duck|pumpkin|pump|punmkn|pum|starw")
+# type_null = c("thing|one")
+other_types = c("lemon|bird|brid|bercol|brecol|vegetable|fruit|ruit|cauliflower|califlower|cauli|caul|circle|tree|onion|animal|halloween|mushroom|mater|veg|bugs bunny|apple|squash|mango|salad|clipart|swims in|cheese|geese|sphere|patty|garlic|wap c|^matoe|^hi$|same as before|breakfast")
+other_mods = c("original|normal|natural|natural color|un-natural|with color|no color|without color|with the correct color|off color|original color|regular|weird|not red|seasick|dyed|small|round|supposed to be|big|ugly|different color|different colour|no banana|not|fourth of july|tundra|reg|you can make salad with it|green leafs at the end|oblong|shaped like|bottom right|bottom left|botom left|botom right|top left|top right|left top|rabbits eat them|geese|inside being yellow with outside green|albino|marijuana")
+
+df_main = df %>% 
+  filter((refexp != "bottom right") & (refexp != "botom left") & (refexp != "bottom left")) %>% 
+  mutate(ColorMention = ifelse(str_detect(refexp,color), 1, 0)) %>% 
+  mutate(OtherModMention = ifelse(str_detect(refexp,other_mods), 1, 0)) %>% 
+  mutate(TypeMention = ifelse(str_detect(refexp,types), 1, 0)) %>% 
+  mutate(OtherTypeMention = ifelse(str_detect(refexp,other_types), 1, 0)) %>% 
+  mutate(UtteranceCat = case_when(
+    (OtherModMention == 1) | (OtherTypeMention == 1) ~ "other",
+    (ColorMention == 1) & (TypeMention == 1) ~ "colorType",
+    (ColorMention == 1) ~ "colorOnly",
+    (TypeMention == 1) ~ "typeOnly",
+    TRUE ~ "whatisthis?"
+  ))
+
+table(filter(df_main, intended_target == "target" | intended_target == "comp")$UtteranceCat)
+
+```
+
+```{r create full df}
+# duplicate the data points for reference to competitor in contrast absent conditions
+df_nocontrdupl = df_main %>% 
+  # select all critical trials with no contrast present 
+  filter((intended_target == "target") & (contrast_present == "no contrast")) %>%
+  # rename the intended target as "competitor" and switch condition names
+  mutate_at(vars(intended_target), funs(ifelse(. == "target", "competitor", "FIRE"))) %>%
+  mutate_at(vars(condition), funs(case_when(
+    .=="atn" ~ "tan",
+    .=="tan" ~ "atn",
+    TRUE ~ .
+  ))) %>% 
+  # switch target & comp type and item names
+  rename(targetType_new = compType,
+         compType_new = targetType,
+         target_item_new = comp_item,
+         comp_item_new = target_item) %>% 
+  rename(targetType = targetType_new,
+         compType = compType_new,
+         target_item = target_item_new,
+         comp_item = comp_item_new) %>% 
+  # select modifed columns only to avoid confusion
+  select(condition, intended_target, UtteranceCat, contrast_present, targetType, compType, target_item, comp_item, contrast_item, distractor_item)
+  
+
+df_wdupl = df_main %>% 
+  # add contrast absent duplicates
+  bind_rows(df_nocontrdupl) %>%
+  # select all critial trials
+  filter(intended_target == "competitor" | intended_target == "target") %>%
+  # only select colorType and typeOnly utterances
+  filter(UtteranceCat=="colorType" | UtteranceCat=="typeOnly") %>% 
+  # encode color mention
+  mutate(ColMentioned = ifelse(UtteranceCat=="colorType", 1, 0)) %>%  
+  # encode typicality for target and competitor
+  mutate(target_typ = case_when(
+    (str_sub(condition,1,1) == "t") ~ "typical",
+    (str_sub(condition,1,1) == "a") ~ "atypical",
+    TRUE ~ "FIRE"
+  )) %>% 
+  mutate(comp_typ = case_when(
+    (str_sub(condition,2,2) == "t") ~ "typical",
+    (str_sub(condition,2,2) == "a") ~ "atypical",
+    TRUE ~ "FIRE"
+  )) %>% 
+  # order variables
+  mutate_at(vars(intended_target),
+            funs(factor(., levels=c("target", "competitor")))) %>% 
+  mutate_at(vars(target_typ, comp_typ),
+            funs(factor(., levels=c("typical", "atypical")))) %>% 
+  mutate_at(vars(condition), funs(factor(., levels=c("ttn", "aan", "tan", "atn", "ttp", "aap", "tap", "atp"))))
+
+```
+
+
+# Write data file for model
+
+```{r write data}
+
+df_wdupl %>% 
+  select(intended_target, condition, target_item, targetType, comp_item, compType, contrast_item, distractor_item, UtteranceCat, target_typ, comp_typ) %>% 
+  # write_csv(here("analyses","full_analysis","data","production_forRSA.csv"))
+  write_csv(here("models","03_prodInfRSA_prior","data","emp_production_data.csv"))
+
+```
+
+
+# By condition: modifier production
+
+```{r}
+  
+target_color = "#d55e00" # red
+comp_color = "#009e74"
+
+df_wdupl %>% 
+  ggplot(., aes(x=intended_target, y=ColMentioned, fill=intended_target)) +
+    facet_wrap(~condition, nrow = 2) +
+    # mean
+    stat_summary(fun = "mean",
+                 geom = "bar",
+                 width = 0.6,
+                 position = position_dodge(width = 0.6)) +
+    # error bars 
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "errorbar",
+                 color = "black",
+                 size = .3,
+                 width = 0.3,
+                 position = position_dodge(width = 0.6)) +
+    xlab("Object to be communicated") +
+    ylab("Proportion of modifier mention") +
+    scale_fill_manual(values=c(target_color, comp_color)) +
+    # theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+    theme(legend.position = "none") +
+    theme(strip.background = element_rect(color="black", 
+                                          fill="white", 
+                                          size=1,
+                                          linetype="solid"),
+          strip.text.x = element_text(margin = margin(4,0,4,0, "pt"))
+          )
+
+df_wdupl %>% 
+  mutate(referent_typ = case_when(
+             intended_target == "target" ~ target_typ,
+             T ~ comp_typ)) %>% 
+  ggplot(., aes(x=intended_target, 
+                y=ColMentioned, 
+                fill=referent_typ)) +
+    facet_wrap(~condition, nrow = 2) +
+    # mean
+    stat_summary(fun = "mean",
+                 geom = "bar",
+                 width = 0.6,
+                 position = position_dodge(width = 0.6)) +
+    # error bars 
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "errorbar",
+                 color = "black",
+                 size = .3,
+                 width = 0.2,
+                 position = position_dodge(width = 0.6)) +
+    xlab("Object to be communicated") +
+    ylab("Proportion of modifier mention") +
+    scale_fill_manual(values=c("#d1b3c4", "#856678")) +
+    # theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+    theme(legend.position = "none") +
+    theme(
+        panel.border = element_rect(colour = "black", fill=NA),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black")) +
+    theme(strip.background = element_rect(color="black", 
+                                          fill="white", 
+                                          size=1,
+                                          linetype="solid"),
+          strip.text.x = element_text(margin = margin(4,0,4,0, "pt"))
+          )
+
+ggsave(here("analyses","full_analysis","graphs","production_mainresult_typcol.png"), height=4, width=7)
+```
+
+
+# Statistical analysis
+
+```{r stat analysis load libraries, eval=FALSE, include=FALSE}
+library(brms)
+options(mc.cores = parallel::detectCores())
+```
+
+
+```{r stat analysis preregistered, eval=FALSE, include=FALSE}
+
+df_stats = df_main %>% 
+  # only select relevant trials
+  filter(intended_target == "target" | intended_target == "competitor") %>%
+  # only consider utterances of category (ADJ) + NOUN
+  filter(UtteranceCat=="colorType" | UtteranceCat=="typeOnly") %>% 
+  # binary code utterance type and condition
+  mutate(ColMentioned = ifelse(UtteranceCat=="colorType", 1, 0)) %>%  
+  # contrast present if referent is the target and there is a contrast
+  mutate(contrast_present = case_when(
+    (intended_target == "target") & str_detect(condition, "p") ~ 1,
+    TRUE ~ 0)) %>% 
+  mutate(referent_typ_bin = case_when(
+    (intended_target == "target") & (str_sub(condition,1,1) == "t") ~ 0,
+    (intended_target == "target") & (str_sub(condition,1,1) == "a") ~ 1,
+    (intended_target == "competitor") & (str_sub(condition,2,2) == "t") ~ 0,
+    TRUE ~ 1
+  )) %>% 
+  mutate(nonreferent_typ_bin = case_when(
+    (intended_target == "target") & (str_sub(condition,2,2) == "t") ~ 0,
+    (intended_target == "target") & (str_sub(condition,2,2) == "a") ~ 1,
+    (intended_target == "competitor") & (str_sub(condition,1,1) == "t") ~ 0,
+    TRUE ~ 1
+  )) %>% 
+  mutate(trial_half = ifelse(trial_number<=15, 0, 1)) %>% 
+  # center
+  mutate(c_referent_typ_bin = referent_typ_bin-mean(referent_typ_bin)) %>%
+  mutate(c_nonreferent_typ_bin = nonreferent_typ_bin-mean(nonreferent_typ_bin)) %>%
+  mutate(c_contrast = contrast_present-mean(contrast_present)) %>% 
+  mutate(c_trial_half = trial_half-mean(trial_half))
+
+model_prereg = brm(
+  formula = ColMentioned ~ c_contrast + c_nonreferent_typ_bin + c_referent_typ_bin + (1|anon_worker_id),
+  data = df_stats,
+  seed = 1702,
+  family = 'bernoulli',
+  iter = 4000
+)
+
+# main effect of contrast presence and referent typicality
+summary(model_prereg)
+
+```
+
+
+
+# Supplementary analyses
+
+## By item: modifier production
+
+```{r by item}
+
+df_plot_byPartItem = df_main  %>% 
+  # select all critical trials with (color)Type utterances
+  # filter(intended_target == "target" | intended_target == "comp") %>%
+  filter(intended_target == "target" | intended_target == "comp") %>%
+  filter(UtteranceCat=="colorType" | UtteranceCat=="typeOnly") %>%
+  # determine referent
+  mutate(referent = case_when(
+    intended_target == "target" ~ target_item,
+    intended_target == "competitor" ~ comp_item,
+    intended_target == "secondDistractor" ~ contrast_item,
+    intended_target == "thirdDistractor" ~ distractor_item,
+    TRUE ~ "FIRE"
+  )) %>% 
+  select(referent, condition, refexp, UtteranceCat, trial_number, anon_worker_id, intended_target) %>% 
+  separate(referent, c("color", "type")) %>% 
+  # encode color mention
+  mutate(ColMentioned = ifelse(UtteranceCat=="colorType", 1, 0)) %>% 
+  # create collapsed context conditions (collapsed over comp typicality)
+  mutate(coll_cond = case_when(
+    str_detect(condition, "p") & intended_target == "target" & str_sub(condition,1,1) == "t" ~ "contrast_typ",
+    str_detect(condition, "p") & intended_target == "target" & str_sub(condition,1,1) == "a" ~ "contrast_atyp",
+    str_sub(condition,1,1) == "a" ~ "atyp",
+    str_sub(condition,1,1) == "t" ~ "typ",
+    TRUE ~ "FIRE"
+  )) %>% 
+  mutate_at(vars(coll_cond),
+            funs(factor(., levels=c("contrast_atyp", "contrast_typ", "atyp", "typ"))))
+
+ggplot(df_plot_byPartItem, aes(x=coll_cond, y=ColMentioned)) +
+  facet_wrap(~type, nrow=2) +
+  stat_summary(fun = "mean",
+               geom = "bar",
+               position = position_dodge(width = 0.9)) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "linerange",
+               color = "darkgrey",
+               position = position_dodge(width = 0.9)) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(legend.position = "none") +
+  xlab("Collapsed condition") +
+  ylab("Proportion of modifier production")
+
+ggsave(here("analyses","full_analysis","graphs","production_byitem.png"), height=4, width=7)
+
+```
+
+## By participant: modifier production
+
+```{r target intended target workers}
+
+df_plot_byPartItem %>% 
+  group_by(coll_cond, anon_worker_id) %>% 
+  summarize(mean_colmen = mean(ColMentioned)) %>% 
+  ungroup() %>% 
+  ggplot(., aes(x=coll_cond, y=mean_colmen, color=coll_cond)) +
+    geom_violin() +
+    # geom_point(alpha = 0.1, 
+    #            color="black", 
+    #            position = position_jitter(height = 0, width = 0.1)) +
+    stat_summary(fun = "mean",
+                 geom = "point",
+                 size = 4) +
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "linerange",
+                 position = position_dodge(width = 0.9)) +
+    theme(legend.position = "none") +
+    xlab("Collapsed condition") +
+    ylab("Average proportion of color mention\nfor each participant")
+
+ggsave(here("analyses","full_analysis","graphs","production_byworker.png"), height=4, width=6)
+  
+```
+
+## Multiple turn speaker message analysis
+
+```{r long conversations}
+
+# (Self-)Correction:
+  # "pumpkin|||tomato|||\n|||\nsorry Im blind lol"
+  # "egg|||white egg sorry"
+  # "yellow vegetable|||i mean red sorry about that"
+  # "carrto|||\ncarrot*"
+# Meta-conversation:
+  # "Comon. We got this |||Orange lettuce"
+  # "Hello!|||\nPick the green carrot"
+# but there are also cases where it looks like an erroneous message follow-up such as just sending a space: " "
+
+df_corrections = df_raw %>% 
+  # filter everything with longer conversations (corrections) on speaker side
+  filter(str_detect(speaker_chat, "\\|\\|\\|"))
+
+# 212 (2.58% of all messages contain long exchanges, i.e., speaker's corrections/additions, and are excluded from the main analysis)
+nrow(df_corrections)
+```
+
+## Color-Type order analysis
+
+```{r }
+ df_colorFirst = df_main %>% 
+  # was color mentioned first when color and type were used for reference?
+  mutate(colorPos = as.data.frame(str_locate(refexp, color))$start) %>% 
+  mutate(typePos = as.data.frame(str_locate(refexp, types))$start) %>% 
+  mutate(colorFirst = colorPos < typePos) %>% 
+  select(-colorPos, -typePos)
+
+# proportion of color-second messages overall: 1.86%
+# higher for contrast present than absent conditions
+table(df_colorFirst$colorFirst)
+df_colorFirst %>% 
+  select(colorFirst, condition) %>% 
+  filter(!is.na(colorFirst)) %>% 
+  group_by(condition) %>% 
+  summarize(prop_postcolor = 1-(sum(colorFirst)/n())) %>% 
+  ungroup() %>% 
+  arrange(-prop_postcolor)
+table(df_colorFirst$colorFirst, df_colorFirst$condition)
+
+```
+
+## Utterance categorization inspection
+
+```{r check utterance categorization}
+
+df_main %>%
+  select(anon_worker_id, refexp, UtteranceCat, condition) %>%
+  filter(UtteranceCat == "other") %>%
+  view()
+
+df_main %>%
+  filter(UtteranceCat == "other") %>%
+  group_by(anon_worker_id) %>%
+  summarize(n = n()) %>%
+  ungroup() %>%
+  view()
+
+```
+
+#### Identity of "other" utterances
+
+```{r identity of 'other' utterances}
+# "other" utterances are mainly expressions that include: 
+# cauliflower, lemon, (un)natural, regular, original color, off color (also: bird, with/out color, fruit, vegetable, location such as "bottom right")
+df_main %>%
+  filter(UtteranceCat == "other") %>%
+  view()
+```
+
+
+## How often is each item the referent?
+
+```{r}
+df_ref = df_import %>% 
+  mutate(referent = case_when(
+    intended_target == "target" ~ target_item,
+    intended_target == "firstDistractor" ~ comp_item,
+    intended_target == "secondDistractor" ~ contrast_item,
+    intended_target == "thirdDistractor" ~ distractor_item,
+    TRUE ~ "FIRE"
+  )) %>%
+  select(anon_worker_id, referent, intended_target)
+
+df_ref %>% 
+  # filter(intended_target == "target" | intended_target == "comp") %>% 
+  group_by(anon_worker_id, referent) %>% 
+  summarize(occurrences = n()) %>% 
+  ungroup() %>% 
+  ggplot(., aes(x=occurrences)) +
+    geom_bar(stat="count") +
+    xlab("Number of times each item is a referent\nin each experiment") +
+    ylab("")
+ggsave(here("analyses","full_analysis","graphs","production_itemoccurrence.png"), height=4, width=5)
+
+```
+
+
+#### Modifier production with first item occurrences only
+
+```{r}
+
+df_firstref = df_main %>% 
+  mutate(referent = case_when(
+    intended_target == "target" ~ target_item,
+    intended_target == "competitor" ~ comp_item,
+    intended_target == "secondDistractor" ~ contrast_item,
+    intended_target == "thirdDistractor" ~ distractor_item,
+    TRUE ~ "FIRE"
+  )) %>% 
+  group_by(anon_worker_id, referent, .keep=TRUE) %>% 
+  mutate(counter = 1:n()) %>% 
+  ungroup() %>% 
+  filter(counter == 1)
+
+# duplicate the data points for reference to competitor in contrast absent conditions
+df_nocontrdupl_firstref = df_firstref %>% 
+  # select all critical trials with no contrast present 
+  filter((intended_target == "target") & (contrast_present == "no contrast")) %>%
+  # rename the intended target as "competitor" and switch condition names
+  mutate_at(vars(intended_target), funs(ifelse(. == "target", "competitor", "FIRE"))) %>%
+  mutate_at(vars(condition), funs(case_when(
+    .=="atn" ~ "tan",
+    .=="tan" ~ "atn",
+    TRUE ~ .
+  ))) %>% 
+  # select modifed columns only to avoid confusion
+  select(condition, intended_target, UtteranceCat, contrast_present)
+  
+
+df_wdupl_firstref = df_firstref %>% 
+  # add contrast absent duplicates
+  bind_rows(df_nocontrdupl_firstref) %>%
+  # select all critial trials
+  filter(intended_target == "competitor" | intended_target == "target") %>%
+  # only select colorType and typeOnly utterances
+  filter(UtteranceCat=="colorType" | UtteranceCat=="typeOnly") %>% 
+  # encode color mention
+  mutate(ColMentioned = ifelse(UtteranceCat=="colorType", 1, 0)) %>%  
+  # encode typicality for target and competitor
+  mutate(target_typ = case_when(
+    (str_sub(condition,1,1) == "t") ~ "typical",
+    (str_sub(condition,1,1) == "a") ~ "atypical",
+    TRUE ~ "FIRE"
+  )) %>% 
+  mutate(comp_typ = case_when(
+    (str_sub(condition,2,2) == "t") ~ "typical",
+    (str_sub(condition,2,2) == "a") ~ "atypical",
+    TRUE ~ "FIRE"
+  )) %>% 
+  # order variables
+  mutate_at(vars(intended_target),
+            funs(factor(., levels=c("target", "competitor")))) %>% 
+  mutate_at(vars(target_typ, comp_typ),
+            funs(factor(., levels=c("typical", "atypical")))) %>% 
+  mutate_at(vars(condition), funs(factor(., levels=c("atp", "ttp", "aap", "tap", "atn", "ttn", "aan", "tan"))))
+
+
+df_wdupl_firstref %>% 
+  ggplot(., aes(x=intended_target, y=ColMentioned, fill=intended_target)) +
+    facet_wrap(~condition, nrow = 2) +
+    # mean
+    stat_summary(fun = "mean",
+                 geom = "bar",
+                 width = 0.6,
+                 position = position_dodge(width = 0.6)) +
+    # error bars 
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "errorbar",
+                 color = "black",
+                 size = .3,
+                 width = 0.3,
+                 position = position_dodge(width = 0.6)) +
+    xlab("Item that is being referred to") +
+    ylab("Proportion of modifier use\nfor first ference to item") +
+    scale_fill_manual(values=c(target_color, comp_color)) +
+    # theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+    theme(legend.position = "none") +
+    theme(strip.background = element_rect(color="black", 
+                                          fill="white", 
+                                          size=1,
+                                          linetype="solid"),
+          strip.text.x = element_text(margin = margin(4,0,4,0, "pt"))
+          )
+
+ggsave(here("analyses","full_analysis","graphs","production_firstref.png"), height=4, width=7)
+
+```
+
+
+## Stats convergence issue analysis
+
+```{r stats convergence issue analysis}
+
+# about half the time, color is mentioned
+table(df_stats$ColMentioned)
+
+# there is only a contrast one third of the time, but when there is, color is almost always mentioned (90%), whereas when there's not, bias is towards NOT mentioning color (35% color mentions)
+table(df_stats$contrast_present)
+prop.table(table(df_stats$contrast_present,df_stats$ColMentioned),mar=c(1))
+
+# almost perfectly crossed target and competitor typicality
+table(df_stats$referent_typ_bin,df_stats$nonreferent_typ_bin)
+
+# if we split the data further by whether or not color was mentioned, we see that color is never not mentioned when a contrast is present and the target is typical -- this is likely to create problems for the model
+table(df_stats$referent_typ_bin,df_stats$nonreferent_typ_bin,df_stats$contrast_present,df_stats$ColMentioned)
+
+```
+
+## Recap: Typicality ratings for stimuli
+
+These are the stimuli used as targets and distractors in the study. They were normed according to their nameability and typicality in previous norming studies. We refer to objects with typicality ratings above 50 as *typical*ly colored and below 50 as *atypical*ly colored objects. The colors of the objects between the two categories are counterbalanced, i.e., there as many typical red things as there are atypical red things.
+
+```{r import typicality data, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+typ_data = read_csv(here::here("data","01_norming","02_main","typicality_data.csv")) %>% 
+  filter(!(col_type=="green_corn" | col_type=="white_carrot" | type=="snowman")) %>% 
+  mutate(bin_typ=ifelse(typicality>50,"typical","atypical"))
+
+ggplot(typ_data, aes(x=reorder(col_type,typicality), y=typicality, fill=color)) +
+  geom_point(size=4,
+             color="black",
+             shape=23) +
+  scale_fill_identity() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  xlab("Item") +
+  ylab("Typicality\natypical ------------------ typical")
+
+typ_data_short = typ_data %>% 
+  select(col_type, typicality)
+```
