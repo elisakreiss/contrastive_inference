@@ -128,7 +128,7 @@ ggplot(df_model_sim, aes(x=condition,
   theme(text = element_text(size=20)) +
   theme(panel.background = element_rect(color="white"))
   
-ggsave(here("analyses","full_analysis","graphs","model-comparison.png"), height=6, width=8)
+# ggsave(here("analyses","full_analysis","graphs","model-comparison.png"), height=6, width=8)
 ```
 
 
@@ -253,7 +253,7 @@ ggplot(., aes(x=condition,
     theme(text = element_text(size=20)) +
     theme(panel.background = element_rect(color="white"))
   
-  ggsave(here("writing","2020_Journal","img","model-comparison-pref.pdf"), height=6, width=12)
+  # ggsave(here("writing","2020_Journal","img","model-comparison-pref.pdf"), height=6, width=12)
 ```
 
 

@@ -36,7 +36,7 @@ df_import = read_csv(here::here("data","02_production","02_main","01_refgame","d
 
 # Subject pool
 
-5 participant pairs were recruited.
+X participant pairs were recruited.
 
 ```{r responses to postquestionnaire, eval=FALSE, fig.height=1.5, fig.width=4, include=FALSE}
 
@@ -45,6 +45,30 @@ unique(df_import$languages)
 
 # comments
 unique(df_import$comments)
+
+# gender: 128 female; 150 male; 2 other; 2 chose not to respond
+df_gender = df_import %>%
+  distinct(anon_worker_id, gender)
+table(df_gender$gender)
+
+# mean age: 37.1 years; 12 chose not to respond
+df_age =  df_import %>%
+  distinct(anon_worker_id, age) %>% 
+  summarize(avg_age = mean(age, na.rm = TRUE))
+df_age
+df_import %>%
+  distinct(anon_worker_id, age) %>% 
+  filter(is.na(age))
+
+df_time = df_import %>%
+  mutate(time = endTime - startTime) %>% 
+  mutate_at(vars(endTime, startTime), funs(./60000)) %>% 
+  select(startTime, startDate, endTime, time, timeSpent, speaker_chat) %>% 
+  view()
+  distinct(anon_worker_id, time) %>% 
+  mutate_at(vars(time), funs(./60000))
+df_time
+
 ```
 
 ## Exclusions
@@ -132,9 +156,9 @@ We expected that it would take participants approximately 7 minutes to complete,
 
 ```{r subj, echo=FALSE, fig.height=6, fig.width=8, message=FALSE, warning=FALSE}
 
-# df_subj = df %>% 
-#   select(age,gender,timeSpent,anon_worker_id) %>% 
-#   distinct() %>% 
+# df_subj = df_import %>%
+#   select(age,gender,timeSpent,anon_worker_id) %>%
+#   distinct() %>%
 #   mutate_at(vars(age), funs(as.integer(.)))
 # 
 # mean_age = round(mean(df_subj$age),digits = 1)
@@ -149,7 +173,7 @@ We expected that it would take participants approximately 7 minutes to complete,
 #   geom_bar(width = .5,
 #            fill = "orange",
 #            color = "black")
-
+# 
 # mean_time = round(mean(df_subj$timeSpent), digits = 1)
 # median_time = round(median(df_subj$timeSpent), digits = 1)
 # p_time = ggplot(df_subj,aes(x=timeSpent)) +
@@ -160,8 +184,8 @@ We expected that it would take participants approximately 7 minutes to complete,
 #   scale_x_continuous(breaks=c(median_time,mean_time,floor(5),floor(15),floor(20))) +
 #   xlab("time spent") +
 #   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-# plot_grid(p_age, p_gen, labels = "AUTO", ncol = 2, align = 'v')
+# 
+# plot_grid(p_age, p_gen, p_time, labels = "AUTO", ncol = 2, align = 'v')
 
 ```
 

@@ -250,7 +250,7 @@ length(unique(filter(df, preadj_selection & prior != "none")$anon_worker_id))
 table(filter(df, preadj_selection & prior != "none")$betwsubj,
       filter(df, preadj_selection & prior != "none")$prior)/600
 
-# before exclusions (156); after exclusions (144)
+# before exclusions (156); after exclusions (137)
 length(unique(filter(df_import, !preadj_selection & prior != "none")$anon_worker_id))
 length(unique(filter(df, !preadj_selection & prior != "none")$anon_worker_id))
 # atypical + normal (36); typical + normal (37)

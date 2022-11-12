@@ -1,0 +1,10 @@
+name: visualization
+title:
+username:
+account: contrastive-inference
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2580176
+bundleId: 3407493
+url: https://contrastive-inference.shinyapps.io/visualization/
+when: 1595106051.25472

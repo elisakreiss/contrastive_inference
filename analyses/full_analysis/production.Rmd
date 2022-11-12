@@ -118,9 +118,9 @@ length(unique(df_clean$anon_worker_id))
 
 # overall 6660 messages
 # nrow(df_clean)
-# 2664 critical messages
+# 3552 critical messages
 # df_clean %>%
-#   filter(intended_target == "target" | intended_target == "comp") %>%
+#   filter(intended_target == "target" | intended_target == "firstDistractor") %>%
 #   nrow()
 
 
@@ -130,10 +130,10 @@ df_singleTurnUtts = df_clean %>%
 
 # 6521 (97.9% of all messages only contain a single speaker message)
 # nrow(df_singleTurnUtts)
-# 2602 (97.7% of all critical messages only contain a single speaker message)
-# df_singleTurnUtts %>%
-#   filter(intended_target == "target" | intended_target == "comp") %>%
-#   nrow()
+# 3472 (97.8% of all critical messages only contain a single speaker message)
+df_singleTurnUtts %>%
+  filter(intended_target == "target" | intended_target == "firstDistractor") %>%
+  nrow()
 
 ```
 
@@ -157,16 +157,16 @@ df = df_singleTurnUtts  %>%
 
 # # 6521
 # nrow(df_singleTurnUtts)
-# # 2602
+# # 3472
 # df_singleTurnUtts %>%
-#   filter(intended_target == "target" | intended_target == "comp") %>%
+#   filter(intended_target == "target" | intended_target == "firstDistractor") %>%
 #   nrow()
 # 
 # # 6264 (96%)
 # nrow(df)
-# # 2485 (95.5% have correct selections on the critical trials)
+# # 3327 (XX.X% have correct selections on the critical trials)
 # df %>%
-#   filter(intended_target == "target" | intended_target == "comp") %>%
+#   filter(intended_target == "target" | intended_target == "competitor") %>%
 #   nrow()
 ```
 
@@ -181,6 +181,7 @@ other_types = c("lemon|bird|brid|bercol|brecol|vegetable|fruit|ruit|cauliflower|
 other_mods = c("original|normal|natural|natural color|un-natural|with color|no color|without color|with the correct color|off color|original color|regular|weird|not red|seasick|dyed|small|round|supposed to be|big|ugly|different color|different colour|no banana|not|fourth of july|tundra|reg|you can make salad with it|green leafs at the end|oblong|shaped like|bottom right|bottom left|botom left|botom right|top left|top right|left top|rabbits eat them|geese|inside being yellow with outside green|albino|marijuana")
 
 df_main = df %>% 
+  # these would otherwise go into OtherModMention 
   filter((refexp != "bottom right") & (refexp != "botom left") & (refexp != "bottom left")) %>% 
   mutate(ColorMention = ifelse(str_detect(refexp,color), 1, 0)) %>% 
   mutate(OtherModMention = ifelse(str_detect(refexp,other_mods), 1, 0)) %>% 
@@ -194,7 +195,7 @@ df_main = df %>%
     TRUE ~ "whatisthis?"
   ))
 
-table(filter(df_main, intended_target == "target" | intended_target == "comp")$UtteranceCat)
+table(filter(df_main, intended_target == "target" | intended_target == "competitor")$UtteranceCat)
 
 ```
 
@@ -219,7 +220,7 @@ df_nocontrdupl = df_main %>%
          compType = compType_new,
          target_item = target_item_new,
          comp_item = comp_item_new) %>% 
-  # select modifed columns only to avoid confusion
+  # select modified columns only to avoid confusion
   select(condition, intended_target, UtteranceCat, contrast_present, targetType, compType, target_item, comp_item, contrast_item, distractor_item)
   
 
@@ -255,7 +256,7 @@ df_wdupl = df_main %>%
 
 # Write data file for model
 
-```{r write data}
+```{r write data, eval=FALSE, include=FALSE}
 
 df_wdupl %>% 
   select(intended_target, condition, target_item, targetType, comp_item, compType, contrast_item, distractor_item, UtteranceCat, target_typ, comp_typ) %>% 
@@ -337,8 +338,61 @@ df_wdupl %>%
           strip.text.x = element_text(margin = margin(4,0,4,0, "pt"))
           )
 
-ggsave(here("analyses","full_analysis","graphs","production_mainresult_typcol.png"), height=4, width=7)
+# ggsave(here("analyses","full_analysis","graphs","production_mainresult_typcol.png"), height=4, width=7)
 ```
+## TAN condition
+
+```{r}
+df_wdupl %>% 
+  filter(condition=="tan") %>% 
+  mutate(referent_typ = case_when(
+             intended_target == "target" ~ target_typ,
+             T ~ comp_typ)) %>% 
+  ggplot(., aes(x=intended_target, 
+                y=ColMentioned)) +
+    facet_wrap(~condition, nrow = 2) +
+    # mean
+    stat_summary(fun = "mean",
+                 geom = "bar",
+                 width = 0.7,
+                 position = position_dodge(width = 0.7),
+                 fill = "#BE93AC",
+                 color = "black") +
+    # error bars 
+    stat_summary(fun.data = "mean_cl_boot",
+                 geom = "errorbar",
+                 color = "black",
+                 size = .3,
+                 width = 0.2,
+                 position = position_dodge(width = 0.7)) +
+    xlab("Object to be communicated") +
+    ylab("Proportion of modifier mention") +
+    ylim(c(0,1)) +
+    scale_fill_manual(values=c("#d1b3c4", "#856678")) +
+    # theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+    theme(legend.position = "none") +
+    theme(
+        panel.border = element_rect(colour = "black", fill=NA),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black")) +
+    theme(strip.background = element_rect(color="black", 
+                                          fill="white", 
+                                          size=1,
+                                          linetype="solid"),
+          strip.text.x = element_text(margin = margin(4,0,4,0, "pt"))
+          ) +
+  theme(panel.border = element_rect(colour = "black", fill=NA),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.background = element_rect(fill = "transparent",colour = NA))
+
+# ggsave("tan_condition_empcriticalspeaker.png", height=2.6, width=2.8, bg="transparent")
+```
+
 
 
 # Statistical analysis
@@ -391,6 +445,15 @@ model_prereg = brm(
 
 # main effect of contrast presence and referent typicality
 summary(model_prereg)
+
+# Frequentist analysis
+library(lme4)
+library(lmerTest)
+
+f = ColMentioned ~ c_contrast + c_nonreferent_typ_bin + c_referent_typ_bin + (1|anon_worker_id)
+m = lmer(f, df_stats)
+# main effect of intercept, contrast, referent_typ_bin
+summary(m)
 
 ```
 
