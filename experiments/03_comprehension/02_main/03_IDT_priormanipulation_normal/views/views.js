@@ -146,7 +146,7 @@ var practiceIntro = {
   render: function () {
     var viewTemplate = $('#practiceIntro-view').html();
 
-    var text1 = 'Imagine you\'re playing a game with another MTurk worker. Both of you see a display of the same 4 objects, but the objects are in different locations for the two of you. Your job is to get the other player to click on the object that has a green border around it. Only you can see which object has the green border.';
+    var text1 = 'Imagine you\'re playing a game with another Prolific worker. Both of you see a display of the same 4 objects, but the objects are in different locations for the two of you. Your job is to get the other player to click on the object that has a green border around it. Only you can see which object has the green border.';
 
     var text2 = 'To tell the other player which object to click on, complete the sentence "Pick the ...!". When you\'re done, press the Continue button.';
 
@@ -653,7 +653,7 @@ var debriefing = {
   name: 'debriefing',
   title: 'Debriefing',
   text:
-        'Great, you\'re almost done! <br> Please note that we came up with the expressions you saw and not another MTurk worker. If you have further questions or concerns, don\'t hesitate to contact us.',
+        'Great, you\'re almost done! <br> Please note that we came up with the expressions you saw and not another Prolific worker. If you have further questions or concerns, don\'t hesitate to contact us.',
   buttonText: 'Got it!',
   render: function () {
     var viewTemplate = $('#debriefing-view').html();
@@ -721,7 +721,7 @@ var postTest = {
 // eslint-disable-next-line no-unused-vars
 var thanks = {
   name: 'thanks',
-  message: 'Thank you for taking part in this experiment!',
+  message: 'Thank you for taking part in this experiment! Your completion code is C1G0UKL9',
   render: function () {
     var viewTemplate = $('#thanks-view').html();
 
