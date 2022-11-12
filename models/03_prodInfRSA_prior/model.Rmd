@@ -175,7 +175,7 @@ df_full = df_rsa %>%
 
 # Plots
 
-## Flat prior (no empirical preadj data used)
+## Prior manipulation
 
 ```{r}
 # df_afteradj_prop %>% 
@@ -192,10 +192,18 @@ df_full = df_rsa %>%
 
 
 df_full %>% 
-  select(obj_in_display, RSA_noprior, emp, condition, obj_typ) %>% 
+  select(obj_in_display, RSA_noprior, emp, RSA_normalprior, emp_normalprior, RSA_weirdprior, emp_weirdprior, condition, obj_typ) %>% 
   filter(obj_in_display == "target") %>% 
-  gather(data, proportion, RSA_noprior, emp) %>% 
-  ggplot(., aes(x=obj_in_display, 
+  gather(data, proportion, RSA_noprior, emp, RSA_normalprior, emp_normalprior, RSA_weirdprior, emp_weirdprior) %>% 
+  mutate(prior_cond = case_when(
+    data == "emp" | data == "RSA_noprior" ~ "no prior",
+    data == "emp_normalprior" | data == "RSA_normalprior" ~ "normal prior",
+    data == "emp_weirdprior" | data == "RSA_weirdprior" ~ "weird prior",
+    TRUE ~ "FIRE"
+  )) %>% 
+  # filter(condition %in% c("tan", 'atn', 'tap', 'atp')) %>%
+  mutate_at(vars(data), funs(fct_relevel(., "RSA_noprior", "RSA_normalprior", "RSA_weirdprior", "emp", "emp_normalprior", "emp_weirdprior"))) %>% 
+  ggplot(., aes(x=prior_cond, 
                 y=proportion, 
                 fill=data)) +
   facet_wrap(~condition, scales = "free_x", nrow=2) +
@@ -219,8 +227,233 @@ df_full %>%
         strip.text.x = element_text(margin = margin(4,0,4,0, "pt"),
                                     size=14)
         ) +
+  scale_fill_manual(values=c("#d8d8d8", "#99d6cf", "#f8c8ad", "#808080", "#009988", "#ee7733")) +
+  theme(panel.border = element_rect(colour = "black", fill=NA),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.background = element_rect(fill = "transparent",colour = NA)) +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)) +
+  coord_cartesian(ylim = c(0,1)) +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.title.x = element_blank()) +
+  theme(axis.title = element_text(size=16)) +
+  ylab("Proportion of selections")
+
+# ggsave(here("analyses","full_analysis","graphs","results_prior_full.png"), height=5, width=7, bg="transparent")
+# ggsave(here("analyses","full_analysis","graphs","results_prior.png"), height=5.5, width=6, bg="transparent")
+
+```
+
+```{r}
+
+
+df_full %>% 
+  select(obj_in_display, RSA_noprior, emp, RSA_normalprior, emp_normalprior, RSA_weirdprior, emp_weirdprior, condition, obj_typ) %>% 
+  filter(obj_in_display == "target") %>% 
+  gather(data, proportion, RSA_noprior, emp, RSA_normalprior, emp_normalprior, RSA_weirdprior, emp_weirdprior) %>% 
+  mutate(prior_cond = case_when(
+    data == "emp" | data == "RSA_noprior" ~ "no prior",
+    data == "emp_normalprior" | data == "RSA_normalprior" ~ "normal prior",
+    data == "emp_weirdprior" | data == "RSA_weirdprior" ~ "weird prior",
+    TRUE ~ "FIRE"
+  )) %>% 
+  # filter(condition %in% c("tan", 'atn', 'tap', 'atp')) %>%
+  mutate_at(vars(data), funs(fct_relevel(., "RSA_noprior", "RSA_normalprior", "RSA_weirdprior", "emp", "emp_normalprior", "emp_weirdprior"))) %>% 
+  filter(str_detect(data, "emp")) %>% 
+  mutate(converged_condition = case_when(
+    condition == "ttn" | condition == "aan" | condition == "ttp" | condition == "aap" ~ "same typ",
+    condition == "tan" | condition == "atn" | condition == "tap" | condition == "atp" ~ "diff typ",
+    TRUE ~ "FIRE"
+  )) %>% 
+  mutate(converged_proportion = case_when(
+    condition == "ttn"  ~ proportion,
+    condition == "aan"  ~ proportion,
+    condition == "tan" ~ proportion,
+    condition == "atn" ~ 1-proportion,
+    condition == "tap" ~ proportion,
+    condition == "atp" ~ 1-proportion,
+    condition == "ttp" ~ proportion,
+    condition == "aap" ~ proportion,
+    TRUE ~ 42
+  )) %>% 
+  filter(data!="emp") %>%
+  ggplot(., aes(x=obj_typ, 
+                y=proportion, 
+                fill=prior_cond)) +
+  facet_wrap(~converged_condition, scales = "free_x", nrow=1) +
+  # geom_point(alpha = 0.4, position = position_dodge(width=0.3)) +
+  stat_summary(fun = "mean", 
+               geom = "bar",
+               position = position_dodge(width=0.7),
+               width = 0.6,
+               color = "black",
+               size = 0.5) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               position = position_dodge(width=0.7),
+               width = 0.2) +
+  theme(legend.position = "top") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"),
+                                    size=14)
+        ) +
+  scale_fill_manual(values=c("#009988", "#ee7733")) +
+  scale_color_manual(values=c("#009988", "#ee7733")) +
+  theme(panel.border = element_rect(colour = "black", fill=NA),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.background = element_rect(fill = "transparent",colour = NA)) +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)) +
+  coord_cartesian(ylim = c(0,1)) +
+  theme(axis.ticks.x = element_blank(),
+        axis.title.x = element_blank()) +
+  theme(axis.title = element_text(size=16)) +
+  ylab("Proportion of selections")
+
+# ggsave("prior_mainresults.png", height=3.5, width=6, bg="transparent")
+
+```
+
+
+```{r}
+# df_afteradj_prop %>% 
+#   filter(prior == "none",
+#          category == "nopreadj_critical") %>% 
+#   select(-prior, -category) %>% 
+#   rename(Probability = PropClicks) %>% 
+#   bind_rows(df_rsa_flatprior) %>% 
+#   mutate(obj_typ = case_when(
+#     obj_in_display == "target" ~ str_sub(condition,1,1),
+#     obj_in_display == "competitor" ~ str_sub(condition,2,2),
+#     T ~ "other"
+#   )) %>% 
+
+
+df_full %>% 
+  select(obj_in_display, RSA_noprior, emp, RSA_normalprior, emp_normalprior, RSA_weirdprior, emp_weirdprior, condition, obj_typ) %>% 
+  filter(obj_in_display == "target") %>% 
+  gather(emp_data, emp_proportion, emp, emp_normalprior, emp_weirdprior) %>% 
+  gather(rsa_data, rsa_proportion, RSA_noprior, RSA_normalprior, RSA_weirdprior) %>% 
+  mutate(source_conc = str_c(emp_data, rsa_data, sep = ":")) %>% 
+  filter(source_conc == "emp:RSA_noprior" | source_conc == "emp_normalprior:RSA_normalprior" | source_conc == "emp_weirdprior:RSA_weirdprior" ) %>% 
+  mutate(prior_cond = case_when(
+    emp_data == "emp" ~ "no prior",
+    emp_data == "emp_normalprior" ~ "normal prior",
+    emp_data == "emp_weirdprior" ~ "weird prior",
+    TRUE ~ "FIRE"
+  )) %>% 
+  # group_by(condition, prior_cond) %>% 
+  # summarize(mean_emp = mean(emp_proportion),
+  #           mean_rsa = mean(rsa_proportion)) %>% 
+  # ungroup() %>% 
+  # mutate_at(vars(data), funs(fct_relevel(., "RSA_noprior", "RSA_normalprior", "RSA_weirdprior", "emp", "emp_normalprior", "emp_weirdprior"))) %>% 
+  ggplot(., aes(x=prior_cond, 
+                y=emp_proportion, 
+                color=prior_cond)) +
+  geom_point(alpha = 0.3) +
+  # geom_smooth(method = "lm") +
+  facet_wrap(~condition, scales = "free_x", nrow=2) +
+  stat_summary(fun = "mean",
+               geom = "point",
+               size = 3) +
+  # stat_summary(fun.data = "mean_cl_boot",
+  #              geom = "errorbar",
+  #              color = "black",
+  #              position = position_dodge(width = 0.7),
+  #              size = .3,
+  #              width = 0.2) +
+  theme(legend.position = "top") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"),
+                                    size=14)
+        ) +
+  scale_fill_manual(values=c("#d8d8d8", "#99d6cf", "#f8c8ad", "#808080", "#009988", "#ee7733")) +
+  theme(panel.border = element_rect(colour = "black", fill=NA),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.background = element_rect(fill = "transparent",colour = NA)) +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"), size=14)) +
+  coord_cartesian(ylim = c(0,1)) +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.title.x = element_blank()) +
+  theme(axis.title = element_text(size=16))
+  # ylab("Proportion of selections")
+
+# ggsave(here("analyses","full_analysis","graphs","results_prior_full.png"), height=5, width=7, bg="transparent")
+# ggsave(here("analyses","full_analysis","graphs","results_prior.png"), height=5.5, width=6, bg="transparent")
+
+```
+
+
+
+## TAN condition
+
+```{r}
+
+
+df_full %>% 
+  select(obj_in_display, RSA_noprior, RSA_normalprior, RSA_weirdprior, condition, obj_typ) %>% 
+  filter(condition == "tan") %>% 
+  gather(data, proportion, RSA_noprior, RSA_normalprior, RSA_weirdprior) %>% 
+  mutate(prior_cond = case_when(
+    data == "emp" | data == "RSA_noprior" ~ "no prior",
+    data == "emp_normalprior" | data == "RSA_normalprior" ~ "normal prior",
+    data == "emp_weirdprior" | data == "RSA_weirdprior" ~ "weird prior",
+    TRUE ~ "FIRE"
+  )) %>% 
+  mutate_at(vars(data), funs(fct_relevel(., "RSA_noprior", "RSA_normalprior", "RSA_weirdprior", "emp", "emp_normalprior", "emp_weirdprior"))) %>% 
+  ggplot(., aes(x=obj_in_display, 
+                y=proportion)) +
+  facet_wrap(~prior_cond, scales = "free_x", nrow=2) +
+  stat_summary(fun = "mean", 
+               geom = "bar",
+               width = 0.6,
+               position = position_dodge(width = 0.7),
+               fill="#7F93B5",
+               color="black",
+               size=0.2) +
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar",
+               color = "black",
+               position = position_dodge(width = 0.7),
+               size = .3,
+               width = 0.2) +
+  theme(legend.position = "top") +
+  theme(strip.background = element_rect(color="black", 
+                                        fill="white", 
+                                        size=1.5,
+                                        linetype="solid"),
+        strip.text.x = element_text(margin = margin(4,0,4,0, "pt"),
+                                    size=14)
+        ) +
   # scale_alpha_manual(values=c(1, 0.5)) +
-  scale_fill_manual(values=c("#808080", "#657590")) +
+  # scale_fill_manual(values=c("#d8d8d8", "#99d6cf", "#f8c8ad", "#808080", "#009988", "#ee7733")) +
   # scale_x_discrete(labels=c("comp"="competitor")) +
   theme(panel.border = element_rect(colour = "black", fill=NA),
         panel.grid.major = element_blank(), 
@@ -240,8 +473,188 @@ df_full %>%
   theme(axis.title = element_text(size=16)) +
   ylab("Proportion of selections")
 
-ggsave(here("analyses","full_analysis","graphs","rsa_noprior_bar.png"), height=4, width=6, bg="transparent")
+# ggsave("tan_condition_criticallistener.png", height=3.5, width=4, bg="transparent")
+
 ```
+## Correlations
+
+```{r}
+
+scatter_plot = function(data1, data2) {
+  df_rsacor_noprior = df_full %>%  
+    filter(obj_in_display == "target") %>% 
+    gather(data, proportion, RSA_noprior, emp, RSA_normalprior, emp_normalprior, RSA_weirdprior, emp_weirdprior) %>%
+    select(condition, data, proportion) %>%
+    filter(data == data1 | data == data2) %>% 
+    group_by(condition, data) %>% 
+    summarize(mean=mean(proportion, na.rm=TRUE),
+              CI_low_diff=ci.low(proportion),
+              CI_high_diff=ci.high(proportion)) %>% 
+    ungroup() %>%
+    mutate(CI_low = mean-CI_low_diff) %>% 
+    mutate(CI_high = mean+CI_high_diff) %>% 
+    select(data, condition, mean, CI_low, CI_high)
+  
+  # view(df_rsacor_noprior)
+  
+  emp_data = df_rsacor_noprior %>% 
+    filter(data == data1) %>% 
+    rename(mean_emp=mean,
+           CI_low_emp=CI_low,
+           CI_high_emp=CI_high) %>% 
+    select(-data)
+  
+  rsa_data = df_rsacor_noprior %>% 
+    filter(data == data2) %>% 
+    rename(mean_rsa=mean,
+           CI_low_rsa=CI_low,
+           CI_high_rsa=CI_high) %>% 
+    select(-data)
+  
+  merged_data = emp_data %>% 
+    left_join(rsa_data, by="condition")
+  
+  # view(merged_data)
+  
+  df_points = df_full %>% 
+    rename("data1" = data1,
+           "data2" = data2)
+
+  plot = ggplot(merged_data, aes(x=mean_rsa, y=mean_emp, color=condition)) +
+    geom_point(data=filter(df_points, obj_in_display=="target"),
+               aes(x=data1, y=data2, color=condition),
+               alpha=0.2) +
+    geom_errorbar(aes(ymin = CI_low_emp, ymax = CI_high_emp),
+                  width=0) +
+    geom_errorbarh(aes(xmin = CI_low_rsa, xmax = CI_high_rsa),
+                   height=0) +
+    geom_point(size=2.5) +
+    coord_cartesian(xlim = c(0,1), ylim = c(0,1)) +
+    scale_color_manual(values=c("#c9df8a", "#77ab59", "#36802d", "#234d20", "#edc951", "#eb6841", "#cc2a36", "#cc2a87")) +
+    xlab("Model prediction") +
+    ylab("Empirical proportion of\ntarget selections")
+  
+  print(data1)
+  print(data2)
+  print("all data:")
+  print(cor(df_points$data1, df_points$data2, use="complete.obs"))
+  print("condition means only:")
+  print(cor(merged_data$mean_rsa, merged_data$mean_emp, use="complete.obs"))
+  
+  return(plot)
+}
+
+
+noprior_plot = scatter_plot("RSA_noprior", "emp")
+# all data: 0.6625; condition means only: 0.9208
+noprior_plot
+normalprior_plot = scatter_plot("RSA_normalprior", "emp_normalprior")
+# all data: 0.1951; condition means only: 0.3620
+normalprior_plot
+weirdprior_plot = scatter_plot("RSA_weirdprior", "emp_weirdprior")
+# all data: 0.2806; condition means only: 0.8113
+weirdprior_plot
+
+rsauni_normalprior_plot = scatter_plot("RSA_noprior", "emp_normalprior")
+# all data: 0.0846; condition means only: -0.2475
+rsauni_normalprior_plot
+rsauni_weirdprior_plot = scatter_plot("RSA_noprior", "emp_weirdprior")
+# all data: 0.2969; condition means only: 0.5846
+rsauni_weirdprior_plot
+
+emp_no_normal_plot = scatter_plot("emp", "emp_normalprior")
+# all data: 0.1510; condition means only: -0.3952
+emp_no_normal_plot
+emp_no_weird_plot = scatter_plot("emp", "emp_weirdprior")
+# all data: 0.3921; condition means only: 0.7957
+emp_no_weird_plot
+
+weirdrsa_normalemp_plot = scatter_plot("RSA_weirdprior", "emp")
+# all data: 0.4442; condition means only: 0.9935
+weirdrsa_normalemp_plot
+
+# ggsave(plot=noprior_plot, filename=here("cor_noprior_plot.png"), height=3.5, width=4.9)
+# ggsave(plot=normalprior_plot, filename=here("cor_normalprior_plot.png"), height=3.5, width=4.9)
+# ggsave(plot=weirdprior_plot, filename=here("cor_weirdprior_plot.png"), height=3.5, width=4.9)
+# ggsave(plot=rsauni_normalprior_plot, filename=here("cor_rsauni_normalprior_plot.png"), height=3.5, width=4.9)
+# ggsave(plot=rsauni_weirdprior_plot, filename=here("cor_rsauni_weirdprior_plot.png"), height=3.5, width=4.9)
+# ggsave(plot=emp_no_normal_plot, filename=here("cor_emp_no_normal_plot.png"), height=3.5, width=4.9)
+# ggsave(plot=emp_no_weird_plot, filename=here("cor_emp_no_weird_plot.png"), height=3.5, width=4.9)
+# ggsave(plot=weirdrsa_normalemp_plot, filename=here("cor_weirdrsa_normalemp_plot.png"), height=3.5, width=4.9)
+# 
+# df_rsacor_noprior = df_full %>%  
+#   filter(obj_in_display == "target") %>% 
+#   select(condition, emp, RSA_noprior) %>% 
+#   group_by(condition) %>% 
+#   summarize(meanemp=mean(emp),
+#             emp_CI_low_diff=ci.low(emp),
+#             emp_CI_high_diff=ci.high(emp),
+#             meanRSA=mean(RSA_noprior),
+#             RSA_CI_low_diff=ci.low(RSA_noprior),
+#             RSA_CI_high_diff=ci.high(RSA_noprior)) %>% 
+#   ungroup() %>%
+#   mutate(RSA_CI_low = meanRSA-RSA_CI_low_diff) %>% 
+#   mutate(RSA_CI_high = meanRSA+RSA_CI_high_diff) %>% 
+#   mutate(emp_CI_low = meanemp-emp_CI_low_diff) %>% 
+#   mutate(emp_CI_high = meanemp+emp_CI_high_diff)
+# 
+# ggplot(df_rsacor_noprior, aes(x=meanRSA, y=meanemp, color=condition)) +
+#   geom_point(data=filter(df_full, obj_in_display=="target"),
+#              aes(x=RSA_noprior, y=emp, color=condition),
+#              alpha=0.2) +
+#   geom_errorbar(aes(ymin = emp_CI_low, ymax = emp_CI_high),
+#                 width=0) + 
+#   geom_errorbarh(aes(xmin = RSA_CI_low, xmax = RSA_CI_high),
+#                  height=0) +
+#   geom_point(size=2.5) +
+#   coord_cartesian(xlim = c(0,1), ylim = c(0,1)) +
+#   scale_color_manual(values=c("#c9df8a", "#77ab59", "#36802d", "#234d20", "#edc951", "#eb6841", "#cc2a36", "#cc2a87")) +
+#   xlab("Model prediction") +
+#   ylab("Empirical proportion of\ntarget selections")
+# 
+# df_corr = df_full %>% 
+#   select(obj_in_display, RSA_noprior, emp, RSA_normalprior, emp_normalprior, RSA_weirdprior, emp_weirdprior, condition, obj_typ) %>% 
+#   filter(obj_in_display == "target")
+# 
+# cor(df_corr$RSA_noprior, df_corr$emp)
+# cor(df_rsacor_noprior$meanRSA, df_rsacor_noprior$meanemp)
+
+```
+```{r}
+df_vanilla_emp_noprior = df_full %>% 
+  filter(obj_in_display == "target") %>% 
+  select(condition, emp) %>% 
+  left_join(df_simple, by="condition") %>% 
+  group_by(condition) %>% 
+  summarize(emp_mean = mean(emp),
+            vanilla_mean = mean(proportion)) %>%
+  ungroup()
+# view(df_vanilla_emp_noprior)
+print(cor(df_vanilla_emp_noprior$emp_mean, df_vanilla_emp_noprior$vanilla_mean, use="complete.obs"))
+
+df_default_emp_noprior = df_full %>% 
+  filter(obj_in_display == "target") %>% 
+  select(condition, emp) %>% 
+  left_join(df_default, by="condition") %>% 
+  group_by(condition) %>% 
+  summarize(emp_mean = mean(emp),
+            default_mean = mean(proportion)) %>%
+  ungroup()
+# view(df_default_emp_noprior)
+print(cor(df_default_emp_noprior$emp_mean, df_default_emp_noprior$default_mean, use="complete.obs"))
+
+df_RSA_emp_noprior = df_full %>% 
+  filter(obj_in_display == "target") %>% 
+  select(condition, emp, RSA_noprior, RSA_flatprior) %>% 
+  group_by(condition) %>% 
+  summarize(emp_mean = mean(emp),
+            RSA_noprior_mean = mean(RSA_noprior),
+            RSA_flatprior_mean = mean(RSA_flatprior)) %>%
+  ungroup()
+print(cor(df_RSA_emp_noprior$emp_mean, df_RSA_emp_noprior$RSA_noprior_mean, use="complete.obs"))
+print(cor(df_RSA_emp_noprior$emp_mean, df_RSA_emp_noprior$RSA_flatprior_mean, use="complete.obs"))
+```
+
 
 # model comp
 
@@ -312,7 +725,7 @@ df_full %>%
   theme(axis.title = element_text(size=16)) +
   ylab("Proportion of selections")
 
-ggsave(here("analyses","full_analysis","graphs","modelcomp_wemp_noprior_bar.png"), height=4, width=6, bg="transparent")
+# ggsave(here("analyses","full_analysis","graphs","modelcomp_wemp_noprior_bar.png"), height=4, width=6, bg="transparent")
 
 df_full %>% 
   select(obj_in_display, RSA_noprior, condition) %>% 
@@ -369,13 +782,16 @@ df_full %>%
   theme(axis.title = element_text(size=16)) +
   ylab("Proportion of selections")
 
-ggsave(here("analyses","full_analysis","graphs","modelcomp_noprior_bar.png"), height=4, width=7, bg="transparent")
+# ggsave(here("analyses","full_analysis","graphs","modelcomp_noprior_bar.png"), height=4, width=7, bg="transparent")
 ```
 
-
+# RSA scatter
 
 ```{r}
-df_full %>%  
+
+source(here("models","02_prodInfRSA","helpers.r"))
+
+df_rsacor_noprior = df_full %>%  
   filter(obj_in_display == "target") %>% 
   select(condition, emp, RSA_noprior) %>% 
   group_by(condition) %>% 
@@ -389,80 +805,98 @@ df_full %>%
   mutate(RSA_CI_low = meanRSA-RSA_CI_low_diff) %>% 
   mutate(RSA_CI_high = meanRSA+RSA_CI_high_diff) %>% 
   mutate(emp_CI_low = meanemp-emp_CI_low_diff) %>% 
-  mutate(emp_CI_high = meanemp+emp_CI_high_diff) %>%
-  ggplot(., aes(x=meanRSA, y=meanemp, color=condition)) +
-    geom_point(data=filter(df_full, obj_in_display=="target"),
-               aes(x=RSA_noprior, y=emp, color=condition),
-               alpha=0.2) +
-    geom_errorbar(aes(ymin = emp_CI_low, ymax = emp_CI_high),
-                  width=0) + 
-    geom_errorbarh(aes(xmin = RSA_CI_low, xmax = RSA_CI_high),
-                   height=0) +
-    geom_point(size=2.5) +
-    coord_cartesian(xlim = c(0,1), ylim = c(0,1)) +
-    scale_color_manual(values=c("#c9df8a", "#77ab59", "#36802d", "#234d20", "#edc951", "#eb6841", "#cc2a36", "#cc2a87")) +
-    xlab("Model prediction") +
-    ylab("Empirical proportion of\ntarget selections")
+  mutate(emp_CI_high = meanemp+emp_CI_high_diff)
 
-ggsave(here("analyses","full_analysis","graphs","rsa_noprior_scatter.png"), height=4, width=6)
+ggplot(df_rsacor_noprior, aes(x=meanRSA, y=meanemp, color=condition)) +
+  geom_point(data=filter(df_full, obj_in_display=="target"),
+             aes(x=RSA_noprior, y=emp, color=condition),
+             alpha=0.2) +
+  geom_errorbar(aes(ymin = emp_CI_low, ymax = emp_CI_high),
+                width=0) + 
+  geom_errorbarh(aes(xmin = RSA_CI_low, xmax = RSA_CI_high),
+                 height=0) +
+  geom_point(size=2.5) +
+  coord_cartesian(xlim = c(0,1), ylim = c(0,1)) +
+  scale_color_manual(values=c("#c9df8a", "#77ab59", "#36802d", "#234d20", "#edc951", "#eb6841", "#cc2a36", "#cc2a87")) +
+  xlab("Model prediction") +
+  ylab("Empirical proportion of\ntarget selections")
 
-df_full %>%  
+# no prior, by item
+cor(filter(df_full, obj_in_display=="target")$RSA_noprior,filter(df_full, obj_in_display=="target")$emp)
+# no prior, by condition
+cor(df_rsacor_noprior$meanRSA,df_rsacor_noprior$meanemp)
+
+# ggsave(here("analyses","full_analysis","graphs","rsa_noprior_scatter.png"), height=4, width=6)
+
+df_rsacor_normalprior = df_full %>%  
   filter(obj_in_display == "target") %>% 
   select(condition, emp_normalprior, RSA_normalprior) %>% 
   group_by(condition) %>% 
   summarize(meanemp=mean(emp_normalprior),
             emp_CI_low_diff=ci.low(emp_normalprior),
             emp_CI_high_diff=ci.high(emp_normalprior),
-            meanRSA=mean(RSA_normalprior),
+            meanRSA=mean(RSA_normalprior, na.rm=TRUE),
             RSA_CI_low_diff=ci.low(RSA_normalprior),
             RSA_CI_high_diff=ci.high(RSA_normalprior)) %>% 
   ungroup() %>%
   mutate(RSA_CI_low = meanRSA-RSA_CI_low_diff) %>% 
   mutate(RSA_CI_high = meanRSA+RSA_CI_high_diff) %>% 
   mutate(emp_CI_low = meanemp-emp_CI_low_diff) %>% 
-  mutate(emp_CI_high = meanemp+emp_CI_high_diff) %>%
-  ggplot(., aes(x=meanRSA, y=meanemp, color=condition)) +
-    geom_point(data=filter(df_full, obj_in_display=="target"),
-               aes(x=RSA_normalprior, y=emp_normalprior, color=condition),
-               alpha=0.2) +
-    geom_errorbar(aes(ymin = emp_CI_low, ymax = emp_CI_high),
-                  width=0) + 
-    geom_errorbarh(aes(xmin = RSA_CI_low, xmax = RSA_CI_high),
-                   height=0) +
-    geom_point(size=2.5) +
-    coord_cartesian(xlim = c(0,1), ylim = c(0,1)) +
-    scale_color_manual(values=c("#c9df8a", "#77ab59", "#36802d", "#234d20", "#edc951", "#eb6841", "#cc2a36", "#cc2a87")) +
-    xlab("Model prediction") +
-    ylab("Empirical proportion of\ntarget selections")
+  mutate(emp_CI_high = meanemp+emp_CI_high_diff)
 
-df_full %>%  
+ggplot(df_rsacor_normalprior, aes(x=meanRSA, y=meanemp, color=condition)) +
+  geom_point(data=filter(df_full, obj_in_display=="target"),
+             aes(x=RSA_normalprior, y=emp_normalprior, color=condition),
+             alpha=0.2) +
+  geom_errorbar(aes(ymin = emp_CI_low, ymax = emp_CI_high),
+                width=0) + 
+  geom_errorbarh(aes(xmin = RSA_CI_low, xmax = RSA_CI_high),
+                 height=0) +
+  geom_point(size=2.5) +
+  coord_cartesian(xlim = c(0,1), ylim = c(0,1)) +
+  scale_color_manual(values=c("#c9df8a", "#77ab59", "#36802d", "#234d20", "#edc951", "#eb6841", "#cc2a36", "#cc2a87")) +
+  xlab("Model prediction") +
+  ylab("Empirical proportion of\ntarget selections")
+
+# no prior, by item
+cor(filter(df_full, obj_in_display=="target")$RSA_normalprior,filter(df_full, obj_in_display=="target")$emp_normalprior,use="complete.obs")
+# no prior, by condition
+cor(df_rsacor_normalprior$meanRSA,df_rsacor_normalprior$meanemp)
+
+df_rsacor_weirdprior = df_full %>%  
   filter(obj_in_display == "target") %>% 
   select(condition, emp_weirdprior, RSA_weirdprior) %>% 
   group_by(condition) %>% 
   summarize(meanemp=mean(emp_weirdprior),
             emp_CI_low_diff=ci.low(emp_weirdprior),
             emp_CI_high_diff=ci.high(emp_weirdprior),
-            meanRSA=mean(RSA_weirdprior),
+            meanRSA=mean(RSA_weirdprior, na.rm=TRUE),
             RSA_CI_low_diff=ci.low(RSA_weirdprior),
             RSA_CI_high_diff=ci.high(RSA_weirdprior)) %>% 
   ungroup() %>%
   mutate(RSA_CI_low = meanRSA-RSA_CI_low_diff) %>% 
   mutate(RSA_CI_high = meanRSA+RSA_CI_high_diff) %>% 
   mutate(emp_CI_low = meanemp-emp_CI_low_diff) %>% 
-  mutate(emp_CI_high = meanemp+emp_CI_high_diff) %>%
-  ggplot(., aes(x=meanRSA, y=meanemp, color=condition)) +
-    geom_point(data=filter(df_full, obj_in_display=="target"),
-               aes(x=RSA_weirdprior, y=emp_weirdprior, color=condition),
-               alpha=0.2) +
-    geom_errorbar(aes(ymin = emp_CI_low, ymax = emp_CI_high),
-                  width=0) + 
-    geom_errorbarh(aes(xmin = RSA_CI_low, xmax = RSA_CI_high),
-                   height=0) +
-    geom_point(size=2.5) +
-    coord_cartesian(xlim = c(0,1), ylim = c(0,1)) +
-    scale_color_manual(values=c("#c9df8a", "#77ab59", "#36802d", "#234d20", "#edc951", "#eb6841", "#cc2a36", "#cc2a87")) +
-    xlab("Model prediction") +
-    ylab("Empirical proportion of\ntarget selections")
+  mutate(emp_CI_high = meanemp+emp_CI_high_diff)
+
+ggplot(df_rsacor_weirdprior, aes(x=meanRSA, y=meanemp, color=condition)) +
+  geom_point(data=filter(df_full, obj_in_display=="target"),
+             aes(x=RSA_normalprior, y=emp_normalprior, color=condition),
+             alpha=0.2) +
+  geom_errorbar(aes(ymin = emp_CI_low, ymax = emp_CI_high),
+                width=0) + 
+  geom_errorbarh(aes(xmin = RSA_CI_low, xmax = RSA_CI_high),
+                 height=0) +
+  geom_point(size=2.5) +
+  coord_cartesian(xlim = c(0,1), ylim = c(0,1)) +
+  scale_color_manual(values=c("#c9df8a", "#77ab59", "#36802d", "#234d20", "#edc951", "#eb6841", "#cc2a36", "#cc2a87")) +
+  xlab("Model prediction") +
+  ylab("Empirical proportion of\ntarget selections")
+
+# no prior, by item
+cor(filter(df_full, obj_in_display=="target")$RSA_weirdprior,filter(df_full, obj_in_display=="target")$emp_weirdprior,use="complete.obs")
+# no prior, by condition
+cor(df_rsacor_weirdprior$meanRSA,df_rsacor_weirdprior$meanemp)
 ```
 
 
