@@ -79,7 +79,7 @@ var intro = {
   title: 'ALPS lab Stanford',
   // introduction text
   text:
-        'Thank you for participating in our study. In this HIT, you\'ll be asked to click on objects. It will take approximately <strong>9</strong> minutes.<br>Please only participate once in this HITs.<br>Please do <strong>not</strong> do this HIT on a <strong>cell phone</strong>.',
+        'Thank you for participating in our study. In this study, you\'ll be asked to click on objects. It will take approximately <strong>9</strong> minutes.<br>Please only participate once in this type of study.<br>Please do <strong>not</strong> do this study on a <strong>cell phone</strong>.',
   legal_info:
         '<strong>LEGAL INFORMATION</strong>:<br><br>We invite you to participate in a research study on language production and comprehension.<br>Your experimenter will ask you to do a linguistic task such as reading sentences or words, naming pictures or describing scenes, making up sentences of your own, or participating in a simple language game.<br><br>You will be paid for your participation at the posted rate.<br><br>There are no risks or benefits of any kind involved in this study.<br><br>If you have read this form and have decided to participate in this experiment, please understand your participation is voluntary and you have the right to withdraw your consent or discontinue participation at any time without penalty or loss of benefits to which you are otherwise entitled. You have the right to refuse to do particular tasks. Your individual privacy will be maintained in all published and written data resulting from the study.<br>You may print this form for your records.<br><br>CONTACT INFORMATION:<br>If you have any questions, concerns or complaints about this research study, its procedures, risks and benefits, you should contact the Protocol Director Meghan Sumner at <br>(650)-725-9336<br><br>If you are not satisfied with how this study is being conducted, or if you have any concerns, complaints, or general questions about the research or your rights as a participant, please contact the Stanford Institutional Review Board (IRB) to speak to someone independent of the research team at (650)-723-2480 or toll free at 1-866-680-2906. You can also write to the Stanford IRB, Stanford University, 3000 El Camino Real, Five Palo Alto Square, 4th Floor, Palo Alto, CA 94306 USA.<br><br>If you agree to participate, please proceed to the study tasks.',
   // introduction's slide proceeding button text
@@ -146,7 +146,7 @@ var practiceIntro = {
   render: function () {
     var viewTemplate = $('#practiceIntro-view').html();
 
-    var text1 = 'Imagine you\'re playing a game with another MTurk worker. Both of you see a display of the same 4 objects, but the objects are in different locations for the two of you. Your job is to get the other player to click on the object that has a green border around it. Only you can see which object has the green border.';
+    var text1 = 'Imagine you\'re playing a game with another Prolific worker. Both of you see a display of the same 4 objects, but the objects are in different locations for the two of you. Your job is to get the other player to click on the object that has a green border around it. Only you can see which object has the green border.';
 
     var text2 = 'To tell the other player which object to click on, complete the sentence "Pick the ...!". When you\'re done, press the Continue button.';
 
@@ -653,7 +653,7 @@ var debriefing = {
   name: 'debriefing',
   title: 'Debriefing',
   text:
-        'Great, you\'re almost done! <br> Please note that we came up with the expressions you saw and not another MTurk worker. If you have further questions or concerns, don\'t hesitate to contact us.',
+        'Great, you\'re almost done! <br> Please note that we came up with the expressions you saw and not another Prolific worker. If you have further questions or concerns, don\'t hesitate to contact us.',
   buttonText: 'Got it!',
   render: function () {
     var viewTemplate = $('#debriefing-view').html();
@@ -721,7 +721,7 @@ var postTest = {
 // eslint-disable-next-line no-unused-vars
 var thanks = {
   name: 'thanks',
-  message: 'Thank you for taking part in this experiment!',
+  message: 'Thank you for taking part in this experiment! Your completion code is XXX',
   render: function () {
     var viewTemplate = $('#thanks-view').html();
 
